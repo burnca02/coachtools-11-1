@@ -15,7 +15,7 @@ router.get('/coachToolsLogo.png', (req, res) => {
 router.use(fileUpload());
 //Connect DB again??
 const mongoose = require('mongoose');
-const db = 'mongodb+srv://yoda:maytheforce@cluster0.fvmkx.mongodb.net/test?retryWrites=true&w=majority';
+const db = 'mongodb+srv://hernri01:Capstone2020@cluster0.3ln2m.mongodb.net/test?authSource=admin&replicaSet=atlas-9q0n4l-shard-0&readPreference=primary&appname=MongoDB%20Compass&ssl=true&useUnifiedTopology=true&useNewUrlParser=true';
 mongoose.connect(db, { useNewUrlParser: true ,useUnifiedTopology: true})
 .then(() => console.log('Mongo DB Connected...'))
 .catch(err => console.log(err));

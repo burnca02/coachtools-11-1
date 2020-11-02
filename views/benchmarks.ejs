@@ -1,0 +1,81 @@
+<div class="row mt-5">
+    <div class="col-md-6 m-auto">
+      <div class="card card-body">
+        <h1 class="text-center mb-3"><i class="fas fa-sign-in-alt"></i> Benchmarks</h1>
+        <%- include('./partials/messages'); %>
+        <form action="/functions/benchmarks" method="POST">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  class="form-control"
+                  placeholder="Enter Email"
+                />
+              </div>
+            <div class="form-group">
+            <label for="bench">Current Max Bench Press</label>
+            <input
+              type="bench"
+              id="bench"
+              name="bench"
+              class="form-control"
+              placeholder="Enter Weight"
+            />
+          </div>
+          <div class="form-group">
+            <label for="squat">Current Max Squat</label>
+            <input
+              type="squat"
+              id="squat"
+              name="squat"
+              class="form-control"
+              placeholder="Enter Weight"
+            />
+          </div>
+          <div class="form-group">
+            <label for="dead">Current Max DeadLift</label>
+            <input
+              type="dead"
+              id="dead"
+              name="dead"
+              class="form-control"
+              placeholder="Enter Weight"
+            />
+          </div>
+          <div class="form-group">
+            <label for="mile">Current Mile Time</label>
+            <input
+              type="mile"
+              id="mile"
+              name="mile"
+              class="form-control"
+              placeholder="Enter Time"
+            />
+          </div>
+          <div class="form-group">
+            <label for="height">Current Height(in)</label>
+            <input
+              type="height"
+              id="height"
+              name="height"
+              class="form-control"
+              placeholder="Enter Height"
+            />
+          </div>
+          <div class="form-group">
+            <label for="weight">Current Weight(lbs)</label>
+            <input
+              type="weight"
+              id="weight"
+              name="weight"
+              class="form-control"
+              placeholder="Enter Weight"
+            />
+          </div>
+          <button type="submit" class="btn btn-primary btn-block">Submit</button>
+        </form>
+      </div>
+    </div>
+  </div>

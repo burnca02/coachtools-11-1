@@ -1,0 +1,190 @@
+<p>Today's Date: <span id="datetime"></span></p>
+<script>
+var dt = new Date();
+document.getElementById("datetime").innerHTML = (("0"+(dt.getMonth()+1)).slice(-2)) +"/"+ (("0"+dt.getDate()).slice(-2)) +"/"+ (dt.getFullYear());
+</script>
+
+    <!-- header -->
+<div class="topnav">
+      <img src="coachToolsLogo.png" alt="CoachTools" style="display:inline; width: 75px;">
+      <div style="font-size: 25px; display: inline;">Max Trends</div>
+      <button class="top-dropdown-btn">Name</button>
+      <a href="/playerHome" class="btn btn-secondary">Player Home</a>
+</div>
+
+
+
+<div style="font-size: 25px; display: inline;">Strength</div>
+
+<table style="width:100%">
+    <tr>
+      <th>Max Bench</th>
+      <th>Max Squat</th> 
+      <th>Max Dead</th>
+    </tr>
+    <tr>
+      <td>
+        <%= bench%>
+      </td>
+      <td>
+        <%= squat%>
+      </td> 
+      <td>
+        <%= dead%>
+      </td>
+    </tr>
+</table>
+
+<div style="font-size: 25px; display: inline;">Agility</div>
+
+<table style="width:100%">
+    <tr>
+      <th>Mile Time</th>
+    </tr>
+    <tr>
+      <td>
+        <%= mile%>
+      </td>
+    </tr>
+</table>
+
+<div style="font-size: 25px; display: inline;">Height/Weight</div>
+
+<table style="width:100%">
+    <tr>
+      <th>Height</th>
+      <th>Weight</th>
+      <th>BMI</th> 
+    </tr>
+    <tr>
+      <td>
+        <%= height%>
+      </td>
+      <td>
+        <%= weight%>
+      </td>
+      <td>
+        weight/height^2
+      </td>
+    </tr>
+</table>
+<div class="row mt-5">
+  <div class="col-md-6 m-auto">
+    <div class="card card-body">
+      <h1 class="text-center mb-3"><i class="fas fa-sign-in-alt"></i>Update Stats</h1>
+      <%- include('./partials/messages'); %>
+      <form action="/player/updatestats" method="POST">
+          <div class="form-group">
+              <label for="email">Email</label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                class="form-control"
+                placeholder="Enter Email"
+              />
+            </div>
+          <div class="form-group">
+          <label for="bench">Current Max Bench Press</label>
+          <input
+            type="bench"
+            id="bench"
+            name="bench"
+            class="form-control"
+            placeholder="Enter Weight"
+          />
+        </div>
+        <div class="form-group">
+          <label for="squat">Current Max Squat</label>
+          <input
+            type="squat"
+            id="squat"
+            name="squat"
+            class="form-control"
+            placeholder="Enter Weight"
+          />
+        </div>
+        <div class="form-group">
+          <label for="dead">Current Max DeadLift</label>
+          <input
+            type="dead"
+            id="dead"
+            name="dead"
+            class="form-control"
+            placeholder="Enter Weight"
+          />
+        </div>
+        <div class="form-group">
+          <label for="mile">Current Mile Time</label>
+          <input
+            type="mile"
+            id="mile"
+            name="mile"
+            class="form-control"
+            placeholder="Enter Time"
+          />
+        </div>
+        <div class="form-group">
+          <label for="height">Current Height(in)</label>
+          <input
+            type="height"
+            id="height"
+            name="height"
+            class="form-control"
+            placeholder="Enter Height"
+          />
+        </div>
+        <div class="form-group">
+          <label for="weight">Current Weight(lbs)</label>
+          <input
+            type="weight"
+            id="weight"
+            name="weight"
+            class="form-control"
+            placeholder="Enter Weight"
+          />
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Submit</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- https://developers.google.com/chart/interactive/docs/gallery/linechart -->
+<head>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script type="text/javascript">
+    google.charts.load('current', {'packages':['corechart']});
+    google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+      var data = google.visualization.arrayToDataTable([
+        ['Blah','Bench', 'Squat', 'Dead'],
+        ['Start'  ,  100, 150, 150],
+        ['Input 2',  130, 200, 140],
+        ['Input 3',  150, 220, 150],
+        ['Input 4',  130, 250, 140]
+      ]);
+
+      var options = {
+        title: 'Max Trends',
+        curveType: 'function',
+        legend: { position: 'bottom' },
+        axes: {
+          // Adds labels to each axis; they don't have to match the axis names.
+          y: {
+            Temps: {label: 'Temps (Celsius)'},
+            Daylight: {label: 'Daylight'}
+          }
+        }
+      };
+
+      var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+
+      chart.draw(data, options);
+    }
+  </script>
+</head>
+<body>
+  <div id="curve_chart" style="width: 900px; height: 500px"></div>
+</body>

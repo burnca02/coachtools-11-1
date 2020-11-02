@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 //require player model
-const Roster = require('../models/Player');
+const Roster = require('../models/Roster');
 const Stat = require('../models/Stat');
 
 //photo

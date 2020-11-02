@@ -4,8 +4,10 @@ const { ensureAuthenticated } = require('../config/auth');
 //const csv = require('fast-csv');
 var fileUpload = require('express-fileupload');
 var template = require('../template');
-
-const Player = require('../models/Player');
+var upload = require('../upload');
+const csv = require('fast-csv');
+var mongoose = require('mongoose');
+const Roster = require('../models/Roster');
 
 //photo
 router.get('/coachToolsLogo.png', (req, res) => {
@@ -14,29 +16,30 @@ router.get('/coachToolsLogo.png', (req, res) => {
 
 router.use(fileUpload());
 //Connect DB again??
-const mongoose = require('mongoose');
 const db = 'mongodb+srv://hernri01:Capstone2020@cluster0.3ln2m.mongodb.net/test?authSource=admin&replicaSet=atlas-9q0n4l-shard-0&readPreference=primary&appname=MongoDB%20Compass&ssl=true&useUnifiedTopology=true&useNewUrlParser=true';
 mongoose.connect(db, { useNewUrlParser: true ,useUnifiedTopology: true})
 .then(() => console.log('Mongo DB Connected...'))
 .catch(err => console.log(err));
 
-const multer = require('multer');
-const upload = multer({
-    dest: 'uploads/' // this saves your file into a directory called "uploads"
-  });
+// const multer = require('multer');
+// const upload = multer({
+//     dest: 'uploads/' // this saves your file into a directory called "uploads"
+//   });
   
-var storage = multer.diskStorage({  
-    destination:(req,file,cb)=>{  
-        cb(null,'./uploads');  
-    },  
-    filename:(req,file,cb)=>{  
-        cb(null,file.originalname);  
-    }  
-});
-var uploads = multer({storage:storage}); 
+// var storage = multer.diskStorage({  
+//     destination:(req,file,cb)=>{  
+//         cb(null,'./uploads');  
+//     },  
+//     filename:(req,file,cb)=>{  
+//         cb(null,file.originalname);  
+//     }  
+// });
+// var uploads = multer({storage:storage}); 
 //var csv         = require('csvtojson');
 
 router.get('/template', template.get);
+
+router.post('/upload', upload.post);
 //upload function
 // router.post('/upload', (req,res) => 
 // {
@@ -117,29 +120,29 @@ router.get('/template', template.get);
 //       }  
 // });
 
-exports.post = function (req, res) {
-  if (!req.files)
-      return res.status(400).send('No files were uploaded.');
+// router.post = function (req, res) {
+//   if (!req.files)
+//       return res.status(400).send('No files were uploaded.');
    
-  var rosterFile = req.files.file;
+//   var rosterFile = req.files.file;
 
-  var players = [];
+//   var players = [];
        
-  csv.parseString(rosterFile.data.toString(), {
-       headers: true,
-       ignoreEmpty: true
-   })
-   .on("data", function(data){
-       data['_id'] = new mongoose.Types.ObjectId();
+//   csv.parseString(rosterFile.data.toString(), {
+//        headers: true,
+//        ignoreEmpty: true
+//    })
+//    .on("data", function(data){
+//        data['_id'] = new mongoose.Types.ObjectId();
         
-       players.push(data);
-   })
-   .on("end", function(){
-       Roster.create(players, function(err, documents) {
-          if (err) throw err;
-       });
-
-   });
-};
+//        players.push(data);
+//    })
+//    .on("end", function(){
+//        Roster.create(players, function(err, documents) {
+//           if (err) throw err;
+//        });
+//        res.redirect('/');
+//    });
+// };
 
 module.exports = router;

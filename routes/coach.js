@@ -68,9 +68,9 @@ router.post('/upload', upload.post);
 //         Roster.create(players, function(err, documents) {
 //             if (err) throw err;
 //         });
-//                 // Sorting by the position Alhpabetically.
-//         res.redirect('/coachHome');
 //     });
+//     console.log("Uploaded to database");
+//     res.redirect('/coach/upload');
     
 // })
 

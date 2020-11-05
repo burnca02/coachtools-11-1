@@ -36,6 +36,7 @@ app.use(session({
   saveUninitialized: true
 }));
 
+
 //passport middleware
 app.use(passport.initialize());
 app.use(passport.session());
@@ -62,6 +63,7 @@ app.use('/coach', require('./routes/coach'));
 app.get('/coachToolsLogo.png', (req, res) => {
   res.sendFile('coachToolsLogo.png', { root: '.' })
 });
+
 //send nav.html to coachHome for sidebar
 app.get('/nav.html', (req, res) => {
   res.sendFile('nav.html', { root: '.' })

@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 
 const playerSchema = mongoose.Schema({
+    Email: String,
     FirstName:  String, // String is shorthand for {type: String}
     LastName: String,
     Pos:   String,

@@ -18,9 +18,20 @@ router.get('/coachToolsLogo.png', (req, res) => {
 
 //player grades page
 router.get('/playerGrades', ensureAuthenticated, (req, res) => 
-  res.render('playerGrades', {
-    name: req.user.name //pass the name that was entered into the database to dashboard
-}));
+  Stat.findOne({ email: req.user.email }).sort({$natural:-1}).limit(1)
+  .then(stat => {
+    console.log(stat.bench);
+    res.render('playerTrends', {
+          email: stat.email,
+          bench: stat.bench,
+          squat: stat.squat,
+          dead: stat.dead,
+          mile: stat.mile,
+          height: stat.height,
+          weight: stat.weight
+        });
+  }
+));
 
 
 //player trends page

@@ -5,26 +5,10 @@
     <meta charset="UTF-8" />
     <!-- <title>Star Wars Quote App</title> -->
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/cyborg/bootstrap.min.css">
-    <script src="//code.jquery.com/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/journal/bootstrap.min.css">
+    <!-- <script src="//code.jquery.com/jquery.min.js"></script> -->
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Coach Tools</title>
-    <!-- plugins:css -->
-    <!-- <link rel="stylesheet" href="../vendors/simple-line-icons/css/simple-line-icons.css">
-    <link rel="stylesheet" href="../vendors/flag-icon-css/css/flag-icon.min.css">
-    <link rel="stylesheet" href="../vendors/css/vendor.bundle.base.css"> -->
-    <!-- <link rel="stylesheet" href="../public/styles.css"> -->
-    <!-- endinject -->
-    <!-- Plugin css for this page -->
-    <!-- <link rel="stylesheet" href="../vendors/daterangepicker/daterangepicker.css">
-    <link rel="stylesheet" href="../vendors/chartist/chartist.min.css"> -->
-    <!-- End plugin css for this page -->
-    <!-- inject:css -->
-    <!-- endinject -->
-    <!-- Layout styles -->
-    <!-- <link rel="stylesheet" href="../css/style.css"> -->
-    <!-- End layout styles -->
-    <!-- <link rel="shortcut icon" href="../images/coachToolsLogo.png" /> -->
     <style>
     body {
       background-color: aliceblue;
@@ -34,7 +18,7 @@
       width: 160px; /* Set the width of the sidebar */
       position: fixed; /* Fixed Sidebar (stay in place on scroll) */
       /* z-index: -1; Stay on top */
-      top: 40px; /*Stay at the top */
+      top: 15%; /*Stay at the top */
       left: 0;
       background-color: #111; /* Black */
       overflow-x: hidden; /* Disable horizontal scroll */
@@ -126,160 +110,70 @@
   </head>
 
   <body>
-    <h3 style="padding-top: 60px; padding-left: 200px; color: black;">Home</h3>
+
     <!-- Side navigation -->
-    <div id="nav-placeholder"></div>
-
-    <div class="row" style="padding-top: 15px; padding-left: 200px;">
-      <div class="btn-group" style="padding: 10px;">
-        <button class="dropdown-btn" style="color:black; background-color: gray; border-color: gray;" data-toggle="dropdown">Gettysburg Bullets 2020</button>
-        <div class="dropdown-menu">
-          <a class="dropdown-item">Gettysburg 2018</a>
-          <a class="dropdown-item">Gettysburg 2019</a>
-          <a class="dropdown-item">Gettysburg 2020</a>
+    <div class="sidenav">
+      <a href="coachHome">Home</a>
+      <a href="./player/playerGrades">My Grades</a>
+      <a href="./player/playerTrends">Max Trends</a>
+    </div>
+    
+    <!-- <h3 style="padding-top: 60px; padding-left: 200px; color: black;">Home</h3> -->
+    <!-- Side navigation -->
+    <!-- <div id="nav-placeholder"></div> -->
+    <div class = "main">
+      <div class="row" style="padding-top: 15px; padding-left: 100px;">
+        <div class="btn-group" style="padding: 10px;">
+          <button class="btn btn-primary dropdown-toggle"  data-toggle="dropdown">Gettysburg Bullets 2020</button>
+          <div class="dropdown-menu">
+            <a class="dropdown-item">Gettysburg 2018</a>
+            <a class="dropdown-item">Gettysburg 2019</a>
+            <a class="dropdown-item">Gettysburg 2020</a>
+          </div>
+        </div>
+        <div class="btn-group" style="padding: 10px;">
+          <button type="button" class="btn btn-primary dropdown-toggle"  data-toggle="dropdown">Team</button>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" onclick="offFunc()">Offense</a>
+            <a class="dropdown-item" onclick="defFunc()">Defense</a>
+            <a class="dropdown-item" onclick="specFunc()">Special Teams</a>
+          </div>
+        </div>
+        <div class="btn-group">
+          <button type="button" class="btn btn-primary dropdown-toggle" >Add Team</button>
+        </div>
+                <!-- This is the upload excel roster button. -->
+        <!-- <p>Use the form below to upload a list of authors. -->
+        <div>
+          <form action="/coach/upload" method="POST" encType="multipart/form-data">
+            <input type="file"  name="file" accept=".csv" />
+            <input type="submit" class="btn btn-primary dropdown-toggle" value="Upload Roster" />
+          </form>
+          <p>Click <a href="/coach/template">here</a> for an example template.</p>
         </div>
       </div>
-      <div class="btn-group" style="padding: 10px;">
-        <button type="button" class="dropdown-btn" style="color:black; background-color: gray; border-color: gray;" data-toggle="dropdown">Team</button>
-        <div class="dropdown-menu">
-          <a class="dropdown-item" onclick="offFunc()">Offense</a>
-          <a class="dropdown-item" onclick="defFunc()">Defense</a>
-          <a class="dropdown-item" onclick="specFunc()">Special Teams</a>
-        </div>
-      </div>
-      <div class="btn-group" style="padding: 10px;">
-        <button type="button" class="dropdown-btn" style="color:black; background-color: gray; border-color: gray;">Add Team</button>
-      </div>
-              <!-- This is the upload excel roster button. -->
-      <!-- <p>Use the form below to upload a list of authors. -->
-      <div style="padding-left: 50%;">
-        <form action="/coach/upload" method="POST" encType="multipart/form-data">
-          <input type="file" style="color:black; background-color: gray; border-color: gray;" name="file" accept=".csv" />
-          <input type="submit" class="dropdown-btn" style="color:black; background-color: gray; border-color: gray;" value="Upload Roster" />
-        </form>
-        <p>Click <a href="/coach/template">here</a> for an example template.</p>
-      </div>
-    </div>
 
-  <!-- <div id="offenseDiv">
-    <div class="row" style="padding-top: 15px; padding-left: 200px; padding-bottom: 25px; text-align: center; width: 100%;">
-      <DIV class="col-md-1" style="border: 1px solid black; padding: 10px; font-size: 20pt; color: black;">Offense</DIV>
+      <table class="table table-hover" style="padding: 500px;">
+        <thead>
+          <tr class = "table-dark">
+            <th scope="col">Name</th>
+            <th scope="col">Position</th>
+            <th scope="col">Graduation Year</th>
+          </tr>
+        </thead>
+        <tbody>
+            <ul class="players">
+                <% for(var i = 0; i < players.length; i++) {%>
+                    <tr class="table-default">
+                    <td><%= players[i].FirstName %> <%= players[i].LastName %></td>
+                    <td><%= players[i].Pos %></td>
+                    <td><%= players[i].GradYear %></td>
+                    </tr>
+                <% } %>
+            </ul>
+        
+        </tbody>
+      </table> 
     </div>
-    <div class="row" style="padding-top: 15px; padding-left: 200px; padding-bottom: 25px; text-align: center; width: 100%; color: black;">
-      
-    </div> -->
-    <!-- <div class="row" style="padding-top: 15px; padding-left: 200px; padding-bottom: 25px; text-align: center; width: 100%; color: black;">
-      
-    </div> -->
-      
-    <div class="row" style="padding-left: 200px; text-align: center; color: black;">
-      <!-- Enter Back Javascript -->
-      <DIV style="border: 1px solid black; border-radius: 50%; padding: 10px; background-color: orange;">WR<p>Name, GR</p></DIV>
-      <DIV style="border: 1px solid black; border-radius: 50%; padding: 10px; background-color: orange;">WR<p>Name, GR</p></DIV>
-      <DIV style="border: 1px solid black; border-radius: 50%; padding: 10px; background-color: orange;">LT<p>Name, GR</p></DIV>
-      <DIV style="border: 1px solid black; border-radius: 50%; padding: 10px; background-color: orange;">LG<p>Name, GR</p></DIV>
-      <DIV style="border: 1px solid black; border-radius: 50%; padding: 10px; background-color: orange;">C<p>Name, GR</p></DIV>
-      <DIV style="border: 1px solid black; border-radius: 50%; padding: 10px; background-color: orange;">RG<p>Name, GR</p></DIV>
-      <DIV style="border: 1px solid black; border-radius: 50%; padding: 10px; background-color: orange;">RT<p>Name, GR</p></DIV>
-      <DIV style="border: 1px solid black; border-radius: 50%; padding: 10px; background-color: orange;">TE<p>Name, GR</p></DIV>
-      <DIV style="border: 1px solid black; border-radius: 50%; padding: 10px; background-color: orange;">WR<p>Name, GR</p></DIV>
-    </div>
-    <div class="row" style="padding-left: 200px; text-align: center; color: black; padding-left: 500px;">
-      <DIV style="border: 1px solid black; border-radius: 50%; padding: 10px; background-color: orange;">QB<p>Name, GR</p></DIV>
-      <DIV style="border: 1px solid black; border-radius: 50%; padding: 10px; background-color: orange;">RB<p>Name, GR</p></DIV>
-    </div>
-  </div>
-
-  <div id="defenseDiv">
-    <div class="row" style="padding-top: 15px; padding-left: 200px; padding-bottom: 25px; text-align: center; width: 100%;">
-      <DIV class="col-md-1" style="border: 1px solid black; padding: 10px; font-size: 20pt; color: black;">Defense</DIV>
-    </div>
-    <div class="row" style="padding-left: 200px; text-align: center; color: black;">
-      <DIV style="border: 1px solid black; border-radius: 50%; padding: 10px;background-color: orange;">CB<p>Name, GR</p></DIV>
-      <DIV style="border: 1px solid black; border-radius: 50%; padding: 10px;background-color: orange;">DE<p>Name, GR</p></DIV>
-      <DIV style="border: 1px solid black; border-radius: 50%; padding: 10px;background-color: orange;">DT<p>Name, GR</p></DIV>
-      <DIV style="border: 1px solid black; border-radius: 50%; padding: 10px;background-color: orange;">DT<p>Name, GR</p></DIV>
-      <DIV style="border: 1px solid black; border-radius: 50%; padding: 10px;background-color: orange;">DE<p>Name, GR</p></DIV>
-      <DIV style="border: 1px solid black; border-radius: 50%; padding: 10px;background-color: orange;">OLB<p>Name, GR</p></DIV>
-      <DIV style="border: 1px solid black; border-radius: 50%; padding: 10px;background-color: orange;">MLB<p>Name, GR</p></DIV>
-      <DIV style="border: 1px solid black; border-radius: 50%; padding: 10px;background-color: orange;">OLB<p>Name, GR</p></DIV>
-      <DIV style="border: 1px solid black; border-radius: 50%; padding: 10px;background-color: orange;">CB<p>Name, GR</p></DIV>
-      <DIV style="border: 1px solid black; border-radius: 50%; padding: 10px;background-color: orange;">SS<p>Name, GR</p></DIV>
-      <DIV style="border: 1px solid black; border-radius: 50%; padding: 10px;background-color: orange;">FS<p>Name, GR</p></DIV>
-    </div>
-  </div>
-  
-  <div id="specialDiv">
-    <div class="row" style="padding-top: 15px; padding-left: 200px; padding-bottom: 25px; text-align: center; width: 100%;">
-      <DIV class="col-md-2" style="border: 1px solid black; padding: 10px; font-size: 20pt; color: black;">Special Teams</DIV>
-    </div>
-    <div class="row" style="padding-left: 200px; text-align: center; color: black;">
-      <DIV style="border: 1px solid black; border-radius: 50%; padding: 10px;background-color: orange;">K<p>Name, GR</p></DIV>
-      <DIV style="border: 1px solid black; border-radius: 50%; padding: 10px;background-color: orange;">P<p>Name, GR</p></DIV>
-      <DIV style="border: 1px solid black; border-radius: 50%; padding: 10px;background-color: orange;">KR/PR<p>Name, GR</p></DIV>
-      <DIV style="border: 1px solid black; border-radius: 50%; padding: 10px;background-color: orange;">LS<p>Name, GR</p></DIV>
-    </div>
-  </div>
-
-    <!-- <div class="row" style="padding-top: 25px; padding-left: 200px; padding-bottom: 10px;">
-      <DIV class="col-md-1" style="border: 1px solid black; padding: 10px;;">Defense</DIV>
-    </div>
-    <div class="row" style="padding-top: 25px; padding-left: 200px;">
-      <DIV class="col-md-1" style="border: 1px solid black; padding: 10px;;">Special Teams</DIV>
-    </div> -->
-
-    <script>
-      /* Loop through all dropdown buttons to toggle between hiding and showing its dropdown content - This allows the user to have multiple dropdowns without any conflict */
-      // var dropdown = document.getElementsByClassName("dropdown-btn");
-      // var i;
-      
-      // for (i = 0; i < dropdown.length; i++) {
-      //   dropdown[i].addEventListener("click", function() {
-      //   this.classList.toggle("active");
-      //   var dropdownContent = this.nextElementSibling;
-      //   if (dropdownContent.style.display === "block") {
-      //   dropdownContent.style.display = "none";
-      //   } else {
-      //   dropdownContent.style.display = "block";
-      //   }
-      //   });
-      // }
-      $(function(){
-        $("#nav-placeholder").load("nav.html");
-      });
-      document.addEventListener('DOMContentLoaded', function() {
-        // alert("Ready!");
-        var x = document.getElementById("offenseDiv");
-        var y = document.getElementById("defenseDiv");
-        var z = document.getElementById("specialDiv");
-        x.style.display = "block";
-        y.style.display = "none";
-        z.style.display = "none";
-      }, false);
-      function offFunc() {
-        var x = document.getElementById("offenseDiv");
-        var y = document.getElementById("defenseDiv");
-        var z = document.getElementById("specialDiv");
-        x.style.display = "block";
-        y.style.display = "none";
-        z.style.display = "none";
-      }
-      function defFunc() {
-        var x = document.getElementById("offenseDiv");
-        var y = document.getElementById("defenseDiv");
-        var z = document.getElementById("specialDiv");
-        x.style.display = "none";
-        y.style.display = "block";
-        z.style.display = "none";
-      }
-      function specFunc() {
-        var x = document.getElementById("offenseDiv");
-        var y = document.getElementById("defenseDiv");
-        var z = document.getElementById("specialDiv");
-        x.style.display = "none";
-        y.style.display = "none";
-        z.style.display = "block";
-      } 
-    </script>  
   </body>
 </html>

@@ -107,10 +107,11 @@ router.post('/register', (req, res) => {
 //Login Handle
 router.post('/login', (req, res, next) => {
     const {email} = req.body;
+    req.session.email = email; //Creating a session id for email. This will carry over in all the website.
+    console.log('Email is ' + req.session.email);
     User.findOne({ email: email })
         .then(user => {
-            //check if user is a coach or a player
-            console.log(user.userType);
+            req.session.school = user.school;
             if(user.userType == 'coach') {
                 console.log('User type is ' + user.userType);
                 passport.authenticate('local', {

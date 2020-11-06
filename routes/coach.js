@@ -31,4 +31,19 @@ router.get('/template', template.get);
 router.post('/upload', upload.post);
 
 
+router.get('/upload', ensureAuthenticated, (req, res) => 
+  res.render('coachHome', {
+    name: req.user.name //pass the name that was entered into the database to dashboard
+}));
+
+router.get('/playerFeedback', ensureAuthenticated, (req, res) => 
+  res.render('playerFeedback', {
+    name: req.user.name //pass the name that was entered into the database to dashboard
+}));
+
+router.get('/questionnaire', ensureAuthenticated, (req, res) => 
+  res.render('questionnaire', {
+    name: req.user.name //pass the name that was entered into the database to dashboard
+}));
+
 module.exports = router;

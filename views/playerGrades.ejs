@@ -1,4 +1,13 @@
-<h1 class="mt-4">Grades Homepage</h1>
+<style>
+  table,
+  th,
+  td {
+    padding: 10px;
+    border: 1px solid black;
+    border-collapse: collapse;
+  }
+</style>
+<h1 class="mt-4">Grades Homepage <%= email%></h1>
 
 <p>Today's Date: <span id="datetime"></span></p>
 <script>
@@ -9,13 +18,90 @@ document.getElementById("datetime").innerHTML = (("0"+(dt.getMonth()+1)).slice(-
 <table style="width:100%">
     <tr>
       <th>Today's Grade</th>
-      <th>Weekly Grade Trend</th> 
-      <th>Seasonal Grade Trend</th>
+      <th>Weekly Trend</th> 
+      <th>Seasonal Trend</th>
     </tr>
     <tr>
       <td>90</td>
-      <td>+20</td> 
-      <td>+10</td>
+      <td>
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+        <script type="text/javascript">
+        
+
+          google.charts.load('current', {'packages':['corechart']});
+          google.charts.setOnLoadCallback(drawChart);
+
+          function drawChart() {
+            var data = google.visualization.arrayToDataTable([
+              ['Blah','Grade'],
+              ['Start'  ,  0],
+              ['8/31',  90],
+              ['9/2',  70],
+              ['9/4',  80]
+            ]);
+
+            var options = {
+              title: 'Weekly Grade Trend',
+              curveType: 'function',
+              legend: { position: 'bottom' },
+              axes: {
+                // Adds labels to each axis; they don't have to match the axis names.
+                y: {
+                  Temps: {label: 'Temps (Celsius)'},
+                  Daylight: {label: 'Daylight'}
+                }
+              }
+          };
+          var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+          chart.draw(data, options);
+    }
+        </script>
+        <body>
+          <div id="curve_chart" style="width: 300px; height: 150px"></div>
+        </body>
+      </td> 
+      <td>
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+        <script type="text/javascript">
+          const Stat = require('../models/Stat');
+
+          google.charts.load('current', {'packages':['corechart']});
+          google.charts.setOnLoadCallback(drawChart);
+
+          Stat.find();
+
+          function drawChart() {
+            var data = google.visualization.arrayToDataTable([
+              ['Blah','Grade'],
+              ['Start'  ,  0],
+              ['8/31',  90],
+              ['9/2',  70],
+              ['9/18',  50],
+              ['10/10',  50],
+              ['11/29',  70],
+              ['1/30',  80]
+            ]);
+
+            var options = {
+              title: 'Seasonal Grade Trend',
+              curveType: 'function',
+              legend: { position: 'bottom' },
+              axes: {
+                // Adds labels to each axis; they don't have to match the axis names.
+                y: {
+                  Temps: {label: 'Temps (Celsius)'},
+                  Daylight: {label: 'Daylight'}
+                }
+              }
+          };
+          var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+          chart.draw(data, options);
+    }
+        </script>
+        <body>
+          <div id="curve_chart" style="width: 300px; height: 150px"></div>
+        </body>
+      </td>
     </tr>
 </table>
 <a href="/playerHome" class="btn btn-secondary">Player Home</a>

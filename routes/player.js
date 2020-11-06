@@ -1,6 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const { ensureAuthenticated } = require('../config/auth');
+const MongoClient = require('mongodb').MongoClient
+const uri = "mongodb+srv://hernri01:Capstone2020@cluster0.3ln2m.mongodb.net/test?authSource=admin&replicaSet=atlas-9q0n4l-shard-0&readPreference=primary&appname=MongoDB%20Compass&ssl=true&useUnifiedTopology=true";
+
 
 const Stat = require('../models/Stat');
 
@@ -11,6 +14,9 @@ mongoose.connect(db, { useNewUrlParser: true ,useUnifiedTopology: true})
 .then(() => console.log('Mongo DB Connected...'))
 .catch(err => console.log(err));
 
+
+
+
 //photo
 router.get('/coachToolsLogo.png', (req, res) => {
   res.sendFile('coachToolsLogo.png', { root: '.' })
@@ -19,7 +25,8 @@ router.get('/coachToolsLogo.png', (req, res) => {
 //player grades page
 router.get('/playerGrades', ensureAuthenticated, (req, res) => 
   Stat.findOne({ email: req.user.email }).sort({$natural:-1}).limit(1)
-  .then(stat => {
+  .then(stat => 
+  {
     console.log(stat.bench);
     res.render('playerTrends', {
           email: stat.email,
@@ -31,27 +38,34 @@ router.get('/playerGrades', ensureAuthenticated, (req, res) =>
           weight: stat.weight
         });
   }
+
+  
 ));
 
 
 //player trends page
 router.get('/playerTrends', ensureAuthenticated, (req, res) => 
+
   Stat.findOne({ email: req.session.email }).sort({createdAt:-1}).limit(1)
-  .then(stat => {
+  .then(stat => 
+  {
     console.log(stat.bench);
-    res.render('playerTrends', {
+    res.render('playerTrends', 
+        {
           email: stat.email,
           bench: stat.bench,
           squat: stat.squat,
           dead: stat.dead,
           mile: stat.mile,
           height: stat.height,
-          weight: stat.weight
+          weight: stat.weight,
+          yyy: "Hello"
         });
         console.log(req.session);
 
   }
 ));
+
 
 router.post('/updatestats', (req, res) => {
   //how to get it to recognize player email without them having to type it in?

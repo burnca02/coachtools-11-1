@@ -10,6 +10,7 @@ document.getElementById("datetime").innerHTML = (("0"+(dt.getMonth()+1)).slice(-
       <div style="font-size: 25px; display: inline;">Max Trends</div>
       <button class="top-dropdown-btn">Name</button>
       <a href="/playerHome" class="btn btn-secondary">Player Home</a>
+      <a href="/player/playerGraph" class="btn btn-secondary">Graphs</a>
 </div>
 
 
@@ -64,10 +65,11 @@ document.getElementById("datetime").innerHTML = (("0"+(dt.getMonth()+1)).slice(-
         <%= weight%>
       </td>
       <td>
-        weight/height^2
+        <%= yyy%>
       </td>
     </tr>
 </table>
+
 <div class="row mt-5">
   <div class="col-md-6 m-auto">
     <div class="card card-body">
@@ -148,6 +150,7 @@ document.getElementById("datetime").innerHTML = (("0"+(dt.getMonth()+1)).slice(-
     google.charts.setOnLoadCallback(drawChart);
 
     function drawChart() {
+      
       var data = google.visualization.arrayToDataTable([
         ['Blah','Bench', 'Squat', 'Dead'],
         ['Start'  ,  100, 150, 150],

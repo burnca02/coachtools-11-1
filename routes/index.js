@@ -18,7 +18,8 @@ MongoClient.connect(uri, { useUnifiedTopology: true })
         console.log(req.session);
 
         res.render('coachHome', {players: results,
-                                name: req.user.name   
+                                name: req.user.name,
+                                school: req.session.school   
                                 }
                  )
     })

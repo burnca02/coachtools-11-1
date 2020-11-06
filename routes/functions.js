@@ -22,6 +22,7 @@ router.post('/benchmarks', (req, res, next) => {
 
     //Add new Stat to the database
     const newStat = new Stat({
+        _id: req.session._id,
         email,
         bench,
         squat,

@@ -28,8 +28,8 @@ const mongoose = require('mongoose');
     weight: {
         type: String,
         required: true
-    }
- })
+    }, 
+ }, { timestamps: true })
 
  const Stat = mongoose.model('Stat', StatSchema);
 

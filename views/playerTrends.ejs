@@ -75,16 +75,6 @@ document.getElementById("datetime").innerHTML = (("0"+(dt.getMonth()+1)).slice(-
       <%- include('./partials/messages'); %>
       <form action="/player/updatestats" method="POST">
           <div class="form-group">
-              <label for="email">Email</label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                class="form-control"
-                placeholder="Enter Email"
-              />
-            </div>
-          <div class="form-group">
           <label for="bench">Current Max Bench Press</label>
           <input
             type="bench"

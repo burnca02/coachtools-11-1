@@ -14,9 +14,6 @@ MongoClient.connect(uri, { useUnifiedTopology: true })
 
     db.collection('Roster').find({ "Pos": { "$exists": true }, "School": req.session.school}).sort({'Pos': 1}).toArray()
     .then(results => {
-        req.session.school = req.user.school;
-        console.log(req.session);
-
         res.render('coachHome', {players: results,
                                 name: req.user.name,
                                 school: req.session.school   

@@ -85,6 +85,7 @@ router.post('/register', (req, res) => {
                         //set password to hashed
                         newUser.password = hash;
                         //save user
+                        req.session._id = newUser._id; //Passing the ID to make searches easier.
                         newUser.save()
                         .then(user => {
                             console.log(newUser.userType);
@@ -112,6 +113,7 @@ router.post('/login', (req, res, next) => {
     User.findOne({ email: email })
         .then(user => {
             req.session.school = user.school;
+            req.session._id = user._id; //Passing the ID to make searches easier.
             if(user.userType == 'coach') {
                 console.log('User type is ' + user.userType);
                 passport.authenticate('local', {

@@ -36,7 +36,7 @@ router.get('/playerGrades', ensureAuthenticated, (req, res) =>
 
 //player trends page
 router.get('/playerTrends', ensureAuthenticated, (req, res) => 
-  Stat.findOne({ email: req.user.email }).sort({$natural:-1}).limit(1)
+  Stat.findOne({ email: req.session.email }).sort({createdAt:-1}).limit(1)
   .then(stat => {
     console.log(stat.bench);
     res.render('playerTrends', {
@@ -48,17 +48,19 @@ router.get('/playerTrends', ensureAuthenticated, (req, res) =>
           height: stat.height,
           weight: stat.weight
         });
+        console.log(req.session);
+
   }
 ));
 
 router.post('/updatestats', (req, res) => {
   //how to get it to recognize player email without them having to type it in?
-  const { email, bench, squat, dead, mile, height, weight} = req.body;
+  const {bench, squat, dead, mile, height, weight} = req.body;
   console.log(req.body);
 
   //Add new Stat to the database
   const newStat = new Stat({
-      email,
+      email: req.session.email,
       bench,
       squat,
       dead,

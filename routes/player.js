@@ -46,11 +46,14 @@ router.get('/playerGrades', ensureAuthenticated, (req, res) =>
 //player trends page
 router.get('/playerTrends', ensureAuthenticated, (req, res) => 
 
-  Stat.findOne({ email: req.session.email }).sort({createdAt:-1}).limit(1)
+  Stat.findOne({ email: req.session.email }).sort({createdAt:-1}).limit(1) // Query to find the most recent stat for the user.
   .then(stat => 
   {
-    console.log(stat.bench);
-    res.render('playerTrends', 
+    Stat.find({ email: req.session.email }).sort({createdAt:1}) //This query will be used to populate the graph.
+    .then(stats =>
+    {
+      console.log(stat.bench);
+      res.render('playerTrends', 
         {
           email: stat.email,
           bench: stat.bench,
@@ -59,8 +62,22 @@ router.get('/playerTrends', ensureAuthenticated, (req, res) =>
           mile: stat.mile,
           height: stat.height,
           weight: stat.weight,
-          yyy: "Hello"
+          graph: stats
         });
+    })
+
+    // console.log(stat.bench);
+    // res.render('playerTrends', 
+    //     {
+    //       email: stat.email,
+    //       bench: stat.bench,
+    //       squat: stat.squat,
+    //       dead: stat.dead,
+    //       mile: stat.mile,
+    //       height: stat.height,
+    //       weight: stat.weight,
+    //       yyy: "Hello"
+    //     });
         console.log(req.session);
 
   }

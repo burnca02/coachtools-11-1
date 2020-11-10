@@ -1,6 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const { ensureAuthenticated } = require('../config/auth');
+const MongoClient = require('mongodb').MongoClient
+const uri = "mongodb+srv://hernri01:Capstone2020@cluster0.3ln2m.mongodb.net/test?authSource=admin&replicaSet=atlas-9q0n4l-shard-0&readPreference=primary&appname=MongoDB%20Compass&ssl=true&useUnifiedTopology=true";
+
 
 const Stat = require('../models/Stat');
 
@@ -11,6 +14,9 @@ mongoose.connect(db, { useNewUrlParser: true ,useUnifiedTopology: true})
 .then(() => console.log('Mongo DB Connected...'))
 .catch(err => console.log(err));
 
+
+
+
 //photo
 router.get('/coachToolsLogo.png', (req, res) => {
   res.sendFile('coachToolsLogo.png', { root: '.' })
@@ -19,7 +25,8 @@ router.get('/coachToolsLogo.png', (req, res) => {
 //player grades page
 router.get('/playerGrades', ensureAuthenticated, (req, res) => 
   Stat.findOne({ email: req.user.email }).sort({$natural:-1}).limit(1)
-  .then(stat => {
+  .then(stat => 
+  {
     console.log(stat.bench);
     res.render('playerTrends', {
           email: stat.email,
@@ -31,34 +38,60 @@ router.get('/playerGrades', ensureAuthenticated, (req, res) =>
           weight: stat.weight
         });
   }
+
+  
 ));
 
 
 //player trends page
 router.get('/playerTrends', ensureAuthenticated, (req, res) => 
-  Stat.findOne({ email: req.user.email }).sort({$natural:-1}).limit(1)
-  .then(stat => {
-    console.log(stat.bench);
-    res.render('playerTrends', {
+
+  Stat.findOne({ email: req.session.email }).sort({createdAt:-1}).limit(1) // Query to find the most recent stat for the user.
+  .then(stat => 
+  {
+    Stat.find({ email: req.session.email }).sort({createdAt:1}) //This query will be used to populate the graph.
+    .then(stats =>
+    {
+      console.log(stat.bench);
+      res.render('playerTrends', 
+        {
           email: stat.email,
           bench: stat.bench,
           squat: stat.squat,
           dead: stat.dead,
           mile: stat.mile,
           height: stat.height,
-          weight: stat.weight
+          weight: stat.weight,
+          graph: stats
         });
+    })
+
+    // console.log(stat.bench);
+    // res.render('playerTrends', 
+    //     {
+    //       email: stat.email,
+    //       bench: stat.bench,
+    //       squat: stat.squat,
+    //       dead: stat.dead,
+    //       mile: stat.mile,
+    //       height: stat.height,
+    //       weight: stat.weight,
+    //       yyy: "Hello"
+    //     });
+        console.log(req.session);
+
   }
 ));
 
+
 router.post('/updatestats', (req, res) => {
   //how to get it to recognize player email without them having to type it in?
-  const { email, bench, squat, dead, mile, height, weight} = req.body;
+  const {bench, squat, dead, mile, height, weight} = req.body;
   console.log(req.body);
 
   //Add new Stat to the database
   const newStat = new Stat({
-      email,
+      email: req.session.email,
       bench,
       squat,
       dead,

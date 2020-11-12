@@ -20,7 +20,6 @@
       body {
         background-color: aliceblue;
         margin: 0;
-        overflow: hidden;
       }
       .sidenav {
         display:flex;
@@ -146,10 +145,10 @@
     </div> -->
  
     <div class="sidenav">
-      <a href="coachHome.html">Home</a>
+      <a href="./coachHome">Home</a>
       <button class="dropdown-btn">Roster<i class="fa fa-caret-down"></i></button>
       <div class="dropdown-container">
-        <a href="./">Player Bio</a>
+        <a href="/index.ejs">Player Bio</a>
         <a href="#">Depth Chart</a>
       </div>
       <button class="dropdown-btn">Game<i class="fa fa-caret-down"></i></button>
@@ -160,12 +159,14 @@
       </div>
       <button class="dropdown-btn">Practice<i class="fa fa-caret-down"></i></button>
       <div class="dropdown-container">
-        <a href="#">In Season</a>
-        <a href="#">Training</a>
+        <a href="/coach/practiceStats">In Season</a>
+        <a href="/coach/practiceTrainingStats">Training</a>
       </div>
-      <a href="#">Player Feedback</a>
+      <a href="/coach/practiceStats">In Season</a>
+      <a href="/coach/playerFeedback">Player Feedback</a>
       <a href="#">Comparison</a>
     </div>
+
     <div class="main">
       <div class="topnav">
         <img

@@ -55,10 +55,13 @@ router.post('/submitquest', (req,res) => {
 
   var participantsArr = [];
   //how to get list of specific email addresses for questionnaire to be sent to?
-  if(participants == 'all'){
+  if(participants == 'all'){ //Questionairre will be sent all players from that school
     console.log('All Participants');
-    Roster.find({}), (err, results) => {
+    Roster.find({"School": req.session.school}), (err, results) => {
       console.log('Results');
+      console.log(results);
+      console.log(results.Email);
+
       participantsArr.push(results.Email); //need to push all emails in here
     }
   } else {

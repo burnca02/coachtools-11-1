@@ -59,15 +59,17 @@ app.use('/functions', require('./routes/functions'));
 app.use('/player', require('./routes/player'));
 app.use('/coach', require('./routes/coach'));
 
+app.use(express.static("public"));
+
 //photo
-app.get('/coachToolsLogo.png', (req, res) => {
-  res.sendFile('coachToolsLogo.png', { root: '.' })
-});
+//app.get('/coachToolsLogo.png', (req, res) => {
+  //res.sendFile('coachToolsLogo.png', { root: '.' })
+//});
 
 //send nav.html to coachHome for sidebar
-app.get('/nav.html', (req, res) => {
-  res.sendFile('nav.html', { root: '.' })
-});
+//app.get('/nav.html', (req, res) => {
+  //res.sendFile('nav.html', { root: '.' })
+//});
 
 const PORT = process.env.PORT || 5000;
 

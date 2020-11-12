@@ -1,4 +1,5 @@
-<!DOCTYPE html>
+<!-- EXPLAIN WHAT THIS IS PLEASE -->
+ <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -6,12 +7,180 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
     <link rel="stylesheet" href="https://bootswatch.com/4/journal/bootstrap.min.css">
     <title>Node.js and Passport App</title>
+    <style>
+    .gu-mirror {
+        position: fixed !important;
+        margin: 0 !important;
+        z-index: 9999 !important;
+        opacity: 0.8;
+        -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
+        filter: alpha(opacity=80);
+      }
+      .gu-hide {
+        display: none !important;
+      }
+      .gu-unselectable {
+        -webkit-user-select: none !important;
+        -moz-user-select: none !important;
+        -ms-user-select: none !important;
+        user-select: none !important;
+      }
+      .gu-transit {
+        opacity: 0.2;
+        -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";
+        filter: alpha(opacity=20);
+      }
+
+      /* custom CSS */
+      .help {
+        color: rgba(255, 255, 255, 0.5);
+        font-family: sans-serif;
+        font-size: 3vmin;
+      }
+
+      .pitch {
+        background-color: #5d9634;
+        background: linear-gradient(
+          to bottom,
+          #5d9634,
+          #5d9634 50%,
+          #538c2b 50%,
+          #538c2b
+        );
+        /* padding-left: 160px; */
+        /* background-size: 100% 20vmin; */
+        /* padding: 1vmin; */
+        /* margin-left: 150px; Same as the width of the sidebar */
+        padding: 0px 10px;
+        display: flex;
+        justify-content: center;
+      }
+
+      .bench {
+        background-color: #006;
+        /* padding: 1vmin; */
+        /* padding-left: 160px; */
+        margin-left: 150px; /* Same as the width of the sidebar */
+        padding: 0px 10px;
+        display: flex;
+        justify-content: center;
+      }
+
+      .container {
+        display: flex;
+        height: 10vmin;
+        justify-content: flex-start;
+        justify-content: space-around;
+        /* justify-content: space-evenly; */
+        list-style: none;
+        margin: 6vmin 0;
+      }
+
+      .container li,
+      .gu-mirror {
+        cursor: move;
+        cursor: -webkit-grab;
+        cursor: -moz-grab;
+        cursor: grab;
+        height: 10vmin;
+        list-style: none;
+        position: relative;
+        width: 10vmin;
+      }
+
+      .gu-mirror {
+        cursor: move;
+        cursor: -webkit-grabbing;
+        cursor: -moz-grabbing;
+        cursor: grabbing;
+      }
+
+      .container li .number,
+      .gu-mirror .number {
+        background-color: #fff;
+        color: #c00;
+        font-family: sans-serif;
+        font-size: 4vmin;
+        left: 2vmin;
+        padding: 1vmin 0.5vmin;
+        position: absolute;
+        right: 2vmin;
+        text-align: center;
+        text-shadow: 0 0 1px #fff;
+        top: 0;
+      }
+
+      .container li .number:before,
+      .gu-mirror .number:before {
+        background-color: #def;
+        content: "";
+        height: 2vmin;
+        left: 0;
+        position: absolute;
+        top: 0;
+        transform: rotate(60deg);
+        transform-origin: top left;
+        width: 2vmin;
+      }
+
+      .container li .number:after,
+      .gu-mirror .number:after {
+        background-color: #def;
+        content: "";
+        height: 2vmin;
+        position: absolute;
+        right: 0;
+        top: 0;
+        transform: rotate(-60deg);
+        transform-origin: top right;
+        width: 2vmin;
+      }
+
+      #goal li .number {
+        background-color: #060;
+        color: #fff;
+      }
+
+      #goal li .number:before,
+      #goal li .number:after {
+        background-color: #050;
+      }
+
+      .container li .name,
+      .gu-mirror .name {
+        bottom: 0;
+        color: #fff;
+        font-family: sans-serif;
+        /* font-size: 3vmin; */
+        font-size: small;
+        left: -5vmin;
+        position: absolute;
+        right: -5vmin;
+        text-align: center;
+      }
+      /* Me playing with flex containers */
+      .flex-container {
+        display: flex;
+        background-color: DodgerBlue;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .flex-container > div {
+        background-color: #f1f1f1;
+        margin: 10px;
+        padding: 20px;
+        font-size: 30px;
+      }
+    </style>
 </head>
+
 <body>
-    <div style="text-align: center">
+     <!-- <div style="text-align: center">
         <img src="coachToolsLogo.png" alt="CoachTools" style="display:inline; width: 200px;">
-    </div>
-    <div class="container">
+    </div> -->
+    <div class="container2">
         <%- body %>
     </div>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>

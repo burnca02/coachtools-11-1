@@ -16,139 +16,47 @@
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
     <title>Coach Tools</title>
-    <style>
-      body {
-        background-color: aliceblue;
-        margin: 0;
-      }
-      .sidenav {
-        display:flex;
-        flex: 0 0 100px;
-        flex-flow: column nowrap;
-        /* flex-flow:row nowrap; */
-        text-align: center;
-        z-index: 30;
-        /* justify-content:space-between; */
-        justify-content: flex-start;
-        height:100vh;
-        /* height: 100%; Full-height: remove this if you want "auto" height */
-        width: 150px; /*Set the width of the sidebar*/
-        /* width: fit-content; */
-        position: fixed; /*Fixed Sidebar (stay in place on scroll)*/
-        /* z-index: -1; Stay on top */
-        /*top: 15%; Stay at the top */
-        left: 0;
-        background-color: #111; /* Black */
-        overflow-x: hidden; /* Disable horizontal scroll */
-        /* padding-top: 50px; */
-      }
-      /* The navigation menu links */
-      .sidenav a,
-      .dropdown-btn {
-        padding: 10px 10px 10px 10px;
-        text-decoration: none;
-        font-size: 25px;
-        color: #818181;
-        /* color : white; */
-        display: block;
-        border: none;
-        background: none;
-        width: 100%;
-        text-align: left;
-        cursor: pointer;
-        outline: none;
-      }
-      .top-dropdown-btn {
-        padding: 6px 8px 6px 16px;
-        text-decoration: none;
-        font-size: 25px;
-        color: #818181;
-        display: inline;
-        border: none;
-        background: none;
-        text-align: right;
-        cursor: pointer;
-        outline: none;
-      }
-      /* When you mouse over the navigation links, change their color */
-      .sidenav a:hover,
-      .dropdown-btn:hover {
-        color: #f1f1f1;
-      }
-      .topnav {
-        width: 100%;
-        display: flex;
-        flex-direction: row;
-        /* position: fixed; */
-        /* top: 0; */
-        /* left: 0; */
-        z-index: 1;
-        overflow: hidden;
-        background-color: #111;
-        justify-content: flex-end;
-      }
-      .topnav .end {
-        align-self: flex-end;
-      }
-      /* Dropdown container (hidden by default). Optional: add a lighter background color and some left padding to change the design of the dropdown content */
-      .dropdown-container {
-        display: none;
-        background-color: #262626;
-        padding-left: 8px;
-      }
-      /* Optional: Style the caret down icon */
-      .fa-caret-down {
-        float: right;
-        padding-right: 8px;
-      }
-      /* Style page content */
-      .main {
-        margin-left: 160px; /* Same as the width of the sidebar */
-        padding: 0px 10px;
-      }
-      /* On smaller screens, where height is less than 450px, change the style of the sidebar (less padding and a smaller font size) */
-      @media screen and (max-height: 450px) {
-        .sidenav {
-          padding-top: 15px;
-        }
-        .sidenav a {
-          font-size: 18px;
-        }
-      }
-      .text,
-      .text1 {
-        color: black;
-      }
-      .text ul:hover {
-        color: blue;
-      }
-      .circle {
-        border: 1px solid black;
-        border-radius: 100%;
-        padding: 10px;
-        background-color: orange;
-      }
-
-    </style>
     <!-- header -->
     <!-- <div style="font-size: 25px; display: inline;">CoachTools</div> -->
-    
   </head>
 
   <body>
     <!-- Side navigation -->
-    <!-- <div id="nav-placeholder"></div> -->
+
     <!-- <div class="sidenav">
       <a href="coachHome">Home</a>
       <a href="./player/playerGrades">My Grades</a>
       <a href="./player/playerTrends">Max Trends</a>
     </div> -->
- 
+    <div class="topnav">
+      <img
+        src="images/coachToolsLogo.png"
+        alt="CoachTools"
+        style="display: inline; width: 120px; padding-left: 30px"
+      />
+      <div class="end">
+        <button class="top-dropdown-btn">
+          <!-- padding-left: 69%;  -->
+          <%= name %>
+        </button>
+
+        <button
+          class="top-dropdown-btn"
+          onclick="window.location.href='/users/login'"
+        >
+          Logout
+        </button>
+      </div>
+    </div>
+    <!-- Side navigation -->
+    <!-- <div id="nav-placeholder"></div> -->
     <div class="sidenav">
-      <a href="./coachHome">Home</a>
-      <button class="dropdown-btn">Roster<i class="fa fa-caret-down"></i></button>
+      <a href="/coachHome">Home</a>
+      <button class="dropdown-btn">
+        Roster<i class="fa fa-caret-down"></i>
+      </button>
       <div class="dropdown-container">
-        <a href="/index.ejs">Player Bio</a>
+        <a href="/roster">Player Bio</a>
         <a href="#">Depth Chart</a>
       </div>
       <button class="dropdown-btn">Game<i class="fa fa-caret-down"></i></button>
@@ -157,185 +65,18 @@
         <a href="#">Game Grade</a>
         <a href="#">Analysis</a>
       </div>
-      <button class="dropdown-btn">Practice<i class="fa fa-caret-down"></i></button>
+      <button class="dropdown-btn">
+        Practice<i class="fa fa-caret-down"></i>
+      </button>
       <div class="dropdown-container">
-        <a href="/coach/practiceStats">In Season</a>
-        <a href="/coach/practiceTrainingStats">Training</a>
+        <a href="#">In Season</a>
+        <a href="#">Training</a>
       </div>
-      <a href="/coach/playerFeedback">Player Feedback</a>
+      <a href="#">Player Feedback</a>
       <a href="#">Comparison</a>
     </div>
-
     <div class="main">
-      <div class="topnav">
-        <img
-          src="/coachToolsLogo.png"
-          alt="CoachTools"
-          style="display: inline; width: 120px; padding-left: 30px"
-        />
-        <div class="end">
-          <button class="top-dropdown-btn">
-            <!-- padding-left: 69%;  -->
-            <%= name %>
-          </button>
-  
-          <button
-            class="top-dropdown-btn"
-            onclick="window.location.href='/users/login'"
-          >
-            Logout
-          </button>
-        </div>
-      </div>
-    <!-- <div class="flex-container">
-      <div>as;ldkfja;lsdkfja;sldkfja;sldkjf;alsd</div>
-      <div>a;sldkjf;alsdkjf</div>
-      <div>asdf900as945j3089jh</div>
-    </div> -->
-    <div class="pitch row">
-      <span class="help">Offense</span>
-      <ol id="offense" class="container">
-        <li onclick="showSubs('sWR')">
-          <span class="number">2</span>
-          <span class="name">Walker WR</span>
-        </li>
-        <li onclick="showSubs('sWR')">
-          <span class="number">5</span>
-          <span class="name">Cahill WR</span>
-        </li>
-        <li onclick="showSubs('sRB')">
-          <span class="number">6</span>
-          <span class="name">Stones RB</span>
-        </li>
-        <li>
-          <span class="number">3</span>
-          <span class="name">Rose LT</span>
-        </li>
-        <li>
-          <span class="number">8</span>
-          <span class="name">Henderson LG</span>
-        </li>
-        <li>
-          <span class="number">4</span>
-          <span class="name">Dier C</span>
-        </li>
-        <li>
-          <span class="number">10</span>
-          <span class="name">Rooney RG</span>
-        </li>
-        <li>
-          <span class="number">7</span>
-          <span class="name">Sterling RT</span>
-        </li>
-        <li>
-          <span class="number">9</span>
-          <span class="name">Kane TE</span>
-        </li>
-        <li onclick="showSubs('sWR')">
-          <span class="number">11</span>
-          <span class="name">Lallana WR</span>
-        </li>
-      </ol>
-      <ul id="qb" class="container">
-        <li onclick="showSubs('sQB')">
-          <span class="number">1</span>
-          <span class="name" id="QB" name="QB">Hart QB</span>
-        </li>
-      </ul>
-    </div>
-    <div id="sQB" class="bench row">
-      <span class="help">QB Subs</span>
-      <ul id="Qsubs" class="container">
-        <li onclick="showSubs('sQB')">
-          <span class="number">12</span>
-          <span class="name">QB 1</span>
-        </li>
-        <li onclick="showSubs('sQB')">
-          <span class="number">13</span>
-          <span class="name">QB 2</span>
-        </li>
-        <li onclick="showSubs('sQB')">
-          <span class="number">14</span>
-          <span class="name">QB 3</span>
-        </li>
-        <li onclick="showSubs('sQB')">
-          <span class="number">15</span>
-          <span class="name">QB 4</span>
-        </li>
-      </ul>
-    </div>
-    <div id="sRB" class="bench row">
-      <span class="help">RB Subs</span>
-      <ul id="RBsubs" class="container">
-        <li onclick="showSubs('sRB')">
-          <span class="number">12</span>
-          <span class="name">RB 1</span>
-        </li>
-        <li onclick="showSubs('sRB')">
-          <span class="number">13</span>
-          <span class="name">RB 2</span>
-        </li>
-        <li onclick="showSubs('sRB')">
-          <span class="number">14</span>
-          <span class="name">RB 3</span>
-        </li>
-        <li onclick="showSubs('sRB')">
-          <span class="number">15</span>
-          <span class="name">RB 4</span>
-        </li>
-        <li onclick="showSubs('sRB')">
-          <span class="number">16</span>
-          <span class="name">RB 5</span>
-        </li>
-      </ul>
-    </div>
-    <div id="sWR" class="bench row">
-      <span class="help">WR Subs</span>
-      <ul id="subs" class="container">
-        <li onclick="showSubs('sWR')">
-          <span class="number">12</span>
-          <span class="name">WR 1</span>
-        </li>
-        <li onclick="showSubs('sWR')">
-          <span class="number">13</span>
-          <span class="name">WR 2</span>
-        </li>
-        <li onclick="showSubs('sWR')">
-          <span class="number">14</span>
-          <span class="name">WR 3</span>
-        </li>
-        <li onclick="showSubs('sWR')">
-          <span class="number">15</span>
-          <span class="name">WR 4</span>
-        </li>
-        <li onclick="showSubs('sWR')">
-          <span class="number">16</span>
-          <span class="name">WR 5</span>
-        </li>
-        <li onclick="showSubs('sWR')">
-          <span class="number">18</span>
-          <span class="name">WR 6</span>
-        </li>
-      </ul>
-    </div>
-    <!-- <h3 style="padding-top: 60px; padding-left: 200px; color: black;">Home</h3> -->
-    <!-- Side navigation -->
-    <!-- <div id="nav-placeholder"></div> -->
-    <div class="main">
-      <div class="row" style="padding-top: 15px; padding-left: 100px">
-        <div class="btn-group" style="padding: 10px">
-          <button
-            class="btn btn-primary dropdown-toggle"
-            data-toggle="dropdown"
-          >
-            Gettysburg Bullets 2020
-          </button>
-          <div class="dropdown-menu">
-            <a class="dropdown-item">Gettysburg 2018</a>
-            <a class="dropdown-item">Gettysburg 2019</a>
-            <a class="dropdown-item">Gettysburg 2020</a>
-          </div>
-        </div>
+      <div class="row">
         <div class="btn-group" style="padding: 10px">
           <button
             type="button"
@@ -350,54 +91,134 @@
             <a class="dropdown-item" onclick="specFunc()">Special Teams</a>
           </div>
         </div>
-        <div class="btn-group">
-          <button type="button" class="btn btn-primary dropdown-toggle">
-            Add Team
-          </button>
-        </div>
-        <!-- This is the upload excel roster button. -->
-        <!-- <p>Use the form below to upload a list of authors. -->
-        <div>
-          <form
-            action="/coach/upload"
-            method="POST"
-            encType="multipart/form-data"
-          >
-            <input type="file" name="file" accept=".csv" />
-            <input
-              type="submit"
-              class="btn btn-primary dropdown-toggle"
-              value="Upload Roster"
-            />
-          </form>
-          <p>
-            Click <a href="/coach/template">here</a> for an example template.
-          </p>
-        </div>
       </div>
-
-      <table class="table table-hover" style="padding: 500px;">
-        <thead>
-          <tr class="table-dark">
-            <th scope="col">Name</th>
-            <th scope="col">Position</th>
-            <th scope="col">Graduation Year</th>
-          </tr>
-        </thead>
-        <tbody>
-          <ul class="players">
-            <% for(var i = 0; i < players.length; i++) {%>
-            <tr class="table-default">
-              <td><%= players[i].FirstName %> <%= players[i].LastName %></td>
-              <td><%= players[i].Pos %></td>
-              <td><%= players[i].GradYear %></td>
-            </tr>
-            <% } %>
-          </ul>
-        </tbody>
-      </table>
+      <div class="pitch row">
+        <span class="help">Offense</span>
+        <ol id="offense" class="container">
+          <li onclick="showSubs('sWR')">
+            <span class="number">2</span>
+            <span class="name">Walker WR</span>
+          </li>
+          <li onclick="showSubs('sWR')">
+            <span class="number">5</span>
+            <span class="name">Cahill WR</span>
+          </li>
+          <li onclick="showSubs('sRB')">
+            <span class="number">6</span>
+            <span class="name">Stones RB</span>
+          </li>
+          <li>
+            <span class="number">3</span>
+            <span class="name">Rose LT</span>
+          </li>
+          <li>
+            <span class="number">8</span>
+            <span class="name">Henderson LG</span>
+          </li>
+          <li>
+            <span class="number">4</span>
+            <span class="name">Dier C</span>
+          </li>
+          <li>
+            <span class="number">10</span>
+            <span class="name">Rooney RG</span>
+          </li>
+          <li>
+            <span class="number">7</span>
+            <span class="name">Sterling RT</span>
+          </li>
+          <li>
+            <span class="number">9</span>
+            <span class="name">Kane TE</span>
+          </li>
+          <li onclick="showSubs('sWR')">
+            <span class="number">11</span>
+            <span class="name">Lallana WR</span>
+          </li>
+        </ol>
+        <ul id="qb" class="container">
+          <li onclick="showSubs('sQB')">
+            <span class="number">1</span>
+            <span class="name" id="QB" name="QB">Hart QB</span>
+          </li>
+        </ul>
+      </div>
+      <div id="sQB" class="bench row">
+        <span class="help">QB Subs</span>
+        <ul id="Qsubs" class="container">
+          <li onclick="showSubs('sQB')">
+            <span class="number">12</span>
+            <span class="name">QB 1</span>
+          </li>
+          <li onclick="showSubs('sQB')">
+            <span class="number">13</span>
+            <span class="name">QB 2</span>
+          </li>
+          <li onclick="showSubs('sQB')">
+            <span class="number">14</span>
+            <span class="name">QB 3</span>
+          </li>
+          <li onclick="showSubs('sQB')">
+            <span class="number">15</span>
+            <span class="name">QB 4</span>
+          </li>
+        </ul>
+      </div>
+      <div id="sRB" class="bench row">
+        <span class="help">RB Subs</span>
+        <ul id="RBsubs" class="container">
+          <li onclick="showSubs('sRB')">
+            <span class="number">12</span>
+            <span class="name">RB 1</span>
+          </li>
+          <li onclick="showSubs('sRB')">
+            <span class="number">13</span>
+            <span class="name">RB 2</span>
+          </li>
+          <li onclick="showSubs('sRB')">
+            <span class="number">14</span>
+            <span class="name">RB 3</span>
+          </li>
+          <li onclick="showSubs('sRB')">
+            <span class="number">15</span>
+            <span class="name">RB 4</span>
+          </li>
+          <li onclick="showSubs('sRB')">
+            <span class="number">16</span>
+            <span class="name">RB 5</span>
+          </li>
+        </ul>
+      </div>
+      <div id="sWR" class="bench row">
+        <span class="help">WR Subs</span>
+        <ul id="subs" class="container">
+          <li onclick="showSubs('sWR')">
+            <span class="number">12</span>
+            <span class="name">WR 1</span>
+          </li>
+          <li onclick="showSubs('sWR')">
+            <span class="number">13</span>
+            <span class="name">WR 2</span>
+          </li>
+          <li onclick="showSubs('sWR')">
+            <span class="number">14</span>
+            <span class="name">WR 3</span>
+          </li>
+          <li onclick="showSubs('sWR')">
+            <span class="number">15</span>
+            <span class="name">WR 4</span>
+          </li>
+          <li onclick="showSubs('sWR')">
+            <span class="number">16</span>
+            <span class="name">WR 5</span>
+          </li>
+          <li onclick="showSubs('sWR')">
+            <span class="number">18</span>
+            <span class="name">WR 6</span>
+          </li>
+        </ul>
+      </div>
     </div>
-  </div>
   </body>
   <script>
     var drake = dragula({
@@ -437,15 +258,9 @@
       }
     });
 
-    function renameFunc(n) {
-      var orig = document.getElementById(n).innerHTML;
-      var person = prompt("Please enter your name:");
-      if (person != "" && person != null) {
-        document.getElementById(n).innerHTML = person;
-      } else {
-        document.getElementById(n).innerHTML = orig;
-      }
-    }
+    // $(function(){
+    //     $("#nav-placeholder").load("navBars/nav.html");
+    // });
 
     document.addEventListener(
       "DOMContentLoaded",
@@ -456,33 +271,19 @@
       false
     );
 
-    function hideSubs() {
-      var pos = ["sQB", "sRB", "sWR"]; //,"LT","LG","C", "RG","RT","TE","CB","DE","DT","OLB","MLB","SS","FS"];
-      for (i = 0; i < pos.length; i++) {
-        var hideDiv = document.getElementById(pos[i]);
-        hideDiv.style.display = "none";
-      }
-    }
-
-    function showSubs(sub) {
-      hideSubs();
-      var showDiv = document.getElementById(sub);
-      showDiv.style.display = "block";
-    }
-
     var dropdown = document.getElementsByClassName("dropdown-btn");
-      var i;
-      
-      for (i = 0; i < dropdown.length; i++) {
-        dropdown[i].addEventListener("click", function() {
+    var i;
+
+    for (i = 0; i < dropdown.length; i++) {
+      dropdown[i].addEventListener("click", function () {
         this.classList.toggle("active");
         var dropdownContent = this.nextElementSibling;
         if (dropdownContent.style.display === "block") {
-        dropdownContent.style.display = "none";
+          dropdownContent.style.display = "none";
         } else {
-        dropdownContent.style.display = "block";
+          dropdownContent.style.display = "block";
         }
-        });
-      }
+      });
+    }
   </script>
 </html>

@@ -1,158 +1,122 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-  <head>
-    Required meta tags
-    <meta charset="UTF-8" />
+<div class="topnav">
+  <img
+    src="images/coachToolsLogo.png"
+    alt="CoachTools"
+    style="display: inline; width: 120px; padding-left: 30px"
+  />
+  <div class="end">
+    <button class="top-dropdown-btn">
+      <!-- padding-left: 69%;  -->
+      <%= name %>
+    </button>
 
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, shrink-to-fit=no"
-    />
-    <title>Coach Tools</title>
-  </head> -->
+    <button
+      class="top-dropdown-btn"
+      onclick="window.location.href='/users/login'"
+    >
+      Logout
+    </button>
+  </div>
+</div>
+<!-- Side navigation -->
+<!-- <div id="nav-placeholder"></div> -->
+<div class="sidenav">
+  <a href="/coachHome">Home</a>
+  <button class="dropdown-btn">Roster<i class="fa fa-caret-down"></i></button>
+  <div class="dropdown-container">
+    <a href="/roster">Player Bio</a>
+    <a href="#">Depth Chart</a>
+  </div>
+  <button class="dropdown-btn">Game<i class="fa fa-caret-down"></i></button>
+  <div class="dropdown-container">
+    <a href="#">Game Stats</a>
+    <a href="#">Game Grade</a>
+    <a href="#">Analysis</a>
+  </div>
+  <button class="dropdown-btn">Practice<i class="fa fa-caret-down"></i></button>
+  <div class="dropdown-container">
+    <a href="/coach/practiceStats">In Season</a>
+    <a href="/coach/practiceTrainingStats">Training</a>
+  </div>
+  <a href="/coach/playerFeedback">Player Feedback</a>
+  <a href="#">Comparison</a>
+</div>
 
-  <!-- <body> -->
-    <!-- Side navigation -->
-
-    <!-- <div class="sidenav">
-      <a href="coachHome">Home</a>
-      <a href="./player/playerGrades">My Grades</a>
-      <a href="./player/playerTrends">Max Trends</a>
-    </div> -->
-    <div class="topnav">
-      <img
-        src="images/coachToolsLogo.png"
-        alt="CoachTools"
-        style="display: inline; width: 120px; padding-left: 30px"
-      />
-      <div class="end">
-        <button class="top-dropdown-btn">
-          <!-- padding-left: 69%;  -->
-          <%= name %>
-        </button>
-
-        <button
-          class="top-dropdown-btn"
-          onclick="window.location.href='/users/login'"
-        >
-          Logout
-        </button>
-      </div>
-    </div>
-    <!-- Side navigation -->
-    <!-- <div id="nav-placeholder"></div> -->
-    <div class="sidenav">
-      <a href="/coachHome">Home</a>
-      <button class="dropdown-btn">
-        Roster<i class="fa fa-caret-down"></i>
+<div class="main">
+  <div class="row" style="padding-top: 15px; padding-left: 10px">
+    <div class="btn-group" style="padding: 10px">
+      <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+        Gettysburg Bullets 2020
       </button>
-      <div class="dropdown-container">
-        <a href="/roster">Player Bio</a>
-        <a href="#">Depth Chart</a>
+      <div class="dropdown-menu">
+        <a class="dropdown-item">Gettysburg 2018</a>
+        <a class="dropdown-item">Gettysburg 2019</a>
+        <a class="dropdown-item">Gettysburg 2020</a>
       </div>
-      <button class="dropdown-btn">Game<i class="fa fa-caret-down"></i></button>
-      <div class="dropdown-container">
-        <a href="#">Game Stats</a>
-        <a href="#">Game Grade</a>
-        <a href="#">Analysis</a>
-      </div>
-      <button class="dropdown-btn">
-        Practice<i class="fa fa-caret-down"></i>
+    </div>
+    <div class="btn-group" style="padding: 10px; margin-left: 50%">
+      <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+        Sort By
       </button>
-      <div class="dropdown-container">
-        <a href="#">In Season</a>
-        <a href="#">Training</a>
+      <div class="dropdown-menu">
+        <a class="dropdown-item">Number</a>
+        <a class="dropdown-item">Name</a>
+        <a class="dropdown-item">Position</a>
+        <a class="dropdown-item">Year</a>
       </div>
-      <a href="#">Player Feedback</a>
-      <a href="#">Comparison</a>
     </div>
-
-    <div class="main">
-      <div class="row" style="padding-top: 15px; padding-left: 10px">
-        <div class="btn-group" style="padding: 10px">
-          <button
-            class="btn btn-primary dropdown-toggle"
-            data-toggle="dropdown"
-          >
-            Gettysburg Bullets 2020
-          </button>
-          <div class="dropdown-menu">
-            <a class="dropdown-item">Gettysburg 2018</a>
-            <a class="dropdown-item">Gettysburg 2019</a>
-            <a class="dropdown-item">Gettysburg 2020</a>
-          </div>
-        </div>
-        <div class="btn-group" style="padding: 10px; margin-left: 50%;">
-          <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-            Sort By
-          </button>
-          <div class="dropdown-menu">
-            <a class="dropdown-item">Number</a>
-            <a class="dropdown-item">Name</a>
-            <a class="dropdown-item">Position</a>
-            <a class="dropdown-item">Year</a>
-          </div>
-        </div>
-        <!-- This is the upload excel roster button. -->
-        <!-- <p>Use the form below to upload a list of authors. -->
-        <div style="margin-left: 5%;">
-          <form
-            action="/coach/upload"
-            method="POST"
-            encType="multipart/form-data"
-          >
-            <input type="file" name="file" accept=".csv" />
-            <input
-              type="submit"
-              class="btn btn-primary dropdown-toggle"
-              value="Upload Roster"
-            />
-          </form>
-          <p>
-            Click <a href="/coach/template">here</a> for an example template.
-          </p>
-        </div>
-      </div>
-
-      <table class="table table-hover" style="padding: 500px">
-        <thead>
-          <tr class="table-dark">
-            <th scope="col">Name</th>
-            <th scope="col">Position</th>
-            <th scope="col">Graduation Year</th>
-          </tr>
-        </thead>
-        <tbody>
-          <ul class="players">
-            <% for(var i = 0; i < players.length; i++) {%>
-            <tr class="table-default">
-              <td><%= players[i].FirstName %> <%= players[i].LastName %></td>
-              <td><%= players[i].Pos %></td>
-              <td><%= players[i].GradYear %></td>
-            </tr>
-            <% } %>
-          </ul>
-        </tbody>
-      </table>
+    <!-- This is the upload excel roster button. -->
+    <!-- <p>Use the form below to upload a list of authors. -->
+    <div style="margin-left: 5%">
+      <form action="/coach/upload" method="POST" encType="multipart/form-data">
+        <input type="file" name="file" accept=".csv" />
+        <input
+          type="submit"
+          class="btn btn-primary dropdown-toggle"
+          value="Upload Roster"
+        />
+      </form>
+      <p>Click <a href="/coach/template">here</a> for an example template.</p>
     </div>
-  <!-- </body> -->
-  <script>
-    // $(function(){
-    //     $("#nav-placeholder").load("navBars/nav.html");
-    // });
-    var dropdown = document.getElementsByClassName("dropdown-btn");
-    var i;
+  </div>
 
-    for (i = 0; i < dropdown.length; i++) {
-      dropdown[i].addEventListener("click", function () {
-        this.classList.toggle("active");
-        var dropdownContent = this.nextElementSibling;
-        if (dropdownContent.style.display === "block") {
-          dropdownContent.style.display = "none";
-        } else {
-          dropdownContent.style.display = "block";
-        }
-      });
-    }
-  </script>
-<!-- </html> -->
+  <table class="table table-hover" style="padding: 500px">
+    <thead>
+      <tr class="table-dark">
+        <th scope="col">Name</th>
+        <th scope="col">Position</th>
+        <th scope="col">Graduation Year</th>
+      </tr>
+    </thead>
+    <tbody>
+      <ul class="players">
+        <% for(var i = 0; i < players.length; i++) {%>
+        <tr class="table-default">
+          <td><%= players[i].FirstName %> <%= players[i].LastName %></td>
+          <td><%= players[i].Pos %></td>
+          <td><%= players[i].GradYear %></td>
+        </tr>
+        <% } %>
+      </ul>
+    </tbody>
+  </table>
+</div>
+<script>
+  // $(function(){
+  //     $("#nav-placeholder").load("navBars/nav.html");
+  // });
+  var dropdown = document.getElementsByClassName("dropdown-btn");
+  var i;
+
+  for (i = 0; i < dropdown.length; i++) {
+    dropdown[i].addEventListener("click", function () {
+      this.classList.toggle("active");
+      var dropdownContent = this.nextElementSibling;
+      if (dropdownContent.style.display === "block") {
+        dropdownContent.style.display = "none";
+      } else {
+        dropdownContent.style.display = "block";
+      }
+    });
+  }
+</script>

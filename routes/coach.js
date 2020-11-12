@@ -1,10 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const { ensureAuthenticated } = require('../config/auth');
-//const csv = require('fast-csv');
 var fileUpload = require('express-fileupload');
 var template = require('../template');
-//var upload = require('../upload');
+var upload = require('../upload');
 const csv = require('fast-csv');
 const mongoose = require('mongoose');
 
@@ -26,6 +25,7 @@ mongoose.connect(db, { useNewUrlParser: true ,useUnifiedTopology: true})
 .catch(err => console.log(err));
 
 router.get('/template', template.get);
+router.post('/upload', upload.post);
 //upload function
 router.get('/upload', ensureAuthenticated, (req, res) => 
   res.render('coachHome', {
@@ -47,32 +47,6 @@ router.get('/questionnaire', ensureAuthenticated, (req, res) =>
     name: req.user.name //pass the name that was entered into the database to dashboard
 }));
 
-router.post('/upload', (req,res) => {
-    if (!req.files)
-            return res.status(400).send('No files were uploaded.');
-        
-        var rosterFile = req.files.file;
-
-        var players = [];
-            
-        csv.parseString(rosterFile.data.toString(), {
-            headers: true,
-            ignoreEmpty: true
-        })
-        .on("data", function(data){
-            data['_id'] = new mongoose.Types.ObjectId();
-            
-            players.push(data);
-        })
-        .on("end", function(){
-            Roster.create(players, function(err, documents) {
-                if (err) throw err;
-            });
-
-        });
-        console.log("Uploaded to database");
-        res.redirect('/coach/upload');
-});
 
 router.post('/submitquest', (req,res) => {
   const { participants, whichpos, type, q1, q2, q3 } = req.body;

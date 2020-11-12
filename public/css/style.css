@@ -1,0 +1,296 @@
+body {
+    background-color: aliceblue;
+    margin: 0;
+    /* overflow: hidden; */
+  }
+  .sidenav {
+    display: flex;
+    flex: 0 0 100px;
+    flex-flow: column nowrap;
+    /* flex-flow:row nowrap; */
+    text-align: center;
+    z-index: 1;
+    /* justify-content:space-between; */
+    justify-content: flex-start;
+    height: 100vh;
+    /* height: 100%; Full-height: remove this if you want "auto" height */
+    width: 150px; /*Set the width of the sidebar*/
+    /* width: fit-content; */
+    position: fixed; /*Fixed Sidebar (stay in place on scroll)*/
+    /* z-index: -1; Stay on top */
+    /*top: 15%; Stay at the top */
+    left: 0;
+    background-color: #111; /* Black */
+    overflow-x: hidden; /* Disable horizontal scroll */
+    /* padding-top: 50px; */
+  }
+  /* The navigation menu links */
+  .sidenav a,
+  .dropdown-btn {
+    padding: 10px 10px 10px 10px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    /* color : white; */
+    display: block;
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    outline: none;
+  }
+  .top-dropdown-btn {
+    padding: 6px 8px 6px 16px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: inline;
+    border: none;
+    background: none;
+    text-align: right;
+    cursor: pointer;
+    outline: none;
+  }
+  /* When you mouse over the navigation links, change their color */
+  .sidenav a:hover,
+  .dropdown-btn:hover {
+    color: #f1f1f1;
+  }
+  .topnavParent {
+    display: flex;
+    align-items: center;
+  }
+
+  .topnav {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    /* position: fixed; */
+    /* top: 0; */
+    /* left: 0; */
+    z-index: 2;
+    /* Fixed Sidebar (stay in place on scroll) */
+    /* position: fixed;  */
+    overflow: hidden;
+    background-color: #111;
+    justify-content: flex-end;
+  }
+  .topnav .end {
+    align-self: flex-end;
+  }
+  /* Dropdown container (hidden by default). Optional: add a lighter background color and some left padding to change the design of the dropdown content */
+  .dropdown-container {
+    display: none;
+    background-color: #262626;
+    padding-left: 8px;
+  }
+  /* Optional: Style the caret down icon */
+  .fa-caret-down {
+    float: right;
+    padding-right: 8px;
+  }
+  /* Style page content */
+  .main {
+    margin-left: 150px; /* Same as the width of the sidebar */
+    padding: 0px 10px;
+  }
+  /* On smaller screens, where height is less than 450px, change the style of the sidebar (less padding and a smaller font size) */
+  @media screen and (max-height: 450px) {
+    .sidenav {
+      padding-top: 15px;
+    }
+    .sidenav a {
+      font-size: 18px;
+    }
+  }
+  .text,
+  .text1 {
+    color: black;
+  }
+  .text ul:hover {
+    color: blue;
+  }
+  .circle {
+    border: 1px solid black;
+    border-radius: 100%;
+    padding: 10px;
+    background-color: orange;
+  }
+  .gu-mirror {
+    position: fixed !important;
+    margin: 0 !important;
+    z-index: 9999 !important;
+    opacity: 0.8;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
+    filter: alpha(opacity=80);
+  }
+  .gu-hide {
+    display: none !important;
+  }
+  .gu-unselectable {
+    -webkit-user-select: none !important;
+    -moz-user-select: none !important;
+    -ms-user-select: none !important;
+    user-select: none !important;
+  }
+  .gu-transit {
+    opacity: 0.2;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";
+    filter: alpha(opacity=20);
+  }
+
+  /* custom CSS */
+  .help {
+    color: rgba(255, 255, 255, 0.5);
+    font-family: sans-serif;
+    font-size: 3vmin;
+  }
+
+  .pitch {
+    background-color: #5d9634;
+    background: linear-gradient(
+      to bottom,
+      #5d9634,
+      #5d9634 50%,
+      #538c2b 50%,
+      #538c2b
+    );
+    /* padding-left: 160px; */
+    /* background-size: 100% 20vmin; */
+    /* padding: 1vmin; */
+    /* margin-left: 150px; Same as the width of the sidebar */
+    padding: 0px 10px;
+    display: flex;
+    justify-content: center;
+    overflow-x: hidden;
+  }
+
+  .bench {
+    background-color: #006;
+    /* padding: 1vmin; */
+    /* padding-left: 160px; */
+    margin-left: 150px; /* Same as the width of the sidebar */
+    padding: 0px 10px;
+    display: flex;
+    justify-content: center;
+    overflow-x: hidden;
+  }
+
+  .container {
+    display: flex;
+    height: 10vmin;
+    justify-content: flex-start;
+    justify-content: space-around;
+    /* justify-content: space-evenly; */
+    list-style: none;
+    margin: 6vmin 0;
+    overflow-x: hidden;
+  }
+
+  .container li,
+  .gu-mirror {
+    cursor: move;
+    cursor: -webkit-grab;
+    cursor: -moz-grab;
+    cursor: grab;
+    height: 10vmin;
+    list-style: none;
+    position: relative;
+    width: 10vmin;
+  }
+
+  .gu-mirror {
+    cursor: move;
+    cursor: -webkit-grabbing;
+    cursor: -moz-grabbing;
+    cursor: grabbing;
+  }
+
+  .container li .number,
+  .gu-mirror .number {
+    background-color: #fff;
+    color: #c00;
+    font-family: sans-serif;
+    font-size: 4vmin;
+    left: 2vmin;
+    padding: 1vmin 0.5vmin;
+    position: absolute;
+    right: 2vmin;
+    text-align: center;
+    text-shadow: 0 0 1px #fff;
+    top: 0;
+  }
+
+  .container li .number:before,
+  .gu-mirror .number:before {
+    background-color: #def;
+    content: "";
+    height: 2vmin;
+    left: 0;
+    position: absolute;
+    top: 0;
+    transform: rotate(60deg);
+    transform-origin: top left;
+    width: 2vmin;
+  }
+
+  .container li .number:after,
+  .gu-mirror .number:after {
+    background-color: #def;
+    content: "";
+    height: 2vmin;
+    position: absolute;
+    right: 0;
+    top: 0;
+    transform: rotate(-60deg);
+    transform-origin: top right;
+    width: 2vmin;
+  }
+
+  #goal li .number {
+    background-color: #060;
+    color: #fff;
+  }
+
+  #goal li .number:before,
+  #goal li .number:after {
+    background-color: #050;
+  }
+
+  .container li .name,
+  .gu-mirror .name {
+    bottom: 0;
+    color: #fff;
+    font-family: sans-serif;
+    /* font-size: 3vmin; */
+    font-size: small;
+    left: -5vmin;
+    position: absolute;
+    right: -5vmin;
+    text-align: center;
+  }
+  /* Me playing with flex containers */
+  .flex-container {
+    display: flex;
+    background-color: DodgerBlue;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .flex-container > div {
+    background-color: #f1f1f1;
+    margin: 10px;
+    padding: 20px;
+    font-size: 30px;
+  }
+
+  .row {
+    display:-ms-flexbox;
+    display:flex;
+    -ms-flex-wrap:wrap;
+    flex-wrap:wrap;
+    /* margin-right:-15px; */
+    /* margin-left:-15px; */
+  }

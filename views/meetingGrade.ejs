@@ -1,0 +1,146 @@
+<style>
+    table,
+    th,
+    td {
+      padding: 10px;
+      border: 1px solid black;
+      border-collapse: collapse;
+    }
+  
+  .dropbtn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+  }
+  
+  .dropdown {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+  }
+  
+  .dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+  }
+  
+  .dropdown-content a:hover {background-color: #ddd;}
+  
+  .dropdown:hover .dropdown-content {display: block;}
+  
+  .dropdown:hover .dropbtn {background-color: #3e8e41;}
+  </style>
+<h2>MyGrades</h2>
+<p>Move the mouse over the button to open the dropdown menu.</p>
+
+<div class="dropdown">
+  <button class="dropbtn">View Grades</button>
+  <div class="dropdown-content">
+    <a href="./meetingGrade">My Meeting</a>
+    <a href="./practiceGrade">My Practice</a>
+    <a href="./questionnaire">My Training</a>
+  </div>
+</div>
+<h4>Meeting Grade</h4>
+<table style="width:100%">
+    <tr>
+      <th>Today's Grade</th>
+      <th>Weekly Trend</th> 
+      <th>Seasonal Trend</th>
+    </tr>
+    <tr>
+      <td>90</td>
+      <td>
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+        <script type="text/javascript">
+        
+
+          google.charts.load('current', {'packages':['corechart']});
+          google.charts.setOnLoadCallback(drawChart);
+
+          function drawChart() {
+            var data = google.visualization.arrayToDataTable([
+              ['Blah','Grade'],
+              ['Start'  ,  0],
+              ['8/31',  90],
+              ['9/2',  70],
+              ['9/4',  80]
+            ]);
+
+            var options = {
+              title: 'Weekly Grade Trend',
+              curveType: 'function',
+              legend: { position: 'bottom' },
+              axes: {
+                // Adds labels to each axis; they don't have to match the axis names.
+                y: {
+                  Temps: {label: 'Temps (Celsius)'},
+                  Daylight: {label: 'Daylight'}
+                }
+              }
+          };
+          var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+          chart.draw(data, options);
+    }
+        </script>
+        <body>
+          <div id="curve_chart" style="width: 300px; height: 150px"></div>
+        </body>
+      </td> 
+      <td>
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+        <script type="text/javascript">
+          const Stat = require('../models/Stat');
+
+          google.charts.load('current', {'packages':['corechart']});
+          google.charts.setOnLoadCallback(drawChart);
+
+          Stat.find();
+
+          function drawChart() {
+            var data = google.visualization.arrayToDataTable([
+              ['Blah','Grade'],
+              ['Start'  ,  0],
+              ['8/31',  90],
+              ['9/2',  70],
+              ['9/18',  50],
+              ['10/10',  50],
+              ['11/29',  70],
+              ['1/30',  80]
+            ]);
+
+            var options = {
+              title: 'Seasonal Grade Trend',
+              curveType: 'function',
+              legend: { position: 'bottom' },
+              axes: {
+                // Adds labels to each axis; they don't have to match the axis names.
+                y: {
+                  Temps: {label: 'Temps (Celsius)'},
+                  Daylight: {label: 'Daylight'}
+                }
+              }
+          };
+          var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+          chart.draw(data, options);
+    }
+        </script>
+        <body>
+          <div id="curve_chart" style="width: 300px; height: 150px"></div>
+        </body>
+      </td>
+    </tr>
+</table>
+<a href="/playerHome" class="btn btn-secondary">Player Home</a>

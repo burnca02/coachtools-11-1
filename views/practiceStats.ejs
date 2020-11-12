@@ -1,0 +1,58 @@
+<head>
+<style>
+    .dropbtn {
+      background-color: #4CAF50;
+      color: white;
+      padding: 16px;
+      font-size: 16px;
+      border: none;
+    }
+    
+    .dropdown {
+      position: center;
+      display: inline-block;
+    }
+    
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #f1f1f1;
+      min-width: 160px;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+      z-index: 1;
+    }
+    
+    .dropdown-content a {
+      color: black;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+    }
+    
+    .dropdown-content a:hover {background-color: #ddd;}
+    
+    .dropdown:hover .dropdown-content {display: block;}
+    
+    .dropdown:hover .dropbtn {background-color: #e71111;}
+    </style>
+</head>
+<h1 class="text-center mb-3"><i class="fas fa-sign-in-alt"></i> Season Practice Statistics</h1>
+  <div>
+    <form action="/stats/dispPracticeStats" method="POST">
+        <label for="pos">Choose a Position:</label>
+        <select name="pos" id="pos">
+          <option value="WR">WR</option>
+          <option value="LT">LT</option>
+          <option value="LG">LG</option>
+          <option value="C">C</option>
+          <option value="RG">RG</option>
+          <option value="RT">RT</option>
+          <option value="TE">TE</option>
+          <option value="QB">QB</option>
+          <option value="RB">RB</option>
+        </select>
+        <br><br>
+        <input type="submit" value="Submit">
+      </form>
+  </div>
+

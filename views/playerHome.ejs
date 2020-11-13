@@ -1,27 +1,37 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="UTF-8" />
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/cyborg/bootstrap.min.css">
-    <script src="//code.jquery.com/jquery.min.js"></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Coach Tools</title>
-    <link rel="stylesheet" href="../public/styles.css">
-    <!-- header -->
-    <div class="topnav">
-      <img src="images/coachToolsLogo.png" alt="CoachTools" style="display:inline; width: 90px;">
-      <div style="font-size: 25px; display: inline;">CoachTools</div>
-      <button class="top-dropdown-btn"></button>
-      <div style="font-size: 25px; display: inline; text-align: right"><span id="datetime"></span></div>
-      <script>
-        var dt = new Date();
-        document.getElementById("datetime").innerHTML = (("0"+(dt.getMonth()+1)).slice(-2)) +"/"+ (("0"+dt.getDate()).slice(-2)) +"/"+ (dt.getFullYear());
-      </script>
-      <div style="display: inline; text-align: right;">
-        <button class="top-dropdown-btn" onclick="window.location.href='/users/logout'">Logout</button>
-      </div>
+<link
+  rel="stylesheet"
+  href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/cyborg/bootstrap.min.css"
+/>
+<div class="bigContainer">
+  <div class="topNavBody">
+    <header id="nav-wrapper">
+      <nav id="nav">
+        <div class="nav left">
+          <span class="gradient skew"><h1 class="logo un-skew"><a href="#home"><img
+            src="images/coachToolsLogo.png"
+            alt="CoachTools"
+            style="display: inline; width: 150px; padding-left: 30px"
+          /></a></h1></span>
+          <button id="menu" class="btn-nav"><span class="fas fa-bars"></span></button>
+        </div>
+        <div class="nav right">
+          <a href="#home" class="nav-link active"><span class="nav-link-span"><span class="u-nav">Home</span></span></a>
+          <a href="#about" class="nav-link"><span class="nav-link-span"><span class="u-nav">About</span></span></a>
+          <a href="#work" class="nav-link"><span class="nav-link-span"><span class="u-nav">Work</span></span></a>
+          <a href="#contact" class="nav-link"><span class="nav-link-span"><span class="u-nav">Contact</span></span></a>
+        </div>
+      </nav>
+    </header>
+  </div>
+  <!-- header -->
+  <!-- <div class="topnav">
+    <img
+      src="images/coachToolsLogo.png"
+      alt="CoachTools"
+      style="display: inline; width: 150px; padding-left: 30px"
+    />
+    <div style="font-size: 25px; vertical-align: middle">
+      <span id="datetime"></span>
     </div>
     <script>
       var dt = new Date();
@@ -33,7 +43,7 @@
         dt.getFullYear();
     </script>
     <button class="top-dropdown-btn">
-      <!-- padding-left: 69%;  -->
+      padding-left: 69%; 
       <%= name %>
     </button>
     <button
@@ -42,7 +52,7 @@
     >
       Logout
     </button>
-  </div>
+  </div> -->
   <div class="bodyContainer">
     <!-- Side navigation -->
     <div class="sidenav">
@@ -50,38 +60,40 @@
       <a href="./player/playerGrades">My Grades</a>
       <a href="./player/playerTrends">Max Trends</a>
     </div>
-    <!-- Available Questionnaires -->
-    <div class="bodyCode">
-      <h3 style="color: black;">Available Questionnaires</h3>
-      <!-- <div style="font-size: large;">Available Questionnaires</div> -->
-      <div>
-        <h4 style="padding-top: 60px; color: black">Meeting</h4>
-        <!-- <div class="center">
-            <iframe src="./viewQuestionnaire" height="300" width="550"></iframe>
-           </div> -->
-        <div id="qtest" class="">
-          <a href="/viewQuestionnaire" class="btn btn-secondary"
-            >View Questionnaire</a
-          >
+
+    <ul class="cardsK main">
+      <li class="cards__itemK">
+        <div class="cardK">
+          <div class="card__image card__image--fence"></div>
+          <div class="card__content">
+            <div class="card__title">Flex</div>
+            <p class="card__text">This is the shorthand for flex-grow, flex-shrink and flex-basis combined. The second and third parameters (flex-shrink and flex-basis) are optional. Default is 0 1 auto. </p>
+            <button class="btn btn--block card__btn">Button</button>
+          </div>
         </div>
-      </div>
-      <div>
-        <h4 style="padding-top: 60px; color: black">
-          Training
-        </h4>
-        <!-- <div class="center">
-            <iframe src="./viewQuestionnaire" height="300" width="550"></iframe>
-           </div> -->
-      </div>
-      <div>
-        <h4 style="padding-top: 60px; color: black">
-          Practice
-        </h4>
-        <!-- <div class="center">
-            <iframe src="./viewQuestionnaire" height="300" width="550"></iframe>
-           </div> -->
-      </div>
-    </div>
+      </li>
+      <li class="cards__itemK">
+        <div class="cardK">
+          <div class="card__image card__image--river"></div>
+          <div class="card__content">
+            <div class="card__title">Flex Grow</div>
+            <p class="card__text">This defines the ability for a flex item to grow if necessary. It accepts a unitless value that serves as a proportion. It dictates what amount of the available space inside the flex container the item should take up.</p>
+            <button class="btn btn--block card__btn">Button</button>
+          </div>
+        </div>
+      </li>
+      <li class="cards__itemK">
+        <div class="cardK">
+          <div class="card__image card__image--record"></div>
+          <div class="card__content">
+            <div class="card__title">Flex Shrink</div>
+            <p class="card__text">This defines the ability for a flex item to shrink if necessary. Negative numbers are invalid.</p>
+            <button class="btn btn--block card__btn">Button</button>
+          </div>
+        </div>
+      </li>
+    </ul>
+
   </div>
 </div>
 <script>
@@ -100,7 +112,44 @@
       }
     });
   }
-  $(function () {
-    $("#qtest").load("viewQuestionnaire.ejs");
-  });
+  // $(function () {
+  //   $("#qtest").load("viewQuestionnaire.ejs");
+  // });
+
+  var util = {
+  mobileMenu() {
+    $("#nav").toggleClass("nav-visible");
+  },
+  windowResize() {
+    if ($(window).width() > 800) {
+      $("#nav").removeClass("nav-visible");
+    }
+  },
+  scrollEvent() {
+    var scrollPosition = $(document).scrollTop();
+    
+    $.each(util.scrollMenuIds, function(i) {
+      var link = util.scrollMenuIds[i],
+          container = $(link).attr("href"),
+          containerOffset = $(container).offset().top,
+          containerHeight = $(container).outerHeight(),
+          containerBottom = containerOffset + containerHeight;
+
+      if (scrollPosition < containerBottom - 20 && scrollPosition >= containerOffset - 20) {
+        $(link).addClass("active");
+      } else {
+        $(link).removeClass("active");
+      }
+    });
+  }
+};
+
+$(document).ready(function() {
+  
+  util.scrollMenuIds = $("a.nav-link[href]");
+  $("#menu").click(util.mobileMenu);
+  $(window).resize(util.windowResize);
+  $(document).scroll(util.scrollEvent);
+  
+});
 </script>

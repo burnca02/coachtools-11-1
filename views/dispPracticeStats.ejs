@@ -1,0 +1,209 @@
+<head>
+    <style>
+        .dropbtn {
+          background-color: red;
+          color: white;
+          padding: 16px;
+          font-size: 16px;
+          border: none;
+        }
+        
+        .dropdown {
+          position: center;
+          display: inline-block;
+        }
+        
+        .dropdown-content {
+          display: none;
+          position: absolute;
+          background-color: red;
+          min-width: 160px;
+          box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+          z-index: 1;
+        }
+        
+        .dropdown-content a {
+          color: black;
+          padding: 12px 16px;
+          text-decoration: none;
+          display: block;
+        }
+        
+        .dropdown-content a:hover {background-color: #ddd;}
+        
+        .dropdown:hover .dropdown-content {display: block;}
+        
+        .dropdown:hover .dropbtn {background-color: #e71111;}
+      table.redTable {
+      border: 2px solid #A40808;
+      background-color: #EEE7DB;
+      width: 100%;
+      text-align: center;
+      border-collapse: collapse;
+    }
+    table.redTable td, table.redTable th {
+      border: 1px solid #AAAAAA;
+      padding: 3px 2px;
+    }
+    table.redTable tbody td {
+      font-size: 13px;
+    }
+    table.redTable tr:nth-child(even) {
+      background: #F5C8BF;
+    }
+    table.redTable thead {
+      background: #A40808;
+    }
+    table.redTable thead th {
+      font-size: 19px;
+      font-weight: bold;
+      color: #FFFFFF;
+      text-align: center;
+      border-left: 2px solid #A40808;
+    }
+    table.redTable thead th:first-child {
+      border-left: none;
+    }
+    
+    table.redTable tfoot {
+      font-size: 13px;
+      font-weight: bold;
+      color: #FFFFFF;
+      background: #A40808;
+    }
+    table.redTable tfoot td {
+      font-size: 13px;
+    }
+    table.redTable tfoot .links {
+      text-align: right;
+    }
+    table.redTable tfoot .links a{
+      display: inline-block;
+      background: #FFFFFF;
+      color: #A40808;
+      padding: 2px 8px;
+      border-radius: 5px;
+    }
+    table.redTable2 {
+      border: 2px solid #A40808;
+      background-color: #EEE7DB;
+      width: 100%;
+      text-align: center;
+      border-collapse: collapse;
+    }
+    table.redTable2 td, table.redTable2 th {
+      border: 1px solid #AAAAAA;
+      padding: 8px 8px;
+    }
+        </style>
+    </head>
+    <h1 class="text-center mb-3"><i class="fas fa-sign-in-alt"></i> Season Practice Statistics</h1>
+      <div class= 'dropdown'>
+        <form action="/stats/dispPracticeStats" method="POST">
+            <label for="pos">Choose a Position:</label>
+            <select name="pos" id="pos">
+              <option value="WR">WR</option>
+              <option value="LT">LT</option>
+              <option value="LG">LG</option>
+              <option value="C">C</option>
+              <option value="RG">RG</option>
+              <option value="RT">RT</option>
+              <option value="TE">TE</option>
+              <option value="QB">QB</option>
+              <option value="RB">RB</option>
+            </select>
+            <br><br>
+            <input type="submit" value="Submit">
+          </form>
+      </div>
+<div>
+    <table class="redTable">
+      <thead>
+      <tr>
+      <th>Position</th>
+      <th>Intangible Grading</th>
+      </tr>
+      </thead>
+      <tfoot>
+      <tr>
+      <td colspan="3">
+      <div class="links"><a class="active" href="#">Previous</a> <a href="#">Next</a></div>
+      </td>
+      </tr>
+      </tfoot>
+      <tbody>
+      <tr>
+      <td>
+        <table class="redTable2">
+          <tbody>
+          <tr>
+          <td>
+            <% for(var i = 0; i < players.length; i++) { %>
+              <ul>
+                  <li><%= players[i].FirstName + ' ' + players[i].LastName; %></li>
+              </ul>
+              <% } %>
+          </td>
+          </tr>
+          </tbody>
+          </table>
+      </td>
+      <td>
+        <table class="redTable2">
+          <tbody>
+          <tr>
+          <td>Passion</td>
+          <td>
+            <!-- Change the `data-field` of buttons and `name` of input field's for multiple plus minus buttons-->
+            <div class="input-group plus-minus-input">
+              <!-- <div class="input-group-button">
+                <button type="button" class="button hollow circle" data-quantity="minus" data-field="quantity">
+                  <i class="fa fa-minus" aria-hidden="true"></i>
+                </button>
+              </div> -->
+              <input class="input-group-field" type="number" name="quantity" value="0" max="5">
+              <!-- <div class="input-group-button">
+                <button type="button" class="button hollow circle" data-quantity="plus" data-field="quantity">
+                  <i class="fa fa-plus" aria-hidden="true"></i>
+                </button>
+              </div> -->
+            </div>
+          </td>
+          </tr>
+          <tr>
+          <td>Footwork</td>
+          <td>
+            <!-- Change the `data-field` of buttons and `name` of input field's for multiple plus minus buttons-->
+            <div class="input-group plus-minus-input">
+              <input class="input-group-field" type="number" name="quantity" value="0" max="5">
+              </div>
+            </div>
+          </td>
+          </tr>
+          <tr>
+          <td>Tackling</td>
+          <td>
+            <!-- Change the `data-field` of buttons and `name` of input field's for multiple plus minus buttons-->
+            <div class="input-group plus-minus-input">
+              <input class="input-group-field" type="number" name="quantity" value="0" max="5">
+            </div>
+          </td>
+          </tr>
+          <tr>
+            <td>Sacks</td>
+            <td>
+              <!-- Change the `data-field` of buttons and `name` of input field's for multiple plus minus buttons-->
+              <div class="input-group plus-minus-input">
+                <input class="input-group-field" type="number" name="quantity" value="0" max="5">
+              </div>
+            </td>
+          </tr>
+          <tr>
+          </tr>
+          </tbody>
+          </table>
+      </td>
+      </tr>
+      </tbody>
+      </table>
+  </div>

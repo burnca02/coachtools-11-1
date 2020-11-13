@@ -7,16 +7,13 @@ const mongoose = require('mongoose');
 const Roster = require('../models/Roster');
 const PracticeStat = require('../models/PracticeStat');
 
+router.use(express.static("public"));
+
 //Connect DB again??
 const db = 'mongodb+srv://yoda:maytheforce@cluster0.fvmkx.mongodb.net/test?retryWrites=true&w=majority';
 mongoose.connect(db, { useNewUrlParser: true ,useUnifiedTopology: true})
 .then(() => console.log('Mongo DB Connected...'))
 .catch(err => console.log(err));
-
-//photo
-router.get('/coachToolsLogo.png', (req, res) => {
-    res.sendFile('coachToolsLogo.png', { root: '.' })
-});
 
 router.get('/dispPracticeStats', ensureAuthenticated, (req, res) => 
   res.render('dispPracticeStats', {

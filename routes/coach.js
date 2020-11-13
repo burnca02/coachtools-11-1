@@ -56,6 +56,11 @@ router.get('/questionnaire', ensureAuthenticated, (req, res) =>
     name: req.user.name //pass the name that was entered into the database to dashboard
 }));
 
+router.get('/practiceStats', ensureAuthenticated, (req, res) => 
+  res.render('practiceStats', {
+    name: req.user.name //pass the name that was entered into the database to dashboard
+}));
+
 
 router.post('/submitquest', (req,res) => {
   const { participants, whichpos, type, q1, q2, q3 } = req.body;

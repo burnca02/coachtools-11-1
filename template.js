@@ -9,19 +9,25 @@ var json2csv = require('json2csv').parse;
 exports.get = function(req, res) {
  
     var fields = [
-        'FirstName',
-        'LastName',
+        'Number',
+        'FullName',
         'Pos',
-        'Grad Year'
+        'Grad Year',
+        'Height',
+        'Weight',
+        'Hometown/High School'
     ];
  
     // var csv = json2csv({ data: '', fields: fields });
 
     var csv = json2csv( {
-        "GradYear": 2021,
-        "FirstName": "John",
-        "LastName": "Volker",
-        "Pos": "QB"
+        'Number' : 58,
+        'FullName': "Justin Titchenell",
+        'Pos': "OL",
+        'Grad Year': 2021,
+        'Height': "5-ll",
+        'Weight': 245,
+        'Hometown/High School' : "West Chester, PA / Malvern Prep"
       });
  
     res.set("Content-Disposition", "attachment;filename=roster.csv");

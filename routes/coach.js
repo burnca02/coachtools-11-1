@@ -128,18 +128,14 @@ router.get('/practiceStats', ensureAuthenticated, (req, res) =>
   res.render('practiceStats', {
     name: req.user.name //pass the name that was entered into the database to dashboard
 }));
-MongoClient.connect(uri, { useUnifiedTopology: true })
-.then(client => {
-  const db = client.db('test');
-  const rosterCollection = db.collection('Roster');
-  router.post('/table', (req,res) => 
+router.post('/table', (req,res) => 
   {    
     const type = req.body.type;
   
     console.log("Did we get here");
     if(type == "wr")
     {
-        rosterCollection.find( {"Pos" : "WR"}).toArray()
+      Roster.find( {"Pos" : "WR", "School" :req.session.school})
         .then(results => {
             res.render('roster', {players: results,
                                   name : req.session.name,
@@ -149,7 +145,7 @@ MongoClient.connect(uri, { useUnifiedTopology: true })
     }
     else if(type == "qb")
     {
-        rosterCollection.find( {"Pos" : "QB"}).toArray()
+      Roster.find( {"Pos" : "QB", "School" :req.session.school})
         .then(results => {
           res.render('roster', {players: results,
             name : req.session.name,
@@ -159,7 +155,7 @@ MongoClient.connect(uri, { useUnifiedTopology: true })
     }
     else if(type == 'k')
     {
-        rosterCollection.find( {"Pos" : "K"}).toArray()
+      Roster.find( {"Pos" : "K", "School" :req.session.school})
         .then(results => {
           res.render('roster', {players: results,
             name : req.session.name,
@@ -169,7 +165,7 @@ MongoClient.connect(uri, { useUnifiedTopology: true })
     }
     else if(type == 'lb')
     {
-        rosterCollection.find( {"Pos" : "LB"}).toArray()
+      Roster.find( {"Pos" : "LB" , "School" :req.session.school })
         .then(results => {
           res.render('roster', {players: results,
             name : req.session.name,
@@ -179,7 +175,7 @@ MongoClient.connect(uri, { useUnifiedTopology: true })
     }
     else if( type == 'gy')
     {
-        rosterCollection.find({ "GradYear": { "$exists": true } }).sort({'GradYear': 1}).toArray()
+      Roster.find({ "GradYear": { "$exists": true }, "School" :req.session.school }).sort({'GradYear': 1})
         .then(results => {
           res.render('roster', {players: results,
             name : req.session.name,
@@ -189,7 +185,7 @@ MongoClient.connect(uri, { useUnifiedTopology: true })
     }
     else if(type == 'gyd')
     {
-        rosterCollection.find({ "GradYear": { "$exists": true } }).sort({'GradYear': -1}).toArray()
+      Roster.find({ "GradYear": { "$exists": true }, "School" :req.session.school }).sort({'GradYear': -1})
         .then(results => {
           res.render('roster', {players: results,
             name : req.session.name,
@@ -199,7 +195,7 @@ MongoClient.connect(uri, { useUnifiedTopology: true })
     }
     else
     {
-        db.collection('Roster').find({ "Pos": { "$exists": true } }).sort({'Pos': 1}).toArray()
+        Roster.find({ "Pos": { "$exists": true }, "School" :req.session.school }).sort({'Pos': 1})
         .then(results => {
           res.render('roster', {players: results,
             name : req.session.name,
@@ -209,8 +205,6 @@ MongoClient.connect(uri, { useUnifiedTopology: true })
     }
     console.log(req.body)
 
-  })
 })
 
-.catch(console.error)
 module.exports = router;

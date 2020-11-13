@@ -9,6 +9,64 @@
 </style>
 <h1 class="mt-4">Grades Homepage <%= email%></h1>
 
+<div class="bigContainer">
+  <!-- <div class="topNavBody">
+    <header id="nav-wrapper">
+      <nav id="nav">
+        <div class="nav left">
+          <span class="gradient skew"><h1 class="logo un-skew"><a href="#home"><img
+            src="images/coachToolsLogo.png"
+            alt="CoachTools"
+            style="display: inline; width: 150px; padding-left: 30px"
+          /></a></h1></span>
+          <button id="menu" class="btn-nav"><span class="fas fa-bars"></span></button>
+        </div>
+        <div class="nav right">
+          <a href="#home" class="nav-link active"><span class="nav-link-span"><span class="u-nav">Home</span></span></a>
+          <a href="#about" class="nav-link"><span class="nav-link-span"><span class="u-nav">About</span></span></a>
+          <a href="#work" class="nav-link"><span class="nav-link-span"><span class="u-nav">Work</span></span></a>
+          <a href="#contact" class="nav-link"><span class="nav-link-span"><span class="u-nav">Contact</span></span></a>
+        </div>
+      </nav>
+    </header>
+  </div> -->
+  <!-- header -->
+  <div class="topnav">
+    <img
+      src="images/coachToolsLogo.png"
+      alt="CoachTools"
+      style="display: inline; width: 150px; padding-left: 30px"
+    />
+    <div style="font-size: 25px; vertical-align: middle">
+      <span id="datetime"></span>
+    </div>
+    <script>
+      var dt = new Date();
+      document.getElementById("datetime").innerHTML =
+        ("0" + (dt.getMonth() + 1)).slice(-2) +
+        "/" +
+        ("0" + dt.getDate()).slice(-2) +
+        "/" +
+        dt.getFullYear();
+    </script>
+    <button class="top-dropdown-btn" style="padding-left: 75%;">
+      <%= name %>
+    </button>
+    <button
+      class="top-dropdown-btn"
+      onclick="window.location.href='/users/logout'"
+    >
+      Logout
+    </button>
+  </div>
+  <div class="bodyContainer">
+    <!-- Side navigation -->
+    <div class="sidenav">
+      <a href="/playerHome">Home</a>
+      <a href="/player/playerGrades">My Grades</a>
+      <a href="/player/playerTrends">Max Trends</a>
+    </div>
+
 <p>Today's Date: <span id="datetime"></span></p>
 <script>
 var dt = new Date();
@@ -56,9 +114,7 @@ document.getElementById("datetime").innerHTML = (("0"+(dt.getMonth()+1)).slice(-
           chart.draw(data, options);
     }
         </script>
-        <body>
-          <div id="curve_chart" style="width: 300px; height: 150px"></div>
-        </body>
+        <div id="curve_chart" style="width: 300px; height: 150px"></div>
       </td> 
       <td>
         <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
@@ -98,10 +154,10 @@ document.getElementById("datetime").innerHTML = (("0"+(dt.getMonth()+1)).slice(-
           chart.draw(data, options);
     }
         </script>
-        <body>
           <div id="curve_chart" style="width: 300px; height: 150px"></div>
-        </body>
       </td>
     </tr>
 </table>
 <a href="/playerHome" class="btn btn-secondary">Player Home</a>
+</div>
+</div>

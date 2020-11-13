@@ -3,7 +3,7 @@
   href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/cyborg/bootstrap.min.css"
 />
 <div class="bigContainer">
-  <div class="topNavBody">
+  <!-- <div class="topNavBody">
     <header id="nav-wrapper">
       <nav id="nav">
         <div class="nav left">
@@ -22,9 +22,9 @@
         </div>
       </nav>
     </header>
-  </div>
+  </div> -->
   <!-- header -->
-  <!-- <div class="topnav">
+  <div class="topnav">
     <img
       src="images/coachToolsLogo.png"
       alt="CoachTools"
@@ -42,8 +42,7 @@
         "/" +
         dt.getFullYear();
     </script>
-    <button class="top-dropdown-btn">
-      padding-left: 69%; 
+    <button class="top-dropdown-btn" style="padding-left: 75%;">
       <%= name %>
     </button>
     <button
@@ -52,13 +51,13 @@
     >
       Logout
     </button>
-  </div> -->
+  </div>
   <div class="bodyContainer">
     <!-- Side navigation -->
     <div class="sidenav">
       <a href="./playerHome">Home</a>
-      <a href="./player/playerGrades">My Grades</a>
-      <a href="./player/playerTrends">Max Trends</a>
+      <a href="/player/playerGrades">My Grades</a>
+      <a href="/player/playerTrends">Max Trends</a>
     </div>
 
     <ul class="cardsK main">
@@ -66,9 +65,9 @@
         <div class="cardK">
           <div class="card__image card__image--fence"></div>
           <div class="card__content">
-            <div class="card__title">Flex</div>
-            <p class="card__text">This is the shorthand for flex-grow, flex-shrink and flex-basis combined. The second and third parameters (flex-shrink and flex-basis) are optional. Default is 0 1 auto. </p>
-            <button class="btn btn--block card__btn">Button</button>
+            <div class="card__title">Meeting</div>
+            <!-- <p class="card__text"></p> -->
+            <a class="btn2 btn--block card__btn" href="/viewQuestionnaire">View Meeting Questionnaire</a>
           </div>
         </div>
       </li>
@@ -76,9 +75,9 @@
         <div class="cardK">
           <div class="card__image card__image--river"></div>
           <div class="card__content">
-            <div class="card__title">Flex Grow</div>
-            <p class="card__text">This defines the ability for a flex item to grow if necessary. It accepts a unitless value that serves as a proportion. It dictates what amount of the available space inside the flex container the item should take up.</p>
-            <button class="btn btn--block card__btn">Button</button>
+            <div class="card__title">Training</div>
+            <!-- <p class="card__text">This defines the ability for a flex item to grow if necessary. It accepts a unitless value that serves as a proportion. It dictates what amount of the available space inside the flex container the item should take up.</p> -->
+            <a class="btn2 btn--block card__btn" href="/viewQuestionnaire">View Training Questionnaire</a>
           </div>
         </div>
       </li>
@@ -86,9 +85,9 @@
         <div class="cardK">
           <div class="card__image card__image--record"></div>
           <div class="card__content">
-            <div class="card__title">Flex Shrink</div>
-            <p class="card__text">This defines the ability for a flex item to shrink if necessary. Negative numbers are invalid.</p>
-            <button class="btn btn--block card__btn">Button</button>
+            <div class="card__title">Practice</div>
+            <!-- <p class="card__text">This defines the ability for a flex item to shrink if necessary. Negative numbers are invalid.</p> -->
+            <a class="btn2 btn--block card__btn" href="/viewQuestionnaire">View Practice Questionnaire</a>
           </div>
         </div>
       </li>

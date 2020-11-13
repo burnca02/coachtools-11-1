@@ -11,11 +11,6 @@ mongoose.connect(db, { useNewUrlParser: true ,useUnifiedTopology: true})
 .then(() => console.log('Mongo DB Connected...'))
 .catch(err => console.log(err));
 
-//photo
-router.get('/coachToolsLogo.png', (req, res) => {
-  res.sendFile('coachToolsLogo.png', { root: '.' })
-});
-
 router.get('/playerHome', ensureAuthenticated, (req, res) => 
     res.render('playerHome', {
         name: req.user.name //pass the name that was entered into the database to dashboard
@@ -33,7 +28,8 @@ router.get('/playerGrades', ensureAuthenticated, (req, res) =>
           dead: stat.dead,
           mile: stat.mile,
           height: stat.height,
-          weight: stat.weight
+          weight: stat.weight,
+          name: req.user.name
         });
 }));
 

@@ -54,17 +54,24 @@
         <a class="dropdown-item"><%= school %> 2020</a>
       </div>
     </div>
-    <div class="btn-group" style="padding: 10px; margin-left: 50%">
-      <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-        Sort By
-      </button>
-      <div class="dropdown-menu">
-        <a class="dropdown-item">Number</a>
-        <a class="dropdown-item">Name</a>
-        <a class="dropdown-item">Position</a>
-        <a class="dropdown-item">Year</a>
+      <div class="form-group" role="group" aria-label="Button group with nested dropdown">
+        <form action = "/coach/table" method = "POST">
+        <button type="button" class="btn btn-primary">Sort By</button>
+        <div class="btn-group" role="group">
+          <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+          <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+            <button class="dropdown-item" type="submit" name= "type" value = "full">View Whole Roster</button>
+            <button class="dropdown-item" type="submit" name= "type" value = "qb">View Quartberbacks</button>
+            <button class="dropdown-item" type="submit" name= "type" value = "wr">View Wide Receivers</button>
+            <button class="dropdown-item" type="submit" name= "type" value = "k">View Kickers</button>
+            <button class="dropdown-item" type="submit" name= "type" value = "lb">View Linebackers</button>
+            <button class="dropdown-item" type="submit" name= "type" value = "gy">Sort By Graduation Year (Ascending)</button>
+            <button class="dropdown-item" type="submit" name= "type" value = "gyd">Sort By Graduation Year (Descending)</button>
+          </div>
+        </div>
       </div>
-    </div>
+      
+
     <!-- This is the upload excel roster button. -->
     <!-- <p>Use the form below to upload a list of authors. -->
     <div style="margin-left: 5%">

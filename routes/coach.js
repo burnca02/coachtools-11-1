@@ -6,6 +6,8 @@ var template = require('../template');
 var upload = require('../upload');
 const csv = require('fast-csv');
 const mongoose = require('mongoose');
+const MongoClient = require('mongodb').MongoClient
+const uri = "mongodb+srv://hernri01:Capstone2020@cluster0.3ln2m.mongodb.net/test?authSource=admin&replicaSet=atlas-9q0n4l-shard-0&readPreference=primary&appname=MongoDB%20Compass&ssl=true&useUnifiedTopology=true";
 
 const Roster = require('../models/Roster');
 const Questionnaire = require('../models/Questionnaire');
@@ -126,5 +128,89 @@ router.get('/practiceStats', ensureAuthenticated, (req, res) =>
   res.render('practiceStats', {
     name: req.user.name //pass the name that was entered into the database to dashboard
 }));
+MongoClient.connect(uri, { useUnifiedTopology: true })
+.then(client => {
+  const db = client.db('test');
+  const rosterCollection = db.collection('Roster');
+  router.post('/table', (req,res) => 
+  {    
+    const type = req.body.type;
+  
+    console.log("Did we get here");
+    if(type == "wr")
+    {
+        rosterCollection.find( {"Pos" : "WR"}).toArray()
+        .then(results => {
+            res.render('roster', {players: results,
+                                  name : req.session.name,
+                                  school: req.session.school})
+        })
+        .catch(error => console.error(error))
+    }
+    else if(type == "qb")
+    {
+        rosterCollection.find( {"Pos" : "QB"}).toArray()
+        .then(results => {
+          res.render('roster', {players: results,
+            name : req.session.name,
+            school: req.session.school})
+        })
+        .catch(error => console.error(error))
+    }
+    else if(type == 'k')
+    {
+        rosterCollection.find( {"Pos" : "K"}).toArray()
+        .then(results => {
+          res.render('roster', {players: results,
+            name : req.session.name,
+            school: req.session.school})
+        })
+        .catch(error => console.error(error))
+    }
+    else if(type == 'lb')
+    {
+        rosterCollection.find( {"Pos" : "LB"}).toArray()
+        .then(results => {
+          res.render('roster', {players: results,
+            name : req.session.name,
+            school: req.session.school})
+        })
+        .catch(error => console.error(error))
+    }
+    else if( type == 'gy')
+    {
+        rosterCollection.find({ "GradYear": { "$exists": true } }).sort({'GradYear': 1}).toArray()
+        .then(results => {
+          res.render('roster', {players: results,
+            name : req.session.name,
+            school: req.session.school})
+        })
+        .catch(error => console.error(error))
+    }
+    else if(type == 'gyd')
+    {
+        rosterCollection.find({ "GradYear": { "$exists": true } }).sort({'GradYear': -1}).toArray()
+        .then(results => {
+          res.render('roster', {players: results,
+            name : req.session.name,
+            school: req.session.school})
+        })
+        .catch(error => console.error(error))
+    }
+    else
+    {
+        db.collection('Roster').find({ "Pos": { "$exists": true } }).sort({'Pos': 1}).toArray()
+        .then(results => {
+          res.render('roster', {players: results,
+            name : req.session.name,
+            school: req.session.school})
+        })
+        .catch(error => console.error(error))
+    }
+    console.log(req.body)
 
+  })
+})
+
+.catch(console.error)
 module.exports = router;

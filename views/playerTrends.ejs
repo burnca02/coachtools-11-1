@@ -4,7 +4,7 @@ var dt = new Date();
 document.getElementById("datetime").innerHTML = (("0"+(dt.getMonth()+1)).slice(-2)) +"/"+ (("0"+dt.getDate()).slice(-2)) +"/"+ (dt.getFullYear());
 
 </script>
-
+<div style="overflow: hidden;">
     <!-- header -->
 <div class="topnav">
       <img src="coachToolsLogo.png" alt="CoachTools" style="display:inline; width: 75px;">
@@ -195,7 +195,5 @@ document.getElementById("datetime").innerHTML = (("0"+(dt.getMonth()+1)).slice(-
   </div>
   </div>
 </div>
-</head>
-<body>
   <div id="curve_chart" style=" width: 900px; height: 500px"></div>
-</body>
+</div>

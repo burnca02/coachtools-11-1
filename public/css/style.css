@@ -1,288 +1,648 @@
 body {
-    /* background-color: aliceblue; */
-    background-color: rgb(243, 255, 240);
-    margin: 0;
-    /* overflow: hidden; */
-  }
+  /* background-color: aliceblue; */
+  background-color: rgb(243, 255, 240);
+  margin: 0;
+  /* overflow: hidden; */
+}
 
-  .top-dropdown-btn {
-    padding: 6px 8px 6px 16px;
-    text-decoration: none;
-    font-size: 25px;
-    color: #818181;
-    display: inline;
-    border: none;
-    background: none;
-    text-align: right;
-    cursor: pointer;
-    outline: none;
-  }
-  /* When you mouse over the navigation links, change their color */
-  .sidenav a:hover,
-  .dropdown-btn:hover {
-    color: #f1f1f1;
-  }
-  .topnavParent {
-    display: flex;
-    align-items: center;
-  }
-  /* Dropdown container (hidden by default). Optional: add a lighter background color and some left padding to change the design of the dropdown content */
-  .dropdown-container {
-    display: none;
-    background-color: #262626;
-    padding-left: 8px;
-  }
-  /* Optional: Style the caret down icon */
-  .fa-caret-down {
-    float: right;
-    padding-right: 8px;
-  }
-  /* On smaller screens, where height is less than 450px, change the style of the sidebar (less padding and a smaller font size) */
-  @media screen and (max-height: 450px) {
-    .sidenav {
-      padding-top: 15px;
-    }
-    .sidenav a {
-      font-size: 18px;
-    }
-  }
-  .text,
-  .text1 {
-    color: black;
-  }
-  .text ul:hover {
-    color: blue;
-  }
-  .circle {
-    border: 1px solid black;
-    border-radius: 100%;
-    padding: 10px;
-    background-color: orange;
-  }
-  .gu-mirror {
-    position: fixed !important;
-    margin: 0 !important;
-    z-index: 9999 !important;
-    opacity: 0.8;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
-    filter: alpha(opacity=80);
-  }
-  .gu-hide {
-    display: none !important;
-  }
-  .gu-unselectable {
-    -webkit-user-select: none !important;
-    -moz-user-select: none !important;
-    -ms-user-select: none !important;
-    user-select: none !important;
-  }
-  .gu-transit {
-    opacity: 0.2;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";
-    filter: alpha(opacity=20);
-  }
-
-  /* custom CSS */
-  .help {
-    color: rgba(255, 255, 255, 0.5);
-    font-family: sans-serif;
-    font-size: 3vmin;
-  }
-
-  .pitch {
-    background-color: #5d9634;
-    background: linear-gradient(
-      to bottom,
-      #5d9634,
-      #5d9634 50%,
-      #538c2b 50%,
-      #538c2b
-    );
-    /* padding-left: 160px; */
-    /* background-size: 100% 20vmin; */
-    /* padding: 1vmin; */
-    /* margin-left: 150px; Same as the width of the sidebar */
-    padding: 0px 10px;
-    display: flex;
-    justify-content: center;
-    overflow-x: hidden;
-  }
-
-  .bench {
-    background-color: #006;
-    /* padding: 1vmin; */
-    /* padding-left: 160px; */
-    /* margin-left: 150px; */
-    padding: 0px 10px;
-    display: flex;
-    justify-content: center;
-    overflow-x: hidden;
-  }
-
-  .container {
-    display: flex;
-    height: 10vmin;
-    justify-content: flex-start;
-    justify-content: space-around;
-    /* justify-content: space-evenly; */
-    list-style: none;
-    margin: 6vmin 0;
-    overflow-x: hidden;
-  }
-
-  .container li,
-  .gu-mirror {
-    cursor: move;
-    cursor: -webkit-grab;
-    cursor: -moz-grab;
-    cursor: grab;
-    height: 10vmin;
-    list-style: none;
-    position: relative;
-    width: 10vmin;
-  }
-
-  .gu-mirror {
-    cursor: move;
-    cursor: -webkit-grabbing;
-    cursor: -moz-grabbing;
-    cursor: grabbing;
-  }
-
-  .container li .number,
-  .gu-mirror .number {
-    background-color: #fff;
-    color: #c00;
-    font-family: sans-serif;
-    font-size: 4vmin;
-    left: 2vmin;
-    padding: 1vmin 0.5vmin;
-    position: absolute;
-    right: 2vmin;
-    text-align: center;
-    text-shadow: 0 0 1px #fff;
-    top: 0;
-  }
-
-  .container li .number:before,
-  .gu-mirror .number:before {
-    background-color: #def;
-    content: "";
-    height: 2vmin;
-    left: 0;
-    position: absolute;
-    top: 0;
-    transform: rotate(60deg);
-    transform-origin: top left;
-    width: 2vmin;
-  }
-
-  .container li .number:after,
-  .gu-mirror .number:after {
-    background-color: #def;
-    content: "";
-    height: 2vmin;
-    position: absolute;
-    right: 0;
-    top: 0;
-    transform: rotate(-60deg);
-    transform-origin: top right;
-    width: 2vmin;
-  }
-
-  #goal li .number {
-    background-color: #060;
-    color: #fff;
-  }
-
-  #goal li .number:before,
-  #goal li .number:after {
-    background-color: #050;
-  }
-
-  .container li .name,
-  .gu-mirror .name {
-    bottom: 0;
-    color: #fff;
-    font-family: sans-serif;
-    /* font-size: 3vmin; */
-    font-size: small;
-    left: -5vmin;
-    position: absolute;
-    right: -5vmin;
-    text-align: center;
-  }
-
-  .row {
-    display:-ms-flexbox;
-    display:flex;
-    -ms-flex-wrap:wrap;
-    flex-wrap:wrap;
-    /* margin-right:-15px; */
-    /* margin-left:-15px; */
-  }
-
-  .bigContainer {
-    display: flex;
-    min-height: 100vh;
-    flex-direction: column;
-    margin: 0;
-  }
-
-  .bodyContainer {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    margin: 0;
-  }
-
+.top-dropdown-btn {
+  padding: 6px 8px 6px 16px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #818181;
+  display: inline;
+  border: none;
+  background: none;
+  text-align: right;
+  cursor: pointer;
+  outline: none;
+}
+/* When you mouse over the navigation links, change their color */
+.sidenav a:hover,
+.dropdown-btn:hover {
+  color: #f1f1f1;
+}
+.topnavParent {
+  display: flex;
+  align-items: center;
+}
+/* Dropdown container (hidden by default). Optional: add a lighter background color and some left padding to change the design of the dropdown content */
+.dropdown-container {
+  display: none;
+  background-color: #262626;
+  padding-left: 8px;
+}
+/* Optional: Style the caret down icon */
+.fa-caret-down {
+  float: right;
+  padding-right: 8px;
+}
+/* On smaller screens, where height is less than 450px, change the style of the sidebar (less padding and a smaller font size) */
+@media screen and (max-height: 450px) {
   .sidenav {
-    background-color: black; /* Black */
-    order: -1;
-    padding: 1em;
-    height: 100vh;
-    position: fixed;
-    width: 170px;
+    padding-top: 15px;
+  }
+  .sidenav a {
+    font-size: 18px;
+  }
+}
+.text,
+.text1 {
+  color: black;
+}
+.text ul:hover {
+  color: blue;
+}
+.circle {
+  border: 1px solid black;
+  border-radius: 100%;
+  padding: 10px;
+  background-color: orange;
+}
+.gu-mirror {
+  position: fixed !important;
+  margin: 0 !important;
+  z-index: 9999 !important;
+  opacity: 0.8;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
+  filter: alpha(opacity=80);
+}
+.gu-hide {
+  display: none !important;
+}
+.gu-unselectable {
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+}
+.gu-transit {
+  opacity: 0.2;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";
+  filter: alpha(opacity=20);
+}
+
+/* custom CSS */
+.help {
+  color: rgba(255, 255, 255, 0.5);
+  font-family: sans-serif;
+  font-size: 3vmin;
+}
+
+.pitch {
+  background-color: #5d9634;
+  background: linear-gradient(
+    to bottom,
+    #5d9634,
+    #5d9634 50%,
+    #538c2b 50%,
+    #538c2b
+  );
+  /* padding-left: 160px; */
+  /* background-size: 100% 20vmin; */
+  /* padding: 1vmin; */
+  /* margin-left: 150px; Same as the width of the sidebar */
+  padding: 0px 10px;
+  display: flex;
+  justify-content: center;
+  overflow-x: hidden;
+}
+
+.bench {
+  background-color: #006;
+  /* padding: 1vmin; */
+  /* padding-left: 160px; */
+  /* margin-left: 150px; */
+  padding: 0px 10px;
+  display: flex;
+  justify-content: center;
+  overflow-x: hidden;
+}
+
+.container {
+  display: flex;
+  height: 10vmin;
+  justify-content: flex-start;
+  justify-content: space-around;
+  /* justify-content: space-evenly; */
+  list-style: none;
+  margin: 6vmin 0;
+  overflow-x: hidden;
+}
+
+.container li,
+.gu-mirror {
+  cursor: move;
+  cursor: -webkit-grab;
+  cursor: -moz-grab;
+  cursor: grab;
+  height: 10vmin;
+  list-style: none;
+  position: relative;
+  width: 10vmin;
+}
+
+.gu-mirror {
+  cursor: move;
+  cursor: -webkit-grabbing;
+  cursor: -moz-grabbing;
+  cursor: grabbing;
+}
+
+.container li .number,
+.gu-mirror .number {
+  background-color: #fff;
+  color: #c00;
+  font-family: sans-serif;
+  font-size: 4vmin;
+  left: 2vmin;
+  padding: 1vmin 0.5vmin;
+  position: absolute;
+  right: 2vmin;
+  text-align: center;
+  text-shadow: 0 0 1px #fff;
+  top: 0;
+}
+
+.container li .number:before,
+.gu-mirror .number:before {
+  background-color: #def;
+  content: "";
+  height: 2vmin;
+  left: 0;
+  position: absolute;
+  top: 0;
+  transform: rotate(60deg);
+  transform-origin: top left;
+  width: 2vmin;
+}
+
+.container li .number:after,
+.gu-mirror .number:after {
+  background-color: #def;
+  content: "";
+  height: 2vmin;
+  position: absolute;
+  right: 0;
+  top: 0;
+  transform: rotate(-60deg);
+  transform-origin: top right;
+  width: 2vmin;
+}
+
+#goal li .number {
+  background-color: #060;
+  color: #fff;
+}
+
+#goal li .number:before,
+#goal li .number:after {
+  background-color: #050;
+}
+
+.container li .name,
+.gu-mirror .name {
+  bottom: 0;
+  color: #fff;
+  font-family: sans-serif;
+  /* font-size: 3vmin; */
+  font-size: small;
+  left: -5vmin;
+  position: absolute;
+  right: -5vmin;
+  text-align: center;
+}
+
+.row {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  /* margin-right:-15px; */
+  /* margin-left:-15px; */
+}
+
+.bigContainer {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  margin: 0;
+  background-color: whitesmoke;
+}
+
+.bodyContainer {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  margin: 0;
+
+  color: #999999;
+  font-family: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  letter-spacing: 0;
+  padding: 1rem;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -moz-font-feature-settings: "liga" on;
+}
+
+.sidenav {
+  background-color: black; /* Black */
+  order: -1;
+  /* padding: 1em; */
+  height: 100vh;
+  position: fixed;
+  width: 170px;
+}
+
+.bodyCode {
+  order: 1;
+  flex: 1;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  padding: 1em;
+  margin-left: 170px; /* Same as the width of the sidebar - want to get rid of this and just do flex */
+}
+
+.topnav {
+  background-color: black;
+  display: flex;
+  flex-direction: row;
+  z-index: 2;
+  justify-content: flex-end;
+}
+
+/* The navigation menu links */
+.sidenav a,
+.dropdown-btn {
+  padding: 10px 10px 10px 10px;
+  text-decoration: none;
+  font-size: 25px;
+  /* color: #818181; */
+  color : white;
+  display: block;
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  outline: none;
+  /* color:#f857a8 */
+  color:#ff5858;
+}
+
+/* Style page content */
+.main {
+  margin-left: 170px; /* Same as the width of the sidebar */
+  padding: 0px 10px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+/* html {
+  background-color: #f0f0f0;
+} */
+/* body {
+  color: #999999;
+  font-family: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  letter-spacing: 0;
+  padding: 1rem;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -moz-font-feature-settings: "liga" on;
+} */
+img {
+  height: auto;
+  max-width: 100%;
+  vertical-align: middle;
+}
+.btn {
+  background-color: white;
+  border: 1px solid #cccccc;
+  color: #696969;
+  padding: 0.5rem;
+  text-transform: lowercase;
+}
+.btn--block {
+  display: block;
+  width: 100%;
+}
+.cardsK {
+  display: -webkit-box;
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  margin-left: 170px;
+  /* margin: 0; */
+  padding: 0;
+}
+.cards__itemK {
+  display: -webkit-box;
+  display: flex;
+  padding: 1rem;
+}
+@media (min-width: 40rem) {
+  .cards__item {
+    width: 50%;
+  }
+}
+@media (min-width: 56rem) {
+  .cards__item {
+    width: 33.3333%;
+  }
+}
+.cardK {
+  background-color: white;
+  border-radius: 0.25rem;
+  box-shadow: 0 20px 40px -14px rgba(0, 0, 0, 0.25);
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+          flex-direction: column;
+  overflow: hidden;
+  max-width: 400px;
+}
+.cardK:hover .card__image {
+  -webkit-filter: contrast(100%);
+          filter: contrast(100%);
+}
+.card__content {
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-flex: 1;
+          flex: 1 1 auto;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+          flex-direction: column;
+  padding: 1rem;
+}
+.card__image {
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  border-top-left-radius: 0.25rem;
+  border-top-right-radius: 0.25rem;
+  -webkit-filter: contrast(70%);
+          filter: contrast(70%);
+  overflow: hidden;
+  position: relative;
+  -webkit-transition: -webkit-filter 0.5s cubic-bezier(0.43, 0.41, 0.22, 0.91);
+  transition: -webkit-filter 0.5s cubic-bezier(0.43, 0.41, 0.22, 0.91);
+  transition: filter 0.5s cubic-bezier(0.43, 0.41, 0.22, 0.91);
+  transition: filter 0.5s cubic-bezier(0.43, 0.41, 0.22, 0.91), -webkit-filter 0.5s cubic-bezier(0.43, 0.41, 0.22, 0.91);
+}
+.card__image::before {
+  content: "";
+  display: block;
+  padding-top: 56.25%;
+}
+@media (min-width: 40rem) {
+  .card__image::before {
+    padding-top: 66.6%;
+  }
+}
+.card__image--flowers {
+  background-image: url(https://unsplash.it/800/600?image=82);
+}
+.card__image--river {
+  background-image: url(https://unsplash.it/800/600?image=11);
+}
+.card__image--record {
+  background-image: url(https://unsplash.it/800/600?image=39);
+}
+.card__image--fence {
+  background-image: url(https://unsplash.it/800/600?image=59);
+}
+.card__title {
+  color: #696969;
+  font-size: 1.25rem;
+  font-weight: 300;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+.card__text {
+  -webkit-box-flex: 1;
+          flex: 1 1 auto;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  margin-bottom: 1.25rem;
+}
+
+/* New Top Nav */
+/*-------------Reset-------------*/
+button {
+  background: none;
+  box-shadow: none;
+  border: none;
+  cursor: pointer;
+}
+
+button:focus,
+input:focus {
+  outline: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/*-------------Layout-------------*/
+topNavBody {
+  line-height: 1.5em;
+  padding: 0;
+  margin: 0;
+}
+
+section {
+  height: 100vh;
+}
+
+#home {
+  background-color: #ddd;
+}
+
+#about {
+  background-color: #aaa;
+}
+
+#work {
+  background-color: #888;
+}
+
+#contact {
+  background-color: #666;
+}
+
+/*-------------Helpers-------------*/
+.skew {
+  transform: skew(-20deg);
+}
+
+.un-skew {
+  transform: skew(20deg);
+}
+
+/*-------------Nav-------------*/
+#nav-wrapper {
+  overflow: hidden;
+  width: 100%;
+  margin: 0 auto;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+}
+
+#nav {
+  background-color: #fff;
+  box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  font-family: "Saira Semi Condensed", sans-serif;
+  height: 4em;
+  overflow: hidden;
+}
+#nav.nav-visible {
+  height: 100%;
+  overflow: auto;
+}
+
+.nav {
+  display: flex;
+  height: 4em;
+  line-height: 4em;
+  flex-grow: 1;
+}
+
+.nav-link,
+.logo {
+  padding: 0 1em;
+}
+
+span.gradient {
+  background: black;
+  background: -webkit-linear-gradient(45deg, black, black);
+  background: linear-gradient(45deg, black, black);
+  padding: 0 1em;
+  position: relative;
+  right: 1em;
+  margin-right: auto;
+}
+span.gradient:hover {
+  animation-name: logo-hover;
+  animation-duration: 0.3s;
+  animation-fill-mode: forwards;
+  animation-timing-function: cubic-bezier(0.17, 0.57, 0.31, 0.85);
+}
+
+h1.logo {
+  font-weight: 300;
+  font-size: 1.75em;
+  line-height: 0.75em;
+  color: #fff;
+}
+
+h1.logo a, a:active, a:hover, a:visited {
+  text-decoration: none;
+  color: #fff;
+}
+
+.nav-link {
+  text-transform: uppercase;
+  text-align: center;
+  border-top: 0.5px solid #ddd;
+}
+
+a:link, a:visited, a:active {
+  text-decoration: none;
+  color: black;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.right {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.btn-nav {
+  color: black;
+  padding-left: 2em;
+  padding-right: 2em;
+}
+
+@media (min-width: 800px) {
+  #nav-wrapper {
+    overflow: hidden;
   }
 
-  .bodyCode {
-    order: 1;
-    flex: 1;
-    background-color: white;
-    display: flex;
-    flex-direction: column;
-    padding: 1em;
-    margin-left: 170px; /* Same as the width of the sidebar - want to get rid of this and just do flex */
-  }
-
-  .topnav {
-    background-color: black;
-    display: flex;
+  #nav {
+    overflow: hidden;
     flex-direction: row;
-    z-index: 2;
+  }
+
+  .nav-link {
+    border-top: none;
+  }
+
+  .right {
+    overflow: hidden;
+    flex-direction: row;
     justify-content: flex-end;
+    position: relative;
+    left: 1.5em;
+    height: auto;
   }
 
+  .btn-nav {
+    display: none;
+  }
 
-  /* The navigation menu links */
-  .sidenav a,
-  .dropdown-btn {
-    padding: 10px 10px 10px 10px;
+  .nav a:link.active, a:visited.active, a:active.active {
+    background: black;
+    background: -webkit-linear-gradient(45deg, black, black);
+    background: linear-gradient(45deg, black, black);
+    color: #fff;
+  }
+
+  .nav-link-span {
+    transform: skew(20deg);
+    display: inline-block;
+  }
+
+  .nav-link {
+    transform: skew(-20deg);
+    color: #777;
     text-decoration: none;
-    font-size: 25px;
-    color: #818181;
-    /* color : white; */
-    display: block;
-    border: none;
-    background: none;
-    width: 100%;
-    text-align: left;
-    cursor: pointer;
-    outline: none;
+  }
+  .nav-link:last-child {
+    padding-right: 3em;
   }
 
-    /* Style page content */
-    .main {
-      margin-left: 170px; /* Same as the width of the sidebar */
-      padding: 0px 10px;
-    }
+  a:hover.nav-link:not(.active) {
+    color: #444;
+    background: #ddd;
+    background: linear-gradient(45deg, #fff, #ddd);
+  }
+}
+@keyframes logo-hover {
+  20% {
+    padding-right: 0em;
+  }
+  100% {
+    padding-right: 5em;
+  }
+}

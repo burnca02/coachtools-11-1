@@ -76,7 +76,7 @@ router.post('/updatestats', (req, res) => {
 
   //Add new Stat to the database
   const newStat = new Stat({
-      email,
+      email: req.session.email,
       bench,
       squat,
       dead,

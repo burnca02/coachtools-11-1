@@ -2,6 +2,7 @@
 <script>
 var dt = new Date();
 document.getElementById("datetime").innerHTML = (("0"+(dt.getMonth()+1)).slice(-2)) +"/"+ (("0"+dt.getDate()).slice(-2)) +"/"+ (dt.getFullYear());
+
 </script>
 
     <!-- header -->
@@ -14,184 +15,187 @@ document.getElementById("datetime").innerHTML = (("0"+(dt.getMonth()+1)).slice(-
 </div>
 
 
+<div class="main">
+  <div style="font-size: 25px; display: inline;">Strength</div>
 
-<div style="font-size: 25px; display: inline;">Strength</div>
+  <table style="width:100%">
+      <tr>
+        <th>Max Bench</th>
+        <th>Max Squat</th> 
+        <th>Max Dead</th>
+      </tr>
+      <tr>
+        <td>
+          <%= bench%>
+        </td>
+        <td>
+          <%= squat%>
+        </td> 
+        <td>
+          <%= dead%>
+        </td>
+      </tr>
+  </table>
 
-<table style="width:100%">
-    <tr>
-      <th>Max Bench</th>
-      <th>Max Squat</th> 
-      <th>Max Dead</th>
-    </tr>
-    <tr>
-      <td>
-        <%= bench%>
-      </td>
-      <td>
-        <%= squat%>
-      </td> 
-      <td>
-        <%= dead%>
-      </td>
-    </tr>
-</table>
+  <div style="font-size: 25px; display: inline;">Agility</div>
 
-<div style="font-size: 25px; display: inline;">Agility</div>
+  <table style="width:100%">
+      <tr>
+        <th>Mile Time</th>
+      </tr>
+      <tr>
+        <td>
+          <%= mile%>
+        </td>
+      </tr>
+  </table>
 
-<table style="width:100%">
-    <tr>
-      <th>Mile Time</th>
-    </tr>
-    <tr>
-      <td>
-        <%= mile%>
-      </td>
-    </tr>
-</table>
+  <div style="font-size: 25px; display: inline;">Height/Weight</div>
 
-<div style="font-size: 25px; display: inline;">Height/Weight</div>
+  <table style="width:100%">
+      <tr>
+        <th>Height</th>
+        <th>Weight</th>
+        <th>BMI</th> 
+      </tr>
+      <tr>
+        <td>
+          <%= height%>
+        </td>
+        <td>
+          <%= weight%>
+        </td>
+        <td>
+        </td>
+      </tr>
+  </table>
 
-<table style="width:100%">
-    <tr>
-      <th>Height</th>
-      <th>Weight</th>
-      <th>BMI</th> 
-    </tr>
-    <tr>
-      <td>
-        <%= height%>
-      </td>
-      <td>
-        <%= weight%>
-      </td>
-      <td>
-      </td>
-    </tr>
-</table>
-
-<div class="row mt-5">
-  <div class="col-md-6 m-auto">
-    <div class="card card-body">
-      <h1 class="text-center mb-3"><i class="fas fa-sign-in-alt"></i>Update Stats</h1>
-      <%- include('./partials/messages'); %>
-      <form action="/player/updatestats" method="POST">
+  <div class="row mt-5">
+    <div class="col-md-6 m-auto">
+      <div class="card card-body">
+        <h1 class="text-center mb-3"><i class="fas fa-sign-in-alt"></i>Update Stats</h1>
+        <%- include('./partials/messages'); %>
+        <form action="/player/updatestats" method="POST">
+            <div class="form-group">
+            <label for="bench">Current Max Bench Press</label>
+            <input
+              type="bench"
+              id="bench"
+              name="bench"
+              class="form-control"
+              placeholder="Enter Weight"
+            />
+          </div>
           <div class="form-group">
-          <label for="bench">Current Max Bench Press</label>
-          <input
-            type="bench"
-            id="bench"
-            name="bench"
-            class="form-control"
-            placeholder="Enter Weight"
-          />
-        </div>
-        <div class="form-group">
-          <label for="squat">Current Max Squat</label>
-          <input
-            type="squat"
-            id="squat"
-            name="squat"
-            class="form-control"
-            placeholder="Enter Weight"
-          />
-        </div>
-        <div class="form-group">
-          <label for="dead">Current Max DeadLift</label>
-          <input
-            type="dead"
-            id="dead"
-            name="dead"
-            class="form-control"
-            placeholder="Enter Weight"
-          />
-        </div>
-        <div class="form-group">
-          <label for="mile">Current Mile Time</label>
-          <input
-            type="mile"
-            id="mile"
-            name="mile"
-            class="form-control"
-            placeholder="Enter Time"
-          />
-        </div>
-        <div class="form-group">
-          <label for="height">Current Height(in)</label>
-          <input
-            type="height"
-            id="height"
-            name="height"
-            class="form-control"
-            placeholder="Enter Height"
-          />
-        </div>
-        <div class="form-group">
-          <label for="weight">Current Weight(lbs)</label>
-          <input
-            type="weight"
-            id="weight"
-            name="weight"
-            class="form-control"
-            placeholder="Enter Weight"
-          />
-        </div>
-        <button type="submit" class="btn btn-primary btn-block">Submit</button>
-      </form>
-    </div>
-    <% if (graph) { %>
-      <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-      <script type="text/javascript">
-      var graph = JSON.parse('<%- JSON.stringify(graph) %>');
-      google.charts.load('current', {'packages':['corechart']});
-      google.charts.setOnLoadCallback(drawChart);
+            <label for="squat">Current Max Squat</label>
+            <input
+              type="squat"
+              id="squat"
+              name="squat"
+              class="form-control"
+              placeholder="Enter Weight"
+            />
+          </div>
+          <div class="form-group">
+            <label for="dead">Current Max DeadLift</label>
+            <input
+              type="dead"
+              id="dead"
+              name="dead"
+              class="form-control"
+              placeholder="Enter Weight"
+            />
+          </div>
+          <div class="form-group">
+            <label for="mile">Current Mile Time</label>
+            <input
+              type="mile"
+              id="mile"
+              name="mile"
+              class="form-control"
+              placeholder="Enter Time"
+            />
+          </div>
+          <div class="form-group">
+            <label for="height">Current Height(in)</label>
+            <input
+              type="height"
+              id="height"
+              name="height"
+              class="form-control"
+              placeholder="Enter Height"
+            />
+          </div>
+          <div class="form-group">
+            <label for="weight">Current Weight(lbs)</label>
+            <input
+              type="weight"
+              id="weight"
+              name="weight"
+              class="form-control"
+              placeholder="Enter Weight"
+            />
+          </div>
+          <button type="submit" class="btn btn-primary btn-block">Submit</button>
+        </form>
+      </div>
+      <div style="padding: 500px o; text-align: center;"> 
+      <% if (graph) { %>
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+        <script type="text/javascript">
+        var graph = JSON.parse('<%- JSON.stringify(graph) %>');
+        google.charts.load('current', {'packages':['corechart']});
+        google.charts.setOnLoadCallback(drawChart);
 
-      console.log(graph);
-      
-      function drawChart() {
-      
-      var data=[];
-      //This will be used for going through the mongoose query
-      data.push(['Blah','Bench', 'Squat', 'Dead']);
-      for (var i = 0; i < graph.length; i++) {
-          var temp=[];
-          if(i == 0)
-          {
-            temp.push("Start");
-          }
-          else{
-            temp.push("Input " + i);
-          }
-          temp.push(parseInt(graph[i].bench));
-          temp.push(parseInt(graph[i].squat));
-          temp.push(parseInt(graph[i].dead));
-          data.push(temp);
-          console.log(temp);
-      }
-
-      var chartData = google.visualization.arrayToDataTable(data);
-
-      var options = {
-        title: 'Max Trends',
-        curveType: 'function',
-        legend: { position: 'bottom' },
-        axes: {
-          // Adds labels to each axis; they don't have to match the axis names.
-          y: {
-            Temps: {label: 'Temps (Celsius)'},
-            Daylight: {label: 'Daylight'}
-          }
+        console.log(graph);
+        
+        function drawChart() {
+        
+        var data=[];
+        //This will be used for going through the mongoose query
+        data.push(['Blah','Bench', 'Squat', 'Dead']);
+        for (var i = 0; i < graph.length; i++) {
+            var temp=[];
+            if(i == 0)
+            {
+              temp.push("Start");
+            }
+            else{
+              temp.push("Input " + i);
+            }
+            temp.push(parseInt(graph[i].bench));
+            temp.push(parseInt(graph[i].squat));
+            temp.push(parseInt(graph[i].dead));
+            data.push(temp);
+            console.log(temp);
         }
-      };
 
-      var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+        var chartData = google.visualization.arrayToDataTable(data);
 
-      chart.draw(chartData, options);
-    }
-  </script>
-   <% } %>
+        var options = {
+          title: 'Max Trends',
+          curveType: 'function',
+          legend: { position: 'bottom' },
+          axes: {
+            // Adds labels to each axis; they don't have to match the axis names.
+            y: {
+              Temps: {label: 'Temps (Celsius)'},
+              Daylight: {label: 'Daylight'}
+            }
+          }
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+
+        chart.draw(chartData, options);
+      }
+    </script>
+    <% } %>
+    </div>
+  </div>
   </div>
 </div>
 </head>
 <body>
-  <div id="curve_chart" style="width: 900px; height: 500px"></div>
+  <div id="curve_chart" style=" width: 900px; height: 500px"></div>
 </body>

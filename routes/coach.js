@@ -40,6 +40,11 @@ router.get('/playerFeedback', ensureAuthenticated, (req, res) => {
   });
 });
 
+router.get('/gameStats', ensureAuthenticated, (req, res) => {
+  res.render('gameStats', {
+  });
+});
+
 router.get('/submitquest', ensureAuthenticated, (req, res) => {
   res.render('playerFeedback');
 });

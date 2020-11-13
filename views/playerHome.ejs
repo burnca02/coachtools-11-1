@@ -1,17 +1,27 @@
-<link
-  rel="stylesheet"
-  href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/cyborg/bootstrap.min.css"
-/>
-<div class="bigContainer">
-  <!-- header -->
-  <div class="topnav">
-    <img
-      src="images/coachToolsLogo.png"
-      alt="CoachTools"
-      style="display: inline; width: 150px; padding-left: 30px"
-    />
-    <div style="font-size: 25px; vertical-align: middle">
-      <span id="datetime"></span>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="UTF-8" />
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/cyborg/bootstrap.min.css">
+    <script src="//code.jquery.com/jquery.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Coach Tools</title>
+    <link rel="stylesheet" href="../public/styles.css">
+    <!-- header -->
+    <div class="topnav">
+      <img src="images/coachToolsLogo.png" alt="CoachTools" style="display:inline; width: 90px;">
+      <div style="font-size: 25px; display: inline;">CoachTools</div>
+      <button class="top-dropdown-btn"></button>
+      <div style="font-size: 25px; display: inline; text-align: right"><span id="datetime"></span></div>
+      <script>
+        var dt = new Date();
+        document.getElementById("datetime").innerHTML = (("0"+(dt.getMonth()+1)).slice(-2)) +"/"+ (("0"+dt.getDate()).slice(-2)) +"/"+ (dt.getFullYear());
+      </script>
+      <div style="display: inline; text-align: right;">
+        <button class="top-dropdown-btn" onclick="window.location.href='/users/logout'">Logout</button>
+      </div>
     </div>
     <script>
       var dt = new Date();

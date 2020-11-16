@@ -32,7 +32,7 @@ exports.post =  function (req, res) {
      .on("data", function(data){
          data['_id'] = new mongoose.Types.ObjectId();
          data['School'] = req.session.school;
-        //  console.log(data);
+         data['Email'] = null;
           
          players.push(data);
      })
@@ -44,5 +44,5 @@ exports.post =  function (req, res) {
 
      });
      console.log("Uploaded to database");
-     res.redirect('/coachHome');
+     res.redirect('/roster');
 };

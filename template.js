@@ -12,7 +12,7 @@ exports.get = function(req, res) {
         'Number',
         'FullName',
         'Pos',
-        'Grad Year',
+        'GradYear',
         'Height',
         'Weight',
         'Hometown/High School'
@@ -24,7 +24,7 @@ exports.get = function(req, res) {
         'Number' : 58,
         'FullName': "Justin Titchenell",
         'Pos': "OL",
-        'Grad Year': 2021,
+        'GradYear': 2021,
         'Height': "5-ll",
         'Weight': 245,
         'Hometown/High School' : "West Chester, PA / Malvern Prep"

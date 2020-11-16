@@ -95,15 +95,19 @@
         <th scope="col">Name</th>
         <th scope="col">Position</th>
         <th scope="col">Graduation Year</th>
+        <th scope="col">Number</th>
+
       </tr>
     </thead>
     <tbody>
       <ul class="players">
         <% for(var i = 0; i < players.length; i++) {%>
         <tr class="table-default">
-          <td><%= players[i].FirstName %> <%= players[i].LastName %></td>
+          <td><%= players[i].FullName %></td>
           <td><%= players[i].Pos %></td>
           <td><%= players[i].GradYear %></td>
+          <td><%= players[i].Number %></td>
+
         </tr>
         <% } %>
       </ul>

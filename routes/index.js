@@ -12,7 +12,7 @@ router.get('/', (req, res) => res.render('welcome'));
 router.get('/test', (req, res) => res.render('test'));
 
 router.get('/viewQuestionnaire', (req, res) => 
-Questionnaire.find({"type": "meeting"}).limit(1) //gets most recent doc, need to change so that all come through
+Questionnaire.find({type: "meeting"}).limit(1).sort({$natural: -1}) //gets most recent doc, need to change so that all come through
 .then(questionnaires => {
   console.log(questionnaires);
   if(questionnaires.length == 0){

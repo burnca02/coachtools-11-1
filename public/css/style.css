@@ -577,7 +577,7 @@ h1.logo {
 } */
 
 a:hover {
-  text-decoration: underline;
+  /* text-decoration: underline; */
 }
 
 .right {

@@ -64,42 +64,37 @@ router.get('/practiceStats', ensureAuthenticated, (req, res) =>
 
 router.post('/submitquest', (req,res) => {
   const { participants, whichpos, type, q1, q2, q3 } = req.body;
-  console.log(req.body);
-  console.log(participants);
 
   var participantsArr = [];
   //how to get list of specific email addresses for questionnaire to be sent to?
-  if(participants == 'all'){ //Questionairre will be sent all players from that school
+  if(participants == 'all'){
     console.log('All Participants');
-    Roster.find({"School": req.session.school}), (err, results) => {
-      console.log('Results');
-      console.log(results);
-      console.log(results.Email);
-
-      participantsArr.push(results.Email); //need to push all emails in here
-    }
+    console.log(req.user.school);
+    Roster.find({}, 'Email') //need school differentiator
+    .then(results => {
+      for(var i = 0; i < results.length; i++){
+        participantsArr.push(results[i].Email);
+      }
+      console.log(participantsArr);
+    });
   } else {
     console.log('Participants by Position');
-    Roster.find({ Pos: whichpos }, function (err, results) { //find all the documents where Pos = whichpos
-      console.log(results); //works
-      console.log(results.Email); //doesn't work
-      if (err){ 
-          console.log(err); 
-      } 
-      else{ 
-          participantsArr.push(results.Email); //push only emails from results
-          console.log("All participants added by Position");
-          console.log(participantsArr); //doesn't work
-      } 
+    Roster.find({ Pos: whichpos }, 'Email')//find all the documents where Pos = whichpos
+    .then(results => {
+      for(var i = 0; i < results.length; i++){
+        participantsArr.push(results[i].Email);
+      }
+      console.log(participantsArr);
     }); 
   }
+  console.log('participantsArr' + participantsArr);
   var questions = [q1, q2, q3];
   const newQuestionnaire = new Questionnaire({
     participantsArr,
     type,
     questions
   });
-    console.log(newQuestionnaire);
+    console.log('newQuest' + newQuestionnaire);
     //save user
     newQuestionnaire.save() //save to database
     .then(user => {

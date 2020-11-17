@@ -24,12 +24,16 @@ router.post('/dispPracticeStats', (req, res) => {
     const {pos} = req.body;
     console.log(pos);
     console.log(req.user.school);
-    Roster.find({Pos: pos})
+    Roster.find({Pos: pos}) 
     .then(players => { 
-    console.log(players);
-    res.render('dispPracticeStats', {
-          'players': players     
-        });
+      console.log(players);
+      if(players.length == 0){
+        res.render('practiceStats');
+      } else {
+        res.render('dispPracticeStats', { //need to send all stats data here too
+              'players': players     
+            });
+      }
     });
 });
 

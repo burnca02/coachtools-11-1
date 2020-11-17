@@ -1,38 +1,52 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-</head>
-<body>
+<!-- <link rel="stylesheet" type="text/css" href="css/style.css"/> -->
+<div class="topnav">
+  <img
+    src="images/coachToolsLogo.png"
+    alt="CoachTools"
+    style="display: inline; width: 120px; padding-left: 30px"
+  />
+  <div class="end">
+    <button class="top-dropdown-btn">
+      <!-- padding-left: 69%;  -->
+    </button>
 
+    <button
+      class="top-dropdown-btn"
+      onclick="window.location.href='/users/login'"
+    >
+      Logout
+    </button>
+  </div>
+</div>
+<!-- Side navigation -->
+<!-- <div id="nav-placeholder"></div> -->
 <div class="sidenav">
-    <a href="/coachHome">Home</a>
-    <button class="dropdown-btn">Roster<i class="fa fa-caret-down"></i></button>
-    <div class="dropdown-container">
-        <a href="/roster">Player Bio</a>
-        <a href="#">Depth Chart</a>
-    </div>
-    <button class="dropdown-btn">Game<i class="fa fa-caret-down"></i></button>
-    <div class="dropdown-container">
-        <a href="/coach/gameStats">Game Stats</a>
-        <a href="#">Game Grade</a>
-        <a href="#">Analysis</a>
-    </div>
-    <button class="dropdown-btn">Practice<i class="fa fa-caret-down"></i></button>
-    <div class="dropdown-container">
-        <a href="/coach/practiceStats">In Season</a>
-        <a href="/coach/practiceTrainingStats">Training</a>
-    </div>
-    <a href="/coach/playerFeedback">Player Feedback</a>
-    <a href="#">Comparison</a>
-    </div>
+  <a href="/coachHome">Home</a>
+  <button class="dropdown-btn">Roster<i class="fa fa-caret-down"></i></button>
+  <div class="dropdown-container">
+    <a href="/roster">Player Bio</a>
+    <a href="#">Depth Chart</a>
+  </div>
+  <button class="dropdown-btn">Game<i class="fa fa-caret-down"></i></button>
+  <div class="dropdown-container">
+    <a href="#">Game Stats</a>
+    <a href="#">Game Grade</a>
+    <a href="#">Analysis</a>
+  </div>
+  <button class="dropdown-btn">Practice<i class="fa fa-caret-down"></i></button>
+  <div class="dropdown-container">
+    <a href="/coach/practiceStats">In Season</a>
+    <a href="/coach/practiceTrainingStats">Training</a>
+  </div>
+  <a href="/coach/playerFeedback">Player Feedback</a>
+  <a href="#">Comparison</a>
+</div>
 
-<div id="main">
-      <!-- This is the upload excel roster button. -->
-    <!-- <p>Use the form below to upload a list of authors. -->
-      <div class="form-group" role="group" aria-label="Button group with nested dropdown" style="margin-left: 25%;">
-        <form action="/coach/uploadStats" method="POST" encType="multipart/form-data">
-          <input type="file" name="file" accept=".csv" />
+<div class="main">
+  <div class="row" style="padding-top: 15px; padding-left: 10px">
+      <div class="form-group" role="group" aria-label="Button group with nested dropdown">
+        <form action = "/coach/table" method = "POST">
+          <button type="button" class="btn btn-primary">Sort By</button>
           <div class="btn-group" role="group">
             <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
             <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
@@ -46,30 +60,40 @@
             </div>
           </div>
         </form>
-        <p>Click <a href="/coach/template">here</a> for an example template.</p>
       </div>
+      
+
+    <!-- This is the upload excel roster button. -->
+    <!-- <p>Use the form below to upload a list of authors. -->
+    <div style="margin-left: 5%">
+      <form action="/coach/upload" method="POST" encType="multipart/form-data">
+        <input type="file" name="file" accept=".csv" />
+        <input
+          type="submit"
+          class="btn btn-primary dropdown-toggle"
+          value="Upload Roster"
+        />
+      </form>
+      <p>Click <a href="/coach/template">here</a> for an example template.</p>
     </div>
-  
+  </div>
 </div>
-
 <script>
+  // $(function(){
+  //     $("#nav-placeholder").load("navBars/nav.html");
+  // });
+  var dropdown = document.getElementsByClassName("dropdown-btn");
+  var i;
 
-/* Loop through all dropdown buttons to toggle between hiding and showing its dropdown content - This allows the user to have multiple dropdowns without any conflict */
-var dropdown = document.getElementsByClassName("dropdown-btn");
-var i;
-
-for (i = 0; i < dropdown.length; i++) {
-  dropdown[i].addEventListener("click", function() {
-  this.classList.toggle("active");
-  var dropdownContent = this.nextElementSibling;
-  if (dropdownContent.style.display === "block") {
-  dropdownContent.style.display = "none";
-  } else {
-  dropdownContent.style.display = "block";
+  for (i = 0; i < dropdown.length; i++) {
+    dropdown[i].addEventListener("click", function () {
+      this.classList.toggle("active");
+      var dropdownContent = this.nextElementSibling;
+      if (dropdownContent.style.display === "block") {
+        dropdownContent.style.display = "none";
+      } else {
+        dropdownContent.style.display = "block";
+      }
+    });
   }
-  });
-}
 </script>
-   
-</body>
-</html> 

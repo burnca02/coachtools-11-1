@@ -665,7 +665,7 @@ a:hover {
 }
 
 .dropdown {
-  position: absolute;
+  /* position: absolute; */
   display: inline-block;
   /* z-index: 1; */
 }

@@ -58,9 +58,9 @@
       <div class="form-group" role="group" aria-label="Button group with nested dropdown">
         <form action = "/coach/table" method = "POST">
           <button type="button" class="btn btn-primary">Sort By</button>
-          <div class="btn-group" role="group">
+          <div class="dropdown" role="group">
             <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
-            <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+            <div class="dropdown-content" aria-labelledby="btnGroupDrop1">
               <button class="dropdown-item" type="submit" name= "type" value = "full">View Whole Roster</button>
               <button class="dropdown-item" type="submit" name= "type" value = "qb">View Quartberbacks</button>
               <button class="dropdown-item" type="submit" name= "type" value = "wr">View Wide Receivers</button>
@@ -119,6 +119,21 @@
   //     $("#nav-placeholder").load("navBars/nav.html");
   // });
   var dropdown = document.getElementsByClassName("dropdown-btn");
+  var i;
+
+  for (i = 0; i < dropdown.length; i++) {
+    dropdown[i].addEventListener("click", function () {
+      this.classList.toggle("active");
+      var dropdownContent = this.nextElementSibling;
+      if (dropdownContent.style.display === "block") {
+        dropdownContent.style.display = "none";
+      } else {
+        dropdownContent.style.display = "block";
+      }
+    });
+  }
+
+  var dropdown = document.getElementsByClassName("dropdown-toggle");
   var i;
 
   for (i = 0; i < dropdown.length; i++) {

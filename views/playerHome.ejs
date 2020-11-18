@@ -1,66 +1,39 @@
+<style>
+  @media all and (min-width: 600px) {
+  .bodyContainer {flex: 2 0px;}
+  .sidenav {order: 1;}
+  .cardsK {order: 2;}
+}
+</style>
 <link
   rel="stylesheet"
   href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/cyborg/bootstrap.min.css"
 />
 <div class="bigContainer">
-  <!-- <div class="topNavBody">
-    <header id="nav-wrapper">
-      <nav id="nav">
-        <div class="nav left">
-          <span class="gradient skew"><h1 class="logo un-skew"><a href="#home"><img
-            src="images/coachToolsLogo.png"
-            alt="CoachTools"
-            style="display: inline; width: 150px; padding-left: 30px"
-          /></a></h1></span>
-          <button id="menu" class="btn-nav"><span class="fas fa-bars"></span></button>
-        </div>
-        <div class="nav right">
-          <a href="#home" class="nav-link active"><span class="nav-link-span"><span class="u-nav">Home</span></span></a>
-          <a href="#about" class="nav-link"><span class="nav-link-span"><span class="u-nav">About</span></span></a>
-          <a href="#work" class="nav-link"><span class="nav-link-span"><span class="u-nav">Work</span></span></a>
-          <a href="#contact" class="nav-link"><span class="nav-link-span"><span class="u-nav">Contact</span></span></a>
-        </div>
-      </nav>
-    </header>
-  </div> -->
   <!-- header -->
-  <div class="topnav">
-    <img
-      src="images/coachToolsLogo.png"
-      alt="CoachTools"
-      style="display: inline; width: 150px; padding-left: 30px"
-    />
-    <div style="font-size: 25px; vertical-align: middle">
-      <span id="datetime"></span>
+  <nav class="topnav" id="myTopnav">
+    <a href="javascript:void(0);" class="icon threeLines" onclick="resizeDropdown2()">
+      <i class="fa fa-bars"></i>
+    </a>
+    <div class="topnavChild1" style="width: 100%;" id="logo">
+      <img src="images/coachToolsLogo.png" alt="CoachTools" style="width: 110px;"/>
     </div>
-    <script>
-      var dt = new Date();
-      document.getElementById("datetime").innerHTML =
-        ("0" + (dt.getMonth() + 1)).slice(-2) +
-        "/" +
-        ("0" + dt.getDate()).slice(-2) +
-        "/" +
-        dt.getFullYear();
-    </script>
-    <button class="top-dropdown-btn" style="padding-left: 75%;">
-      <%= name %>
-    </button>
-    <button
-      class="top-dropdown-btn"
-      onclick="window.location.href='/users/logout'"
-    >
-      Logout
-    </button>
-  </div>
+    <div class="topnavChild2">
+      <!-- <span class="dateDisp" id="datetime"></span> -->
+      <a id="datetime"></a>
+      <a ><%= name %></a>  <!--style="padding-left: 75%;"-->
+      <a class="logout" onclick="window.location.href='/users/logout'">Logout</a>
+    </div>
+  </nav>
   <div class="bodyContainer">
-    <!-- Side navigation -->
-    <div class="sidenav">
+    <!-- Side navigation  resizeDropdown2()--> 
+    <nav class="sidenav" id="mySidenav">
       <a href="./playerHome">Home</a>
       <a href="/player/playerGrades">My Grades</a>
       <a href="/player/playerTrends">Max Trends</a>
-    </div>
+    </nav>
 
-    <ul class="cardsK main">
+    <ul class="cardsK">
       <li class="cards__itemK">
         <div class="cardK">
           <div class="card__image card__image--fence"></div>
@@ -92,6 +65,14 @@
         </div>
       </li>
     </ul>
+
+    <!-- <div class="middleText">
+      Hello World
+    </div>
+
+    <div class="rightText">
+      Hello World 2
+    </div> -->
 
   </div>
 </div>
@@ -151,4 +132,51 @@ $(document).ready(function() {
   $(document).scroll(util.scrollEvent);
   
 });
+
+function resizeDropdown() {
+  var x = document.getElementById("myTopnav");
+  if (x.className === "topnav") {
+    x.className += " responsive";
+  } else {
+    x.className = "topnav";
+  }
+}
+
+function resizeDropdown2() {
+  var x = document.getElementById("mySidenav");
+  if (x.className === "sidenav") {
+    x.className += " responsive";
+  } else {
+    x.className = "sidenav";
+  }
+}
+  var dt = new Date();
+  document.getElementById("datetime").innerHTML =
+    ("0" + (dt.getMonth() + 1)).slice(-2) +
+    "/" +
+    ("0" + dt.getDate()).slice(-2) +
+    "/" +
+    dt.getFullYear();
 </script>
+
+
+  <!-- <div class="topNavBody">
+    <header id="nav-wrapper">
+      <nav id="nav">
+        <div class="nav left">
+          <span class="gradient skew"><h1 class="logo un-skew"><a href="#home"><img
+            src="images/coachToolsLogo.png"
+            alt="CoachTools"
+            style="display: inline; width: 150px; padding-left: 30px"
+          /></a></h1></span>
+          <button id="menu" class="btn-nav"><span class="fas fa-bars"></span></button>
+        </div>
+        <div class="nav right">
+          <a href="#home" class="nav-link active"><span class="nav-link-span"><span class="u-nav">Home</span></span></a>
+          <a href="#about" class="nav-link"><span class="nav-link-span"><span class="u-nav">About</span></span></a>
+          <a href="#work" class="nav-link"><span class="nav-link-span"><span class="u-nav">Work</span></span></a>
+          <a href="#contact" class="nav-link"><span class="nav-link-span"><span class="u-nav">Contact</span></span></a>
+        </div>
+      </nav>
+    </header>
+  </div> -->

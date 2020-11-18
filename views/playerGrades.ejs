@@ -6,10 +6,149 @@
     border: 1px solid black;
     border-collapse: collapse;
   }
+  @media all and (min-width: 600px) {
+    .bodyContainer {
+      flex: 2 0px;
+    }
+    .sidenav {
+      order: 1;
+    }
+    .gradeTable {
+      order: 2;
+    }
+  }
 </style>
-<h1 class="mt-4">Grades Homepage <%= email%></h1>
 <div class="bigContainer">
-  <!-- <div class="topNavBody">
+  <!-- header -->
+  <nav class="topnav" id="myTopnav">
+    <a href="javascript:void(0);" class="icon threeLines" onclick="resizeDropdown2()">
+      <i class="fa fa-bars"></i>
+    </a>
+    <div class="topnavChild1" style="width: 100%" id="logo">
+      <img
+        src="images/coachToolsLogo.png"
+        alt="CoachTools"
+        style="width: 110px"
+      />
+    </div>
+    <div class="topnavChild2">
+      <!-- <span class="dateDisp" id="datetime"></span> -->
+      <a id="datetime" style="color: #818181;"></a>
+      <a style="color: #818181;"><%= name %></a>
+      <!--style="padding-left: 75%;"-->
+      <a class="logout" onclick="window.location.href='/users/logout'"
+        >Logout</a
+      >
+    </div>
+  </nav>
+  <div class="bodyContainer">
+    <!-- Side navigation -->
+    <nav class="sidenav" id="mySidenav">
+      <a href="/playerHome">Home</a>
+      <a href="/player/playerGrades">My Grades</a>
+      <a href="/player/playerTrends">Max Trends</a>
+    </nav>
+    <div class="gradeTable">
+      <h1 class="mt-4">Grades Homepage <%= email%></h1>
+      <table style="width: 100%">
+        <tr>
+          <th>Today's Grade</th>
+          <th>Weekly Trend</th>
+          <th>Seasonal Trend</th>
+        </tr>
+        <tr>
+          <td>90</td>
+          <td>
+            <div id="curve_chart1" style="width: 300px; height: 150px"></div>
+          </td>
+          <td>
+            <div id="curve_chart2" style="width: 300px; height: 150px"></div>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script>
+  var dt = new Date();
+  document.getElementById("datetime").innerHTML =
+    ("0" + (dt.getMonth() + 1)).slice(-2) +
+    "/" +
+    ("0" + dt.getDate()).slice(-2) +
+    "/" +
+    dt.getFullYear();
+</script>
+<script type="text/javascript">
+  google.charts.load("current", { packages: ["corechart"] });
+  google.charts.setOnLoadCallback(drawChart1);
+
+  function drawChart1() {
+    var data = google.visualization.arrayToDataTable([
+      ["Blah", "Grade"],
+      ["Start", 0],
+      ["8/31", 90],
+      ["9/2", 70],
+      ["9/4", 80],
+    ]);
+
+    var options = {
+      title: "Weekly Grade Trend",
+      curveType: "function",
+      legend: { position: "bottom" },
+      axes: {
+        // Adds labels to each axis; they don't have to match the axis names.
+        y: {
+          Temps: { label: "Temps (Celsius)" },
+          Daylight: { label: "Daylight" },
+        },
+      },
+    };
+    var chart = new google.visualization.LineChart(
+      document.getElementById("curve_chart1")
+    );
+    chart.draw(data, options);
+  }
+</script>
+<script type="text/javascript">
+  // const Stat = require("../models/Stat");
+
+  google.charts.load("current", { packages: ["corechart"] });
+  google.charts.setOnLoadCallback(drawChart2);
+
+  Stat.find();
+
+  function drawChart2() {
+    var data = google.visualization.arrayToDataTable([
+      ["Blah", "Grade"],
+      ["Start", 0],
+      ["8/31", 90],
+      ["9/2", 70],
+      ["9/18", 50],
+      ["10/10", 50],
+      ["11/29", 70],
+      ["1/30", 80],
+    ]);
+
+    var options = {
+      title: "Seasonal Grade Trend",
+      curveType: "function",
+      legend: { position: "bottom" },
+      axes: {
+        // Adds labels to each axis; they don't have to match the axis names.
+        y: {
+          Temps: { label: "Temps (Celsius)" },
+          Daylight: { label: "Daylight" },
+        },
+      },
+    };
+    var chart = new google.visualization.LineChart(
+      document.getElementById("curve_chart2")
+    );
+    chart.draw(data, options);
+  }
+</script>
+<!-- <div class="topNavBody">
     <header id="nav-wrapper">
       <nav id="nav">
         <div class="nav left">
@@ -29,135 +168,3 @@
       </nav>
     </header>
   </div> -->
-  <!-- header -->
-  <div class="topnav">
-    <img
-      src="images/coachToolsLogo.png"
-      alt="CoachTools"
-      style="display: inline; width: 150px; padding-left: 30px"
-    />
-    <div style="font-size: 25px; vertical-align: middle">
-      <span id="datetime"></span>
-    </div>
-    <script>
-      var dt = new Date();
-      document.getElementById("datetime").innerHTML =
-        ("0" + (dt.getMonth() + 1)).slice(-2) +
-        "/" +
-        ("0" + dt.getDate()).slice(-2) +
-        "/" +
-        dt.getFullYear();
-    </script>
-    <button class="top-dropdown-btn" style="padding-left: 75%;">
-      <%= name %>
-    </button>
-    <button
-      class="top-dropdown-btn"
-      onclick="window.location.href='/users/logout'"
-    >
-      Logout
-    </button>
-  </div>
-  <div class="bodyContainer">
-    <!-- Side navigation -->
-    <div class="sidenav">
-      <a href="/playerHome">Home</a>
-      <a href="/player/playerGrades">My Grades</a>
-      <a href="/player/playerTrends">Max Trends</a>
-    </div>
-    <div style="margin-left: 170px;">
-<p>Today's Date: <span id="datetime"></span></p>
-<script>
-var dt = new Date();
-document.getElementById("datetime").innerHTML = (("0"+(dt.getMonth()+1)).slice(-2)) +"/"+ (("0"+dt.getDate()).slice(-2)) +"/"+ (dt.getFullYear());
-</script>
-
-<table style="width:100%">
-    <tr>
-      <th>Today's Grade</th>
-      <th>Weekly Trend</th> 
-      <th>Seasonal Trend</th>
-    </tr>
-    <tr>
-      <td>90</td>
-      <td>
-        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-        <script type="text/javascript">
-        
-
-          google.charts.load('current', {'packages':['corechart']});
-          google.charts.setOnLoadCallback(drawChart);
-
-          function drawChart() {
-            var data = google.visualization.arrayToDataTable([
-              ['Blah','Grade'],
-              ['Start'  ,  0],
-              ['8/31',  90],
-              ['9/2',  70],
-              ['9/4',  80]
-            ]);
-
-            var options = {
-              title: 'Weekly Grade Trend',
-              curveType: 'function',
-              legend: { position: 'bottom' },
-              axes: {
-                // Adds labels to each axis; they don't have to match the axis names.
-                y: {
-                  Temps: {label: 'Temps (Celsius)'},
-                  Daylight: {label: 'Daylight'}
-                }
-              }
-          };
-          var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
-          chart.draw(data, options);
-    }
-        </script>
-        <div id="curve_chart" style="width: 300px; height: 150px"></div>
-      </td> 
-      <td>
-        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-        <script type="text/javascript">
-          const Stat = require('../models/Stat');
-
-          google.charts.load('current', {'packages':['corechart']});
-          google.charts.setOnLoadCallback(drawChart);
-
-          Stat.find();
-
-          function drawChart() {
-            var data = google.visualization.arrayToDataTable([
-              ['Blah','Grade'],
-              ['Start'  ,  0],
-              ['8/31',  90],
-              ['9/2',  70],
-              ['9/18',  50],
-              ['10/10',  50],
-              ['11/29',  70],
-              ['1/30',  80]
-            ]);
-
-            var options = {
-              title: 'Seasonal Grade Trend',
-              curveType: 'function',
-              legend: { position: 'bottom' },
-              axes: {
-                // Adds labels to each axis; they don't have to match the axis names.
-                y: {
-                  Temps: {label: 'Temps (Celsius)'},
-                  Daylight: {label: 'Daylight'}
-                }
-              }
-          };
-          var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
-          chart.draw(data, options);
-    }
-        </script>
-          <div id="curve_chart" style="width: 300px; height: 150px"></div>
-      </td>
-    </tr>
-</table>
-<a href="/playerHome" class="btn btn-secondary">Player Home</a>
-</div>
-</div>
-</div>

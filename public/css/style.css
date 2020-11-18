@@ -18,6 +18,51 @@ body {
   cursor: pointer;
   outline: none;
 }
+
+.topnav {
+  display: flex;
+  justify-content: flex-end;
+  
+  /* flex: 1; */
+  background-color: black;
+  z-index: 2;
+}
+
+.topnav > topnavChild2 {
+  justify-content: flex-end;
+}
+
+.topnavChild1 {
+  display: flex;
+  justify-content: flex-start;
+}
+.topnavChild2 {
+  display: flex;
+  justify-content: flex-end;
+}
+.topnavChild2 > a, span {
+  padding: 6px 8px 6px 16px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #818181;
+  border: none;
+  background: none;
+  text-align: right;
+  outline: none;
+}
+
+.topNavBar {
+  padding: 6px 8px 6px 16px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #818181;
+  display: inline;
+  border: none;
+  background: none;
+  text-align: right;
+  outline: none;
+}
+
 /* When you mouse over the navigation links, change their color */
 .sidenav a:hover,
 .dropdown-btn:hover {
@@ -38,15 +83,7 @@ body {
   float: right;
   padding-right: 8px;
 }
-/* On smaller screens, where height is less than 450px, change the style of the sidebar (less padding and a smaller font size) */
-@media screen and (max-height: 450px) {
-  .sidenav {
-    padding-top: 15px;
-  }
-  .sidenav a {
-    font-size: 18px;
-  }
-}
+
 .text,
 .text1 {
   color: black;
@@ -228,35 +265,8 @@ body {
   min-height: 100vh;
   flex-direction: column;
   margin: 0;
-  background-color: whitesmoke;
-}
-
-.bodyContainer {
-  display: flex;
-  flex-direction: column;
+  background-color: white;
   flex: 1;
-  margin: 0;
-
-  color: #999999;
-  font-family: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-style: normal;
-  font-weight: 400;
-  letter-spacing: 0;
-  /* padding: 1rem; */
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  -moz-font-feature-settings: "liga" on;
-}
-
-.sidenav {
-  background-color: black; /* Black */
-  order: -1;
-  /* padding: 1em; */
-  height: 100vh;
-  position: fixed;
-  width: 170px;
-  color: white;
 }
 
 .bodyCode {
@@ -269,23 +279,13 @@ body {
   margin-left: 170px; /* Same as the width of the sidebar - want to get rid of this and just do flex */
 }
 
-.topnav {
-  background-color: black;
-  display: flex;
-  flex-direction: row;
-  z-index: 2;
-  justify-content: flex-end;
-}
-
 /* The navigation menu links */
 .sidenav a,
 .dropdown-btn {
   padding: 10px 10px 10px 10px;
   text-decoration: none;
   font-size: 25px;
-  /* color: #818181; */
   color: #818181;
-  /* color : white; */
   display: block;
   border: none;
   background: none;
@@ -293,7 +293,6 @@ body {
   text-align: left;
   cursor: pointer;
   outline: none;
-  /* color:#f857a8 */
 }
 
 /* Style page content */
@@ -322,11 +321,11 @@ body {
   -moz-osx-font-smoothing: grayscale;
   -moz-font-feature-settings: "liga" on;
 } */
-img {
+/* img {
   height: auto;
   max-width: 100%;
   vertical-align: middle;
-}
+} */
 .btn2 {
   background-color: white;
   border: 1px solid #cccccc;
@@ -343,17 +342,39 @@ img {
   display: block;
   width: 100%;
 }
+
+.bodyContainer {
+  display: flex;
+  flex-flow: row;
+}
+
+/* .bodyContainer > * {
+  padding: 10px;
+  flex: 1 100%;
+} */
+
+.sidenav {
+  background-color: black; /* Black */
+  /* padding: 1em; */
+  height: 100%;
+  /* position: fixed; */
+  /* width: 170px; */
+  color: white;
+}
+
 .cardsK {
-  display: -webkit-box;
+  /* display: -webkit-box; */
   display: flex;
   flex-wrap: wrap;
   list-style: none;
-  margin-left: 170px;
+  height: 400px;
+  /* margin-left: 170px; */
   /* margin: 0; */
   padding: 0;
+  order: 2;
 }
 .cards__itemK {
-  display: -webkit-box;
+  /* display: -webkit-box; */
   display: flex;
   padding: 1rem;
 }
@@ -577,7 +598,7 @@ h1.logo {
 } */
 
 a:hover {
-  /* text-decoration: underline; */
+   text-decoration: none; 
 }
 
 .right {
@@ -690,3 +711,71 @@ a:hover {
 /* .dropdown:hover .dropdown-content {display: block;} */
 
 .dropdown:hover .dropbtn {background-color: #e71111;}
+
+.topnav .icon {
+  display: none;
+}
+
+@media screen and (max-width: 600px) {
+  .topnav a:not(:last-child), button, img, span, .topnavChild1 {display:none;}
+  .topnav a.icon {
+    float: left;
+    display: block;
+  }
+  .sidenav a {display: none;}
+  /* .sidenav {overflow: hidden;} */
+}
+
+@media screen and (max-width: 600px) {
+  .topnav.responsive {position: absolute;}
+  .sidenav.responsive {position: relative;}
+  .topnav.responsive .icon {
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+  .sidenav.responsive a {
+    float: inherit;
+    display: block;
+    text-align: left;
+    overflow: hidden;
+  }
+}
+/* Depends on the page you are on - orders the sidenav and other things in row */
+@media all and (min-width: 600px) {
+  .bodyContainer {flex: 2 0px;}
+  .sidenav {order: 1;}
+  .cardsK {order: 2;}
+}
+
+.logout {
+  cursor: pointer;
+}
+
+.threeLines {
+  padding: 10px 10px 10px 10px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #818181;
+  display: block;
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  outline: none;
+}
+
+a {
+  color: #818181;
+  text-decoration: none;
+  background-color: transparent;
+}
+
+a:hover {
+  color: white;
+}
+
+.chBody {
+
+}

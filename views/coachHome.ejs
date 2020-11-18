@@ -1,14 +1,8 @@
 <style>
   @media all and (min-width: 600px) {
-    .bodyContainer {
-      flex: 2 0px;
-    }
-    .sidenav {
-      order: 1;
-    }
-    .chBody {
-      order: 2;
-    }
+    .bodyContainer {flex: 2 0px;}
+    .sidenav {order: 1;}
+    .chBody {order: 2;}
   }
 </style>
 <div class="bigContainer">
@@ -21,7 +15,7 @@
     </div>
     <div class="topnavChild2">
       <!-- <span class="dateDisp" id="datetime"></span> -->
-      <a id="datetime"></a>
+      <a style="color: #818181;" id="datetime"></a>
       <a style="color: #818181;"><%= name %></a>  <!--style="padding-left: 75%;"-->
       <a class="logout" onclick="window.location.href='/users/logout'">Logout</a>
     </div>
@@ -29,7 +23,7 @@
   <div class="bodyContainer">
     <!-- Side navigation -->
     <!-- <div id="nav-placeholder"></div> -->
-    <nav class="sidenav">
+    <nav class="sidenav" style="max-width: 170px;">
       <a href="/coachHome">Home</a>
       <button class="dropdown-btn">
         Roster<i class="fa fa-caret-down"></i>
@@ -56,7 +50,7 @@
     </nav>
 
     <div class="chBody">
-      <div class="row">
+      <div>
         <div class="btn-group" style="padding: 10px">
           <button
             type="button"
@@ -72,7 +66,7 @@
           </div>
         </div>
       </div>
-      <div class="pitch row">
+      <div class="pitch">
         <span class="help">Offense</span>
         <ol id="offense" class="container">
           <li onclick="showSubs('sWR')">
@@ -123,7 +117,7 @@
           </li>
         </ul>
       </div>
-      <div id="sQB" class="bench row">
+      <div id="sQB" class="bench">
         <span class="help">QB Subs</span>
         <ul id="Qsubs" class="container">
           <li onclick="showSubs('sQB')">
@@ -144,7 +138,7 @@
           </li>
         </ul>
       </div>
-      <div id="sRB" class="bench row">
+      <div id="sRB" class="bench">
         <span class="help">RB Subs</span>
         <ul id="RBsubs" class="container">
           <li onclick="showSubs('sRB')">
@@ -169,7 +163,7 @@
           </li>
         </ul>
       </div>
-      <div id="sWR" class="bench row">
+      <div id="sWR" class="bench">
         <span class="help">WR Subs</span>
         <ul id="subs" class="container">
           <li onclick="showSubs('sWR')">

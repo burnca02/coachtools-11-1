@@ -447,13 +447,15 @@ body {
   background-image: url(https://unsplash.it/800/600?image=82);
 }
 .card__image--river {
-  background-image: url(https://unsplash.it/800/600?image=11);
+  background-image: url(https://cdn.pixabay.com/photo/2016/06/16/03/02/american-football-1460541_960_720.jpg);
 }
 .card__image--record {
-  background-image: url(https://unsplash.it/800/600?image=39);
+  background-image: url(https://cdn.pixabay.com/photo/2016/08/09/04/09/football-1579827_960_720.jpg);
+  /* https://unsplash.it/800/600?image=39 */
 }
 .card__image--fence {
-  background-image: url(https://unsplash.it/800/600?image=59);
+  background-image: url(https://cdn.pixabay.com/photo/2016/06/18/19/20/american-football-1465510_960_720.jpg);
+  /* background-image: url(https://unsplash.it/800/600?image=59); */
 }
 .card__title {
   color: #696969;

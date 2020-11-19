@@ -443,7 +443,6 @@ body {
     padding-top: 66.6%;
   }
 }
-
 .card__image--flowers {
   background-image: url(https://unsplash.it/800/600?image=82);
 }
@@ -691,7 +690,7 @@ a:hover {
 }
 
 .dropdown {
-  /* position: absolute; */
+  position: absolute;
   display: inline-block;
   /* z-index: 1; */
 }

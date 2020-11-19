@@ -29,6 +29,7 @@ mongoose.connect(db, { useNewUrlParser: true ,useUnifiedTopology: true})
 .catch(err => console.log(err));
 
 router.get('/template', template.get);
+router.post('/upload', upload.post);
 //upload function
 router.get('/upload', ensureAuthenticated, (req, res) => 
   res.render('coachHome', {
@@ -55,58 +56,44 @@ router.get('/questionnaire', ensureAuthenticated, (req, res) =>
     name: req.user.name //pass the name that was entered into the database to dashboard
 }));
 
-router.post('/upload', (req,res) => {
-    if (!req.files)
-            return res.status(400).send('No files were uploaded.');
-        
-        var rosterFile = req.files.file;
+router.get('/practiceStats', ensureAuthenticated, (req, res) => 
+  res.render('practiceStats', {
+    name: req.user.name //pass the name that was entered into the database to dashboard
+}));
 
-        var players = [];
-            
-        csv.parseString(rosterFile.data.toString(), {
-            headers: true,
-            ignoreEmpty: true
-        })
-        .on("data", function(data){
-            data['_id'] = new mongoose.Types.ObjectId();
-            
-            players.push(data);
-        })
-        .on("end", function(){
-            Roster.create(players, function(err, documents) {
-                if (err) throw err;
-            });
 
-        });
-        console.log("Uploaded to database");
-        res.redirect('/coach/upload');
-});
-
-router.post('/submitquest', async(req,res) => {
+router.post('/submitquest', (req,res) => {
   const { participants, whichpos, type, q1, q2, q3 } = req.body;
-      var participantsArr = [];
-        if(participants == 'all'){
-          console.log('inside if');
-          await Roster.find({School : req.session.school}, 'Email')
-          .then(results => {
-            for(var i = 0; i < results.length; i++){
-              participantsArr.push(results[i].Email);
-            }
-          });
-        } else {
-          await Roster.find({ Pos: whichpos, School: req.session.school }, 'Email')//find all the documents where Pos = whichpos
-          .then(results => {
-          for(var i = 0; i < results.length; i++){
-            participantsArr.push(results[i].Email);
-          }});
-        }
-      console.log('arr:' + participantsArr);
-    var questions = [q1, q2, q3];
-    const newQuestionnaire = new Questionnaire({
-      participants: participantsArr, //make sure variables passed match the model or refer to model variables
-      type,
-      questions
+
+  var participantsArr = [];
+  //how to get list of specific email addresses for questionnaire to be sent to?
+  if(participants == 'all'){
+    console.log('All Participants');
+    console.log(req.user.school);
+    Roster.find({}, 'Email') //need school differentiator
+    .then(results => {
+      for(var i = 0; i < results.length; i++){
+        participantsArr.push(results[i].Email);
+      }
+      console.log(participantsArr);
     });
+  } else {
+    console.log('Participants by Position');
+    Roster.find({ Pos: whichpos }, 'Email')//find all the documents where Pos = whichpos
+    .then(results => {
+      for(var i = 0; i < results.length; i++){
+        participantsArr.push(results[i].Email);
+      }
+      console.log(participantsArr);
+    }); 
+  }
+  console.log('participantsArr' + participantsArr);
+  var questions = [q1, q2, q3];
+  const newQuestionnaire = new Questionnaire({
+    participantsArr,
+    type,
+    questions
+  });
     console.log('newQuest' + newQuestionnaire);
     //save user
     newQuestionnaire.save() //save to database
@@ -114,34 +101,20 @@ router.post('/submitquest', async(req,res) => {
         res.redirect('/coach/playerFeedback');
     })
     .catch(err => console.log(err));
-  // }
 });
 
-router.post('/viewResponse', ensureAuthenticated, async(req, res) => {
-  console.log(req.body);
-  const {type} = req.body;
-  console.log(type);
-  CompleteQuest.find({type: type, school: req.user.school}).sort({email: 1})
+router.get('/viewResponse', ensureAuthenticated, (req, res, next) => 
+  CompleteQuest.find({})
   .then(completeQuests => { //completeQuests will be array of all completed questionnaires(all types)
-    console.log(completeQuests);
-    var quests = [];
-    for(var i = 0; i < completeQuests.length; i++){
-      var condition = completeQuests[i].qID;
-      console.log(condition);
-      Questionnaire.findOne({_id: condition})
-      .then(quest => {
-        console.log('quest' + quest);
-        quests[i] = quest.questions;
-      });
-    }
-    console.log('quests' + quests);
     res.render('viewResponse', {
-        'type': type,
-        'completeQuests': completeQuests,
-        'quests': quests
-    });
+          //loop to show all values of all completed questionnaires
+          email: completeQuests[0].email,
+          type: completeQuests[0].type,
+          score: completeQuests[0].score,
+          comment: completeQuests[0].comment
+        });
   }
-)});
+));
 
 router.get('/practiceTrainingStats', ensureAuthenticated, (req, res) => 
   Stat.find({}).sort({$natural:-1})

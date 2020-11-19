@@ -14,9 +14,19 @@ const mongoose = require('mongoose');
         required: true,
         default: 'meeting'
     },
+    grade: {
+        type: String,
+        required: false,
+        default: 'null'
+    },
     date: {
         type: Date,
         default: Date.now
+    },
+    completed: {
+        type: String,
+        required: true,
+        default: 'false'
     }
  })
 

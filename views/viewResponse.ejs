@@ -1,29 +1,44 @@
 <div class="row mt-5">
     <div class="col-md-6 m-auto">
       <div class="card card-body">
-        <h1 class="text-center mb-3"><i class="fas fa-sign-in-alt"></i> Meeting Questionnaire Responses</h1>
+        <h1 class="text-center mb-3"><i class="fas fa-sign-in-alt"></i><%= type %> Questionnaire Responses</h1>
           <h3>Table to show players and their questionnaire results</h3>
           <table style="width:100%">
             <tr>
+              <th>Date</th>
               <th>Email</th>
-              <th>Quiz Type</th> 
-              <th>Score</th> 
+              <th>Q1</th>
+              <th>Q2</th>
+              <th>Q3</th>
+              <!-- <% for(var i = 0; i < quests.length; i++) { %>
+                <th>q1<%= quests[i].questions[0]; %></th> 
+                <th>q2<%= quests[i].questions[1]; %></th> 
+                <th>q3<%= quests[i].questions[2]; %></th>
+              <% } %>  -->
               <th>Comment</th>
             </tr>
+            <% for(var i = 0; i < completeQuests.length; i++) { %>
             <tr>
               <td>
-                <%= email%>
+                <%= completeQuests[i].date; %>
               </td>
               <td>
-                <%= type%>
+                <%= completeQuests[i].email; %>
               </td>
               <td>
-                <%= score%>
-              </td> 
+                <%= completeQuests[i].score[0]; %>
+              </td>
               <td>
-                <%= comment%>
+                <%= completeQuests[i].score[1]; %>
+              </td>
+              <td>
+                <%= completeQuests[i].score[2]; %>
+              </td>
+              <td>
+                <%= completeQuests[i].comment; %>
               </td>
             </tr>
+            <% } %>
         </table>
       </div>
     </div>

@@ -5,23 +5,29 @@ const mongoose = require('mongoose');
         type: String,
         required: true
     },
-    score: {
+    school: {
         type: String,
+        required: true
+    },
+    score: {
+        type: Array,
         required: true
     },
     type: {
         type: String,
-        required: true,
-        default: 'meeting'
+        required: true
     },
     comment: {
         type: String,
-        required: true,
+        required: false,
         default: 'none'
     },
     date: {
         type: Date,
         default: Date.now
+    },
+    qID: {
+        type: String
     }
  })
 

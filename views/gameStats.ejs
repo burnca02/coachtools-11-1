@@ -59,19 +59,13 @@
         <p>Click <a href="/coach/template">here</a> for an example template.</p>
       </div>
         <form action = "/coach/upload" method = "POST">
-          <button type="button" class="btn btn-primary" style="background:red;">Offensive Stats</button>
+          <button type="button" class="btn btn-primary" style="background:red;">What stats do you want to upload?</button>
           <div class="btn-group" role="group">
             <button id="btnGroupDrop1" type="button" style="background:red;" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
             <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
               <button class="dropdown-item" type="submit" name= "type" value = "pass">Upload Passing Stats</button>
               <button class="dropdown-item" type="submit" name= "type" value = "rush">Upload Rushing Stats</button>
               <button class="dropdown-item" type="submit" name= "type" value = "wr">Upload Wide Receiver/Tight End Stats</button>
-            </div>
-          </div>
-          <button type="button" class="btn btn-primary" style="background:red;">Defensive Stats</button>
-          <div class="btn-group" role="group">
-            <button id="btnGroupDrop1" type="button" style="background:red;" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
-            <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
               <button class="dropdown-item" type="submit" name= "type" value = "tack">Upload Tackle Stats</button>
               <button class="dropdown-item" type="submit" name= "type" value = "sack">Upload Sack Stats</button>
               <button class="dropdown-item" type="submit" name= "type" value = "pd">Upload Pass Defense Stats</button>
@@ -81,7 +75,7 @@
           </div>
         </form>
   </div>
-  <form action="/coach/upload" method="POST">
+  <form action="/coach/uploadStats" method="POST">
     <div class="dropdown" style="padding-left: 40%;">
       <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="background: red;">
         View Position
@@ -109,7 +103,6 @@
           <th scope="col">Position</th>
           <th scope="col">Graduation Year</th>
           <th scope="col">Number</th>
-
         </tr>
       </thead>
     </table>

@@ -57,7 +57,19 @@ router.get('/questionnaire', ensureAuthenticated, (req, res) =>
 
 router.post('/upload', (req,res) => {
     if (!req.files)
-            return res.status(400).send('No files were uploaded.');
+        return res.status(400).send('No files were uploaded.');
+
+            /**
+     * This function will delete all of the data in the database. This is necessary so that whenever the coach
+     * uploads another roster there will be no duplicates and it willl be a clean slate.
+     * 
+     * This an async function so that we give time for the query to finish before adding new players to the rosters database. 
+     */
+    async function deleteData(){
+      const mongo = await mongoose.connection.db.collection('Roster').deleteMany({School: req.session.school});
+  } 
+
+  deleteData();
         
         var rosterFile = req.files.file;
 
@@ -69,7 +81,9 @@ router.post('/upload', (req,res) => {
         })
         .on("data", function(data){
             data['_id'] = new mongoose.Types.ObjectId();
-            
+            data['School'] = req.session.school;
+            data['Email'] = null;
+
             players.push(data);
         })
         .on("end", function(){
@@ -162,6 +176,17 @@ router.get('/practiceStats', ensureAuthenticated, (req, res) =>
   res.render('practiceStats', {
     name: req.user.name //pass the name that was entered into the database to dashboard
 }));
+
+router.get('/roster', ensureAuthenticated, (req, res) => 
+  Roster.find({ "Pos": { "$exists": true }, "School" :req.session.school }).sort({'Pos': 1})
+  .then(results => {
+  res.render('roster', {players: results,
+    name : req.session.name,
+    school: req.session.school})
+  })
+  .catch(error => console.error(error))
+);
+
 router.post('/table', (req,res) => 
   {    
     const type = req.body.type;

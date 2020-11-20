@@ -29,8 +29,10 @@ Questionnaire.find({type: "meeting"}).limit(1).sort({$natural: -1}) //gets most 
     }
 }
 ));
+
 router.post('/viewQuestionnaire', (req, res) => {
     const { q1, q2, q3, comment, qtype, qid} = req.body;
+    const name = req.user.name;
     //console.log(req.body);
     var score = [q1, q2, q3];
     var qID = qid;
@@ -40,6 +42,7 @@ router.post('/viewQuestionnaire', (req, res) => {
     const type = qtype;
     const newCompleteQuest = new CompleteQuest({
         qID,
+        name,
         email,
         school,
         score,

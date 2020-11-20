@@ -5,6 +5,10 @@ const mongoose = require('mongoose');
         type: String,
         required: true
     },
+    name: {
+        type: String,
+        required: true
+    },
     score: {
         type: String,
         required: true

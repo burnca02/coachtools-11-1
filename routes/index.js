@@ -11,8 +11,48 @@ router.get('/', (req, res) => res.render('welcome'));
 
 router.get('/test', (req, res) => res.render('test'));
 
-router.get('/viewQuestionnaire', (req, res) => 
+router.get('/viewMQuestionnaire', (req, res) => 
 Questionnaire.find({type: "meeting"}).limit(1).sort({$natural: -1}) //gets most recent doc, need to change so that all come through
+.then(questionnaires => {
+  console.log(questionnaires);
+  if(questionnaires.length == 0){
+      res.render('hold');
+  }
+  else{
+    res.render('viewQuestionnaire', {
+            q1: questionnaires[0].questions[0],
+            q2: questionnaires[0].questions[1],
+            q3: questionnaires[0].questions[2],
+            type: questionnaires[0].type,
+            _id: questionnaires[0]._id.toString()
+            //name: req.user.name
+        });
+    }
+}
+));
+
+router.get('/viewPQuestionnaire', (req, res) => 
+Questionnaire.find({type: "practice"}).limit(1).sort({$natural: -1}) //gets most recent doc, need to change so that all come through
+.then(questionnaires => {
+  console.log(questionnaires);
+  if(questionnaires.length == 0){
+      res.render('hold');
+  }
+  else{
+    res.render('viewQuestionnaire', {
+            q1: questionnaires[0].questions[0],
+            q2: questionnaires[0].questions[1],
+            q3: questionnaires[0].questions[2],
+            type: questionnaires[0].type,
+            _id: questionnaires[0]._id.toString()
+            //name: req.user.name
+        });
+    }
+}
+));
+
+router.get('/viewTQuestionnaire', (req, res) => 
+Questionnaire.find({type: "training"}).limit(1).sort({$natural: -1}) //gets most recent doc, need to change so that all come through
 .then(questionnaires => {
   console.log(questionnaires);
   if(questionnaires.length == 0){

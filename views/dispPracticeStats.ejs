@@ -273,13 +273,15 @@
                             <td>Last Practice Grade</td>
                             <td>Season Average(Overall)</td>
                             <td>Previous Week</td>
-                            <td>Season Average(Technique)</td>
-                            <td>Season Average(Assignment)</td>
-                            <td>Season Average(Execution)</td>
+                            <td>Season Average(<%=ints[0] %>)</td>
+                            <td>Season Average(<%=ints[1] %>)</td>
+                            <td>Season Average(<%=ints[2] %>)</td>
+                            <td>Season Average(<%=ints[3] %>)</td>
                           </tr>
                           <% for(var i = 0; i < players.length; i++) { %>
                           <tr>
                             <td><%=players[i].FullName%> %></td>
+                            <td>#</td>
                             <td>#</td>
                             <td>#</td>
                             <td>#</td>

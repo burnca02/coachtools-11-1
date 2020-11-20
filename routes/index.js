@@ -24,6 +24,7 @@ Questionnaire.find({type: "meeting"}).limit(1).sort({$natural: -1}) //gets most 
             q2: questionnaires[0].questions[1],
             q3: questionnaires[0].questions[2],
             type: questionnaires[0].type,
+            _id: questionnaires[0]._id.toString()
             //name: req.user.name
         });
     }

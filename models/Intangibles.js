@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
  const IntangiblesSchema = new mongoose.Schema({
-     school: {
+    school: {
         type: String,
         required: true
     },

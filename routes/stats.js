@@ -21,11 +21,6 @@ router.get('/dispPracticeStats', ensureAuthenticated, (req, res) =>
     name: req.user.name //pass the name that was entered into the database to dashboard
 }));
 
-router.get('/dispPracticeStats', ensureAuthenticated, (req, res) => 
-  res.render('dispPracticeStats', {
-    name: req.user.name //pass the name that was entered into the database to dashboard
-}));
-
 router.post('/dispPracticeStats', async(req, res) => {
     const {pos} = req.body;
     const ints = [];
@@ -33,7 +28,7 @@ router.post('/dispPracticeStats', async(req, res) => {
     Roster.find({Pos: pos, School: req.user.school}) 
     .then(players => {
       console.log(players[0].Pos);
-      Intangibles.findOne({pos: players[0].Pos, School: req.user.school})
+      Intangibles.findOne({pos: players[0].Pos, school: req.user.school})
       .then(intangibles => {
       console.log(intangibles.ints);
       if(players.length == 0){
@@ -44,7 +39,7 @@ router.post('/dispPracticeStats', async(req, res) => {
               'ints': intangibles.ints    
             });
       }
-    }).catch(err => res.render('practiceStats'));
+    }).catch(err => console.log(err));
     }).catch(err => console.log(err));
 });
 

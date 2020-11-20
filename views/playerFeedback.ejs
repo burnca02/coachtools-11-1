@@ -2,7 +2,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     .dropbtn {
-      background-color: #4caf50;
+      background-color: rgb(192, 26, 26);
       color: white;
       padding: 16px;
       font-size: 16px;
@@ -39,7 +39,7 @@
     }
 
     .dropdown:hover .dropbtn {
-      background-color: #3e8e41;
+      background-color: rgb(192, 26, 26);
     }
   </style>
   <!-- header -->
@@ -76,13 +76,15 @@
       <a href="./questionnaire">New Training Questionnaire</a>
     </div> -->
   </div>
-
+  <form action="./viewResponse" method="POST">
   <div class="dropdown">
     <button class="dropbtn">View Questionnaire Responses</button>
     <div class="dropdown-content">
-      <a href="./viewResponse">Meeting Questionnaire Responses</a>
-      <a href="./viewResponse">Practice Questionnaire Responses</a>
-      <a href="./viewResponse">Training Questionnaire Responses</a>
+      <a><input type="radio" value="meeting" name="type" href="./viewResponse">Meeting Questionnaire Responses</input></a>
+      <a><input type="radio" value="practice" name="type" href="./viewResponse">Practice Questionnaire Responses</input></a>
+      <a><input type="radio" value="training" name="type" href="./viewResponse">Training Questionnaire Responses</input></a>
+      <a><button type="submit" href="./viewResponse">Go</button></a>
     </div>
   </div>
+  </form>
 </div>

@@ -30,23 +30,38 @@ Questionnaire.find({"type": "meeting"}).limit(1) //gets most recent doc, need to
 }
 ));
 router.post('/viewQuestionnaire', (req, res) => {
-    const { s1, s2, s3, comment, type} = req.body;
-    console.log('completequest post method');
-    console.log(req.body);
-    var score = parseFloat((s1 + s2 + s3) / 3);
-    console.log(score);
+    const { q1, q2, q3, comment, qtype, qid} = req.body;
+    //console.log(req.body);
+    var score = [q1, q2, q3];
+    var qID = qid;
     const email = req.user.email;
+    const school = req.user.school;
+    console.log('type' + qtype);
+    const type = qtype;
     const newCompleteQuest = new CompleteQuest({
+        qID,
         email,
+        school,
         score,
         type,
         comment
     });
-  
-    //save user
+    //remove player from questionnaire participants list
+    Questionnaire.findOneAndUpdate({_id: qID})
+    .then(result => {
+        console.log('result' + result);
+        const index = result.participants.indexOf(email);
+        if (index > -1) {
+            console.log('remove email');
+            result.participants.splice(index, 1);
+        }
+        console.log(result.participants);
+        result.save();
+    });
+    //save completed questionnaire
     newCompleteQuest.save()
-    .then(stat => {
-        req.flash('success_msg', 'Stats have been updated');
+    .then(quest => {
+        req.flash('success_msg', 'Questionnaire has been submitted');
         res.redirect('playerHome');
     })
     .catch(err => console.log(err));
@@ -90,6 +105,11 @@ router.post('/viewQuestionnaire', (req, res) => {
 //Player Home Page
 router.get('/playerHome', ensureAuthenticated, (req, res) =>
     res.render('playerHome', {
+        name: req.user.name //pass the name that was entered into the database to dashboard
+    })
+);
+router.get('/coachHome', ensureAuthenticated, (req, res) => 
+    res.render('coachHome', {
         name: req.user.name //pass the name that was entered into the database to dashboard
     })
 );

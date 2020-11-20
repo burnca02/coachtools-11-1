@@ -43,39 +43,62 @@
 </div>
 
 <div class="main">
-  <div class="row" style="padding-top: 15px; padding-left: 10px">
-      <div class="form-group" role="group" aria-label="Button group with nested dropdown">
-        <form action = "/coach/table" method = "POST">
-          <button type="button" class="btn btn-primary">Sort By</button>
+  <div class="row">
+        <!-- This is the upload excel roster button. -->
+      <div style="margin-left: 5%">
+        <form action="/coach/upload" method="POST" encType="multipart/form-data">
+          <input type="file" name="file" accept=".csv" />
+        </form>
+        <p>Click <a href="/coach/template">here</a> for an example template.</p>
+      </div>
+        <form action = "/coach/upload" method = "POST">
+          <button type="button" class="btn btn-primary" style="background:red;">What stats do you want to upload?</button>
           <div class="btn-group" role="group">
-            <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+            <button id="btnGroupDrop1" type="button" style="background:red;" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
             <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-              <button class="dropdown-item" type="submit" name= "type" value = "full">View Whole Roster</button>
-              <button class="dropdown-item" type="submit" name= "type" value = "qb">View Quartberbacks</button>
-              <button class="dropdown-item" type="submit" name= "type" value = "wr">View Wide Receivers</button>
-              <button class="dropdown-item" type="submit" name= "type" value = "k">View Kickers</button>
-              <button class="dropdown-item" type="submit" name= "type" value = "lb">View Linebackers</button>
-              <button class="dropdown-item" type="submit" name= "type" value = "gy">Sort By Graduation Year (Ascending)</button>
-              <button class="dropdown-item" type="submit" name= "type" value = "gyd">Sort By Graduation Year (Descending)</button>
+              <button class="dropdown-item" type="submit" name= "type" value = "pass">Upload Passing Stats</button>
+              <button class="dropdown-item" type="submit" name= "type" value = "rush">Upload Rushing Stats</button>
+              <button class="dropdown-item" type="submit" name= "type" value = "wr">Upload Wide Receiver/Tight End Stats</button>
+              <button class="dropdown-item" type="submit" name= "type" value = "tack">Upload Tackle Stats</button>
+              <button class="dropdown-item" type="submit" name= "type" value = "sack">Upload Sack Stats</button>
+              <button class="dropdown-item" type="submit" name= "type" value = "pd">Upload Pass Defense Stats</button>
+              <button class="dropdown-item" type="submit" name= "type" value = "fum">Upload Fumbles Stats</button>
+              <button class="dropdown-item" type="submit" name= "type" value = "bk">Upload Blocked Kick Stats</button>
             </div>
           </div>
         </form>
+  </div>
+  <form action="/coach/uploadStats" method="POST">
+    <div class="dropdown" style="padding-left: 40%;">
+      <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="background: red;">
+        View Position
+      </button>
+      <div class="dropdown-menu"  style =  " max-height:200px; overflow:scroll;" aria-labelledby="dropdownMenuButton">
+        <button class="dropdown-item" type = "submit" href="#">Quarterbacks</button>
+        <button class="dropdown-item" type = "submit" href="#">Running Backs</button>
+        <button class="dropdown-item" type = "submit" href="#">Full Backs</button>
+        <button class="dropdown-item" type = "submit" href="#">Wide Receivers</button>
+        <button class="dropdown-item" type = "submit" href="#">Tight Ends</button>
+        <button class="dropdown-item" type = "submit" href="#">Outside Linebackers</button>
+        <button class="dropdown-item" type = "submit" href="#">Linebackers</button>
+        <button class="dropdown-item" type = "submit" href="#">Inside Linebackers</button>
+        <button class="dropdown-item" type = "submit" href="#">Defensive Tackles</button>
+        <button class="dropdown-item" type = "submit" href="#">Defensive Ends</button>
+        <button class="dropdown-item" type = "submit" href="#">Defensive Linemen</button>
+        <button class="dropdown-item" type = "submit" href="#">Offensive Linemen</button>
+        <button class="dropdown-item" type = "submit" href="#">Punters</button>
       </div>
-      
-
-    <!-- This is the upload excel roster button. -->
-    <!-- <p>Use the form below to upload a list of authors. -->
-    <div style="margin-left: 5%">
-      <form action="/coach/upload" method="POST" encType="multipart/form-data">
-        <input type="file" name="file" accept=".csv" />
-        <input
-          type="submit"
-          class="btn btn-primary dropdown-toggle"
-          value="Upload Roster"
-        />
-      </form>
-      <p>Click <a href="/coach/template">here</a> for an example template.</p>
     </div>
+    <table class="table table-hover" style="padding: 500px;">
+      <thead>
+        <tr class="table-dark">
+          <th scope="col">Name</th>
+          <th scope="col">Position</th>
+          <th scope="col">Graduation Year</th>
+          <th scope="col">Number</th>
+        </tr>
+      </thead>
+    </table>
   </div>
 </div>
 <script>

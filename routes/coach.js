@@ -141,14 +141,15 @@ router.post('/submitquest', async(req,res) => {
 router.post('/viewResponse', ensureAuthenticated, async(req, res) => {
   console.log(req.body);
   const {type} = req.body;
-  console.log(type);
-  CompleteQuest.find({type: type, school: req.user.school}).sort({email: 1})
+  console.log('type ' + type);
+  await CompleteQuest.find({type: type, school: req.user.school}).sort({email: 1})
   .then(completeQuests => { //completeQuests will be array of all completed questionnaires(all types)
-    console.log(completeQuests);
+    console.log('completequests ' + completeQuests);
     var quests = [];
     for(var i = 0; i < completeQuests.length; i++){
       var condition = completeQuests[i].qID;
       var email = completeQuests[i].email;
+      console.log('email ' + email);
       console.log(condition);
       Questionnaire.findOne({_id: condition})
       .then(quest => {

@@ -103,6 +103,7 @@ router.post('/viewQuestionnaire', (req, res) => {
         result.save();
     });
     //save completed questionnaire
+    console.log('saving complete questionnaire');
     newCompleteQuest.save()
     .then(quest => {
         req.flash('success_msg', 'Questionnaire has been submitted');

@@ -10,7 +10,7 @@ const mongoose = require('mongoose');
         required: true
     },
     score: {
-        type: String,
+        type: Array,
         required: true
     },
     type: {

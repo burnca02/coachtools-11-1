@@ -12,7 +12,7 @@ router.get('/', (req, res) => res.render('welcome'));
 router.get('/test', (req, res) => res.render('test'));
 
 router.get('/viewQuestionnaire', (req, res) => 
-Questionnaire.find({type: "meeting"}).limit(1).sort({$natural: -1}) //gets most recent doc, need to change so that all come through
+Questionnaire.find({participants: req.user.email}).limit(1).sort({$natural:-1}) //gets most recent doc, need to change so that all come through
 .then(questionnaires => {
   console.log(questionnaires);
   if(questionnaires.length == 0){
@@ -24,68 +24,55 @@ Questionnaire.find({type: "meeting"}).limit(1).sort({$natural: -1}) //gets most 
             q2: questionnaires[0].questions[1],
             q3: questionnaires[0].questions[2],
             type: questionnaires[0].type,
-            //name: req.user.name
+            _id: questionnaires[0]._id.toString()
         });
     }
 }
 ));
 router.post('/viewQuestionnaire', (req, res) => {
-    const { s1, s2, s3, comment, type} = req.body;
-    console.log('completequest post method');
-    console.log(req.body);
-    var score = parseFloat((s1 + s2 + s3) / 3);
-    console.log(score);
+    const { q1, q2, q3, comment, qtype, qid} = req.body;
+    //console.log(req.body);
+    var score = [q1, q2, q3];
+    var qID = qid;
     const email = req.user.email;
+    const school = req.user.school;
+    console.log('type' + qtype);
+    const type = qtype;
     const newCompleteQuest = new CompleteQuest({
+        qID,
         email,
+        school,
         score,
         type,
         comment
     });
-  
-    //save user
+    //remove player from questionnaire participants list
+    Questionnaire.findOneAndUpdate({_id: qID})
+    .then(result => {
+        console.log('result' + result);
+        const index = result.participants.indexOf(email);
+        if (index > -1) {
+            console.log('remove email');
+            result.participants.splice(index, 1);
+        }
+        console.log(result.participants);
+        result.save();
+    });
+    //save completed questionnaire
     newCompleteQuest.save()
-    .then(stat => {
-        req.flash('success_msg', 'Stats have been updated');
+    .then(quest => {
+        req.flash('success_msg', 'Questionnaire has been submitted');
         res.redirect('playerHome');
     })
     .catch(err => console.log(err));
   });
 
-
-  MongoClient.connect(uri, { useUnifiedTopology: true })
-  .then(client => {
-      const db = client.db('test');
-      const rosterCollection = db.collection('Roster');
-  
-          //Coach Home Page`
-      router.get('/coachHome', ensureAuthenticated, (req, res) => 
-  
-      db.collection('Roster').find({ "Pos": { "$exists": true }, "School": req.session.school}).sort({'Pos': 1}).toArray()
-      .then(results => {
-          res.render('coachHome', {players: results,
-                                  name: req.user.name,
-                                  school: req.session.school   
-                                  }
-                   )
-      })
-      .catch(error => console.error(error))
-      );
-    
-      router.get('/roster', ensureAuthenticated, (req, res) => 
-
-      db.collection('Roster').find({ "Pos": { "$exists": true }, "School": req.session.school}).sort({'Pos': 1}).toArray()
-      .then(results => {
-          res.render('roster', {players: results,
-                                  name: req.user.name,
-                                  school: req.session.school   
-                                  }
-                   )
+//Coach Home Page
+router.get('/coachHome', ensureAuthenticated, (req, res) => 
+    res.render('coachHome', {
+        name: req.user.name //pass the name that was entered into the database to dashboard
     })
-    .catch(error => console.error(error))
-    );
-  })
-  .catch(console.error)
+);
 
 //Player Home Page
 router.get('/playerHome', ensureAuthenticated, (req, res) =>

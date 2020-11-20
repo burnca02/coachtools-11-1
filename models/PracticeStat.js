@@ -9,21 +9,25 @@ const mongoose = require('mongoose');
         type: String,
         required: true
     },
-     int1: {
-        type: Array, //int1[0]= intangible1 name, int1[1]= score
+    grade: {
+        type: String,
         required: true
+    },
+     int1: {
+        type: Array, //int1[0]= intangible1 name, int[1]= gradingscale, int1[2]= grade
+        required: false
     },
     int2: {
         type: Array,
-        required: true
+        required: false
     },
     int3: {
         type: Array,
-        required: true
+        required: false
     },
     int4: {
         type: Array,
-        required: true
+        required: false
     },
     date: {
         type: Date,

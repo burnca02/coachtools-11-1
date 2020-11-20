@@ -44,6 +44,7 @@ router.get('/playerFeedback', ensureAuthenticated, (req, res) => {
 
 router.get('/gameStats', ensureAuthenticated, (req, res) => {
   res.render('gameStats', {
+    name: req.user.name
   });
 });
 
@@ -194,6 +195,16 @@ router.get('/roster', ensureAuthenticated, (req, res) =>
   Roster.find({ "Pos": { "$exists": true }, "School" :req.session.school }).sort({'Pos': 1})
   .then(results => {
   res.render('roster', {players: results,
+    name : req.session.name,
+    school: req.session.school})
+  })
+  .catch(error => console.error(error))
+);
+
+router.get('/depthChart', ensureAuthenticated, (req, res) => 
+  Roster.find({ "Pos": { "$exists": true }, "School" :req.session.school }).sort({'Pos': 1})
+  .then(results => {
+  res.render('depthChart', {players: results,
     name : req.session.name,
     school: req.session.school})
   })

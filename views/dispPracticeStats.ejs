@@ -1,49 +1,60 @@
-<head>
-  <style>
-      .dropbtn {
-        background-color: red;
-        color: white;
-        padding: 16px;
-        font-size: 16px;
-        border: none;
-      }
-      
-      .dropdown {
-        position: center;
-        display: inline-block;
-        border: red;
-      }
-      
-      .dropdown-content {
-        display: none;
-        position: absolute;
-        background-color: red;
-        min-width: 160px;
-        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-        z-index: 1;
-      }
-      
-      .dropdown-content a {
-        color: black;
-        padding: 12px 16px;
-        text-decoration: none;
-        display: block;
-      }
-      
-      .dropdown-content a:hover {background-color: #ddd;}
-      
-      .dropdown:hover .dropdown-content {display: block;}
-      
-      .dropdown:hover .dropbtn {background-color: #e71111;}
-    table.redTable {
-    border: 2px solid #A40808;
-    background-color: #EEE7DB;
+<style>
+  @media all and (min-width: 600px) {
+    .bodyContainer {flex: 2 0px;}
+    .sidenav {order: 1;}
+    .rBody {order: 2;}
+  }
+  .dropbtn {
+    background-color: red;
+    color: white;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+  }
+
+  .dropdown {
+    position: center;
+    display: inline-block;
+    border: red;
+  }
+
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: red;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+  }
+
+  .dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+  }
+
+  .dropdown-content a:hover {
+    background-color: #ddd;
+  }
+
+  .dropdown:hover .dropdown-content {
+    display: block;
+  }
+
+  .dropdown:hover .dropbtn {
+    background-color: #e71111;
+  }
+  table.redTable {
+    border: 2px solid #a40808;
+    background-color: #eee7db;
     width: 100%;
     text-align: center;
     border-collapse: collapse;
   }
-  table.redTable td, table.redTable th {
-    border: 1px solid #AAAAAA;
+  table.redTable td,
+  table.redTable th {
+    border: 1px solid #aaaaaa;
     padding: 3px 2px;
   }
   table.redTable tbody td {
@@ -51,27 +62,27 @@
     text-align: center;
   }
   table.redTable tr:nth-child(even) {
-    background: #F5C8BF;
+    background: #f5c8bf;
   }
   table.redTable thead {
-    background: #A40808;
+    background: #a40808;
   }
   table.redTable thead th {
     font-size: 19px;
     font-weight: bold;
-    color: #FFFFFF;
+    color: #ffffff;
     text-align: center;
-    border-left: 2px solid #A40808;
+    border-left: 2px solid #a40808;
   }
   table.redTable thead th:first-child {
     border-left: none;
   }
-  
+
   table.redTable tfoot {
     font-size: 13px;
     font-weight: bold;
-    color: #FFFFFF;
-    background: #A40808;
+    color: #ffffff;
+    background: #a40808;
   }
   table.redTable tfoot td {
     font-size: 13px;
@@ -80,37 +91,103 @@
   table.redTable tfoot .links {
     text-align: right;
   }
-  table.redTable tfoot .links a{
+  table.redTable tfoot .links a {
     display: inline-block;
-    background: #FFFFFF;
-    color: #A40808;
+    background: #ffffff;
+    color: #a40808;
     padding: 2px 8px;
     border-radius: 5px;
   }
   table.redTable2 {
-    border: 2px solid #A40808;
-    background-color: #EEE7DB;
+    border: 2px solid #a40808;
+    background-color: #eee7db;
     width: 100%;
     text-align: center;
     border-collapse: collapse;
   }
-  table.redTable2 td, table.redTable2 th {
-    border: 1px solid #AAAAAA;
+  table.redTable2 td,
+  table.redTable2 th {
+    border: 1px solid #aaaaaa;
     padding: 8px 8px;
   }
-  table.table1, table.table2 {
+  table.table1,
+  table.table2 {
     display: none;
-    text-align: center
+    text-align: center;
   }
   td {
     text-align: center;
   }
-  </style>
-  </head>
-  <h1 class="text-center mb-3"><i class="fas fa-sign-in-alt"></i> Season Practice Statistics</h1>
-    <div class= 'dropdown'>
-      <form action="/stats/dispPracticeStats" method="POST">
-          <label for="pos">Choose a Position:</label>
+  @media all and (min-width: 600px) {
+    .bodyContainer {
+      flex: 2 0px;
+    }
+    .sidenav {
+      order: 1;
+    }
+    .rBody {
+      order: 2;
+    }
+  }
+</style>
+<div class="bigContainer">
+  <nav class="topnav" id="myTopnav">
+    <a
+      href="javascript:void(0);"
+      class="icon threeLines"
+      onclick="resizeDropdown2()"
+    >
+      <i class="fa fa-bars"></i>
+    </a>
+    <div class="topnavChild1" style="width: 100%" id="logo">
+      <img
+        src="images/coachToolsLogo.png"
+        alt="CoachTools"
+        style="width: 110px"
+      />
+    </div>
+    <div class="topnavChild2">
+      <!-- <span class="dateDisp" id="datetime"></span> -->
+      <a style="color: #818181" id="datetime"></a>
+      <a class="logout" onclick="window.location.href='/users/logout'"
+        >Logout</a
+      >
+    </div>
+  </nav>
+  <div class="bodyContainer">
+    <nav class="sidenav" style="max-width: 170px">
+      <a href="/coachHome">Home</a>
+      <button class="dropdown-btn">
+        Roster<i class="fa fa-caret-down"></i>
+      </button>
+      <div class="dropdown-container">
+        <a href="/roster">Player Bio</a>
+        <a href="/depthChart">Depth Chart</a>
+      </div>
+      <button class="dropdown-btn">Game<i class="fa fa-caret-down"></i></button>
+      <div class="dropdown-container">
+        <a href="/coach/gameStats">Game Stats</a>
+        <a href="#">Game Grade</a>
+        <a href="#">Analysis</a>
+      </div>
+      <button class="dropdown-btn">
+        Practice<i class="fa fa-caret-down"></i>
+      </button>
+      <div class="dropdown-container">
+        <a href="/coach/submitIntangibles">Submit Intangibles</a>
+        <a href="/coach/practiceStats">In Season</a>
+        <a href="/coach/practiceTrainingStats">Training</a>
+      </div>
+      <a href="/coach/playerFeedback">Player Feedback</a>
+      <a href="#">Comparison</a>
+    </nav>
+    <div class="rBody">
+      <h1 class="text-center mb-3">
+        <i class="fas fa-sign-in-alt"></i> Season Practice Statistics
+      </h1>
+      <div class="dropdown">
+        <form action="/stats/dispPracticeStats" method="POST">
+          <label for="pos" style="margin-bottom: 0;">Choose a Position:</label>
           <select name="pos" id="pos">
             <option value="WR">WR</option>
             <option value="LT">LT</option>
@@ -122,167 +199,230 @@
             <option value="QB">QB</option>
             <option value="RB">RB</option>
           </select>
-          <br><br>
-          <input type="submit" value="Submit">
+          <br />
+          <input type="submit" value="Submit" />
         </form>
-    </div>
-
-<div>
-  <table class="redTable">
-    <thead>
-    <tr>
-    <th id="topLeft"><%= players[0].FullName + '(' + players[0].Pos + ')'; %></th>
-    <th>Practice Dropdown</th>
-    </tr>
-    </thead>
-    <tfoot>
-    <tr>
-    <td colspan="3">
-    <div class="links">
-      <a class="active" onclick="prevPlayer();">Previous Player</a> <a class="active" onclick="nextPlayer();">Next Player</a>
-    </div>
-    </td>
-    </tr>
-    </tfoot>
-    <tbody>
-    <tr>
-    <td>
-      <table class="redTable">
-        <tbody>
-        <tr>
-        <td>
-          <% for(var i = 0; i < players.length; i++) { %>
-            <ul>
-              <button id="playerButton" onclick="changePlayer(playerButton.value);"><%=players[i].FullName %></button>
-            </ul>
-            <% } %>
-        </td>
-        </tr>
-        </tbody>
-        </table>
-    </td>
-    <td>
-      <table class= "redTable">
-        <thead>
-          <tr>
-            <th id="playerName">Player Name Here</th>
-          </tr>
-        </thead>
-        <table onload='javascript:hideTables();'>
-          <input type='button' onClick='javascript:showView();' value='VIEW'>
-          <input type='button' onClick='javascript:showEdit();' value='EDIT'>
-          <table class= "redTable" id='viewTable' border=1>
+      </div>
+      <div class="rosterRow">
+        <div>
+          <table class="redTable">
+            <thead>
+              <tr>
+                <th id="topLeft">
+                  <%= players[0].FullName + '(' + players[0].Pos + ')'; %>
+                </th>
+                <th>Practice Dropdown</th>
+              </tr>
+            </thead>
+            <tfoot>
+              <tr>
+                <td colspan="3">
+                  <div class="links">
+                    <a class="active" onclick="prevPlayer();"
+                      >Previous Player</a
+                    >
+                    <a class="active" onclick="nextPlayer();">Next Player</a>
+                  </div>
+                </td>
+              </tr>
+            </tfoot>
             <tbody>
               <tr>
-                <td></td>
-                <td>Last Practice Grade</td>
-                <td>Season Average(Overall)</td>
-                <td>Previous Week</td>
-                <td>Season Average(Technique)</td>
-                <td>Season Average(Assignment)</td>
-                <td>Season Average(Execution)</td>
+                <td>
+                  <table class="redTable">
+                    <tbody>
+                      <tr>
+                        <td>
+                          <% for(var i = 0; i < players.length; i++) { %>
+                          <ul>
+                            <button
+                              id="playerButton"
+                              onclick="changePlayer(playerButton.value);"
+                            >
+                              <%=players[i].FullName %>
+                            </button>
+                          </ul>
+                          <% } %>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+                <td>
+                  <table class="redTable">
+                    <thead>
+                      <tr>
+                        <th id="playerName">Player Name Here</th>
+                      </tr>
+                    </thead>
+                    <table onload="javascript:hideTables();">
+                      <input
+                        type="button"
+                        onClick="javascript:showView();"
+                        value="VIEW"
+                      />
+                      <input
+                        type="button"
+                        onClick="javascript:showEdit();"
+                        value="EDIT"
+                      />
+                      <table class="redTable" id="viewTable" border="1">
+                        <tbody>
+                          <tr>
+                            <td></td>
+                            <td>Last Practice Grade</td>
+                            <td>Season Average(Overall)</td>
+                            <td>Previous Week</td>
+                            <td>Season Average(Technique)</td>
+                            <td>Season Average(Assignment)</td>
+                            <td>Season Average(Execution)</td>
+                          </tr>
+                          <% for(var i = 0; i < players.length; i++) { %>
+                          <tr>
+                            <td><%=players[i].FullName%> %></td>
+                            <td>#</td>
+                            <td>#</td>
+                            <td>#</td>
+                            <td>#</td>
+                            <td>#</td>
+                            <td>#</td>
+                          </tr>
+                          <% } %>
+                        </tbody>
+                      </table>
+                      <table class="redTable" id="editTable" border="1">
+                        <tbody>
+                          <form action="/stats/addPracticeGrade" method="POST">
+                            <tr>
+                              <td>
+                                <label for="player">Player Name</label>
+                                <input
+                                  id="player"
+                                  name="player"
+                                  value="none"
+                                  readonly
+                                />
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <label for="scale">Today's Date</label>
+                                <input id="date" name="date" readonly />
+                                <script type="text/javascript">
+                                  document.getElementById(
+                                    "date"
+                                  ).value = Date();
+                                </script>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <label for="scale">Grading Scale</label>
+                                <input
+                                  type="text"
+                                  name="scale"
+                                  id="scale"
+                                  placeholder="10"
+                                />
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <label for="grade1"><%= ints[0] %></label>
+                                <input
+                                  type="number"
+                                  name="grade1"
+                                  id="grade1"
+                                  max="10"
+                                  placeholder="Enter Grade"
+                                />
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <label for="grade2"><%= ints[1] %></label>
+                                <input
+                                  type="number"
+                                  name="grade2"
+                                  id="grade2"
+                                  max="10"
+                                  placeholder="Enter Grade"
+                                />
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <label for="grade3"><%= ints[2] %></label>
+                                <input
+                                  type="number"
+                                  name="grade3"
+                                  id="grade3"
+                                  max="10"
+                                  placeholder="Enter Grade"
+                                />
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <label for="grade4"><%= ints[3] %></label>
+                                <input
+                                  type="number"
+                                  name="grade4"
+                                  id="grade4"
+                                  max="10"
+                                  placeholder="Enter Grade"
+                                />
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <button
+                                  type="submit"
+                                  class="btn btn-primary btn-block"
+                                >
+                                  Submit Grade
+                                </button>
+                              </td>
+                            </tr>
+                          </form>
+                        </tbody>
+                      </table>
+                    </table>
+                  </table>
+                </td>
               </tr>
-              <% for(var i = 0; i < players.length; i++) { %>
-              <tr>
-                <td><%=players[i].FullName%> %></td>
-                <td>#</td>
-                <td>#</td>
-                <td>#</td>
-                <td>#</td>
-                <td>#</td>
-                <td>#</td>
-              </tr>
-              <% } %>
             </tbody>
           </table>
-          <table class="redTable" id='editTable' border=1>
-            <tbody>
-                <form action="/stats/addPracticeGrade" method="POST">
-                    <tr>
-                      <td>
-                        <label for="player">Player Name</label>
-                        <input id="player" name="player" value='none' readonly>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <label for="scale">Today's Date</label>
-                        <input id="date" name="date" readonly>
-                        <script type="text/javascript">
-                          document.getElementById('date').value = Date();
-                        </script>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <label for="scale">Grading Scale</label>
-                        <input type="text" name="scale" id="scale" placeholder="10">
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <label for="grade1"><%= ints[0] %></label>
-                        <input type="number" name="grade1" id="grade1" max="10" placeholder="Enter Grade">
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <label for="grade2"><%= ints[1] %></label>
-                        <input type="number" name="grade2" id="grade2" max="10" placeholder="Enter Grade">
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <label for="grade3"><%= ints[2] %></label>
-                        <input type="number" name="grade3" id="grade3" max="10" placeholder="Enter Grade">
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <label for="grade4"><%= ints[3] %></label>
-                        <input type="number" name="grade4" id="grade4" max="10" placeholder="Enter Grade">
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <button type="submit" class="btn btn-primary btn-block">Submit Grade</button>
-                      </td>
-                    </tr>
-                </form>
-              </tbody>
-          </table>
-        </table>
-      </table>
-    </td>
-    </tr>
-    </tbody>
-    </table>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script>
-//called on lines 170-172
-function showView(){
-  document.getElementById('viewTable').style.visibility = "visible";
-  document.getElementById('editTable').style.visibility = "hidden";
-}
-function showEdit(){
-  document.getElementById('viewTable').style.visibility = "hidden";
-  document.getElementById('editTable').style.visibility = "visible";
-}
-function hideTables(){
-  document.getElementById('viewTable').style.visibility = "hidden";
-  document.getElementById('editTable').style.visibility = "hidden";
-}
+  //called on lines 170-172
+  function showView() {
+    document.getElementById("viewTable").style.visibility = "visible";
+    document.getElementById("editTable").style.visibility = "hidden";
+  }
+  function showEdit() {
+    document.getElementById("viewTable").style.visibility = "hidden";
+    document.getElementById("editTable").style.visibility = "visible";
+  }
+  function hideTables() {
+    document.getElementById("viewTable").style.visibility = "hidden";
+    document.getElementById("editTable").style.visibility = "hidden";
+  }
 </script>
 
 <script>
-//called on line 155
-function changePlayer(name) {
-  //function to update name of player and intangibles
-  document.getElementById('playerName').innerHTML = "Grading for" + name;
-  document.getElementById("topLeft").innerHTML = name + '()';
-  document.getElementById("player").innerHTML = name;
-}
+  //called on line 155
+  function changePlayer(name) {
+    //function to update name of player and intangibles
+    document.getElementById("playerName").innerHTML = "Grading for" + name;
+    document.getElementById("topLeft").innerHTML = name + "()";
+    document.getElementById("player").innerHTML = name;
+  }
 </script>
 <!-- 
 <script>

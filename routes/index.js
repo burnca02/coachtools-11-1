@@ -100,9 +100,22 @@ router.post('/viewQuestionnaire', (req, res) => {
                                   school: req.session.school   
                                   }
                    )
-    })
-    .catch(error => console.error(error))
-    );
+       })
+       .catch(error => console.error(error))
+       );
+
+      router.get('/depthChart', ensureAuthenticated, (req, res) => 
+
+      db.collection('Roster').find({ "Pos": { "$exists": true }, "School": req.session.school}).sort({'Pos': 1}).toArray()
+      .then(results => {
+          res.render('depthChart', {players: results,
+                                  name: req.user.name,
+                                  school: req.session.school   
+                                  }
+                   )
+       })
+       .catch(error => console.error(error))
+       );
   })
   .catch(console.error)
 

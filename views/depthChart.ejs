@@ -1,0 +1,232 @@
+<style>
+    @media all and (min-width: 600px) {
+      .bodyContainer {
+        flex: 2 0px;
+      }
+      .sidenav {
+        order: 1;
+      }
+      .rBody {
+        order: 2;
+      }
+    }
+  </style>
+  <!-- <link rel="stylesheet" type="text/css" href="css/style.css"/> -->
+  <div class="bigContainer">
+    <nav class="topnav" id="myTopnav">
+      <a
+        href="javascript:void(0);"
+        class="icon threeLines"
+        onclick="resizeDropdown2()"
+      >
+        <i class="fa fa-bars"></i>
+      </a>
+      <div class="topnavChild1" style="width: 100%" id="logo">
+        <img
+          src="images/coachToolsLogo.png"
+          alt="CoachTools"
+          style="width: 110px"
+        />
+      </div>
+      <div class="topnavChild2">
+        <!-- <span class="dateDisp" id="datetime"></span> -->
+        <a style="color: #818181" id="datetime"></a>
+        <a style="color: #818181"><%= name %></a>
+        <!--style="padding-left: 75%;"-->
+        <a class="logout" onclick="window.location.href='/users/logout'"
+          >Logout</a
+        >
+      </div>
+    </nav>
+    <!-- Side navigation -->
+    <!-- <div id="nav-placeholder"></div> -->
+    <div class="bodyContainer">
+      <div class="sidenav" style="max-width: 170px">
+        <a href="/coachHome">Home</a>
+        <button class="dropdown-btn">
+          Roster<i class="fa fa-caret-down"></i>
+        </button>
+        <div class="dropdown-container">
+          <a href="/roster">Player Bio</a>
+          <a href="#">Depth Chart</a>
+        </div>
+        <button class="dropdown-btn">Game<i class="fa fa-caret-down"></i></button>
+        <div class="dropdown-container">
+          <a href="/coach/gameStats">Game Stats</a>
+          <a href="#">Game Grade</a>
+          <a href="#">Analysis</a>
+        </div>
+        <button class="dropdown-btn">
+          Practice<i class="fa fa-caret-down"></i>
+        </button>
+        <div class="dropdown-container">
+          <a href="/coach/practiceStats">In Season</a>
+          <a href="/coach/practiceTrainingStats">Training</a>
+        </div>
+        <a href="/coach/playerFeedback">Player Feedback</a>
+        <a href="#">Comparison</a>
+      </div>
+  
+      <div class="rBody">
+        <div class="rosterRow">
+          <div class="btn-group" style="padding: 10px">
+            <button
+              class="btn btn-primary dropdown-toggle"
+              data-toggle="dropdown"
+            >
+              <%= school %> 2020
+            </button>
+            <div class="dropdown-menu">
+              <a class="dropdown-item"><%= school %> 2018</a>
+              <a class="dropdown-item"><%= school %> 2019</a>
+              <a class="dropdown-item"><%= school %> 2020</a>
+            </div>
+          </div>
+          <div
+            class="form-group" role="group" aria-label="Button group with nested dropdown">
+            <form action="/coach/table" method="POST">
+              <button type="button" class="btn btn-primary">Sort By</button>
+              <div class="dropdown" role="group">
+                <button
+                  id="btnGroupDrop1"
+                  type="button"
+                  class="btn btn-primary dropdown-toggle"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                ></button>
+                <div class="dropdown-content" aria-labelledby="btnGroupDrop1">
+                  <button
+                    class="dropdown-item"
+                    type="submit"
+                    name="type"
+                    value="full"
+                  >
+                    View Whole Roster
+                  </button>
+                  <button
+                    class="dropdown-item"
+                    type="submit"
+                    name="type"
+                    value="qb"
+                  >
+                    View Quartberbacks
+                  </button>
+                  <button
+                    class="dropdown-item"
+                    type="submit"
+                    name="type"
+                    value="wr"
+                  >
+                    View Wide Receivers
+                  </button>
+                  <button
+                    class="dropdown-item"
+                    type="submit"
+                    name="type"
+                    value="k"
+                  >
+                    View Kickers
+                  </button>
+                  <button
+                    class="dropdown-item"
+                    type="submit"
+                    name="type"
+                    value="lb"
+                  >
+                    View Linebackers
+                  </button>
+                  <button
+                    class="dropdown-item"
+                    type="submit"
+                    name="type"
+                    value="gy"
+                  >
+                    Sort By Graduation Year (Ascending)
+                  </button>
+                  <button
+                    class="dropdown-item"
+                    type="submit"
+                    name="type"
+                    value="gyd"
+                  >
+                    Sort By Graduation Year (Descending)
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+  
+          <!-- This is the upload excel roster button. -->
+          <!-- <p>Use the form below to upload a list of authors. -->
+          <div class="uploadRosterClass">
+            <form action="/coach/upload" method="POST" encType="multipart/form-data">
+              <input type="file" name="file" accept=".csv" />
+              <input type="submit" class="btn btn-primary dropdown-toggle" value="Upload Roster"/>
+            </form>
+            <p>
+              Click <a href="/coach/template">here</a> for an example template.
+            </p>
+          </div>
+        </div>
+  
+        <table class="table table-hover" style="padding: 500px">
+          <thead>
+            <tr class="table-dark">
+              <th scope="col">Name</th>
+              <th scope="col">Position</th>
+              <th scope="col">Graduation Year</th>
+              <th scope="col">Number</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ul class="players">
+              <% for(var i = 0; i < players.length; i++) {%>
+              <tr class="table-default">
+                <td><%= players[i].FullName %></td>
+                <td><%= players[i].Pos %></td>
+                <td><%= players[i].GradYear %></td>
+                <td><%= players[i].Number %></td>
+              </tr>
+              <% } %>
+            </ul>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <script>
+    // $(function(){
+    //     $("#nav-placeholder").load("navBars/nav.html");
+    // });
+    var dropdown = document.getElementsByClassName("dropdown-btn");
+    var i;
+  
+    for (i = 0; i < dropdown.length; i++) {
+      dropdown[i].addEventListener("click", function () {
+        this.classList.toggle("active");
+        var dropdownContent = this.nextElementSibling;
+        if (dropdownContent.style.display === "block") {
+          dropdownContent.style.display = "none";
+        } else {
+          dropdownContent.style.display = "block";
+        }
+      });
+    }
+  
+    var dropdown = document.getElementsByClassName("dropdown-toggle");
+    var i;
+  
+    for (i = 0; i < dropdown.length; i++) {
+      dropdown[i].addEventListener("click", function () {
+        this.classList.toggle("active");
+        var dropdownContent = this.nextElementSibling;
+        if (dropdownContent.style.display === "block") {
+          dropdownContent.style.display = "none";
+        } else {
+          dropdownContent.style.display = "block";
+        }
+      });
+    }
+  </script>
+  

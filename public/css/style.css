@@ -800,6 +800,12 @@ a:hover {
   /* justify-content: space-evenly; */
   /* justify-content: flex-start; */
   justify-content: space-between;
-  align-items: center;
-  align-content: center;
+  /* align-items: center; */
+  /* align-content: center; */
+}
+
+.rosterRow2 {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
 }

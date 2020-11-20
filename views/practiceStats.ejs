@@ -1,44 +1,118 @@
-<head>
 <style>
-    .dropbtn {
-      background-color: #4CAF50;
-      color: white;
-      padding: 16px;
-      font-size: 16px;
-      border: none;
+  @media all and (min-width: 600px) {
+    .bodyContainer {
+      flex: 2 0px;
     }
-    
-    .dropdown {
-      position: center;
-      display: inline-block;
+    .sidenav {
+      order: 1;
     }
-    
-    .dropdown-content {
-      display: none;
-      position: absolute;
-      background-color: #f1f1f1;
-      min-width: 160px;
-      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-      z-index: 1;
+    .rBody {
+      order: 2;
     }
-    
-    .dropdown-content a {
-      color: black;
-      padding: 12px 16px;
-      text-decoration: none;
-      display: block;
-    }
-    
-    .dropdown-content a:hover {background-color: #ddd;}
-    
-    .dropdown:hover .dropdown-content {display: block;}
-    
-    .dropdown:hover .dropbtn {background-color: #e71111;}
-    </style>
-</head>
-<h1 class="text-center mb-3"><i class="fas fa-sign-in-alt"></i> Season Practice Statistics</h1>
-  <div>
-    <form action="/stats/dispPracticeStats" method="POST">
+  }
+  .dropbtn {
+    background-color: #4caf50;
+    color: white;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+  }
+
+  .dropdown {
+    position: center;
+    display: inline-block;
+  }
+
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+  }
+
+  .dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+  }
+
+  .dropdown-content a:hover {
+    background-color: #ddd;
+  }
+
+  .dropdown:hover .dropdown-content {
+    display: block;
+  }
+
+  .dropdown:hover .dropbtn {
+    background-color: #e71111;
+  }
+</style>
+
+<div class="bigContainer">
+  <nav class="topnav" id="myTopnav">
+    <a
+      href="javascript:void(0);"
+      class="icon threeLines"
+      onclick="resizeDropdown2()"
+    >
+      <i class="fa fa-bars"></i>
+    </a>
+    <div class="topnavChild1" style="width: 100%" id="logo">
+      <img
+        src="images/coachToolsLogo.png"
+        alt="CoachTools"
+        style="width: 110px"
+      />
+    </div>
+    <div class="topnavChild2">
+      <!-- <span class="dateDisp" id="datetime"></span> -->
+      <a style="color: #818181" id="datetime"></a>
+      <a style="color: #818181"><%= name %></a>
+      <!--style="padding-left: 75%;"-->
+      <a class="logout" onclick="window.location.href='/users/logout'"
+        >Logout</a
+      >
+    </div>
+  </nav>
+  <div class="bodyContainer">
+    <!-- Side navigation -->
+    <!-- <div id="nav-placeholder"></div> -->
+    <nav class="sidenav" style="max-width: 170px">
+      <a href="/coachHome">Home</a>
+      <button class="dropdown-btn">
+        Roster<i class="fa fa-caret-down"></i>
+      </button>
+      <div class="dropdown-container">
+        <a href="/roster">Player Bio</a>
+        <a href="/depthChart">Depth Chart</a>
+      </div>
+      <button class="dropdown-btn">Game<i class="fa fa-caret-down"></i></button>
+      <div class="dropdown-container">
+        <a href="/coach/gameStats">Game Stats</a>
+        <a href="#">Game Grade</a>
+        <a href="#">Analysis</a>
+      </div>
+      <button class="dropdown-btn">
+        Practice<i class="fa fa-caret-down"></i>
+      </button>
+      <div class="dropdown-container">
+        <a href="/coach/submitIntangibles">Submit Intangibles</a>
+        <a href="/coach/practiceStats">In Season</a>
+        <a href="/coach/practiceTrainingStats">Training</a>
+      </div>
+      <a href="/coach/playerFeedback">Player Feedback</a>
+      <a href="#">Comparison</a>
+    </nav>
+    <div class="rBody">
+      <h1 class="text-center mb-3">
+        <i class="fas fa-sign-in-alt"></i> Season Practice Statistics
+      </h1>
+
+      <form action="/stats/dispPracticeStats" method="POST">
         <label for="pos">Choose a Position:</label>
         <select name="pos" id="pos">
           <option value="WR">WR</option>
@@ -51,8 +125,25 @@
           <option value="QB">QB</option>
           <option value="RB">RB</option>
         </select>
-        <br><br>
-        <input type="submit" value="Submit">
+        <br /><br />
+        <input type="submit" value="Submit" />
       </form>
+    </div>
   </div>
+</div>
+<script>
+  var dropdown = document.getElementsByClassName("dropdown-btn");
+  var i;
 
+  for (i = 0; i < dropdown.length; i++) {
+    dropdown[i].addEventListener("click", function () {
+      this.classList.toggle("active");
+      var dropdownContent = this.nextElementSibling;
+      if (dropdownContent.style.display === "block") {
+        dropdownContent.style.display = "none";
+      } else {
+        dropdownContent.style.display = "block";
+      }
+    });
+  }
+</script>

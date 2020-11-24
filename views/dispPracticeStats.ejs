@@ -235,10 +235,7 @@
                         <td>
                           <% for(var i = 0; i < players.length; i++) { %>
                           <ul>
-                            <button
-                              id="playerButton"
-                              onclick="changePlayer(playerButton.value);"
-                            >
+                            <button id="playerButton" onclick="changePlayer();">
                               <%=players[i].FullName %>
                             </button>
                           </ul>
@@ -252,7 +249,7 @@
                   <table class="redTable">
                     <thead>
                       <tr>
-                        <th id="playerName">Player Name Here</th>
+                        <th id="playerNameHead">Player Name Here</th>
                       </tr>
                     </thead>
                     <table onload="javascript:hideTables();">
@@ -297,18 +294,18 @@
                           <form action="/stats/addPracticeGrade" method="POST">
                             <tr>
                               <td>
-                                <label for="player">Player Name</label>
+                                <label for="playerName">Player Name</label>
                                 <input
-                                  id="player"
-                                  name="player"
-                                  value="none"
+                                  id="playerName"
+                                  name="playerName"
+                                  value="playerName"
                                   readonly
                                 />
                               </td>
                             </tr>
                             <tr>
                               <td>
-                                <label for="scale">Today's Date</label>
+                                <label for="date">Today's Date</label>
                                 <input id="date" name="date" readonly />
                                 <script type="text/javascript">
                                   document.getElementById(
@@ -419,11 +416,21 @@
 
 <script>
   //called on line 155
-  function changePlayer(name) {
+  function changePlayer() {
+    console.log('Inside changePlayer');
+    const playerName = document.querySelector('#playerButton');
+    console.log(playerName);
+    console.log(playerName.textContent);
     //function to update name of player and intangibles
-    document.getElementById("playerName").innerHTML = "Grading for" + name;
-    document.getElementById("topLeft").innerHTML = name + "()";
-    document.getElementById("player").innerHTML = name;
+    const name = document.querySelector('#playerName');
+    const topLeft = document.querySelector('#topLeft');
+    const playerNameHead = document.querySelector('#playerNameHead');
+    name.value = playerName.textContent;
+    topLeft.value = playerName.textContent;
+    playerNameHead.textContent = playerName.textContent;
+    console.log(name.value);
+    console.log(topLeft.value);
+    console.log(playerNameHead.textContent);
   }
 </script>
 <!-- 

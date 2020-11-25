@@ -28,16 +28,14 @@ body {
   z-index: 2;
 }
 
-.topnav > topnavChild2 {
-  justify-content: flex-end;
-}
-
 .topnavChild1 {
   display: flex;
   justify-content: flex-start;
 }
 .topnavChild2 {
   display: flex;
+  flex: 1;
+  /* justify-content: start; */
   justify-content: flex-end;
 }
 .topnavChild2 > a, span {
@@ -252,15 +250,6 @@ body {
   text-align: center;
   top: 58px;
   padding-top: 20px;
-}
-
-.row {
-  /* display: -ms-flexbox; */
-  /* display: flex; */
-  /* -ms-flex-wrap: wrap; */
-  /* flex-wrap: wrap; */
-  /* margin-right:-15px; */
-  /* margin-left:-15px; */
 }
 
 .bigContainer {

@@ -13,6 +13,7 @@ const Roster = require('../models/Roster');
 const Questionnaire = require('../models/Questionnaire');
 const CompleteQuest = require('../models/CompleteQuest');
 const Stat = require('../models/Stat');
+const Intangibles = require('../models/Intangibles');
 
 router.use(express.static("public"));
 
@@ -96,12 +97,6 @@ router.post('/upload', (req,res) => {
         console.log("Uploaded to database");
         res.redirect('/roster');
 });
-
-router.get('/practiceStats', ensureAuthenticated, (req, res) => 
-  res.render('practiceStats', {
-    name: req.user.name //pass the name that was entered into the database to dashboard
-}));
-
 
 router.post('/submitquest', async(req,res) => {
   const { participants, whichpos, type, q1, q2, q3 } = req.body;
@@ -187,10 +182,21 @@ router.get('/practiceTrainingStats', ensureAuthenticated, (req, res) =>
           weight: stat[0].weight
         });
 }));
+
 router.get('/practiceStats', ensureAuthenticated, (req, res) => 
-  res.render('practiceStats', {
-    name: req.user.name //pass the name that was entered into the database to dashboard
-}));
+  Intangibles.find({school: req.user.school})
+  .then(intangibles => {
+  const positions = [];
+  for(var i = 0; i < intangibles.length; i++){
+    positions[i] = intangibles[i].pos;
+  }
+  console.log(positions);
+  res.render('practiceStats', { //need to send all stats data here too
+        'positions': positions,
+        'name': req.user.name
+      });
+  }).catch(err => console.log(err))
+);
 
 router.get('/roster', ensureAuthenticated, (req, res) => 
   Roster.find({ "Pos": { "$exists": true }, "School" :req.session.school }).sort({'Pos': 1})
@@ -211,11 +217,25 @@ router.get('/depthChart', ensureAuthenticated, (req, res) =>
   })
   .catch(error => console.error(error))
 );
-
+//This method searches the roster databases and finds all unique position codes in a school's roster. 
+//These position codes are then sent to submitIntangibles.ejs to display in a dropdown menu for the coach.
 router.get('/submitIntangibles', ensureAuthenticated, (req, res) => 
+  Roster.find({School: req.user.school})
+  .then(players => {
+  const positions = [];
+  for(var i = 0; i < players.length; i++){
+    if(!(positions.includes(players[i].Pos))){ //adds only unique positions to array, no duplicates
+      positions.push(players[i].Pos);
+      console.log('added' + positions[i]);
+    }
+  }
+  console.log(positions);
   res.render('submitIntangibles', {
-    name: req.user.name //pass the name that was entered into the database to dashboard
-}));
+      'positions': positions 
+    });
+  }).catch(err => console.log(err))
+);
+
 router.post('/table', (req,res) => 
   {    
     const type = req.body.type;

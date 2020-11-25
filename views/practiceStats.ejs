@@ -61,7 +61,7 @@
     >
       <i class="fa fa-bars"></i>
     </a>
-    <div class="topnavChild1" style="width: 100%" id="logo">
+    <div class="topnavChild1" id="logo">
       <img
         src="images/coachToolsLogo.png"
         alt="CoachTools"
@@ -112,22 +112,18 @@
         <i class="fas fa-sign-in-alt"></i> Season Practice Statistics
       </h1>
 
-      <form action="/stats/dispPracticeStats" method="POST">
-        <label for="pos">Choose a Position:</label>
-        <select name="pos" id="pos">
-          <option value="WR">WR</option>
-          <option value="LT">LT</option>
-          <option value="LG">LG</option>
-          <option value="C">C</option>
-          <option value="RG">RG</option>
-          <option value="RT">RT</option>
-          <option value="TE">TE</option>
-          <option value="QB">QB</option>
-          <option value="RB">RB</option>
-        </select>
-        <br /><br />
-        <input type="submit" value="Submit" />
-      </form>
+      <div class= 'dropdown'>
+        <form action="/stats/dispPracticeStats" method="POST">
+            <label for="pos">Choose a Position:</label>
+            <select name="pos" id="pos">
+              <% for(var i = 0; i < positions.length; i++) { %>
+              <option value="WR"><%= positions[i] %></option>
+              <% } %>
+            </select>
+            <br><br>
+            <input type="submit" value="Submit">
+        </form>
+      </div>
     </div>
   </div>
 </div>

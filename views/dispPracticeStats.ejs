@@ -185,22 +185,17 @@
       <h1 class="text-center mb-3">
         <i class="fas fa-sign-in-alt"></i> Season Practice Statistics
       </h1>
-      <div class="dropdown">
+      <br><br>
+      <div class= 'dropdown'>
         <form action="/stats/dispPracticeStats" method="POST">
-          <label for="pos" style="margin-bottom: 0;">Choose a Position:</label>
-          <select name="pos" id="pos">
-            <option value="WR">WR</option>
-            <option value="LT">LT</option>
-            <option value="LG">LG</option>
-            <option value="C">C</option>
-            <option value="RG">RG</option>
-            <option value="RT">RT</option>
-            <option value="TE">TE</option>
-            <option value="QB">QB</option>
-            <option value="RB">RB</option>
-          </select>
-          <br />
-          <input type="submit" value="Submit" />
+            <label for="pos">Choose a Position:</label>
+            <select name="pos" id="pos">
+              <% for(var i = 0; i < positions.length; i++) { %>
+              <option><%= positions[i] %></option>
+              <% } %>
+            </select>
+            <br><br>
+            <input type="submit" value="Submit">
         </form>
       </div>
       <div class="rosterRow">
@@ -233,14 +228,21 @@
                     <tbody>
                       <tr>
                         <td>
+                          <script>
+                            let bname = '';
+                            let b = '';
+                          </script>
                           <% for(var i = 0; i < players.length; i++) { %>
                           <ul>
-                            <button
-                              id="playerButton"
-                              onclick="changePlayer(playerButton.value);"
-                            >
+                            <button id="playerButton" onclick="changePlayer('<%- i %>');">
                               <%=players[i].FullName %>
                             </button>
+                            <script>
+                              bname = 'playerButton<%- i %>';
+                              b = document.getElementById('playerButton');
+                              b.id = bname;
+                              console.log('b.id' + b.id);
+                            </script>
                           </ul>
                           <% } %>
                         </td>
@@ -252,7 +254,7 @@
                   <table class="redTable">
                     <thead>
                       <tr>
-                        <th id="playerName">Player Name Here</th>
+                        <th id="playerNameHead">Player Name Here</th>
                       </tr>
                     </thead>
                     <table onload="javascript:hideTables();">
@@ -297,18 +299,18 @@
                           <form action="/stats/addPracticeGrade" method="POST">
                             <tr>
                               <td>
-                                <label for="player">Player Name</label>
+                                <label for="playerName">Player Name</label>
                                 <input
-                                  id="player"
-                                  name="player"
-                                  value="none"
+                                  id="playerName"
+                                  name="playerName"
+                                  value="playerName"
                                   readonly
                                 />
                               </td>
                             </tr>
                             <tr>
                               <td>
-                                <label for="scale">Today's Date</label>
+                                <label for="date">Today's Date</label>
                                 <input id="date" name="date" readonly />
                                 <script type="text/javascript">
                                   document.getElementById(
@@ -338,6 +340,8 @@
                                   max="10"
                                   placeholder="Enter Grade"
                                 />
+                                <label for="grade1imp">Level of Importance</label>
+                                <input name="grade1imp"/>
                               </td>
                             </tr>
                             <tr>
@@ -350,6 +354,8 @@
                                   max="10"
                                   placeholder="Enter Grade"
                                 />
+                                <label for="grade2imp">Level of Importance</label>
+                                <input name="grade2imp"/>
                               </td>
                             </tr>
                             <tr>
@@ -362,6 +368,8 @@
                                   max="10"
                                   placeholder="Enter Grade"
                                 />
+                                <label for="grade3imp">Level of Importance</label>
+                                <input name="grade3imp"/>
                               </td>
                             </tr>
                             <tr>
@@ -374,6 +382,8 @@
                                   max="10"
                                   placeholder="Enter Grade"
                                 />
+                                <label for="grade4imp">Level of Importance</label>
+                                <input name="grade4imp"/>
                               </td>
                             </tr>
                             <tr>
@@ -419,11 +429,31 @@
 
 <script>
   //called on line 155
-  function changePlayer(name) {
-    //function to update name of player and intangibles
-    document.getElementById("playerName").innerHTML = "Grading for" + name;
-    document.getElementById("topLeft").innerHTML = name + "()";
-    document.getElementById("player").innerHTML = name;
+  function changePlayer(i) {
+    console.log('Inside changePlayer');
+    const id = '#playerButton' + i;
+    const playerName = document.querySelector(id);
+    const name = document.querySelector('#playerName');
+    const topLeft = document.querySelector('#topLeft');
+    const playerNameHead = document.querySelector('#playerNameHead');
+    name.value = playerName.textContent.replace('/[\n\r]'+'|[\s]{2,}/g', ' ').trim();
+    topLeft.value = playerName.textContent;
+    playerNameHead.textContent = playerName.textContent;
+  }
+
+  var dropdown = document.getElementsByClassName("dropdown-btn");
+  var i;
+
+  for (i = 0; i < dropdown.length; i++) {
+    dropdown[i].addEventListener("click", function () {
+      this.classList.toggle("active");
+      var dropdownContent = this.nextElementSibling;
+      if (dropdownContent.style.display === "block") {
+        dropdownContent.style.display = "none";
+      } else {
+        dropdownContent.style.display = "block";
+      }
+    });
   }
 </script>
 <!-- 

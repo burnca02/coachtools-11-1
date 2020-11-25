@@ -188,9 +188,12 @@ router.get('/practiceStats', ensureAuthenticated, (req, res) =>
   .then(intangibles => {
   const positions = [];
   for(var i = 0; i < intangibles.length; i++){
-    positions[i] = intangibles[i].pos;
+    if(!(positions.includes(intangibles[i].pos))){ //adds only unique positions to array, no duplicates
+      positions.push(intangibles[i].pos);
+      console.log('added' + positions[i]);
+    }
   }
-  console.log(positions);
+  console.log('positions' + positions);
   res.render('practiceStats', { //need to send all stats data here too
         'positions': positions,
         'name': req.user.name
@@ -226,7 +229,7 @@ router.get('/submitIntangibles', ensureAuthenticated, (req, res) =>
   for(var i = 0; i < players.length; i++){
     if(!(positions.includes(players[i].Pos))){ //adds only unique positions to array, no duplicates
       positions.push(players[i].Pos);
-      console.log('added' + positions[i]);
+      console.log('addedint' + positions[i]);
     }
   }
   console.log(positions);

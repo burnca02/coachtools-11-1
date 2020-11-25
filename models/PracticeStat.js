@@ -10,7 +10,7 @@ const mongoose = require('mongoose');
         required: true
     },
      int1: {
-        type: Array, //int1[0]= intangible1 name, int1[1]= score
+        type: Array, //int1[0]= intangible1 name, int1[1]= score, int[2]= importanceLevel
         required: true
     },
     int2: {
@@ -23,6 +23,10 @@ const mongoose = require('mongoose');
     },
     int4: {
         type: Array,
+        required: true
+    },
+    grade: { //overall practice grade for that day
+        type: String,
         required: true
     },
     date: {

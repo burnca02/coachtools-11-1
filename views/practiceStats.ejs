@@ -117,7 +117,7 @@
             <label for="pos">Choose a Position:</label>
             <select name="pos" id="pos">
               <% for(var i = 0; i < positions.length; i++) { %>
-              <option value="WR"><%= positions[i] %></option>
+              <option value="<%- positions[i] %>"><%= positions[i] %></option>
               <% } %>
             </select>
             <br><br>

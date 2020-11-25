@@ -203,9 +203,7 @@
           <table class="redTable">
             <thead>
               <tr>
-                <th id="topLeft">
-                  <%= players[0].FullName + '(' + players[0].Pos + ')'; %>
-                </th>
+                <th id="topLeft">Nothing</th>
                 <th>Practice Dropdown</th>
               </tr>
             </thead>
@@ -213,9 +211,7 @@
               <tr>
                 <td colspan="3">
                   <div class="links">
-                    <a class="active" onclick="prevPlayer();"
-                      >Previous Player</a
-                    >
+                    <a class="active" onclick="prevPlayer();">Previous Player</a>
                     <a class="active" onclick="nextPlayer();">Next Player</a>
                   </div>
                 </td>
@@ -241,7 +237,6 @@
                               bname = 'playerButton<%- i %>';
                               b = document.getElementById('playerButton');
                               b.id = bname;
-                              console.log('b.id' + b.id);
                             </script>
                           </ul>
                           <% } %>
@@ -326,7 +321,8 @@
                                   type="text"
                                   name="scale"
                                   id="scale"
-                                  placeholder="10"
+                                  value="<%- scale %>"
+                                  readonly
                                 />
                               </td>
                             </tr>
@@ -340,8 +336,8 @@
                                   max="10"
                                   placeholder="Enter Grade"
                                 />
-                                <label for="grade1imp">Level of Importance</label>
-                                <input name="grade1imp"/>
+                                <label for="grade1imp">Importance(1-4)</label>
+                                <input name="grade1imp" value='<%- ints[4] %>' readonly/>
                               </td>
                             </tr>
                             <tr>
@@ -354,8 +350,8 @@
                                   max="10"
                                   placeholder="Enter Grade"
                                 />
-                                <label for="grade2imp">Level of Importance</label>
-                                <input name="grade2imp"/>
+                                <label for="grade2imp">Importance(1-4)</label>
+                                <input name="grade2imp" value='<%- ints[5] %>' readonly/>
                               </td>
                             </tr>
                             <tr>
@@ -368,8 +364,8 @@
                                   max="10"
                                   placeholder="Enter Grade"
                                 />
-                                <label for="grade3imp">Level of Importance</label>
-                                <input name="grade3imp"/>
+                                <label for="grade3imp">Importance(1-4)</label>
+                                <input name="grade3imp" value='<%- ints[6] %>' readonly/>
                               </td>
                             </tr>
                             <tr>
@@ -382,8 +378,8 @@
                                   max="10"
                                   placeholder="Enter Grade"
                                 />
-                                <label for="grade4imp">Level of Importance</label>
-                                <input name="grade4imp"/>
+                                <label for="grade4imp">Importance(1-4)</label>
+                                <input name="grade4imp" value='<%- ints[7] %>' readonly/>
                               </td>
                             </tr>
                             <tr>
@@ -437,7 +433,7 @@
     const topLeft = document.querySelector('#topLeft');
     const playerNameHead = document.querySelector('#playerNameHead');
     name.value = playerName.textContent.replace('/[\n\r]'+'|[\s]{2,}/g', ' ').trim();
-    topLeft.value = playerName.textContent;
+    topLeft.textContent = playerName.textContent;
     playerNameHead.textContent = playerName.textContent;
   }
 

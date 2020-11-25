@@ -6,8 +6,16 @@
         <h3>Submit the Intangibles that you would like to grade players on. These Intangibles will be position specific. Rank each Intangible from 1 to 4 in order of importance.</h3>
         <form action="/stats/addIntang" method="POST">
           <div class="form-group">
-            <label for="pos">Position</label>
-            <input type="pos" id="pos" name="pos" class="form-control" placeholder="Enter Position"/>
+            <label for="pos">Choose a Position:</label>
+            <select name="pos" id="pos">
+              <% for(var i = 0; i < positions.length; i++) { %>
+              <option value="<%- positions[i] %>"><%= positions[i] %></option>
+              <% } %>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="scale">Grading Scale</label>
+            <input type="scale" id="scale" name="scale" class="form-control" placeholder="Enter Desired Grading Scale"/>
           </div>
           <div class="form-group">
             <label for="i1">Intangible 1</label>

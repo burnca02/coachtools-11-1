@@ -9,6 +9,10 @@ const mongoose = require('mongoose');
         type: String,
         required: true
     },
+    scale: {
+        type: String,
+        required: true
+    },
     ints: {
         type: Array, //Array of preset intangibles for practice/game grading by school/position and importance levels
         required: false,

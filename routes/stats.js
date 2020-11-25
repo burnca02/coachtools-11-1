@@ -21,7 +21,7 @@ router.get('/dispPracticeStats', ensureAuthenticated, (req, res) =>
   .then(intangibles => {
   const positions = [];
   for(var i = 0; i < intangibles.length; i++){
-    positions[i] = intangibles[i].pos;
+    positions.push(intangibles[i].pos);
   }
   console.log(positions);
   res.render('practiceStats', { //need to send all stats data here too
@@ -37,13 +37,11 @@ router.post('/dispPracticeStats', async(req, res) => {
     console.log(req.user.school);
     Roster.find({Pos: pos, School: req.user.school}) 
     .then(players => {
-      Intangibles.findOne({school: req.user.school})
+      Intangibles.findOne({school: req.user.school}) //might need to add position here too
       .then(intangibles => {
-      console.log(intangibles);
-      console.log(intangibles.ints);
       const positions = [];
       for(var i = 0; i < intangibles.length; i++){
-        positions[i] = intangibles[i].pos;
+        positions.push(intangibles[i].pos);
       }
       if(players.length == 0){
         res.render('practiceStats');
@@ -51,6 +49,7 @@ router.post('/dispPracticeStats', async(req, res) => {
         res.render('dispPracticeStats', { //need to send all stats data here too
               'players': players,
               'ints': intangibles.ints,
+              'scale': intangibles.scale,
               'positions': positions,
               'name': req.user.name   
             });
@@ -60,7 +59,7 @@ router.post('/dispPracticeStats', async(req, res) => {
 });
 
 router.post('/addPracticeGrade', (req, res) => {
-  const {player, intang1, intang2, intang3, intang4, grade1, grade2, grade3, grade4, scale} = req.body;
+  const {playerName, date, scale, grade1, grade2, grade3, grade4, grade1imp, grade2imp, grade3imp, grade4imp} = req.body;
   console.group(req.body);
 
   var email;
@@ -70,10 +69,12 @@ router.post('/addPracticeGrade', (req, res) => {
     email = result.Email;
   });
 
-  int1 = [intang1, grade1, scale];
-  int2 = [intang2, grade2, scale];
-  int3 = [intang3, grade3, scale];
-  int4 = [intang4, grade4, scale];
+  int1 = [grade1, grade1imp];
+  int2 = [grade2, grade2imp];
+  int3 = [grade3, grade3imp];
+  int4 = [grade4, grade4imp];
+  //Calculating the day's overall practice grade
+  var grade = ((grade1/scale)*.4) + ((grade2/scale)*.3) + ((grade3/scale)*.2) + ((grade4/scale)*.1);
 
   const newPracticeStat = new PracticeStat({
     email,
@@ -81,24 +82,25 @@ router.post('/addPracticeGrade', (req, res) => {
     int1,
     int2,
     int3,
-    int4
+    int4,
+    grade,
+    date
   });
   newPracticeStat.save();
-
   res.redirect('dispPracticeStats');
 });
-
+//This function saves Intangibles to the database once they are set by the coach
 router.post('/addIntang', (req, res) => {
-  const {pos, i1, i2, i3, i4, il1, il2, il3, il4} = req.body;
+  const {pos, scale, i1, i2, i3, i4, il1, il2, il3, il4} = req.body;
   const ints = [i1, i2, i3, i4, il1, il2, il3, il4];
   const newIntangible = new Intangibles({
     school: req.user.school,
     pos,
+    scale,
     ints
   });
   newIntangible.save();
   res.redirect('/coach/submitIntangibles');
-
 });
 
 router.post('/updatePracticeStats', (req, res) => {

@@ -17,9 +17,19 @@ mongoose.connect(db, { useNewUrlParser: true ,useUnifiedTopology: true})
 .catch(err => console.log(err));
 
 router.get('/dispPracticeStats', ensureAuthenticated, (req, res) => 
-  res.render('dispPracticeStats', {
-    name: req.user.name //pass the name that was entered into the database to dashboard
-}));
+  Intangibles.find({school: req.user.school})
+  .then(intangibles => {
+  const positions = [];
+  for(var i = 0; i < intangibles.length; i++){
+    positions[i] = intangibles[i].pos;
+  }
+  console.log(positions);
+  res.render('practiceStats', { //need to send all stats data here too
+        'positions': positions,
+        'name': req.user.name
+      });
+  }).catch(err => console.log(err))
+);
 
 router.post('/dispPracticeStats', async(req, res) => {
     const {pos} = req.body;
@@ -27,16 +37,22 @@ router.post('/dispPracticeStats', async(req, res) => {
     console.log(req.user.school);
     Roster.find({Pos: pos, School: req.user.school}) 
     .then(players => {
-      console.log(players[0].Pos);
-      Intangibles.findOne({pos: players[0].Pos, school: req.user.school})
+      Intangibles.findOne({school: req.user.school})
       .then(intangibles => {
+      console.log(intangibles);
       console.log(intangibles.ints);
+      const positions = [];
+      for(var i = 0; i < intangibles.length; i++){
+        positions[i] = intangibles[i].pos;
+      }
       if(players.length == 0){
         res.render('practiceStats');
       } else {
         res.render('dispPracticeStats', { //need to send all stats data here too
               'players': players,
-              'ints': intangibles.ints    
+              'ints': intangibles.ints,
+              'positions': positions,
+              'name': req.user.name   
             });
       }
     }).catch(err => console.log(err));
@@ -73,8 +89,8 @@ router.post('/addPracticeGrade', (req, res) => {
 });
 
 router.post('/addIntang', (req, res) => {
-  const {pos, i1, i2, i3, i4} = req.body;
-  const ints = [i1, i2, i3, i4];
+  const {pos, i1, i2, i3, i4, il1, il2, il3, il4} = req.body;
+  const ints = [i1, i2, i3, i4, il1, il2, il3, il4];
   const newIntangible = new Intangibles({
     school: req.user.school,
     pos,

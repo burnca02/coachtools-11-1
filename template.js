@@ -15,7 +15,8 @@ exports.get = function(req, res) {
         'GradYear',
         'Height',
         'Weight',
-        'Hometown/High School'
+        'Hometown/High School',
+        'Email'
     ];
  
     // var csv = json2csv({ data: '', fields: fields });
@@ -27,7 +28,8 @@ exports.get = function(req, res) {
         'GradYear': 2021,
         'Height': "5-ll",
         'Weight': 245,
-        'Hometown/High School' : "West Chester, PA / Malvern Prep"
+        'Hometown/High School' : "West Chester, PA / Malvern Prep",
+        'Email': "hernri01@gettysburg.edu"
       });
  
     res.set("Content-Disposition", "attachment;filename=roster.csv");

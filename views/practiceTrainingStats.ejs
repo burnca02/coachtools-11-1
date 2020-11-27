@@ -1,0 +1,88 @@
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+    table.redTable {
+    border: 2px solid #a40808;
+    background-color: #eee7db;
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+  }
+  table.redTable td,
+  table.redTable th {
+    border: 1px solid #aaaaaa;
+    padding: 3px 2px;
+  }
+  table.redTable tbody td {
+    font-size: 13px;
+    text-align: center;
+  }
+  table.redTable tr:nth-child(even) {
+    background: #f5c8bf;
+  }
+  table.redTable thead {
+    background: #a40808;
+  }
+  table.redTable thead th {
+    font-size: 19px;
+    font-weight: bold;
+    color: #ffffff;
+    text-align: center;
+    border-left: 2px solid #a40808;
+  }
+  table.redTable thead th:first-child {
+    border-left: none;
+  }
+
+  table.redTable tfoot {
+    font-size: 13px;
+    font-weight: bold;
+    color: #ffffff;
+    background: #a40808;
+  }
+  table.redTable tfoot td {
+    font-size: 13px;
+    text-align: center;
+  }
+  table.redTable tfoot .links {
+    text-align: right;
+  }
+  table.redTable tfoot .links a {
+    display: inline-block;
+    background: #ffffff;
+    color: #a40808;
+    padding: 2px 8px;
+    border-radius: 5px;
+  }
+</style>
+    <div>
+        <table class="redTable" id="viewTable" border="1">
+            <thead>
+                <tr>
+                    <th>Team Training Statistics</th>
+                    <th></th><th></th><th></th><th></th><th></th><th></th>
+                </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td></td>
+                <td>Season Average(Bench)</td>
+                <td>Season Average(Squat)</td>
+                <td>Season Average(Dead)</td>
+                <td>Season Average(Mile)</td>
+                <td>Season Average(Height)</td>
+                <td>Season Average(Weight)</td>
+            </tr>
+            <% for(var i = 0; i < stats.length; i++) { %>
+            <tr>
+                <td><%=stats[i].email%> %></td>
+                <td><%=stats[i].bench%> %></td>
+                <td><%=stats[i].squat%> %></td>
+                <td><%=stats[i].dead%> %></td>
+                <td><%=stats[i].mile%> %></td>
+                <td><%=stats[i].height%> %></td>
+                <td><%=stats[i].weight%> %></td>
+            </tr>
+            <% } %>
+            </tbody>
+        </table>
+    </div>

@@ -69,7 +69,7 @@
         <div class="dDown">
           <button class="dropbtn" href="./questionnaire">Create New Questionnaire</button>
           <div class="dropdown-content">
-            <a>New Meeting Questionnaire</a>
+            <a href="./questionnaire">New Meeting Questionnaire</a>
             <a href="./questionnaire">New Practice Questionnaire</a>
             <a href="./questionnaire">New Training Questionnaire</a>
           </div>
@@ -78,24 +78,12 @@
           <form action="./viewResponse" method="POST">
               <button class="dropbtn">View Questionnaire Responses</button>
               <div class="dropdown-content">
-                <a><input type="radio" value="meeting" name="type" href="./viewResponse"/>
-                  Meeting Questionnaire Responses</a>
-                <a
-                  ><input
-                    type="radio"
-                    value="practice"
-                    name="type"
-                    href="./viewResponse"
-                  />Practice Questionnaire Responses</a
-                >
-                <a
-                  ><input
-                    type="radio"
-                    value="training"
-                    name="type"
-                    href="./viewResponse"
-                  />Training Questionnaire Responses</a
-                >
+                <a><input type="radio" value="meeting" name="type" href="./viewResponse"
+                  />Meeting Questionnaire Responses</a>
+                <a><input type="radio" value="practice" name="type" href="./viewResponse"
+                  />Practice Questionnaire Responses</a>
+                <a><input type="radio" value="training" name="type" href="./viewResponse"
+                  />Training Questionnaire Responses</a>
                 <a><button type="submit" href="./viewResponse">Go</button></a>
               </div>
           </form>

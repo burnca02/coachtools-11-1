@@ -24,6 +24,7 @@ router.get('/playerGrades', ensureAuthenticated, (req, res) =>
   .then(stat => {
     console.log(stat.bench);
     res.render('playerGrades', {
+          name: req.user.name,
           email: stat.email,
           bench: stat.bench,
           squat: stat.squat,

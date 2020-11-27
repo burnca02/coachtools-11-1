@@ -169,19 +169,13 @@ router.post('/viewResponse', ensureAuthenticated, async(req, res) => {
 
 router.get('/practiceTrainingStats', ensureAuthenticated, (req, res) => 
   Stat.find({}).sort({$natural:-1})
-  .then(stat => {
-    console.log(stat.bench);
+  .then(stats => {
     res.render('practiceTrainingStats', {
-          name: req.user.name,
-          email: stat[0].email,
-          bench: stat[0].bench,
-          squat: stat[0].squat,
-          dead: stat[0].dead,
-          mile: stat[0].mile,
-          height: stat[0].height,
-          weight: stat[0].weight
-        });
-}));
+          'stats': stats,
+          'name': req.user.name
+    });
+  })
+);
 
 router.get('/practiceStats', ensureAuthenticated, (req, res) => 
   Intangibles.find({school: req.user.school})

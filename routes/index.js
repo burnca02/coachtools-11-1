@@ -118,7 +118,7 @@ router.post('/viewQuestionnaire', (req, res) => {
       const db = client.db('test');
       const rosterCollection = db.collection('Roster');
   
-          //Coach Home Page`
+      //Coach Home Page`
       router.get('/coachHome', ensureAuthenticated, (req, res) => 
   
       db.collection('Roster').find({ "Pos": { "$exists": true }, "School": req.session.school}).sort({'Pos': 1}).toArray()
@@ -132,18 +132,18 @@ router.post('/viewQuestionnaire', (req, res) => {
       .catch(error => console.error(error))
       );
     
-      router.get('/roster', ensureAuthenticated, (req, res) => 
+    //   router.get('/roster', ensureAuthenticated, (req, res) => 
 
-      db.collection('Roster').find({ "Pos": { "$exists": true }, "School": req.session.school}).sort({'Pos': 1}).toArray()
-      .then(results => {
-          res.render('roster', {players: results,
-                                  name: req.user.name,
-                                  school: req.session.school   
-                                  }
-                   )
-       })
-       .catch(error => console.error(error))
-       );
+    //   db.collection('Roster').find({ "Pos": { "$exists": true }, "School": req.session.school}).sort({'Pos': 1}).toArray()
+    //   .then(results => {
+    //       res.render('roster', {players: results,
+    //                               name: req.user.name,
+    //                               school: req.session.school   
+    //                               }
+    //                )
+    //    })
+    //    .catch(error => console.error(error))
+    //    );
 
       router.get('/depthChart', ensureAuthenticated, (req, res) => 
 
@@ -166,9 +166,9 @@ router.get('/playerHome', ensureAuthenticated, (req, res) =>
         name: req.user.name //pass the name that was entered into the database to dashboard
     })
 );
-router.get('/coachHome', ensureAuthenticated, (req, res) => 
-    res.render('coachHome', {
-        name: req.user.name //pass the name that was entered into the database to dashboard
-    })
-);
+// router.get('/coachHome', ensureAuthenticated, (req, res) => 
+//     res.render('coachHome', {
+//         name: req.user.name //pass the name that was entered into the database to dashboard
+//     })
+// );
 module.exports = router;

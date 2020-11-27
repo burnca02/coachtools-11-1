@@ -53,64 +53,13 @@
 </style>
 
 <div class="bigContainer">
-  <nav class="topnav" id="myTopnav">
-    <a
-      href="javascript:void(0);"
-      class="icon threeLines"
-      onclick="resizeDropdown2()"
-    >
-      <i class="fa fa-bars"></i>
-    </a>
-    <div class="topnavChild1" id="logo">
-      <img
-        src="images/coachToolsLogo.png"
-        alt="CoachTools"
-        style="width: 110px"
-      />
-    </div>
-    <div class="topnavChild2">
-      <!-- <span class="dateDisp" id="datetime"></span> -->
-      <a style="color: #818181" id="datetime"></a>
-      <a style="color: #818181"><%= name %></a>
-      <!--style="padding-left: 75%;"-->
-      <a class="logout" onclick="window.location.href='/users/logout'"
-        >Logout</a
-      >
-    </div>
-  </nav>
+  <%- include("partials/topnav") %>
   <div class="bodyContainer">
     <!-- Side navigation -->
     <!-- <div id="nav-placeholder"></div> -->
-    <nav class="sidenav" style="max-width: 170px">
-      <a href="/coachHome">Home</a>
-      <button class="dropdown-btn">
-        Roster<i class="fa fa-caret-down"></i>
-      </button>
-      <div class="dropdown-container">
-        <a href="/roster">Player Bio</a>
-        <a href="/depthChart">Depth Chart</a>
-      </div>
-      <button class="dropdown-btn">Game<i class="fa fa-caret-down"></i></button>
-      <div class="dropdown-container">
-        <a href="/coach/gameStats">Game Stats</a>
-        <a href="#">Game Grade</a>
-        <a href="#">Analysis</a>
-      </div>
-      <button class="dropdown-btn">
-        Practice<i class="fa fa-caret-down"></i>
-      </button>
-      <div class="dropdown-container">
-        <a href="/coach/submitIntangibles">Submit Intangibles</a>
-        <a href="/coach/practiceStats">In Season</a>
-        <a href="/coach/practiceTrainingStats">Training</a>
-      </div>
-      <a href="/coach/playerFeedback">Player Feedback</a>
-      <a href="#">Comparison</a>
-    </nav>
+    <%- include("partials/sidenav") %>
     <div class="rBody">
-      <h1 class="text-center mb-3">
-        <i class="fas fa-sign-in-alt"></i> Season Practice Statistics
-      </h1>
+      <h1 class="text-center mb-3"><i class="fas fa-sign-in-alt"></i> Season Practice Statistics</h1>
 
       <div class= 'dropdown'>
         <form action="/stats/dispPracticeStats" method="POST">

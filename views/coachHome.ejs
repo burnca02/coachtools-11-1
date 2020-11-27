@@ -6,50 +6,10 @@
   }
 </style>
 <div class="bigContainer">
-  <nav class="topnav" id="myTopnav">
-    <a href="javascript:void(0);" class="icon threeLines" onclick="resizeDropdown2()">
-      <i class="fa fa-bars"></i>
-    </a>
-    <div class="topnavChild1" id="logo">
-      <img src="images/coachToolsLogo.png" alt="CoachTools" style="width: 110px;"/>
-    </div>
-    <div class="topnavChild2">
-      <!-- <span class="dateDisp" id="datetime"></span> -->
-      <a style="color: #818181;" id="datetime"></a>
-      <a style="color: #818181;"><%= name %></a>
-      <a class="logout" onclick="window.location.href='/users/logout'">Logout</a>
-    </div>
-  </nav>
+  <%- include("partials/topnav") %>
   <div class="bodyContainer">
     <!-- Side navigation -->
-    <!-- <div id="nav-placeholder"></div> -->
-    <nav class="sidenav" style="max-width: 170px;">
-      <a href="/coachHome">Home</a>
-      <button class="dropdown-btn">
-        Roster<i class="fa fa-caret-down"></i>
-      </button>
-      <div class="dropdown-container">
-        <a href="/roster">Player Bio</a>
-        <a href="/depthChart">Depth Chart</a>
-      </div>
-      <button class="dropdown-btn">Game<i class="fa fa-caret-down"></i></button>
-      <div class="dropdown-container">
-        <a href="/coach/gameStats">Game Stats</a>
-        <a href="#">Game Grade</a>
-        <a href="#">Analysis</a>
-      </div>
-      <button class="dropdown-btn">
-        Practice<i class="fa fa-caret-down"></i>
-      </button>
-      <div class="dropdown-container">
-        <a href="/coach/submitIntangibles">Submit Intangibles</a>
-        <a href="/coach/practiceStats">In Season</a>
-        <a href="/coach/practiceTrainingStats">Training</a>
-      </div>
-      <a href="/coach/playerFeedback">Player Feedback</a>
-      <a href="#">Comparison</a>
-    </nav>
-
+    <%- include("partials/sidenav") %>
     <div class="chBody">
       <div>
         <div class="btn-group" style="padding: 10px">
@@ -61,138 +21,144 @@
             Team
           </button>
           <div class="dropdown-menu">
-            <a class="dropdown-item" onclick="offFunc()">Offense</a>
-            <a class="dropdown-item" onclick="defFunc()">Defense</a>
-            <a class="dropdown-item" onclick="specFunc()">Special Teams</a>
+            <a class="dropdown-item" onclick="toggleActiveTeam('o')">Offense</a>
+            <a class="dropdown-item" onclick="toggleActiveTeam('d')">Defense</a>
+            <a class="dropdown-item" onclick="toggleActiveTeam('s')">Special Teams</a>
           </div>
         </div>
       </div>
-      <div class="pitch">
+      <div class="pitch oline" id="offenseLine">
         <span class="help">Offense</span>
         <ol id="offense" class="container">
-          <li onclick="showSubs('sWR')">
-            <span class="number">2</span>
-            <span class="name">Walker WR</span>
-          </li>
-          <li onclick="showSubs('sWR')">
-            <span class="number">5</span>
-            <span class="name">Cahill WR</span>
-          </li>
-          <li onclick="showSubs('sRB')">
-            <span class="number">6</span>
-            <span class="name">Stones RB</span>
-          </li>
-          <li>
-            <span class="number">3</span>
-            <span class="name">Rose LT</span>
-          </li>
-          <li>
-            <span class="number">8</span>
-            <span class="name">Henderson LG</span>
-          </li>
-          <li>
-            <span class="number">4</span>
-            <span class="name">Dier C</span>
-          </li>
-          <li>
-            <span class="number">10</span>
-            <span class="name">Rooney RG</span>
-          </li>
-          <li>
-            <span class="number">7</span>
-            <span class="name">Sterling RT</span>
-          </li>
-          <li>
-            <span class="number">9</span>
-            <span class="name">Kane TE</span>
-          </li>
-          <li onclick="showSubs('sWR')">
-            <span class="number">11</span>
-            <span class="name">Lallana WR</span>
-          </li>
+          <% var offPlayers = ['WR','WR','OL','OL','OL','OL','OL','TE','WR','RB']; %>
+          <% for(var i = 0; i < players.length; i++) {%>
+            <% if (players[i].Active && offPlayers.includes(players[i].Pos)) { %>
+              <% alert('heyo made it here') %>
+            <li onclick="showSubs('s<%- players[i].Pos %>')">
+              <span class="number"><%= players[i].Number %></span>
+              <span class="name">ACTIVE <%= players[i].FullName %> <%= players[i].Pos %></span>
+            </li>
+              <% offPlayers.splice(offPlayers.indexOf(players[i].Pos), 1); %>
+            <% } %>
+          <% } %>
+          <!-- wide receiver, halfback, fullback, tight end, offensive linemen -->
+          <% for(var i = 0; offPlayers.length > 0 && i < players.length; i++) {%>
+            <% if (offPlayers.includes(players[i].Pos)) { %>
+            <li onclick="showSubs('s<%- players[i].Pos %>')">
+              <span class="number"><%= players[i].Number %></span>
+              <span class="name"><%= players[i].FullName %> <%= players[i].Pos %></span>
+            </li>
+              <% offPlayers.splice(offPlayers.indexOf(players[i].Pos), 1); %>
+              <% players[i].Active = true; %>
+            <% } %>
+          <% } %>
         </ol>
         <ul id="qb" class="container">
-          <li onclick="showSubs('sQB')">
-            <span class="number">1</span>
-            <span class="name" id="QB" name="QB">Hart QB</span>
-          </li>
+          <!-- just quarterback - for bottom row-->
+          <% for(var i = 0; i < players.length; i++) {%>
+            <% if(players[i].Pos == 'QB') { %>
+              <li onclick="showSubs('sQB')">
+                <span class="number"><%= players[i].Number %></span>
+                <span class="name" id="QB" name="QB"><%= players[i].FullName %> <%= players[i].Pos %></span>
+              </li>
+              <% players[i].Active = true; %>
+              <!-- break cause we just want 1 qb-->
+              <% break; %>
+            <% } %>
+          <% } %>
         </ul>
       </div>
-      <div id="sQB" class="bench">
-        <span class="help">QB Subs</span>
-        <ul id="Qsubs" class="container">
-          <li onclick="showSubs('sQB')">
-            <span class="number">12</span>
-            <span class="name">QB 1</span>
-          </li>
-          <li onclick="showSubs('sQB')">
-            <span class="number">13</span>
-            <span class="name">QB 2</span>
-          </li>
-          <li onclick="showSubs('sQB')">
-            <span class="number">14</span>
-            <span class="name">QB 3</span>
-          </li>
-          <li onclick="showSubs('sQB')">
-            <span class="number">15</span>
-            <span class="name">QB 4</span>
-          </li>
-        </ul>
+
+      <div class="pitch dline" id="defenseLine">
+        <span class="help">Defense</span>
+        <ol id="defense" class="container">
+          <!-- wide receiver, halfback, fullback, tight end, offensive tackle, offensive guard, center -->
+          <!-- list.splice (list.indexOf("kiwi"), 1); -->
+          <% var defPlayers = ['DE','DT','DT','DE','DL','OLB','MLB', 'OLB', 'CB', 'SS', 'FS']; %>
+          <% for(var i = 0; defPlayers.length > 0 && i < players.length; i++) {%>
+            <% if (defPlayers.includes(players[i].Pos)) { %>
+            <li onclick="showSubs('s<%- players[i].Pos %>')">
+              <span class="number"><%= players[i].Number %></span>
+              <span class="name"><%= players[i].FullName %> <%= players[i].Pos %></span>
+            </li>
+              <% defPlayers.splice(defPlayers.indexOf(players[i].Pos), 1); %>
+              <% players[i].Active = true; %>
+            <% } %>
+          <% } %>
+        </ol>
       </div>
-      <div id="sRB" class="bench">
-        <span class="help">RB Subs</span>
-        <ul id="RBsubs" class="container">
-          <li onclick="showSubs('sRB')">
-            <span class="number">12</span>
-            <span class="name">RB 1</span>
-          </li>
-          <li onclick="showSubs('sRB')">
-            <span class="number">13</span>
-            <span class="name">RB 2</span>
-          </li>
-          <li onclick="showSubs('sRB')">
-            <span class="number">14</span>
-            <span class="name">RB 3</span>
-          </li>
-          <li onclick="showSubs('sRB')">
-            <span class="number">15</span>
-            <span class="name">RB 4</span>
-          </li>
-          <li onclick="showSubs('sRB')">
-            <span class="number">16</span>
-            <span class="name">RB 5</span>
-          </li>
-        </ul>
+
+      <div class="pitch sline" id="specialLine">
+        <span class="help">Special Teams</span>
+        <ol id="special" class="container">
+          <!-- wide receiver, halfback, fullback, tight end, offensive tackle, offensive guard, center -->
+          <!-- list.splice (list.indexOf("kiwi"), 1); -->
+          <% var spePlayers = ['K','P','K/P','P/K','LS']; %>
+          <% for(var i = 0; spePlayers.length > 0 && i < players.length; i++) {%>
+            <% if (spePlayers.includes(players[i].Pos)) { %>
+            <li onclick="showSubs('sSPE')">
+              <span class="number"><%= players[i].Number %></span>
+              <span class="name"><%= players[i].FullName %> <%= players[i].Pos %></span>
+            </li>
+              <% spePlayers.splice(spePlayers.indexOf(players[i].Pos), 1); %>
+              <% players[i].Active = true; %>
+            <% } %>
+          <% } %>
+        </ol>
       </div>
-      <div id="sWR" class="bench">
-        <span class="help">WR Subs</span>
-        <ul id="subs" class="container">
-          <li onclick="showSubs('sWR')">
-            <span class="number">12</span>
-            <span class="name">WR 1</span>
-          </li>
-          <li onclick="showSubs('sWR')">
-            <span class="number">13</span>
-            <span class="name">WR 2</span>
-          </li>
-          <li onclick="showSubs('sWR')">
-            <span class="number">14</span>
-            <span class="name">WR 3</span>
-          </li>
-          <li onclick="showSubs('sWR')">
-            <span class="number">15</span>
-            <span class="name">WR 4</span>
-          </li>
-          <li onclick="showSubs('sWR')">
-            <span class="number">16</span>
-            <span class="name">WR 5</span>
-          </li>
-          <li onclick="showSubs('sWR')">
-            <span class="number">18</span>
-            <span class="name">WR 6</span>
-          </li>
-        </ul>
-      </div>
+
+      <% var offBench = ['QB','WR','OL','TE','RB']; %>
+      <% for(var i = 0; i < offBench.length; i++) {%>
+        <% var id = 's' + offBench[i]; %>
+        <% var id2 = offBench[i] + 'subs'; %>
+        <div id='<%- id %>' class="bench">
+          <span class="help"><%= offBench[i] %> Subs</span>
+          <ul id='<%- id2 %>' class="container">
+          <% for(var j = 0; j < players.length; j++) {%>
+            <% if(players[j].Active != true && players[j].Pos == offBench[i]) { %>
+              <li>
+                <span class="number"><%= players[j].Number %></span>
+                <span class="name"><%= players[j].FullName %> <%= players[j].Pos %></span>
+              </li>
+            <% } %>
+          <% } %>
+          </ul>
+        </div>
+      <% } %>
+
+      <% var defBench = ['DE','DL','DT','CB','OLB','MLB','SS','FS']; %>
+      <% for(var i = 0; i < defBench.length; i++) {%>
+        <% var id = 's' + defBench[i]; %>
+        <% var id2 = defBench[i] + 'subs'; %>
+        <div id='<%- id %>' class="bench">
+          <span class="help"><%= defBench[i] %> Subs</span>
+          <ul id='<%- id2 %>' class="container">
+          <% for(var j = 0; j < players.length; j++) {%>
+            <% if(players[j].Active != true && players[j].Pos == defBench[i]) { %>
+              <li>
+                <span class="number"><%= players[j].Number %></span>
+                <span class="name"><%= players[j].FullName %> <%= players[j].Pos %></span>
+              </li>
+            <% } %>
+          <% } %>
+          </ul>
+        </div>
+      <% } %>
+
+      <% var speBench = ['K','P','K/P','P/K','LS']; %>
+        <div id='sSPE' class="bench">
+          <span class="help">Special Teams Subs</span>
+          <ul id='SPsubs' class="container">
+          <% for(var j = 0; j < players.length; j++) {%>
+            <% if(players[j].Active != true && speBench.includes(players[j].Pos)) { %>
+              <li>
+                <span class="number"><%= players[j].Number %></span>
+                <span class="name"><%= players[j].FullName %> <%= players[j].Pos %></span>
+              </li>
+            <% } %>
+          <% } %>
+          </ul>
+        </div>
     </div>
   </div>
 </div>
@@ -202,12 +168,22 @@
     containers: [
       document.querySelector("#qb"),
       document.querySelector("#offense"),
-      document.querySelector("#defence"),
-      document.querySelector("#midfield"),
-      document.querySelector("#attack"),
+      document.querySelector("#defense"),
+      document.querySelector("#special"),
       document.querySelector("#subs"),
-      document.querySelector("#Qsubs"),
+      document.querySelector("#QBsubs"),
       document.querySelector("#RBsubs"),
+      document.querySelector("#WRsubs"),
+      // document.querySelector("#LTsubs"),
+      // document.querySelector("#LGsubs"),
+      // document.querySelector("#Csubs"),
+      // document.querySelector("#RGsubs"),
+      // document.querySelector("#RTsubs"),
+      document.querySelector("#TEsubs"),
+      document.querySelector("#DEsubs"),
+      document.querySelector("#OLsubs"),
+      document.querySelector("#SPsubs"),
+      document.querySelector('#DLsubs'),
     ],
     revertOnSpill: true,
     mirrorContainer: document.body,
@@ -216,34 +192,68 @@
 
   // validation
   drake.on("drop", function (el, target, source, sibling) {
+    // alert("el = " + el.innerHTML);
+    // alert("num = " + el.innerHTML.slice(36,38));
+    // alert("num of player = " + '<%- players[0].Number %>');
+    // alert("target = " + target.id);
+    // alert("source = " + source.id);
+    // alert("sibling = " + sibling.innerHTML);
+    // alert("oline length" + document.querySelectorAll(".oline li").length);
+    // alert("dline length" + document.querySelectorAll(".dline li").length);
+    // alert("sline length" + document.querySelectorAll(".sline li").length);
     // max 11 players
-    if (
-      target.id !== "subs" &&
-      document.querySelectorAll(".pitch li").length > 11
-    ) {
+    if ((target.id != source.id) && !target.id.includes("subs") && (document.querySelectorAll(".oline li").length > 11
+    || document.querySelectorAll(".dline li").length > 11 || document.querySelectorAll(".sline li").length > 11)) {
+      alert('Can only have 11 players. Remove a player before adding a new one.');
       drake.cancel();
     }
 
-    // 1 goalkeeper
+    if (target.id != source.id) {
+      var numStr = el.innerHTML.split(" ").join("").slice(21,23);
+      numStr = numStr.replace(/</gi, "");
+      alert('Selected player number = ' + numStr);
+      var b = false;
+      '<% for(var i = 0; i < players.length; i++) {%>'
+        if ('<%= players[i].Number %>' == numStr) {
+          if (target.id.includes("subs")) {
+            alert('Before - probably true : <%- players[i].Active %>');
+            '<%- players[i].Active = false %>';
+            alert('Should be false : <%- players[i].Active %>');
+            alert("player removed from active line");
+            b = true;
+          }
+          else if (source.id.includes("subs")) {
+            alert('Before - probably false : <%- players[i].Active %>')
+            '<%- players[i].Active = true %>';
+            alert('Should be true : <%- players[i].Active %>');
+            alert("player added to active line");
+            b = true;
+          }
+        }
+      '<% } %>'
+      if (!b) {
+        alert("Player number " + numStr + " not found");
+      }
+    }
+
+    // 1 qb
     if (target.id === "qb" && target.children.length > 1) {
+      alert('Can only have 1 quarterback.');
       drake.cancel();
     }
 
     // 10 linemen
     if (target.id === "offense" && target.children.length > 10) {
+      alert('Can only have 10 linemen on offense.');
       drake.cancel();
     }
   });
-
-  // $(function(){
-  //     $("#nav-placeholder").load("navBars/nav.html");
-  // });
 
   document.addEventListener(
     "DOMContentLoaded",
     function () {
       //alert("Ready!");
-      hideSubs();
+      toggleActiveTeam('o');
     },
     false
   );
@@ -262,4 +272,28 @@
       }
     });
   }
+
+  function toggleActiveTeam(t) {
+    hideSubs();
+    var off = document.getElementById("offenseLine");
+    var def = document.getElementById("defenseLine");
+    var spe = document.getElementById("specialLine");
+    if (t == 'o') {
+      off.style.display = "block";
+      def.style.display = "none";
+      spe.style.display = "none";
+    }
+    else if (t == 'd') {
+      off.style.display = "none";
+      def.style.display = "block";
+      spe.style.display = "none";
+    }
+    else {
+      off.style.display = "none";
+      def.style.display = "none";
+      spe.style.display = "block";
+    }
+  }
 </script>
+
+ 

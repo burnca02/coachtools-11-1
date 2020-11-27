@@ -11,14 +11,24 @@ const playerSchema = mongoose.Schema({
       type: String,
       default: undefined
     },
-    Number: Number,
+    Number: 
+    {
+      type: Number,
+      default: -1
+    },
     FullName:  String, // String is shorthand for {type: String}
     Pos:   String,
     GradYear: String,
     Height: String,
     Weight: Number,
     Hometown: String,
-    School: String //Their current school
+    School: String, //Their current school
+    Active: Boolean, //Are they on the active line?
+    Grade: 
+    {
+      type: Number,
+      default: -1
+    }
   },{ collection: 'Roster' });
 
 var Roster = mongoose.model('Roster', playerSchema);

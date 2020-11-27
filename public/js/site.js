@@ -1,8 +1,9 @@
 function hideSubs() {
-    var pos = ["sQB", "sRB", "sWR"]; //,"LT","LG","C", "RG","RT","TE","CB","DE","DT","OLB","MLB","SS","FS"];
+    var pos = ["sQB", "sRB", "sWR", "sOL","sTE",'sDE','sDL','sDT','sCB','sOLB','sMLB','sSS','sFS','sSPE']; //,"LT","LG","C", "RG","RT","TE","CB","DE","DT","OLB","MLB","SS","FS"];
     for (i = 0; i < pos.length; i++) {
       var hideDiv = document.getElementById(pos[i]);
       hideDiv.style.display = "none";
+      // alert('hiding' + pos[i])
     }
   }
 

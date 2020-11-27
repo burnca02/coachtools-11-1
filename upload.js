@@ -44,5 +44,5 @@ exports.post =  function (req, res) {
 
      });
      console.log("Uploaded to database");
-     res.redirect('/roster');
+     res.redirect('/coach/roster');
 };

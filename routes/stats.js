@@ -35,6 +35,10 @@ router.post('/dispPracticeStats', async(req, res) => {
     const {pos} = req.body;
     const ints = [];
     console.log(req.user.school);
+    // PracticeStat.find({School: req.user.school})
+    // .then(stats => {
+    //   console.log(stats);
+    // })
     Roster.find({Pos: pos, School: req.user.school}) 
     .then(players => {
       Intangibles.findOne({school: req.user.school}) //might need to add position here too
@@ -51,24 +55,26 @@ router.post('/dispPracticeStats', async(req, res) => {
               'ints': intangibles.ints,
               'scale': intangibles.scale,
               'positions': positions,
+              //'stats': stats,
               'name': req.user.name   
             });
       }
     }).catch(err => console.log(err));
     }).catch(err => console.log(err));
 });
-
-router.post('/addPracticeGrade', (req, res) => {
+//This function add a practice grade to the database once they are submitted by the coach
+router.post('/addPracticeGrade', async (req, res) => {
   const {playerName, date, scale, grade1, grade2, grade3, grade4, grade1imp, grade2imp, grade3imp, grade4imp} = req.body;
   console.group(req.body);
 
   var email;
   var school = req.user.school;
-  Roster.findOne({name: player})
+  await Roster.findOne({FullName: playerName})
   .then(result => {
+    console.log(result);
     email = result.Email;
-  });
-
+  }).catch(err => console.log(err));
+  console.log('email' + email);
   int1 = [grade1, grade1imp];
   int2 = [grade2, grade2imp];
   int3 = [grade3, grade3imp];
@@ -103,16 +109,16 @@ router.post('/addIntang', (req, res) => {
   res.redirect('/coach/submitIntangibles');
 });
 
-router.post('/updatePracticeStats', (req, res) => {
-  const {pos} = req.body;
-  console.log(pos);
-  PracticeStat.findOneAndUpdate({position: pos, school: req.user.school})
-  .then(stats => { 
-  console.log(stats);
-  res.render('practiceStats', {
-        stats: stats      
-      });
-  });
-});
+// router.post('/updatePracticeStats', (req, res) => {
+//   const {pos} = req.body;
+//   console.log(pos);
+//   PracticeStat.findOneAndUpdate({position: pos, school: req.user.school})
+//   .then(stats => { 
+//   console.log(stats);
+//   res.render('practiceStats', {
+//         stats: stats      
+//       });
+//   });
+// });
 
 module.exports = router;

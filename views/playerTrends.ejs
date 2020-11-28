@@ -1,3 +1,4 @@
+<!-- Authors: Ricardo Hernandez, Cam Burns, and Kayl Murdough -->
 <style>
   @media all and (min-width: 600px) {
     .bodyContainer {
@@ -20,6 +21,7 @@
     "/" +
     dt.getFullYear();
 </script>
+<!-- This script will be used for the responsive chart in Player Trends and Maxes. The graph is bootstrap created by Chart.js. -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
 <div class="bigContainer">
   <!-- header -->
@@ -94,19 +96,23 @@
           <td></td>
         </tr>
       </table>
+      <!-- The following section is code in relation to the chart.  -->
       <canvas id="myChart" width="250" height="250"></canvas>
-      <% if (graph) { %>
+      <!-- If there is information in the graph, we will create the chart. -->
+      <% if (graph) { %> 
         <script type="text/javascript">
         var graph = JSON.parse('<%- JSON.stringify(graph) %>');
         console.log("Hello world");
 
       // Our labels along the x-axis
-      var input = [];
+      var input = []; //Input will be the Max session that will be on the x axis.
       // For drawing the lines      
-      var bench = [];
-      var squat = [];
-      var deadlift = [];
+      var bench = []; //The bench press maxes
+      var squat = []; //The squat maxes
+      var deadlift = []; //Deadlift maxes.
+      
 
+      //We will go through all the information pased by the graph variable and push it onto our arrays.
       for (var i = 0; i < graph.length; i++) {
           input.push("Max Session " + i);
           bench.push(parseInt(graph[i].bench));
@@ -118,8 +124,8 @@
           console.log(deadlift);
       }
 
-        var ctx = document.getElementById("myChart");
-        var myChart = new Chart(ctx, {
+        var ctx = document.getElementById("myChart"); //Retrieving the elementID of the chart above in canvas.
+        var myChart = new Chart(ctx, { //Styling the graph. If you need more information on styling the graph please go to the Chart.js Documentation online.
           type: 'line',
           data: {
             labels: input,

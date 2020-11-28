@@ -32,7 +32,7 @@ exports.post =  function (req, res) {
      .on("data", function(data){
          data['_id'] = new mongoose.Types.ObjectId();
          data['School'] = req.session.school;
-          
+         data['Active'] = false;
          players.push(data);
      })
      .on("end", function(){

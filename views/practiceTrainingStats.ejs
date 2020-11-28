@@ -53,8 +53,17 @@
     padding: 2px 8px;
     border-radius: 5px;
   }
+  @media all and (min-width: 600px) {
+    .bodyContainer {flex: 2 0px;}
+    .sidenav {order: 1;}
+    .chBody {order: 2;}
+  }
 </style>
-    <div>
+  <%- include("partials/topnav") %>
+  <div class="bodyContainer">
+    <!-- Side navigation -->
+    <%- include("partials/sidenav") %>
+    <div class="chBody">
         <table class="redTable" id="viewTable" border="1">
             <thead>
                 <tr>
@@ -86,3 +95,4 @@
             </tbody>
         </table>
     </div>
+  </div>

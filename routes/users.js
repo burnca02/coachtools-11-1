@@ -12,9 +12,12 @@ router.get('/login', (req, res) => {
 });
 
 //benchmarks
-router.get('/benchmarks', (req, res) => {
-    res.render('benchmarks')
-});
+// router.get('/benchmarks', (req, res) => {
+//     res.render('benchmarks', {
+//         'name': req.user.name,
+//         'email': req.user.email
+//     });
+// });
 
 //photo
 router.get('/coachToolsLogo.png', (req, res) => {
@@ -88,7 +91,7 @@ router.post('/register', (req, res) => {
                         req.session._id = newUser._id; //Passing the ID to make searches easier.
                         newUser.save()
                         .then(user => {
-                            console.log(newUser.userType);
+                            console.log('user saved ' + newUser.userType);
                             if(newUser.userType == 'coach') {
                                 req.flash('success_msg', 'You are now registered and can log in');
                                 res.redirect('/users/login');

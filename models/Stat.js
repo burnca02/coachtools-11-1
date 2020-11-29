@@ -1,7 +1,11 @@
 const mongoose = require('mongoose');
 
  const StatSchema = new mongoose.Schema({
-     email: {
+    name: {
+        type: String,
+        required: true
+    },
+    email: {
          type: String,
          required: true
      },

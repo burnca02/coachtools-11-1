@@ -12,7 +12,10 @@ router.get('/coachToolsLogo.png', (req, res) => {
 
 //Benchmarks Functions
 router.get('/benchmarks', (req, res) => {
-    res.render('benchmarks')
+    res.render('benchmarks', {
+        //'name': req.user.name,
+        'email': req.session.email
+    });
 });
 
 router.post('/benchmarks', (req, res, next) => {
@@ -23,6 +26,7 @@ router.post('/benchmarks', (req, res, next) => {
     //Add new Stat to the database
     const newStat = new Stat({
         _id: req.session._id,
+        name: req.session.name,
         email,
         bench,
         squat,

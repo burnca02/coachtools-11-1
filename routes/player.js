@@ -70,12 +70,14 @@ router.get('/playerTrends', ensureAuthenticated, (req, res) =>
 
 router.post('/updatestats', (req, res) => {
   //how to get it to recognize player email without them having to type it in?
-  const { email, bench, squat, dead, mile, height, weight} = req.body;
+  const {bench, squat, dead, mile, height, weight} = req.body;
   console.log(req.body);
 
   //Add new Stat to the database
   const newStat = new Stat({
+      _id: req.session._id,
       email: req.session.email,
+      name: req.session.name,
       bench,
       squat,
       dead,

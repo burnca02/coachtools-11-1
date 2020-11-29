@@ -4,7 +4,10 @@ const bcrypt = require('bcryptjs');
 const passport = require('passport');
 //Users
 const User = require('../models/User');
+//Roster
+const Roster = require('../models/Roster');
 const { forwardAuthenticated } = require('../config/auth');
+const e = require('express');
 
 //Login Pages
 router.get('/login', (req, res) => {
@@ -30,6 +33,7 @@ router.get('/register', (req, res) => res.render('register'));
 //Register Handle
 router.post('/register', (req, res) => {
     const { name, email, password, password2, school, userType } = req.body;
+
     console.log(req.body);
     let errors = [];
     //Check required fields
@@ -44,9 +48,10 @@ router.post('/register', (req, res) => {
     if(password.length < 6) {
         errors.push({ msg: 'Password must be at least characters'});
     }
-
-    if(errors.length > 0) {
-        res.render('register', {
+    if(errors.length > 0) 
+    {
+        res.render('register', 
+        {
             errors,
             name,
             email,
@@ -55,7 +60,9 @@ router.post('/register', (req, res) => {
             school,
             userType
         });
-    } else{
+    } 
+    else
+    {
         //validation passed
         User.findOne({ email: email })
         .then(user => {
@@ -71,38 +78,75 @@ router.post('/register', (req, res) => {
                     school,
                     userType
                 });
-            } else {
-                //Add new User
-                const newUser = new User({
-                    name,
-                    email,
-                    password,
-                    school,
-                    userType
-                });
+            }
+             else {
+                if(userType == 'player')
+                {
+                    //We want to check their email addresss matches the information in the roster.
+                    Roster.findOne({ FullName: name, School : school})
+                    .then(player => {
+                        if(player.Email != email)
+                        {
+                            errors.push({msg: 'Ask your coach for email registration.'});
+                            res.render('register', {
+                                errors,
+                                name,
+                                email,
+                                password,
+                                password2,
+                                school,
+                                userType
+                            });
+                        }
+                        else 
+                        {
+                            //Add new User
+                            const newUser = new User({
+                                name,
+                                email,
+                                password,
+                                school,
+                                userType
+                            });
 
-                //Hash Password
-                bcrypt.genSalt(10, (err, salt) => {
-                    bcrypt.hash(newUser.password, salt, (err, hash) => {
-                        if(err) throw err;
-                        //set password to hashed
-                        newUser.password = hash;
-                        //save user
-                        req.session._id = newUser._id; //Passing the ID to make searches easier.
-                        newUser.save()
-                        .then(user => {
-                            console.log('user saved ' + newUser.userType);
-                            if(newUser.userType == 'coach') {
-                                req.flash('success_msg', 'You are now registered and can log in');
-                                res.redirect('/users/login');
-                            } else {
-                                req.flash('success_msg', 'You are registered. Please fill in benchmark data');
-                                res.redirect('/functions/benchmarks');
-                            }
-                        })
-                        .catch(err => console.log(err));
+                            //Hash Password
+                            bcrypt.genSalt(10, (err, salt) => {
+                                bcrypt.hash(newUser.password, salt, (err, hash) => {
+                                    if(err) throw err;
+                                    //set password to hashed
+                                    newUser.password = hash;
+                                    //save user
+                                    req.session._id = newUser._id; //Passing the ID to make searches easier.
+                                    newUser.save()
+                                    .then(user => {
+                                        console.log(newUser.userType);
+                                        if(newUser.userType == 'coach') {
+                                            req.flash('success_msg', 'You are now registered and can log in');
+                                            res.redirect('/users/login');
+                                        } else {
+                                            req.flash('success_msg', 'You are registered. Please fill in benchmark data');
+                                            res.redirect('/functions/benchmarks');
+                                        }
+                                    })
+                                    .catch(err => console.log(err));
+                                });
+                            });
+                        }
+                        console.log("This is a valid email" + player.Email);
+                    })
+                    .catch(err => {
+                        errors.push({msg: "Verify that you are using the same name as the Coach's Roster Database."});
+                        res.render('register', {
+                            errors,
+                            name,
+                            email,
+                            password,
+                            password2,
+                            school,
+                            userType
+                        });
                     });
-                });
+                }
             }
         });
     }

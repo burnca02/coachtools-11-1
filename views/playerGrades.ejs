@@ -58,7 +58,7 @@
             <canvas id="myChart" style="width: 300px; height: 150px"></canvas>
           </td>
           <td>
-            <div id="curve_chart2" style="width: 300px; height: 150px"></div>
+            <canvas id="myChart2" style="width: 300px; height: 150px"></canvas>
           </td>
         </tr>
       </table>
@@ -121,42 +121,56 @@
 
   </script>
 <script type="text/javascript">
-  // const Stat = require("../models/Stat");
+  // Our labels along the x-axis
+  var years = [1500,1600,1700,1750,1800,1850,1900,1950,1999,2050];
+  // For drawing the lines
+  var africa = [86,114,106,106,107,111,133,221,783,2478];
+  var asia = [282,350,411,502,635,809,947,1402,3700,5267];
+  var europe = [168,170,178,190,203,276,408,547,675,734];
+  var latinAmerica = [40,20,10,16,24,38,74,167,508,784];
+  var northAmerica = [6,3,2,2,7,26,82,172,312,433];
 
-  google.charts.load("current", { packages: ["corechart"] });
-  google.charts.setOnLoadCallback(drawChart2);
 
-  Stat.find();
+    var ctx = document.getElementById("myChart2"); //Retrieving the elementID of the chart above in canvas.
+    var myChart = new Chart(ctx, { //Styling the graph. If you need more information on styling the graph please go to the Chart.js Documentation online.
+      type: 'line',
+      data: {
+        labels: years,
+        datasets: [
+               { 
+                  data: africa,
+                  label: "Africa",
+                  borderColor: "#3e95cd",
+                  fill: false
+                },
+                { 
+                  data: asia,
+                  label: "Asia",
+                  borderColor: "#3e95cd",
+                  fill: false
+                },
+                { 
+                  data: europe,
+                  label: "Europe",
+                  borderColor: "#3e95cd",
+                  fill: false
+                },
+                { 
+                  data: latinAmerica,
+                  label: "Latin America",
+                  borderColor: "#3e95cd",
+                  fill: false
+                },
+                { 
+                  data: northAmerica,
+                  label: "North America",
+                  borderColor: "#3e95cd",
+                  fill: false
+                }
 
-  function drawChart2() {
-    var data = google.visualization.arrayToDataTable([
-      ["Blah", "Grade"],
-      ["Start", 0],
-      ["8/31", 90],
-      ["9/2", 70],
-      ["9/18", 50],
-      ["10/10", 50],
-      ["11/29", 70],
-      ["1/30", 80],
-    ]);
-
-    var options = {
-      title: "Seasonal Grade Trend",
-      curveType: "function",
-      legend: { position: "bottom" },
-      axes: {
-        // Adds labels to each axis; they don't have to match the axis names.
-        y: {
-          Temps: { label: "Temps (Celsius)" },
-          Daylight: { label: "Daylight" },
-        },
-      },
-    };
-    var chart = new google.visualization.LineChart(
-      document.getElementById("curve_chart2")
-    );
-    chart.draw(data, options);
-  }
+        ]
+      }
+  });
 </script>
 <!-- <div class="topNavBody">
     <header id="nav-wrapper">

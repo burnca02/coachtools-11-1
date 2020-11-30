@@ -55,10 +55,10 @@
               <% console.log(err); %>
           <% } %>
           <td>
-            <canvas id="myChart" style="width: 300px; height: 150px"></canvas>
+            <canvas id="weeklyChart" style="width: 300px; height: 150px"></canvas>
           </td>
           <td>
-            <canvas id="myChart2" style="width: 300px; height: 150px"></canvas>
+            <canvas id="seasonalChart" style="width: 300px; height: 150px"></canvas>
           </td>
         </tr>
       </table>
@@ -67,111 +67,103 @@
 </div>
 <!-- <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script> -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+<% if (stats) { %> 
 <script type="text/javascript">
-// Our labels along the x-axis
-  var years = [1500,1600,1700,1750,1800,1850,1900,1950,1999,2050];
+  var stats = JSON.parse('<%- JSON.stringify(stats) %>');
+
+//myChart deals with the weekly trend stats for practice stats.
+  console.log(stats[0].date);
+  console.log((stats[0].date).split('T'));
+    // Our labels along the x-axis
+  var dates = [];
   // For drawing the lines
-  var africa = [86,114,106,106,107,111,133,221,783,2478];
-  var asia = [282,350,411,502,635,809,947,1402,3700,5267];
-  var europe = [168,170,178,190,203,276,408,547,675,734];
-  var latinAmerica = [40,20,10,16,24,38,74,167,508,784];
-  var northAmerica = [6,3,2,2,7,26,82,172,312,433];
+  var grades = [];
+
+  for(var i = 0; i < stats.length; i++)
+  {
+    if(i >= 7)
+        break;
+    var dateArr = (stats[i].date).split('T');
+    var date = dateArr[0];
+    var grade = stats[i].grade;
+
+    grades.push(parseInt(grade));
+
+    console.log(typeof date);
+
+    dates.push(date);
+  }
 
 
-    var ctx = document.getElementById("myChart"); //Retrieving the elementID of the chart above in canvas.
+  console.log(date);
+  console.log(grade);
+
+    var ctx = document.getElementById("weeklyChart"); //Retrieving the elementID of the chart above in canvas.
     var myChart = new Chart(ctx, { //Styling the graph. If you need more information on styling the graph please go to the Chart.js Documentation online.
       type: 'line',
       data: {
-        labels: years,
+        labels: dates,
         datasets: [
                { 
-                  data: africa,
-                  label: "Africa",
+                  data: grades,
+                  label: "Previous Week Grades",
                   borderColor: "#3e95cd",
                   fill: false
-                },
-                { 
-                  data: asia,
-                  label: "Asia",
-                  borderColor: "#3e95cd",
-                  fill: false
-                },
-                { 
-                  data: europe,
-                  label: "Europe",
-                  borderColor: "#3e95cd",
-                  fill: false
-                },
-                { 
-                  data: latinAmerica,
-                  label: "Latin America",
-                  borderColor: "#3e95cd",
-                  fill: false
-                },
-                { 
-                  data: northAmerica,
-                  label: "North America",
-                  borderColor: "#3e95cd",
-                  fill: false
-                }
-
+                }         
         ]
       }
   });
 
   </script>
-<script type="text/javascript">
-  // Our labels along the x-axis
-  var years = [1500,1600,1700,1750,1800,1850,1900,1950,1999,2050];
-  // For drawing the lines
-  var africa = [86,114,106,106,107,111,133,221,783,2478];
-  var asia = [282,350,411,502,635,809,947,1402,3700,5267];
-  var europe = [168,170,178,190,203,276,408,547,675,734];
-  var latinAmerica = [40,20,10,16,24,38,74,167,508,784];
-  var northAmerica = [6,3,2,2,7,26,82,172,312,433];
+  <% } %>
+
+  <% if (stats) { %> 
+  <script type="text/javascript">
+  var stats = JSON.parse('<%- JSON.stringify(stats) %>');
+
+  //myChart deals with the weekly trend stats for practice stats.
+    console.log(stats[0].date);
+    console.log((stats[0].date).split('T'));
+      // Our labels along the x-axis
+    var dates = [];
+    // For drawing the lines
+    var grades = [];
+
+    for(var i = 0; i < stats.length; i++)
+    {
+
+      var dateArr = (stats[i].date).split('T');
+      var date = dateArr[0];
+      var grade = stats[i].grade;
+
+      grades.push(parseInt(grade));
+
+      console.log(typeof date);
+
+      dates.push(date);
+    }
 
 
-    var ctx = document.getElementById("myChart2"); //Retrieving the elementID of the chart above in canvas.
-    var myChart = new Chart(ctx, { //Styling the graph. If you need more information on styling the graph please go to the Chart.js Documentation online.
-      type: 'line',
-      data: {
-        labels: years,
-        datasets: [
-               { 
-                  data: africa,
-                  label: "Africa",
-                  borderColor: "#3e95cd",
-                  fill: false
-                },
-                { 
-                  data: asia,
-                  label: "Asia",
-                  borderColor: "#3e95cd",
-                  fill: false
-                },
-                { 
-                  data: europe,
-                  label: "Europe",
-                  borderColor: "#3e95cd",
-                  fill: false
-                },
-                { 
-                  data: latinAmerica,
-                  label: "Latin America",
-                  borderColor: "#3e95cd",
-                  fill: false
-                },
-                { 
-                  data: northAmerica,
-                  label: "North America",
-                  borderColor: "#3e95cd",
-                  fill: false
-                }
+    console.log(date);
+    console.log(grade);
 
-        ]
-      }
-  });
+      var ctx = document.getElementById("seasonalChart"); //Retrieving the elementID of the chart above in canvas.
+      var myChart = new Chart(ctx, { //Styling the graph. If you need more information on styling the graph please go to the Chart.js Documentation online.
+        type: 'line',
+        data: {
+          labels: dates,
+          datasets: [
+                { 
+                    data: grades,
+                    label: "Season Grades",
+                    borderColor: "#3e95cd",
+                    fill: false
+                  }         
+          ]
+        }
+    });
 </script>
+<% } %>
 <!-- <div class="topNavBody">
     <header id="nav-wrapper">
       <nav id="nav">

@@ -49,10 +49,10 @@
           <th>Seasonal Trend</th>
         </tr>
         <tr>
-          <% if(stats.grade == undefined){ %> 
-            <td>Not Available</td>            
-          <% } else{ %>
+          <%try{ %>
             <td><%= stats[0].grade %></td>
+          <% } catch(err){ %>
+              <% console.log(err); %>
           <% } %>
           <td>
             <canvas id="myChart" style="width: 300px; height: 150px"></canvas>

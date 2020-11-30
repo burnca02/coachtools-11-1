@@ -14,7 +14,6 @@ router.get('/test', (req, res) => res.render('test'));
 router.get('/viewMQuestionnaire', (req, res) => 
 Questionnaire.find({type: "meeting"}).limit(1).sort({$natural: -1}) //gets most recent doc, need to change so that all come through
 .then(questionnaires => {
-  console.log(questionnaires);
   if(questionnaires.length == 0){
       res.render('hold');
   }
@@ -34,7 +33,6 @@ Questionnaire.find({type: "meeting"}).limit(1).sort({$natural: -1}) //gets most 
 router.get('/viewPQuestionnaire', (req, res) => 
 Questionnaire.find({type: "practice"}).limit(1).sort({$natural: -1}) //gets most recent doc, need to change so that all come through
 .then(questionnaires => {
-  console.log(questionnaires);
   if(questionnaires.length == 0){
       res.render('hold');
   }
@@ -54,7 +52,6 @@ Questionnaire.find({type: "practice"}).limit(1).sort({$natural: -1}) //gets most
 router.get('/viewTQuestionnaire', (req, res) => 
 Questionnaire.find({type: "training"}).limit(1).sort({$natural: -1}) //gets most recent doc, need to change so that all come through
 .then(questionnaires => {
-  console.log(questionnaires);
   if(questionnaires.length == 0){
       res.render('hold');
   }

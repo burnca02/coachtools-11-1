@@ -30,28 +30,29 @@ router.get('/dispPracticeStats', ensureAuthenticated, (req, res) =>
       });
   }).catch(err => console.log(err))
 );
-
+//This method provides dispPracticeStats with the list of players for the position selected along with
+//their intangibles and respective grades
 router.post('/dispPracticeStats', async(req, res) => {
     const {pos} = req.body;
     const ints = [];
-    console.log(req.user.school);
     Roster.find({Pos: pos, School: req.user.school}) 
     .then(players => {
-      Intangibles.findOne({school: req.user.school}) //might need to add position here too
+      Intangibles.find({school: req.user.school, pos: pos})
       .then(intangibles => {
       const positions = [];
       for(var i = 0; i < intangibles.length; i++){
-        positions.push(intangibles[i].pos);
+        if(!(positions.includes(intangibles[i].pos))){ //adds only unique positions to array, no duplicates
+          positions.push(intangibles[i].pos);
+        }
       }
       if(players.length == 0){
         res.render('practiceStats');
       } else {
         PracticeStat.find({school: req.user.school}).sort({date:-1})
         .then(stats => {
-          console.log(stats);
-          res.render('dispPracticeStats', { //need to send all stats data here too
+          res.render('dispPracticeStats', {
                 'players': players,
-                'ints': intangibles.ints,
+                'ints': intangibles[0].ints,
                 'scale': intangibles.scale,
                 'positions': positions,
                 'stats': stats,

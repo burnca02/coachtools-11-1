@@ -95,8 +95,8 @@
   }
 
 
-  console.log(date);
-  console.log(grade);
+    dates = dates.reverse();
+    grades = grades.reverse();
 
     var ctx = document.getElementById("weeklyChart"); //Retrieving the elementID of the chart above in canvas.
     var myChart = new Chart(ctx, { //Styling the graph. If you need more information on styling the graph please go to the Chart.js Documentation online.
@@ -144,8 +144,8 @@
     }
 
 
-    console.log(date);
-    console.log(grade);
+    dates = dates.reverse();
+    grades = grades.reverse();
 
       var ctx = document.getElementById("seasonalChart"); //Retrieving the elementID of the chart above in canvas.
       var myChart = new Chart(ctx, { //Styling the graph. If you need more information on styling the graph please go to the Chart.js Documentation online.

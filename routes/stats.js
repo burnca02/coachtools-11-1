@@ -35,25 +35,27 @@ router.get('/dispPracticeStats', ensureAuthenticated, (req, res) =>
 router.post('/dispPracticeStats', async(req, res) => {
     const {pos} = req.body;
     const ints = [];
-    Roster.find({Pos: pos, School: req.user.school}) 
+    Roster.find({Pos: pos, School: req.session.school}) 
     .then(players => {
-      Intangibles.find({school: req.user.school, pos: pos})
+      Intangibles.find({school: req.session.school, pos: pos})
       .then(intangibles => {
       const positions = [];
       for(var i = 0; i < intangibles.length; i++){
         if(!(positions.includes(intangibles[i].pos))){ //adds only unique positions to array, no duplicates
           positions.push(intangibles[i].pos);
         }
+        console.log(intangibles[0].scale);
       }
       if(players.length == 0){
         res.render('practiceStats');
       } else {
-        PracticeStat.find({school: req.user.school}).sort({date:-1})
+        PracticeStat.find({school: req.session.school}).sort({date:-1})
         .then(stats => {
+          console.log(intangibles[0].scale);
           res.render('dispPracticeStats', {
                 'players': players,
                 'ints': intangibles[0].ints,
-                'scale': intangibles.scale,
+                'scale': intangibles[0].scale,
                 'positions': positions,
                 'stats': stats,
                 'name': req.user.name   

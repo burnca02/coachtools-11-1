@@ -21,19 +21,19 @@ router.get('/playerHome', ensureAuthenticated, (req, res) =>
 
 //player grades page
 router.get('/playerGrades', ensureAuthenticated, (req, res) => 
-  PracticeStat.find({ email: req.user.email }).sort({date:-1})
+  PracticeStat.find({ email: req.user.email }).sort({date:-1})// This query will get the most recent practice grade.
   .then(stats => {
-    res.render('playerGrades', {
-          'stats': stats,
-          'name': req.session.name
-    })
-    .catch(err => {
         res.render('playerGrades', {
-        'stats': "Not Available",
-        'name': req.session.name
+              'stats': stats,
+              'name': req.session.name
         })
-        console.log(err)}
-      );
+        .catch(err => {
+            res.render('playerGrades', {
+            'stats': "Not Available",
+            'name': req.session.name
+            })
+            console.log(err)}
+          );
 }));
 
 router.get('/meetingGrade', (req, res) => res.render('meetingGrade'));

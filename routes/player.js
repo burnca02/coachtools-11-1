@@ -23,7 +23,7 @@ router.get('/playerHome', ensureAuthenticated, (req, res) =>
 router.get('/playerGrades', ensureAuthenticated, (req, res) => 
   PracticeStat.find({ email: req.user.email }).sort({date:-1})
   .then(stats => {
-    console.log(stats);
+    console.log(stats.grade === undefined);
     res.render('playerGrades', {
           'stats': stats,
           'name': req.session.name

@@ -113,16 +113,36 @@ router.post('/addIntang', (req, res) => {
   res.redirect('/coach/submitIntangibles');
 });
 
-// router.post('/updatePracticeStats', (req, res) => {
-//   const {pos} = req.body;
-//   console.log(pos);
-//   PracticeStat.findOneAndUpdate({position: pos, school: req.user.school})
-//   .then(stats => { 
-//   console.log(stats);
-//   res.render('practiceStats', {
-//         stats: stats      
-//       });
-//   });
-// });
+router.post('/dispGameGrade', async(req, res) => {
+  const {pos} = req.body;
+    const ints = [];
+    Roster.find({Pos: pos, School: req.user.school}) 
+    .then(players => {
+      Intangibles.find({school: req.user.school, pos: pos})
+      .then(intangibles => {
+      const positions = [];
+      for(var i = 0; i < intangibles.length; i++){
+        if(!(positions.includes(intangibles[i].pos))){ //adds only unique positions to array, no duplicates
+          positions.push(intangibles[i].pos);
+        }
+      }
+      if(players.length == 0){
+        res.render('gameGrade');
+      } else {
+        PracticeStat.find({school: req.user.school}).sort({date:-1})
+        .then(stats => {
+          res.render('dispGameGrade', {
+                'players': players,
+                'ints': intangibles[0].ints,
+                'scale': intangibles.scale,
+                'positions': positions,
+                'stats': stats,
+                'name': req.user.name   
+              });
+        })
+      }
+    }).catch(err => console.log(err));
+    }).catch(err => console.log(err));
+});
 
 module.exports = router;

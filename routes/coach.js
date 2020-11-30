@@ -149,6 +149,24 @@ router.get('/practiceStats', ensureAuthenticated, (req, res) =>
   }).catch(err => console.log(err))
 );
 
+router.get('/gameGrade', ensureAuthenticated, (req, res) => 
+  Intangibles.find({school: req.user.school})
+  .then(intangibles => {
+  const positions = [];
+  for(var i = 0; i < intangibles.length; i++){
+    if(!(positions.includes(intangibles[i].pos))){ //adds only unique positions to array, no duplicates
+      positions.push(intangibles[i].pos);
+      console.log('added' + positions[i]);
+    }
+  }
+  console.log('positions' + positions);
+  res.render('gameGrade', { //need to send all stats data here too
+        'positions': positions,
+        'name': req.user.name
+      });
+  }).catch(err => console.log(err))
+);
+
 router.get('/playerComp', ensureAuthenticated, (req, res) => 
   res.render('playerComp', {
     name: req.user.name //pass the name that was entered into the database to dashboard

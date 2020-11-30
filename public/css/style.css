@@ -1,9 +1,16 @@
+/*
+* This should make styling work on most (if not all) browsers
+* Prefixed by https://autoprefixer.github.io
+* PostCSS: v7.0.29,
+* Autoprefixer: v9.7.6
+* Browsers: last 4 version
+*/
+
+
 body {
-  /* background-color: aliceblue; */
   background-color: white;
-  /* background-color: rgb(243, 255, 240); */
   margin: 0;
-  /* overflow: hidden; */
+  -webkit-text-size-adjust: 100%;
 }
 
 .top-dropdown-btn {
@@ -20,8 +27,12 @@ body {
 }
 
 .topnav {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  justify-content: flex-end;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
   
   /* flex: 1; */
   background-color: black;
@@ -29,14 +40,24 @@ body {
 }
 
 .topnavChild1 {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  justify-content: flex-start;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
 }
 .topnavChild2 {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  flex: 1;
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
   /* justify-content: start; */
-  justify-content: flex-end;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
 }
 .topnavChild2 > a, span {
   padding: 6px 8px 6px 16px;
@@ -67,8 +88,12 @@ body {
   color: #f1f1f1;
 }
 .topnavParent {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  align-items: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
 /* Dropdown container (hidden by default). Optional: add a lighter background color and some left padding to change the design of the dropdown content */
 .dropdown-container {
@@ -127,6 +152,21 @@ body {
 
 .pitch {
   background-color: #5d9634;
+  background: -webkit-gradient(
+    linear,
+    left top, left bottom,
+    from(#5d9634),
+    color-stop(50%, #5d9634),
+    color-stop(50%, #538c2b),
+    to(#538c2b)
+  );
+  background: -o-linear-gradient(
+    top,
+    #5d9634,
+    #5d9634 50%,
+    #538c2b 50%,
+    #538c2b
+  );
   background: linear-gradient(
     to bottom,
     #5d9634,
@@ -135,29 +175,44 @@ body {
     #538c2b
   );
   padding: 0px 10px;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  justify-content: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
   margin-right: 0;
   margin-left: 0;
-  flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
 }
 /* want bench to go to new row when there are too many players*/
 .bench {
   background-color: #006;
   padding: 0px 10px;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  flex-basis: inherit;
-  justify-content: center;
-  flex-wrap: wrap;
+  -ms-flex-preferred-size: inherit;
+      flex-basis: inherit;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
   margin-right: 0;
   margin-left: 0;
 }
 
 .container {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
   /* justify-content: space-evenly; */
-  justify-content: space-around;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
   padding-right: 0;
   padding-left: 0;
   list-style: none;
@@ -170,17 +225,15 @@ body {
   max-height: none;
 }
 
- /* .container>* {
-  flex: 1 1 100%;
-} */
-
 .container li,
 .gu-mirror {
   cursor: move;
   /* cursor: -webkit-grab; */
   /* cursor: -moz-grab; */
+  cursor: -webkit-grab;
   cursor: grab;
-  height: 14vmin;
+  /* height: fit-content; */
+  height: 18vmin;
   list-style: none;
   position: relative;
   width: 10vmin;
@@ -191,7 +244,6 @@ body {
 .gu-mirror {
   cursor: move;
   cursor: -webkit-grabbing;
-  cursor: -moz-grabbing;
   cursor: grabbing;
 }
 
@@ -218,8 +270,12 @@ body {
   left: 0;
   position: absolute;
   top: 0;
-  transform: rotate(60deg);
-  transform-origin: top left;
+  -webkit-transform: rotate(60deg);
+      -ms-transform: rotate(60deg);
+          transform: rotate(60deg);
+  -webkit-transform-origin: top left;
+      -ms-transform-origin: top left;
+          transform-origin: top left;
   width: 2vmin;
 }
 
@@ -231,8 +287,12 @@ body {
   position: absolute;
   right: 0;
   top: 0;
-  transform: rotate(-60deg);
-  transform-origin: top right;
+  -webkit-transform: rotate(-60deg);
+      -ms-transform: rotate(-60deg);
+          transform: rotate(-60deg);
+  -webkit-transform-origin: top right;
+      -ms-transform-origin: top right;
+          transform-origin: top right;
   width: 2vmin;
 }
 
@@ -258,25 +318,41 @@ body {
   /* right: -2vmin; */
   text-align: center;
   top: 58px;
-  padding-top: 19px;
-  padding-bottom: 10px;
+  padding-top: 20px;
+  /* padding-bottom: 10px; */
 }
 
 .bigContainer {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
   min-height: 100vh;
-  flex-direction: column;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
   margin: 0;
   background-color: white;
-  flex: 1;
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
 }
 
 .bodyCode {
-  order: 1;
-  flex: 1;
+  -webkit-box-ordinal-group: 2;
+      -ms-flex-order: 1;
+          order: 1;
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
   background-color: white;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  flex-direction: column;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
   padding: 1em;
   margin-left: 170px; /* Same as the width of the sidebar - want to get rid of this and just do flex */
 }
@@ -336,7 +412,8 @@ body {
   padding: 0.5rem;
   /* text-transform: lowercase; */
   background: none;
-  box-shadow: none;
+  -webkit-box-shadow: none;
+          box-shadow: none;
   border: none;
   cursor: pointer;
 }
@@ -346,19 +423,19 @@ body {
 }
 
 .bodyContainer {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  flex-flow: row;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-flow: row;
+          flex-flow: row;
 }
-
-/* .bodyContainer > * {
-  padding: 10px;
-  flex: 1 100%;
-} */
 
 .sidenav {
   background-color: black; /* Black */
   /* padding: 1em; */
-  height: 100%;
+  min-height: 100%;
   /* position: fixed; */
   /* width: 170px; */
   color: white;
@@ -366,17 +443,24 @@ body {
 
 .cardsK {
   /* display: -webkit-box; */
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
   list-style: none;
   height: 400px;
   /* margin-left: 170px; */
   /* margin: 0; */
   padding: 0;
-  order: 2;
+  -webkit-box-ordinal-group: 3;
+      -ms-flex-order: 2;
+          order: 2;
 }
 .cards__itemK {
   /* display: -webkit-box; */
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
   padding: 1rem;
 }
@@ -393,12 +477,15 @@ body {
 .cardK {
   background-color: white;
   border-radius: 0.25rem;
-  box-shadow: 0 20px 40px -14px rgba(0, 0, 0, 0.25);
+  -webkit-box-shadow: 0 20px 40px -14px rgba(0, 0, 0, 0.25);
+          box-shadow: 0 20px 40px -14px rgba(0, 0, 0, 0.25);
   display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
-          flex-direction: column;
+          -ms-flex-direction: column;
+      flex-direction: column;
   overflow: hidden;
   min-width: 300px;
   max-width: 400px;
@@ -409,12 +496,15 @@ body {
 }
 .card__content {
   display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
   -webkit-box-flex: 1;
-          flex: 1 1 auto;
+          -ms-flex: 1 1 auto;
+      flex: 1 1 auto;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
-          flex-direction: column;
+          -ms-flex-direction: column;
+      flex-direction: column;
   padding: 1rem;
 }
 .card__image {
@@ -429,6 +519,7 @@ body {
   position: relative;
   -webkit-transition: -webkit-filter 0.5s cubic-bezier(0.43, 0.41, 0.22, 0.91);
   transition: -webkit-filter 0.5s cubic-bezier(0.43, 0.41, 0.22, 0.91);
+  -o-transition: filter 0.5s cubic-bezier(0.43, 0.41, 0.22, 0.91);
   transition: filter 0.5s cubic-bezier(0.43, 0.41, 0.22, 0.91);
   transition: filter 0.5s cubic-bezier(0.43, 0.41, 0.22, 0.91), -webkit-filter 0.5s cubic-bezier(0.43, 0.41, 0.22, 0.91);
 }
@@ -465,7 +556,8 @@ body {
 }
 .card__text {
   -webkit-box-flex: 1;
-          flex: 1 1 auto;
+          -ms-flex: 1 1 auto;
+      flex: 1 1 auto;
   font-size: 0.875rem;
   line-height: 1.5;
   margin-bottom: 1.25rem;
@@ -475,7 +567,8 @@ body {
 /*-------------Reset-------------*/
 button {
   background: none;
-  box-shadow: none;
+  -webkit-box-shadow: none;
+          box-shadow: none;
   border: none;
   cursor: pointer;
 }
@@ -518,11 +611,15 @@ section {
 
 /*-------------Helpers-------------*/
 .skew {
-  transform: skew(-20deg);
+  -webkit-transform: skew(-20deg);
+      -ms-transform: skew(-20deg);
+          transform: skew(-20deg);
 }
 
 .un-skew {
-  transform: skew(20deg);
+  -webkit-transform: skew(20deg);
+      -ms-transform: skew(20deg);
+          transform: skew(20deg);
 }
 
 /*-------------Nav-------------*/
@@ -538,9 +635,15 @@ section {
 
 #nav {
   background-color: #fff;
-  box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.1);
+  -webkit-box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.1);
+          box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.1);
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  flex-direction: column;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
   font-family: "Saira Semi Condensed", sans-serif;
   height: 4em;
   overflow: hidden;
@@ -551,10 +654,14 @@ section {
 }
 
 .nav {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
   height: 4em;
   line-height: 4em;
-  flex-grow: 1;
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
 }
 
 .nav-link,
@@ -564,7 +671,7 @@ section {
 
 span.gradient {
   background: black;
-  background: -webkit-linear-gradient(45deg, black, black);
+  background: -o-linear-gradient(45deg, black, black);
   background: linear-gradient(45deg, black, black);
   padding: 0 1em;
   position: relative;
@@ -572,10 +679,14 @@ span.gradient {
   margin-right: auto;
 }
 span.gradient:hover {
-  animation-name: logo-hover;
-  animation-duration: 0.3s;
-  animation-fill-mode: forwards;
-  animation-timing-function: cubic-bezier(0.17, 0.57, 0.31, 0.85);
+  -webkit-animation-name: logo-hover;
+          animation-name: logo-hover;
+  -webkit-animation-duration: 0.3s;
+          animation-duration: 0.3s;
+  -webkit-animation-fill-mode: forwards;
+          animation-fill-mode: forwards;
+  -webkit-animation-timing-function: cubic-bezier(0.17, 0.57, 0.31, 0.85);
+          animation-timing-function: cubic-bezier(0.17, 0.57, 0.31, 0.85);
 }
 
 h1.logo {
@@ -606,8 +717,13 @@ a:hover {
 }
 
 .right {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  flex-direction: column;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
   height: 100%;
 }
 
@@ -624,7 +740,10 @@ a:hover {
 
   #nav {
     overflow: hidden;
-    flex-direction: row;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+            flex-direction: row;
   }
 
   .nav-link {
@@ -633,8 +752,13 @@ a:hover {
 
   .right {
     overflow: hidden;
-    flex-direction: row;
-    justify-content: flex-end;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+            flex-direction: row;
+    -webkit-box-pack: end;
+        -ms-flex-pack: end;
+            justify-content: flex-end;
     position: relative;
     left: 1.5em;
     height: auto;
@@ -646,18 +770,22 @@ a:hover {
 
   .nav a:link.active, a:visited.active, a:active.active {
     background: black;
-    background: -webkit-linear-gradient(45deg, black, black);
+    background: -o-linear-gradient(45deg, black, black);
     background: linear-gradient(45deg, black, black);
     color: #fff;
   }
 
   .nav-link-span {
-    transform: skew(20deg);
+    -webkit-transform: skew(20deg);
+        -ms-transform: skew(20deg);
+            transform: skew(20deg);
     display: inline-block;
   }
 
   .nav-link {
-    transform: skew(-20deg);
+    -webkit-transform: skew(-20deg);
+        -ms-transform: skew(-20deg);
+            transform: skew(-20deg);
     color: #777;
     text-decoration: none;
   }
@@ -668,7 +796,16 @@ a:hover {
   a:hover.nav-link:not(.active) {
     color: #444;
     background: #ddd;
+    background: -o-linear-gradient(45deg, #fff, #ddd);
     background: linear-gradient(45deg, #fff, #ddd);
+  }
+}
+@-webkit-keyframes logo-hover {
+  20% {
+    padding-right: 0em;
+  }
+  100% {
+    padding-right: 5em;
   }
 }
 @keyframes logo-hover {
@@ -699,7 +836,8 @@ a:hover {
   position: absolute;
   background-color: #f1f1f1;
   /* min-width: 160px; */
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  -webkit-box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+          box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   z-index: 1;
 }
 
@@ -747,9 +885,9 @@ a:hover {
 }
 /* Depends on the page you are on - orders the sidenav and other things in row */
 @media all and (min-width: 600px) {
-  .bodyContainer {flex: 2 0px;}
-  .sidenav {order: 1;}
-  .cardsK {order: 2;}
+  .bodyContainer {-webkit-box-flex: 2;-ms-flex: 2 0px;flex: 2 0px;}
+  .sidenav {-webkit-box-ordinal-group: 2;-ms-flex-order: 1;order: 1;}
+  .cardsK {-webkit-box-ordinal-group: 3;-ms-flex-order: 2;order: 2;}
 }
 
 .logout {
@@ -781,30 +919,54 @@ a:hover {
 }
 
 .chBody {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  flex-direction: column;
-  flex-grow: 1;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
 }
 
 .rBody {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  flex-direction: column;
-  flex-grow: 5;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-flex: 5;
+      -ms-flex-positive: 5;
+          flex-grow: 5;
 }
 
 .rosterRow {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
   /* justify-content: left; */
   /* justify-content: space-evenly; */
   /* justify-content: flex-start; */
-  justify-content: space-between;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
   /* align-items: center; */
   /* align-content: center; */
 }
 
 .rosterRow2 {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: center;
 }

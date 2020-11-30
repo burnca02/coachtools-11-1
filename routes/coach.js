@@ -149,6 +149,11 @@ router.get('/practiceStats', ensureAuthenticated, (req, res) =>
   }).catch(err => console.log(err))
 );
 
+router.get('/playerComp', ensureAuthenticated, (req, res) => 
+  res.render('playerComp', {
+    name: req.user.name //pass the name that was entered into the database to dashboard
+}));
+
 router.get('/roster', ensureAuthenticated, (req, res) => 
   Roster.find({ "Pos": { "$exists": true }, "School" :req.session.school }).sort({'Pos': 1})
   .then(results => {

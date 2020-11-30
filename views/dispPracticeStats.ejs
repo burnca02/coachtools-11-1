@@ -229,16 +229,21 @@
                             <td>Season Average(<%=ints[3] %>)</td>
                           </tr>
                           <% for(var i = 0; i < players.length; i++) { %>
-                          <tr>
-                            <td><%=players[i].FullName%> %></td>
-                            <td>#</td>
-                            <td>#</td>
-                            <td>#</td>
-                            <td>#</td>
-                            <td>#</td>
-                            <td>#</td>
-                            <td>#</td>
-                          </tr>
+                            <% for(var j = 0; j < stats.length; j++) { %>
+                                <% if(players[i].Email == stats[j].email) {%>
+                                  <tr>
+                                  <td><%=players[i].FullName %></td>
+                                  <td><%=stats[j].grade %></td>
+                                  <td>#</td>
+                                  <td>#</td>
+                                  <td>#</td>
+                                  <td>#</td>
+                                  <td>#</td>
+                                  <td>#</td>
+                                  </tr>
+                                  <% break; %>
+                                <% } %>
+                            <% } %>
                           <% } %>
                         </tbody>
                       </table>
@@ -289,8 +294,6 @@
                                   max="10"
                                   placeholder="Enter Grade"
                                 />
-                                <label for="grade1imp">Importance(1-4)</label>
-                                <input name="grade1imp" value='<%- ints[4] %>' readonly/>
                               </td>
                             </tr>
                             <tr>
@@ -303,8 +306,6 @@
                                   max="10"
                                   placeholder="Enter Grade"
                                 />
-                                <label for="grade2imp">Importance(1-4)</label>
-                                <input name="grade2imp" value='<%- ints[5] %>' readonly/>
                               </td>
                             </tr>
                             <tr>
@@ -317,8 +318,6 @@
                                   max="10"
                                   placeholder="Enter Grade"
                                 />
-                                <label for="grade3imp">Importance(1-4)</label>
-                                <input name="grade3imp" value='<%- ints[6] %>' readonly/>
                               </td>
                             </tr>
                             <tr>
@@ -331,8 +330,6 @@
                                   max="10"
                                   placeholder="Enter Grade"
                                 />
-                                <label for="grade4imp">Importance(1-4)</label>
-                                <input name="grade4imp" value='<%- ints[7] %>' readonly/>
                               </td>
                             </tr>
                             <tr>

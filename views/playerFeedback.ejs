@@ -11,14 +11,6 @@
       order: 2;
     }
   }
-  .dropbtn {
-    background-color: rgb(192, 26, 26);
-    color: white;
-    padding: 16px;
-    font-size: 16px;
-    border: none;
-  }
-
   .dropdown {
     position: center;
     display: inline-block;
@@ -61,13 +53,13 @@
   <%- include("partials/topnav") %>
   <div class="bodyContainer">
     <%- include("partials/sidenav") %>
-    <div class="rBody">
+    <div class="rBody" style="text-align: center; align-content: center;">
       <h2>Questionnaire Dropdown</h2>
       <p>Move the mouse over the button to open the dropdown menu.</p>
 
       <div class="rosterRow2">
         <div class="dDown">
-          <button class="dropbtn" href="./questionnaire">Create New Questionnaire</button>
+          <button class="btn btn-primary" href="./questionnaire">Create New Questionnaire</button>
           <div class="dropdown-content">
             <a href="./questionnaire">New Meeting Questionnaire</a>
             <a href="./questionnaire">New Practice Questionnaire</a>
@@ -76,7 +68,7 @@
         </div>
         <div class="dDown">
           <form action="./viewResponse" method="POST">
-              <button class="dropbtn">View Questionnaire Responses</button>
+              <button class="btn btn-primary">View Questionnaire Responses</button>
               <div class="dropdown-content">
                 <a><input type="radio" value="meeting" name="type" href="./viewResponse"
                   />Meeting Questionnaire Responses</a>

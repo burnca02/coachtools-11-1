@@ -3,6 +3,7 @@ const router = express.Router();
 const { ensureAuthenticated } = require('../config/auth');
 
 const Stat = require('../models/Stat');
+const PracticeStat = require('../models/PracticeStat');
 
 router.use(express.static("public"));
 
@@ -20,20 +21,13 @@ router.get('/playerHome', ensureAuthenticated, (req, res) =>
 
 //player grades page
 router.get('/playerGrades', ensureAuthenticated, (req, res) => 
-  Stat.findOne({ email: req.user.email }).sort({$natural:-1}).limit(1)
-  .then(stat => {
-    console.log(stat.bench);
+  PracticeStat.find({ email: req.user.email }).sort({date:-1})
+  .then(stats => {
+    console.log(stats);
     res.render('playerGrades', {
-          name: req.user.name,
-          email: stat.email,
-          bench: stat.bench,
-          squat: stat.squat,
-          dead: stat.dead,
-          mile: stat.mile,
-          height: stat.height,
-          weight: stat.weight,
-          name: req.user.name
-        });
+          'stats': stats,
+          'name': req.session.name
+    });
 }));
 
 router.get('/meetingGrade', (req, res) => res.render('meetingGrade'));

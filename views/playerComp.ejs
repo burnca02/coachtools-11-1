@@ -1,0 +1,22 @@
+<style>
+    @media all and (min-width: 600px) {
+      .bodyContainer {
+        flex: 2 0px;
+      }
+      .sidenav {
+        order: 1;
+      }
+      .rBody {
+        order: 2;
+      }
+    }
+</style>
+<div class="bigContainer">
+    <%- include("partials/topnav") %>
+    <div class="bodyContainer">
+        <%- include("partials/sidenav") %>
+        <div class="rBody">
+            <h2>Player Comparison Page</h2>
+        </div>
+    </div>
+</div>

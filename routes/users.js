@@ -14,14 +14,6 @@ router.get('/login', (req, res) => {
     res.render('login')
 });
 
-//benchmarks
-// router.get('/benchmarks', (req, res) => {
-//     res.render('benchmarks', {
-//         'name': req.user.name,
-//         'email': req.user.email
-//     });
-// });
-
 //photo
 router.get('/coachToolsLogo.png', (req, res) => {
     res.sendFile('coachToolsLogo.png', { root: '.' })

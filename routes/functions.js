@@ -18,17 +18,23 @@ router.get('/benchmarks', (req, res) => {
     });
 });
 
+
+/**
+ * This function deals with submitting benchmarks of each individual lift or exercise. This function will be used 
+ * when someone is registering their account and whenever they are updating their stats.
+ */
 router.post('/benchmarks', (req, res, next) => {
     //how to get it to recognize player email without them having to type it in?
     const { email, bench, squat, dead, mile, height, weight} = req.body;
     console.log(req.body);
+    console.log(req.session);
 
     //Add new Stat to the database
     const newStat = new Stat({
-        _id: req.session._id,
+        // _id: req.session._id, /
         name: req.session.name,
         email,
-        bench,
+        bench, 
         squat,
         dead,
         mile,

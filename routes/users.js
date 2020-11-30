@@ -125,6 +125,8 @@ router.post('/register', (req, res) => {
                                             res.redirect('/users/login');
                                         } else {
                                             req.flash('success_msg', 'You are registered. Please fill in benchmark data');
+                                            req.session.name = name;
+                                            req.session.email = email; //This will be passed to the benchmarks so that users do not fill out the information.
                                             res.redirect('/functions/benchmarks');
                                         }
                                     })

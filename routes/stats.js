@@ -35,10 +35,6 @@ router.post('/dispPracticeStats', async(req, res) => {
     const {pos} = req.body;
     const ints = [];
     console.log(req.user.school);
-    // PracticeStat.find({School: req.user.school})
-    // .then(stats => {
-    //   console.log(stats);
-    // })
     Roster.find({Pos: pos, School: req.user.school}) 
     .then(players => {
       Intangibles.findOne({school: req.user.school}) //might need to add position here too
@@ -50,14 +46,18 @@ router.post('/dispPracticeStats', async(req, res) => {
       if(players.length == 0){
         res.render('practiceStats');
       } else {
-        res.render('dispPracticeStats', { //need to send all stats data here too
-              'players': players,
-              'ints': intangibles.ints,
-              'scale': intangibles.scale,
-              'positions': positions,
-              //'stats': stats,
-              'name': req.user.name   
-            });
+        PracticeStat.find({school: req.user.school}).sort({date:-1})
+        .then(stats => {
+          console.log(stats);
+          res.render('dispPracticeStats', { //need to send all stats data here too
+                'players': players,
+                'ints': intangibles.ints,
+                'scale': intangibles.scale,
+                'positions': positions,
+                'stats': stats,
+                'name': req.user.name   
+              });
+        })
       }
     }).catch(err => console.log(err));
     }).catch(err => console.log(err));
@@ -69,18 +69,18 @@ router.post('/addPracticeGrade', async (req, res) => {
 
   var email;
   var school = req.user.school;
-  await Roster.findOne({FullName: playerName})
+  await Roster.findOne({FullName: playerName, School: school})
   .then(result => {
     console.log(result);
     email = result.Email;
   }).catch(err => console.log(err));
   console.log('email' + email);
-  int1 = [grade1, grade1imp];
-  int2 = [grade2, grade2imp];
-  int3 = [grade3, grade3imp];
-  int4 = [grade4, grade4imp];
+  int1 = [grade1, 1];
+  int2 = [grade2, 2];
+  int3 = [grade3, 3];
+  int4 = [grade4, 4];
   //Calculating the day's overall practice grade
-  var grade = ((grade1/scale)*.4) + ((grade2/scale)*.3) + ((grade3/scale)*.2) + ((grade4/scale)*.1);
+  var grade = Math.round((((grade1/scale)*.4) + ((grade2/scale)*.3) + ((grade3/scale)*.2) + ((grade4/scale)*.1)) * 100);
 
   const newPracticeStat = new PracticeStat({
     email,
@@ -92,6 +92,7 @@ router.post('/addPracticeGrade', async (req, res) => {
     grade,
     date
   });
+  console.log(newPracticeStat);
   newPracticeStat.save();
   res.redirect('dispPracticeStats');
 });

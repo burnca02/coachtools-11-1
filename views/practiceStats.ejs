@@ -58,13 +58,13 @@
     <!-- Side navigation -->
     <!-- <div id="nav-placeholder"></div> -->
     <%- include("partials/sidenav") %>
-    <div class="rBody">
+    <div class="rBody" style="padding-left: 20px;">
       <h1 class="text-center mb-3"><i class="fas fa-sign-in-alt"></i> Season Practice Statistics</h1>
 
-      <div class= 'dropdown'>
+      <div class='dropdown'>
         <form action="/stats/dispPracticeStats" method="POST">
             <label for="pos">Choose a Position:</label>
-            <select name="pos" id="pos">
+            <select name="pos" id="pos" class="btn btn-primary dropdown-toggle">
               <% for(var i = 0; i < positions.length; i++) { %>
               <option value="<%- positions[i] %>"><%= positions[i] %></option>
               <% } %>

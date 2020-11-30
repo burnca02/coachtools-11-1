@@ -1,5 +1,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <style>
+  @media all and (min-width: 600px) {
+    .bodyContainer {flex: 2 0px;}
+    .sidenav {order: 1;}
+    .chBody {order: 2;}
+  }
     table.redTable {
     border: 2px solid #a40808;
     background-color: #eee7db;
@@ -59,6 +64,7 @@
     .chBody {order: 2;}
   }
 </style>
+<div class="bigContainer">
   <%- include("partials/topnav") %>
   <div class="bodyContainer">
     <!-- Side navigation -->
@@ -96,3 +102,21 @@
         </table>
     </div>
   </div>
+</div>
+
+<script>
+  var dropdown = document.getElementsByClassName("dropdown-btn");
+  var i;
+
+  for (i = 0; i < dropdown.length; i++) {
+    dropdown[i].addEventListener("click", function () {
+      this.classList.toggle("active");
+      var dropdownContent = this.nextElementSibling;
+      if (dropdownContent.style.display === "block") {
+        dropdownContent.style.display = "none";
+      } else {
+        dropdownContent.style.display = "block";
+      }
+    });
+  }
+</script>

@@ -826,7 +826,7 @@ a:hover {
 }
 
 .dropdown {
-  position: absolute;
+  position: relative;
   display: inline-block;
   /* z-index: 1; */
 }

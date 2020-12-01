@@ -11,6 +11,39 @@
       order: 2;
     }
   }
+  table.redTable {
+    border: 2px solid #a40808;
+    background-color: #eee7db;
+    width: 90%;
+    text-align: center;
+    border-collapse: collapse;
+  }
+  table.redTable td,
+  table.redTable th,
+  table.redTable tr {
+    border: 1px solid #aaaaaa;
+    padding: 3px 2px;
+  }
+  table.redTable tbody td {
+    font-size: 13px;
+    text-align: center;
+  }
+  table.redTable tr:nth-child(even) {
+    background: #f5c8bf;
+  }
+  table.redTable thead {
+    background: #a40808;
+  }
+  table.redTable thead th {
+    font-size: 19px;
+    font-weight: bold;
+    color: #ffffff;
+    text-align: center;
+    border-left: 2px solid #a40808;
+  }
+  table.redTable thead th:first-child {
+    border-left: none;
+  }
 </style>
 <script>
   var dt = new Date();
@@ -57,9 +90,13 @@
       <a href="/player/playerTrends">Max Trends</a>
     </nav>
     <div class="chBody">
-      <div style="font-size: 25px; display: inline">Strength</div>
 
-      <table style="width: 100%">
+      <table class="redTable" style="width: 100%">
+        <thead>
+            <th>Strength</th>
+            <th></th>
+            <th></th>
+        </thead>
         <tr>
           <th>Current Max Bench</th>
           <th>Current Max Squat</th>
@@ -72,9 +109,10 @@
         </tr>
       </table>
 
-      <div style="font-size: 25px; display: inline">Agility</div>
-
-      <table style="width: 100%">
+      <table class="redTable" style="width: 100%">
+        <thead>
+          <th>Agility</th>
+        </thead>
         <tr>
           <th>Mile Time</th>
         </tr>
@@ -83,9 +121,11 @@
         </tr>
       </table>
 
-      <div style="font-size: 25px; display: inline">Height/Weight</div>
-
-      <table style="width: 100%">
+      <table class="redTable" style="width: 100%">
+        <thead>
+          <th>Height & Weight</th>
+          <th></th>
+        </thead>
         <tr>
           <th>Height</th>
           <th>Weight</th>
@@ -93,7 +133,6 @@
         <tr>
           <td><%= height%> inches</td>
           <td><%= weight%> lbs.</td>
-          <td></td>
         </tr>
       </table>
       <!-- The following section is code in relation to the chart.  -->

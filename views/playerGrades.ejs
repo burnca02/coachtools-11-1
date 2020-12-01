@@ -1,10 +1,23 @@
 <style>
-  table,
-  th,
-  td {
-    padding: 10px;
-    border: 1px solid black;
+  table.redTable {
+    border: 2px solid #a40808;
+    background-color: #eee7db;
+    width: 90%;
+    text-align: center;
     border-collapse: collapse;
+  }
+  table.redTable td,
+  table.redTable th,
+  table.redTable tr {
+    border: 1px solid #aaaaaa;
+    padding: 3px 2px;
+  }
+  table.redTable tbody td {
+    font-size: 13px;
+    text-align: center;
+  }
+  table.redTable tr:nth-child(even) {
+    background: #f5c8bf;
   }
   @media all and (min-width: 600px) {
     .bodyContainer {
@@ -40,23 +53,25 @@
       <a href="/player/playerGrades">My Grades</a>
       <a href="/player/playerTrends">Max Trends</a>
     </nav>
-    <div class="gradeTable">
-      <h1 class="mt-4">Grades Homepage <%= name%></h1>
-      <table style="width: 100%">
+    <div class="gradeTable" style="width: 100%">
+      <h1 class="text-center mb-3"><i class="fas fa-sign-in-alt"></i>Grades Homepage <%= name%></h1>
+      <table class="redTable" style="width: 100%">
+        <th>Last Grade</th>
         <tr>
-          <th>Today's Grade</th>
-          <th>Weekly Trend</th>
-          <th>Seasonal Trend</th>
-        </tr>
-        <tr>
-          <%try{ %>
-            <td><%= stats[0].grade %></td>
+            <%try{ %>
+            <td style="font-size:40px;"><%= stats[0].grade %></td>
           <% } catch(err){ %>
               <% console.log(err); %>
           <% } %>
+        </tr>
+        <th>Weekly Trend</th>
+        <tr>
           <td>
             <canvas id="weeklyChart" style="width: 300px; height: 150px"></canvas>
           </td>
+        </tr>
+        <th>Seasonal Trend</th>
+        <tr>
           <td>
             <canvas id="seasonalChart" style="width: 300px; height: 150px"></canvas>
           </td>

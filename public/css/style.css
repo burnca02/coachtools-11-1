@@ -970,3 +970,6 @@ a:hover {
       -ms-flex-pack: start;
           justify-content: center;
 }
+.namePracticeStat:hover {
+  background-color: #f5c8bf;
+}

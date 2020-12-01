@@ -17,8 +17,6 @@ router.get('/benchmarks', (req, res) => {
         'email': req.session.email
     });
 });
-
-
 /**
  * This function deals with submitting benchmarks of each individual lift or exercise. This function will be used 
  * when someone is registering their account and whenever they are updating their stats.

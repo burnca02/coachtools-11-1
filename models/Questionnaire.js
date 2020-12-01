@@ -9,6 +9,10 @@ const mongoose = require('mongoose');
         type: Array,
         required: true
     },
+    school: {
+        type: String,
+        required: true
+    },
     type: {
         type: String,
         required: true,

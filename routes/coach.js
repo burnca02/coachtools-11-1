@@ -82,7 +82,8 @@ router.post('/submitquest', async(req,res) => {
     const newQuestionnaire = new Questionnaire({
       participants: participantsArr, //make sure variables passed match the model or refer to model variables
       type,
-      questions
+      questions,
+      school: req.user.school
     });
     console.log('newQuest' + newQuestionnaire);
     //save user
@@ -96,7 +97,7 @@ router.post('/submitquest', async(req,res) => {
 
 router.post('/viewResponse', ensureAuthenticated, async(req, res) => {
   const {type} = req.body;
-  await CompleteQuest.find({type: type, school: req.user.school}) //.sort({email: 1})
+  await CompleteQuest.find({type: type, school: req.session.school}) //.sort({email: 1})
   .then(completeQuests => { //completeQuests will be array of all completed questionnaires(all types)
     console.log('completequests ' + completeQuests);
     var quests = [];
@@ -114,7 +115,7 @@ router.post('/viewResponse', ensureAuthenticated, async(req, res) => {
       });
     res.render('viewResponse', {
         'type': type,
-        'name': name,
+        'name': req.session.name,
         'completeQuests': completeQuests,
         'quests': quests
     });

@@ -155,6 +155,7 @@ router.post('/login', (req, res, next) => {
         .then(user => {
             req.session.school = user.school;
             req.session._id = user._id; //Passing the ID to make searches easier.
+            req.session.name = user.name;
             if(user.userType == 'coach') {
                 console.log('User type is ' + user.userType);
                 passport.authenticate('local', {

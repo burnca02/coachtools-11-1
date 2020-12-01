@@ -75,7 +75,7 @@ router.post('/updatestats', (req, res) => {
 
   //Add new Stat to the database
   const newStat = new Stat({
-      _id: req.session._id,
+      // _id: req.session._id, //MongoDB does not allow for ID's to be duplicated. You can create a database column for playerID, but not set _id.
       email: req.session.email,
       name: req.session.name,
       bench,

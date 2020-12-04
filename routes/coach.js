@@ -14,6 +14,7 @@ const Questionnaire = require('../models/Questionnaire');
 const CompleteQuest = require('../models/CompleteQuest');
 const Stat = require('../models/Stat');
 const Intangibles = require('../models/Intangibles');
+const PracticeStat = require('../models/PracticeStat');
 
 router.use(express.static("public"));
 
@@ -182,11 +183,46 @@ router.get('/playerComp', ensureAuthenticated, (req, res) =>
   })
 );
 
-router.post('/dispComp', ensureAuthenticated, (req, res) => 
-      res.render('dispComp', {
-        name: req.user.name, //pass the name that was entered into the database to dashboard
+router.post('/dispComp', ensureAuthenticated, async(req, res) => {
+    const {name1, name2} = req.body; 
+    await Roster.findOne({'FullName': name1})
+    .then(player => {
+      const email1 = player.Email;
+      const pos1 = player.Pos;
+      Roster.findOne({'FullName': name2})
+      .then(player => {
+        const email2 = player.Email;
+        const pos2 = player.Pos;
+        PracticeStat.findOne({'email': email1}).sort({$natural: -1})
+        .then(stat => {
+          var practice1 = '';
+          if(stat == null){
+            practice1 = 'No Grade'
+          } else {
+            practice1 = stat.grade;
+          }
+          PracticeStat.findOne({'email': email2}).sort({$natural: -1})
+          .then(stat => {
+            var practice2 = '';
+            if(stat == null){
+              practice2 = 'No Grade'
+            } else {
+              practice2 = stat.grade;
+            }
+            res.render('dispComp', {
+              'name1': name1,
+              'name2': name2,
+              'pos1': pos1,
+              'pos2': pos2,
+              'practice1': practice1,
+              'practice2': practice2,
+              name: req.user.name, //pass the name that was entered into the database to dashboard
+            })
+          })
+        })
     })
-);
+  })
+});
 
 router.get('/roster', ensureAuthenticated, (req, res) => 
   Roster.find({ "Pos": { "$exists": true }, "School" :req.session.school }).sort({'Pos': 1})

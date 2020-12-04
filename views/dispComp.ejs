@@ -26,7 +26,7 @@
     padding: 3px 2px;
   }
   table.redTable tbody td {
-    font-size: 13px;
+    font-size: 40px;
     text-align: center;
   }
   table.redTable tr:nth-child(even) {
@@ -36,7 +36,7 @@
     background: #a40808;
   }
   table.redTable thead th {
-    font-size: 19px;
+    font-size: 40px;
     font-weight: bold;
     color: #ffffff;
     text-align: center;
@@ -47,13 +47,13 @@
   }
 
   table.redTable tfoot {
-    font-size: 13px;
+    font-size: 40px;
     font-weight: bold;
     color: #ffffff;
     background: #a40808;
   }
   table.redTable tfoot td {
-    font-size: 13px;
+    font-size: 40px;
     text-align: center;
   }
   table.redTable tfoot .links {
@@ -73,40 +73,30 @@
         <%- include("partials/sidenav") %>
         <div class="rBody">
           <div class="container"> 
-            <div class="redTable" id="viewTable" border="1">
-                <table class="redTable" id="viewTable" border="1">
-                    <thead>
-                      <tr>
-                        <th style="font-size:40px;">Player Name</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td style="font-size:40px;">Last Practice Grade</td>
-                      </tr>
-                      <tr>
-                        <td style="font-size:40px;">Last Game Grade</td>
-                      </tr>
-                    </tbody>
-                  </table>
-            </div>
             <div>
-              <table class="redTable" id="viewTable" border="1">
-                <thead>
-                  <tr>
-                    <th style="font-size:40px;">Player Name</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td style="font-size:40px;">Last Practice Grade</td>
-                  </tr>
-                  <tr>
-                    <td style="font-size:40px;">Last Game Grade</td>
-                  </tr>
-                </tbody>
+              <table style="font-size:40px;" class="redTable" id="viewTable" border="1">
+                <tr>
+                  <th><%= name1 %>(<%= pos1 %>)</th>
+                  <th>Attribute</th>
+                  <th><%= name2 %>(<%= pos2 %>)</th>
+                </tr>
+                <tr>
+                  <td><%= practice1 %></td>
+                  <td>Practice Grade</td>
+                  <td><%= practice2 %></td>
+                </tr>
+                <tr>
+                  <td>#</td>
+                  <td>Game Grade</td>
+                  <td>#</td>
+                </tr>
+                <tr>
+                  <td>#</td>
+                  <td>Attendance Rate</td>
+                  <td>#</td>
+                </tr>
               </table>
-            </div> 
+            </div>
           </div> 
         </div>
     </div>

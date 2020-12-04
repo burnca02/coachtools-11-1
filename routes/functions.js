@@ -19,7 +19,8 @@ router.get('/benchmarks', (req, res) => {
 });
 /**
  * This function deals with submitting benchmarks of each individual lift or exercise. This function will be used 
- * when someone is registering their account and whenever they are updating their stats.
+ * when someone is registering their account and whenever they are updating their stats. The method 
+ * saves the benchmark data and redirects to the login screen.
  */
 router.post('/benchmarks', (req, res, next) => {
     //how to get it to recognize player email without them having to type it in?

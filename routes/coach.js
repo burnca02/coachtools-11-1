@@ -58,8 +58,12 @@ router.get('/questionnaire', ensureAuthenticated, (req, res) =>
   res.render('questionnaire', {
     name: req.user.name //pass the name that was entered into the database to dashboard
 }));
-
-
+/*
+This method is called when a coach submits a questionnaire. It takes all fields on the questionnaire 
+as input. The query then searches the Roster database to find the appropriate emails for the 
+questionnaire to be sent to. The method then creates the new questionnaire and redirects to the 
+playerFeedback screem.
+*/
 router.post('/submitquest', async(req,res) => {
   const { participants, whichpos, type, q1, q2, q3 } = req.body;
       var participantsArr = [];
@@ -95,7 +99,12 @@ router.post('/submitquest', async(req,res) => {
     .catch(err => console.log(err));
   // }
 });
-
+/*
+This method is called when the coach hits 'View Responses' on the player feedback screen. The
+method takes the questionnaire type as input. The queries below find all completed questionnaires for the users school and the FullNames associated with each
+questionnaire. Currently the method is not pulling the questions from the Questionnaire database, only
+the scores from the CompletedQuestionnaire database.
+*/
 router.post('/viewResponse', ensureAuthenticated, async(req, res) => {
   const {type} = req.body;
   await CompleteQuest.find({type: type, school: req.session.school}) //.sort({email: 1})
@@ -122,7 +131,10 @@ router.post('/viewResponse', ensureAuthenticated, async(req, res) => {
     });
   }
 )});
-
+/*
+This method is the get for the practice training stats page. The query below pulls the most recent stats
+for each player. This data populates the table on practiceTrainingStats.ejs
+*/
 router.get('/practiceTrainingStats', ensureAuthenticated, (req, res) => 
   Stat.find({}).sort({$natural:-1})
   .then(stats => {
@@ -132,7 +144,10 @@ router.get('/practiceTrainingStats', ensureAuthenticated, (req, res) =>
     });
   })
 );
-
+/*
+This method is the get for the practice stats page. The query below gets all intangibles from the database
+and sends them to the ejs page. The intangibles populate the dropdown menu on practiceStats.ejs
+*/
 router.get('/practiceStats', ensureAuthenticated, (req, res) => 
   Intangibles.find({school: req.user.school})
   .then(intangibles => {
@@ -168,7 +183,10 @@ router.get('/gameGrade', ensureAuthenticated, (req, res) =>
       });
   }).catch(err => console.log(err))
 );
-
+/*
+This method is the get for the player comparison page. The query below sends the names of all players 
+from the user's school to populate the 2 drop down menus on playerComp.ejs
+*/
 router.get('/playerComp', ensureAuthenticated, (req, res) => 
   Roster.find({School: req.user.school})
   .then(players => {
@@ -177,12 +195,16 @@ router.get('/playerComp', ensureAuthenticated, (req, res) =>
         names[i] = players[i].FullName;
       }
       res.render('playerComp', {
-        name: req.user.name, //pass the name that was entered into the database to dashboard
+        name: req.user.name,
         'players': names
     })
   })
 );
-
+/*
+This method is called once the submit button is pressed on the player comparison page. It takes the two
+player names as inputs and then finds both players' practice stats. Eventually it will also pull both
+players' game grades and attendance rates once that data is available in the database.
+*/
 router.post('/dispComp', ensureAuthenticated, async(req, res) => {
     const {name1, name2} = req.body; 
     await Roster.findOne({'FullName': name1})
@@ -245,8 +267,10 @@ router.get('/depthChart', ensureAuthenticated, (req, res) =>
 );
 
 
-//This method searches the roster databases and finds all unique position codes in a school's roster. 
-//These position codes are then sent to submitIntangibles.ejs to display in a dropdown menu for the coach.
+/*
+This method searches the roster databases and finds all unique position codes in a school's roster. 
+These position codes are then sent to submitIntangibles.ejs to display in a dropdown menu for the coach.
+*/
 router.get('/submitIntangibles', ensureAuthenticated, (req, res) => 
   Roster.find({School: req.user.school})
   .then(players => {

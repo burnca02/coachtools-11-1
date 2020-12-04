@@ -16,6 +16,10 @@ mongoose.connect(db, { useNewUrlParser: true ,useUnifiedTopology: true})
 .then(() => console.log('Mongo DB Connected...'))
 .catch(err => console.log(err));
 
+/*
+This is the get method for dispPracticeStats.ejs. The query below finds the intangibles to populate the
+dropdown similar to on practiceStats.
+*/
 router.get('/dispPracticeStats', ensureAuthenticated, (req, res) => 
   Intangibles.find({school: req.user.school})
   .then(intangibles => {
@@ -30,8 +34,10 @@ router.get('/dispPracticeStats', ensureAuthenticated, (req, res) =>
       });
   }).catch(err => console.log(err))
 );
-//This method provides dispPracticeStats with the list of players for the position selected along with
-//their intangibles and respective grades
+/*
+This method provides dispPracticeStats with the list of players for the position selected along with
+their intangibles and respective grades
+*/
 router.post('/dispPracticeStats', async(req, res) => {
     const {pos} = req.body;
     const ints = [];
@@ -66,6 +72,11 @@ router.post('/dispPracticeStats', async(req, res) => {
     }).catch(err => console.log(err));
 });
 //This function add a practice grade to the database once they are submitted by the coach
+/*
+This method is called when a coach submits a practice grade for a player. All form fields are take
+as input. The method calculates the grade for the day from the input and then saves all data to the
+practiceStats database.
+*/
 router.post('/addPracticeGrade', async (req, res) => {
   const {playerName, date, scale, grade1, grade2, grade3, grade4, grade1imp, grade2imp, grade3imp, grade4imp} = req.body;
   console.group(req.body);
@@ -99,7 +110,10 @@ router.post('/addPracticeGrade', async (req, res) => {
   newPracticeStat.save();
   res.redirect('dispPracticeStats');
 });
-//This function saves Intangibles to the database once they are set by the coach
+/*
+This function is called when a coach adds an intangible on submitIntangibles.ejs. The intangble is
+then saved to the Intangibles database. 
+*/
 router.post('/addIntang', (req, res) => {
   const {pos, scale, i1, i2, i3, i4, il1, il2, il3, il4} = req.body;
   const ints = [i1, i2, i3, i4, il1, il2, il3, il4];
@@ -112,7 +126,11 @@ router.post('/addIntang', (req, res) => {
   newIntangible.save();
   res.redirect('/coach/submitIntangibles');
 });
-
+/*
+This method is called when a coach submits a position from gameGrade.ejs. The query pull the names
+from the database the are the position requested by the coach and send them to dispGameGrade to populate
+tables. 
+*/
 router.post('/dispGameGrade', async(req, res) => {
   const {pos} = req.body;
     const ints = [];

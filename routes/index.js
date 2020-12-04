@@ -11,6 +11,10 @@ router.get('/', (req, res) => res.render('welcome'));
 
 router.get('/test', (req, res) => res.render('test'));
 
+/*
+The following three methods serve almost the same purpose. They find the questionnaire
+from the database and send it to viewQuestionnaire.ejs. There is one method for each questionnaire type.
+*/
 router.get('/viewMQuestionnaire', (req, res) => 
 Questionnaire.find({type: "meeting"}).limit(1).sort({$natural: -1}) //gets most recent doc, need to change so that all come through
 .then(questionnaires => {
@@ -67,7 +71,12 @@ Questionnaire.find({type: "training"}).limit(1).sort({$natural: -1}) //gets most
     }
 }
 ));
-
+/*
+This method is called when a player completes a questionnaire. It takes the fields from the 
+completed questionnaire as input and saves a completed questionnaire to the database. Next, this
+method removes the player who completed the questionnaire from the participants list so that they 
+can no longer view the questionnaire.
+*/
 router.post('/viewQuestionnaire', (req, res) => {
     const { q1, q2, q3, comment, qtype, qid} = req.body;
     const name = req.user.name;
@@ -163,9 +172,4 @@ router.get('/playerHome', ensureAuthenticated, (req, res) =>
         name: req.user.name //pass the name that was entered into the database to dashboard
     })
 );
-// router.get('/coachHome', ensureAuthenticated, (req, res) => 
-//     res.render('coachHome', {
-//         name: req.user.name //pass the name that was entered into the database to dashboard
-//     })
-// );
 module.exports = router;

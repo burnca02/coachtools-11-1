@@ -19,7 +19,10 @@ router.get('/playerHome', ensureAuthenticated, (req, res) =>
         name: req.user.name //pass the name that was entered into the database to dashboard
     }));
 
-//player grades page
+/*
+This method is the get for the playerGrades page. The query below searches the PracticeStat database 
+for the most recent grade and sends it to playerGrades.ejs to be displayed. 
+*/
 router.get('/playerGrades', ensureAuthenticated, (req, res) => 
   PracticeStat.find({ email: req.user.email }).sort({date:-1})// This query will get the most recent practice grade.
   .then(stats => {
@@ -38,10 +41,12 @@ router.get('/playerGrades', ensureAuthenticated, (req, res) =>
 
 router.get('/meetingGrade', (req, res) => res.render('meetingGrade'));
 router.get('/practiceGrade', (req, res) => res.render('practiceGrade'));
-//router.get('/viewQuestionnaire', (req, res) => res.render('viewQuestionnaire'));
 
 
-//player trends page
+/*
+This method is the get for the playerTrends page. The query below first finds the most recent practice stat
+for the user and then finds the rest to populate the table which appears on playerTrends.ejs.
+*/
 router.get('/playerTrends', ensureAuthenticated, (req, res) => 
 
   Stat.findOne({ email: req.session.email }).sort({createdAt:-1}).limit(1) // Query to find the most recent stat for the user.
@@ -67,7 +72,10 @@ router.get('/playerTrends', ensureAuthenticated, (req, res) =>
 
   }
 ));
-
+/*
+This method is called when a player wants to update their stats from the playerTrends page. It takes all form
+fields as input and saves a new Stat to the Stat database for the user. 
+*/
 router.post('/updatestats', (req, res) => {
   //how to get it to recognize player email without them having to type it in?
   const {bench, squat, dead, mile, height, weight} = req.body;

@@ -1,3 +1,5 @@
+<!-- Displays current roster of players -->
+<!-- Table includes: Name, Position, Graduation Year, Number - can be easily modified -->
 <style>
   @media all and (min-width: 600px) {
     .bodyContainer {
@@ -11,11 +13,10 @@
     }
   }
 </style>
-<!-- <link rel="stylesheet" type="text/css" href="css/style.css"/> -->
+<link rel="stylesheet" type="text/css" href="css/style.css"/>
 <div class="bigContainer">
   <%- include("partials/topnav") %>
   <!-- Side navigation -->
-  <!-- <div id="nav-placeholder"></div> -->
   <div class="bodyContainer">
     <%- include("partials/sidenav") %>
 
@@ -41,7 +42,7 @@
         >
           <form action="/coach/table" method="POST">
             <!-- <button type="button" class="btn btn-primary">Sort By</button> -->
-            <div class="dropdown" role="group">
+            <div class="dropdown" role="group" style="padding-top: 10px;">
               <button
                 id="btnGroupDrop1"
                 type="button"
@@ -65,7 +66,7 @@
                   name="type"
                   value="qb"
                 >
-                  View Quartberbacks
+                  View Quarterbacks
                 </button>
                 <button
                   class="dropdown-item"
@@ -114,7 +115,7 @@
 
         <!-- This is the upload excel roster button. -->
         <!-- <p>Use the form below to upload a list of authors. -->
-        <div class="uploadRosterClass">
+        <div class="uploadRosterClass" style="padding-top: 10px;">
           <form
             action="/coach/upload"
             method="POST"
@@ -138,8 +139,8 @@
           <tr class="table-dark">
             <th scope="col">Name</th>
             <th scope="col">Position</th>
-            <!-- <th scope="col">Graduation Year</th> -->
-            <th scope="col">Active</th>
+            <th scope="col">Graduation Year</th>
+            <!-- <th scope="col">Active</th> -->
             <th scope="col">Number</th>
           </tr>
         </thead>
@@ -149,7 +150,7 @@
             <tr class="table-default">
               <td><%= players[i].FullName %></td>
               <td><%= players[i].Pos %></td>
-              <td><%= players[i].Active %></td>
+              <td><%= players[i].GradYear %></td>
               <td><%= players[i].Number %></td>
             </tr>
             <% } %>
@@ -160,9 +161,7 @@
   </div>
 </div>
 <script>
-  // $(function(){
-  //     $("#nav-placeholder").load("navBars/nav.html");
-  // });
+  // Makes sidebar work
   var dropdown = document.getElementsByClassName("dropdown-btn");
   var i;
 
@@ -177,7 +176,7 @@
       }
     });
   }
-
+  // Makes buttons work
   var dropdown = document.getElementsByClassName("dropdown-toggle");
   var i;
 

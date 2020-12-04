@@ -82,6 +82,7 @@
 </div>
 <!-- <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script> -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+<!-- If there are stats available, then it will go forward in creating the weekly graph. -->
 <% if (stats) { %> 
 <script type="text/javascript">
   var stats = JSON.parse('<%- JSON.stringify(stats) %>');
@@ -132,18 +133,18 @@
   </script>
   <% } %>
 
+
+  <!-- If there are stats from the render then the code will proceed to display the seasonal chart. -->
   <% if (stats) { %> 
   <script type="text/javascript">
   var stats = JSON.parse('<%- JSON.stringify(stats) %>');
 
-  //myChart deals with the weekly trend stats for practice stats.
-    console.log(stats[0].date);
-    console.log((stats[0].date).split('T'));
-      // Our labels along the x-axis
-    var dates = [];
+    // Our labels along the x-axis
+    var dates = []; //The dates in which a grade was made for the player.
     // For drawing the lines
-    var grades = [];
+    var grades = []; //The grade given to student by their coach.
 
+    // 'stats' returns a json array that is why we are able to go into a for loop. 'stats' contains player grade information sorted 
     for(var i = 0; i < stats.length; i++)
     {
 

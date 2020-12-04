@@ -192,6 +192,8 @@ router.get('/depthChart', ensureAuthenticated, (req, res) =>
   })
   .catch(error => console.error(error))
 );
+
+
 //This method searches the roster databases and finds all unique position codes in a school's roster. 
 //These position codes are then sent to submitIntangibles.ejs to display in a dropdown menu for the coach.
 router.get('/submitIntangibles', ensureAuthenticated, (req, res) => 
@@ -211,13 +213,19 @@ router.get('/submitIntangibles', ensureAuthenticated, (req, res) =>
   }).catch(err => console.log(err))
 );
 
+
+/**
+ * This post method deals with the sorting function available in the coach's side for sorting a roster by position, or school year. 
+ * You have the ability to sort by Position, graduation year, or showing the whole roster. Initially all rosters will be ordered alphabetically by position. 
+ */
 router.post('/table', (req,res) => 
   {    
     const type = req.body.type;
   
     console.log("Did we get here");
-    if(type == "wr")
+    if(type == "wr") //Given the type selected in the sort roster function, the query will only search for that position.
     {
+      //We add the school name in the find query because we only care about searching the roster database of the coach's school.
       Roster.find( {"Pos" : "WR", "School" :req.session.school})
         .then(results => {
             res.render('roster', {players: results,
@@ -226,7 +234,7 @@ router.post('/table', (req,res) =>
         })
         .catch(error => console.error(error))
     }
-    else if(type == "qb")
+    else if(type == "qb") //Will sort by quarterback
     {
       Roster.find( {"Pos" : "QB", "School" :req.session.school})
         .then(results => {
@@ -236,7 +244,7 @@ router.post('/table', (req,res) =>
         })
         .catch(error => console.error(error))
     }
-    else if(type == 'k')
+    else if(type == 'k') //Will sort by Kicker
     {
       Roster.find( {"Pos" : "K", "School" :req.session.school})
         .then(results => {
@@ -246,7 +254,7 @@ router.post('/table', (req,res) =>
         })
         .catch(error => console.error(error))
     }
-    else if(type == 'lb')
+    else if(type == 'lb') //Will sort by Linebackers
     {
       Roster.find( {"Pos" : "LB" , "School" :req.session.school })
         .then(results => {
@@ -256,9 +264,9 @@ router.post('/table', (req,res) =>
         })
         .catch(error => console.error(error))
     }
-    else if( type == 'gy')
+    else if( type == 'gy') //Will sort by grad year ascending
     {
-      Roster.find({ "GradYear": { "$exists": true }, "School" :req.session.school }).sort({'GradYear': 1})
+      Roster.find({ "GradYear": { "$exists": true }, "School" :req.session.school }).sort({'GradYear': 1}) 
         .then(results => {
           res.render('roster', {players: results,
             name : req.session.name,
@@ -266,7 +274,7 @@ router.post('/table', (req,res) =>
         })
         .catch(error => console.error(error))
     }
-    else if(type == 'gyd')
+    else if(type == 'gyd') //Will sort by grad year descending
     {
       Roster.find({ "GradYear": { "$exists": true }, "School" :req.session.school }).sort({'GradYear': -1})
         .then(results => {
@@ -276,7 +284,7 @@ router.post('/table', (req,res) =>
         })
         .catch(error => console.error(error))
     }
-    else
+    else //Otherwise view the whole roster alphabetically. 
     {
         Roster.find({ "Pos": { "$exists": true }, "School" :req.session.school }).sort({'Pos': 1})
         .then(results => {

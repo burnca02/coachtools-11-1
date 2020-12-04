@@ -23,7 +23,7 @@ const playerSchema = mongoose.Schema({
       type: Number,
       default: -1
     }
-  },{ collection: 'Roster' });
+  },{ collection: 'Roster' }); //By addding this, it makes sure that the name of the collection in the MonngoDB schedule will be named 'Roster'
 
 var Roster = mongoose.model('Roster', playerSchema);
  

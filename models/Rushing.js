@@ -1,3 +1,9 @@
+/**
+ * Fall 2020 
+ * Authors: Ricardo Hernandez, Cam Burns, Kayl Murdough.
+ * This file relates to the rushing stats that will be uploaded through the game stats function in the Coach's functionalities.
+ */
+
 var mongoose = require('mongoose');
 
 const RushingScehma = new mongoose.Schema({

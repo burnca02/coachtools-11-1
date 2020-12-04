@@ -1,3 +1,8 @@
+/**
+ * Last Date Modified: Fall 2020 
+ * Authors: Ricardo Hernandez, Cameron Burns, and Kayl Murdough
+ * This file relates to the intangibles section in which the coaches will grade.
+ */
 const mongoose = require('mongoose');
 
  const IntangiblesSchema = new mongoose.Schema({

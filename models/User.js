@@ -1,3 +1,9 @@
+/**
+ * Last Modified Date: Fall 2020 
+ * Authors: Ricardo Hernandez, Cameron Burns, and Kayl Murdough
+ * This file relates to the model being used whenever a user is signing up to create an account.
+ */
+
 const mongoose = require('mongoose');
 
  const UserSchema = new mongoose.Schema({

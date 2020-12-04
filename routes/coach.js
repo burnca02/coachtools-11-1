@@ -169,9 +169,24 @@ router.get('/gameGrade', ensureAuthenticated, (req, res) =>
 );
 
 router.get('/playerComp', ensureAuthenticated, (req, res) => 
-  res.render('playerComp', {
-    name: req.user.name //pass the name that was entered into the database to dashboard
-}));
+  Roster.find({School: req.user.school})
+  .then(players => {
+      const names = [];
+      for(var i = 0; i < players.length; i++) {
+        names[i] = players[i].FullName;
+      }
+      res.render('playerComp', {
+        name: req.user.name, //pass the name that was entered into the database to dashboard
+        'players': names
+    })
+  })
+);
+
+router.post('/dispComp', ensureAuthenticated, (req, res) => 
+      res.render('dispComp', {
+        name: req.user.name, //pass the name that was entered into the database to dashboard
+    })
+);
 
 router.get('/roster', ensureAuthenticated, (req, res) => 
   Roster.find({ "Pos": { "$exists": true }, "School" :req.session.school }).sort({'Pos': 1})

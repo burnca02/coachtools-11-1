@@ -73,26 +73,39 @@
         <%- include("partials/sidenav") %>
         <div class="rBody">
           <div class="container"> 
+            <div class="redTable" id="viewTable" border="1">
+                <table class="redTable" id="viewTable" border="1">
+                    <thead>
+                      <tr>
+                        <th style="font-size:40px;">Player Name</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td style="font-size:40px;">Last Practice Grade</td>
+                      </tr>
+                      <tr>
+                        <td style="font-size:40px;">Last Game Grade</td>
+                      </tr>
+                    </tbody>
+                  </table>
+            </div>
             <div>
-              <div class='dropdown'>
-                <form action="/coach/dispComp" method="POST">
-                    <label for="name">Choose a Player:</label>
-                    <select name="name" id="name" class="btn btn-primary dropdown-toggle">
-                      <% for(var i = 0; i < players.length; i++) { %>
-                      <option value="<%- players[i] %>"><%= players[i] %></option>
-                      <% } %>
-                    </select>
-                    <br><br>
-                    <label for="name">Choose a Player:</label>
-                    <select name="name" id="name" class="btn btn-primary dropdown-toggle">
-                      <% for(var i = 0; i < players.length; i++) { %>
-                      <option value="<%- players[i] %>"><%= players[i] %></option>
-                      <% } %>
-                    </select>
-                    <br><br>
-                    <input type="submit" value="Submit">
-                </form>
-              </div>
+              <table class="redTable" id="viewTable" border="1">
+                <thead>
+                  <tr>
+                    <th style="font-size:40px;">Player Name</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="font-size:40px;">Last Practice Grade</td>
+                  </tr>
+                  <tr>
+                    <td style="font-size:40px;">Last Game Grade</td>
+                  </tr>
+                </tbody>
+              </table>
             </div> 
           </div> 
         </div>

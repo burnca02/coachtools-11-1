@@ -174,13 +174,6 @@ router.post('/login', (req, res, next) => {
         });
 });
 
-// router.post('/login', (req, res, next) => {
-//     passport.authenticate('local', {
-//         successRedirect: '/playerHome',
-//         failureRedirect: '/users/playerlogin',
-//         failureFlash: true
-//     })(req, res, next);
-// });
 
 //logout handle
 router.get('/logout', (req, res) => {

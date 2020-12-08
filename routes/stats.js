@@ -126,6 +126,7 @@ router.post('/addIntang', (req, res) => {
   newIntangible.save();
   res.redirect('/coach/submitIntangibles');
 });
+
 /*
 This method is called when a coach submits a position from gameGrade.ejs. The query pull the names
 from the database the are the position requested by the coach and send them to dispGameGrade to populate

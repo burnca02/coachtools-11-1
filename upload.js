@@ -1,3 +1,8 @@
+/**
+ * This file will be used to upload roster information through a CSV file.
+ * Author: Ricardo Hernandez 
+ * Date: Fall Semester 2020
+ */
 const csv = require('fast-csv');
 var mongoose = require('mongoose');
 const Roster = require('./models/Roster');
@@ -11,7 +16,7 @@ exports.post =  function (req, res) {
      * This function will delete all of the data in the database. This is necessary so that whenever the coach
      * uploads another roster there will be no duplicates and it willl be a clean slate.
      * 
-     * This an async function so that we give time for the query to finish before adding new players to the rosters database. 
+     * This an async function so that we give time for the query to finish before adding new players to the rosters database. Otherwises, the page loads before all the data is in the query.
      */
     async function deleteData(){
         const mongo = await mongoose.connection.db.collection('Roster').deleteMany({School: req.session.school});
@@ -29,10 +34,10 @@ exports.post =  function (req, res) {
          headers: true,
          ignoreEmpty: true
      })
-     .on("data", function(data){
-         data['_id'] = new mongoose.Types.ObjectId();
-         data['School'] = req.session.school;
-         data['Active'] = false;
+     .on("data", function(data){ //"data" is each row. So a row has player information. This data is passed as a json array.
+         data['_id'] = new mongoose.Types.ObjectId(); //Creating a uniqueID.
+         data['School'] = req.session.school; //Add the school name to the specific player.
+         data['Active'] = false; //
          players.push(data);
      })
      .on("end", function(){

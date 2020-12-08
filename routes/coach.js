@@ -246,6 +246,10 @@ router.post('/dispComp', ensureAuthenticated, async(req, res) => {
   })
 });
 
+
+/**
+ * This method will just take you to the roster page and sort the school roster by position in alphabetical order.
+ */
 router.get('/roster', ensureAuthenticated, (req, res) => 
   Roster.find({ "Pos": { "$exists": true }, "School" :req.session.school }).sort({'Pos': 1})
   .then(results => {

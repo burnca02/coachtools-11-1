@@ -34,6 +34,9 @@ Questionnaire.find({type: "meeting"}).limit(1).sort({$natural: -1}) //gets most 
 }
 ));
 
+/**
+ * THis method does the same as the above, but it deals with practice questionairres.
+ */
 router.get('/viewPQuestionnaire', (req, res) => 
 Questionnaire.find({type: "practice"}).limit(1).sort({$natural: -1}) //gets most recent doc, need to change so that all come through
 .then(questionnaires => {
@@ -53,6 +56,9 @@ Questionnaire.find({type: "practice"}).limit(1).sort({$natural: -1}) //gets most
 }
 ));
 
+/**
+ * This method is for viewing training questionairres.
+ */
 router.get('/viewTQuestionnaire', (req, res) => 
 Questionnaire.find({type: "training"}).limit(1).sort({$natural: -1}) //gets most recent doc, need to change so that all come through
 .then(questionnaires => {
@@ -119,6 +125,9 @@ router.post('/viewQuestionnaire', (req, res) => {
   });
 
 
+  /**
+   * This is for accessing the depth chart and for it to show up.
+   */
   MongoClient.connect(uri, { useUnifiedTopology: true })
   .then(client => {
       const db = client.db('test');
@@ -136,20 +145,7 @@ router.post('/viewQuestionnaire', (req, res) => {
                    )
       })
       .catch(error => console.error(error))
-      );
-    
-    //   router.get('/roster', ensureAuthenticated, (req, res) => 
-
-    //   db.collection('Roster').find({ "Pos": { "$exists": true }, "School": req.session.school}).sort({'Pos': 1}).toArray()
-    //   .then(results => {
-    //       res.render('roster', {players: results,
-    //                               name: req.user.name,
-    //                               school: req.session.school   
-    //                               }
-    //                )
-    //    })
-    //    .catch(error => console.error(error))
-    //    );
+    );
 
       router.get('/depthChart', ensureAuthenticated, (req, res) => 
 

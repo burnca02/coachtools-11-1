@@ -111,10 +111,17 @@ router.post('/viewResponse', ensureAuthenticated, async(req, res) => {
   .then(completeQuests => { //completeQuests will be array of all completed questionnaires(all types)
     console.log('completequests ' + completeQuests);
     var quests = [];
+    var dates = [];
     for(var i = 0; i < completeQuests.length; i++){
       var condition = completeQuests[i].qID;
       var email = completeQuests[i].email;
-      Questionnaire.findOne({_id: condition})
+      var date = String(completeQuests[i].date);
+      var dateSplit = date.split(" ");
+      var newString = dateSplit[0];
+      newString = newString.concat(", " + dateSplit[1] + " " + dateSplit[2] + " " + dateSplit[3]);
+
+      console.log(newString);
+      Questionnaire.findOne({_id: condition}) //We need to look into this because it is returning null and there is no such thing as a qID.
       .then(quest => {
         quests[i] = quest.questions[i];
       });
@@ -127,7 +134,8 @@ router.post('/viewResponse', ensureAuthenticated, async(req, res) => {
         'type': type,
         'name': req.session.name,
         'completeQuests': completeQuests,
-        'quests': quests
+        'quests': quests,
+        'date' : newString
     });
   }
 )});

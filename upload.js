@@ -37,10 +37,11 @@ exports.post =  function (req, res) {
      .on("data", function(data){ //"data" is each row. So a row has player information. This data is passed as a json array.
          data['_id'] = new mongoose.Types.ObjectId(); //Creating a uniqueID.
          data['School'] = req.session.school; //Add the school name to the specific player.
-         data['Active'] = false; //
+         data['Active'] = false; //All players are inactive by default.
          players.push(data);
      })
      .on("end", function(){
+         //Will add all of the information from the csv file in the Roster database.
          Roster.create(players, function(err, documents) {
             //  console.log(players);
             if (err) throw err;

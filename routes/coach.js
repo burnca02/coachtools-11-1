@@ -120,6 +120,7 @@ router.post('/viewResponse', ensureAuthenticated, async(req, res) => {
       var newString = dateSplit[0];
       newString = newString.concat(", " + dateSplit[1] + " " + dateSplit[2] + " " + dateSplit[3]);
 
+      dates.push(newString);
       console.log(newString);
       Questionnaire.findOne({_id: condition}) //We need to look into this because it is returning null and there is no such thing as a qID.
       .then(quest => {
@@ -135,7 +136,7 @@ router.post('/viewResponse', ensureAuthenticated, async(req, res) => {
         'name': req.session.name,
         'completeQuests': completeQuests,
         'quests': quests,
-        'date' : newString
+        'date' : dates
     });
   }
 )});

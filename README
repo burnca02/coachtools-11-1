@@ -9,8 +9,6 @@ View a player information:
 Email: kelter@gburg.edu
 Password: password
 
-ACCESS MAIN DATABASE
-MongoURI: 'mongodb+srv://hernri01:Capstone2020@cluster0.3ln2m.mongodb.net/test?authSource=admin&replicaSet=atlas-9q0n4l-shard-0&readPreference=primary&appname=MongoDB%20Compass&ssl=true&useUnifiedTopology=true&useNewUrlParser=true'
 
 If you want to develop this project download all the files from the main repository then install node. (Recommend install Visual Studio Code as well)
 Then from the command line navigate into the project folder and run the command "node app.js".

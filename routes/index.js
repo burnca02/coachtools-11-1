@@ -7,8 +7,12 @@ const MongoClient = require('mongodb').MongoClient
 const uri = "mongodb+srv://hernri01:Capstone2020@cluster0.3ln2m.mongodb.net/test?authSource=admin&replicaSet=atlas-9q0n4l-shard-0&readPreference=primary&appname=MongoDB%20Compass&ssl=true&useUnifiedTopology=true";
 
 //Welcome Page
-router.get('/', (req, res) => res.render('welcome'));
-
+//router.get('/', (req, res) => res.render('welcome')); OLD WAY
+router.get('/', (req, res) => res.render('landing')); //NEW WAY
+//Landing Page
+// router.get('/landing', (req,res) => {
+    // res.render('landing')
+// });
 router.get('/test', (req, res) => res.render('test'));
 
 /*

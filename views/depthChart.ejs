@@ -20,8 +20,99 @@
     <div class="bodyContainer">
       <%- include("partials/sidenav") %>  
       <div class="rBody">
+        <h2>Depth Chart</h2>
+        <!-- Fix show function displays DepthChart data-->
         <div class="rosterRow">
-          <h2>Depth Chart</h2>
+          <div class="btn-group" style="padding: 10px">
+            <button
+              class="btn btn-primary dropdown-toggle"
+              data-toggle="dropdown"
+            >
+              <%= school %> 2020
+            </button>
+            <div class="dropdown-menu">
+              <a class="dropdown-item"><%= school %> 2018</a>
+              <a class="dropdown-item"><%= school %> 2019</a>
+              <a class="dropdown-item"><%= school %> 2020</a>
+            </div>
+          </div>
+          <div
+            class="form-group"
+            role="group"
+            aria-label="Button group with nested dropdown"
+          >
+            <form action="/coach/table" method="POST">
+              <!-- <button type="button" class="btn btn-primary">Sort By</button> -->
+              <div class="dropdown" role="group" style="padding-top: 10px;">
+                <button
+                  id="btnGroupDrop1"
+                  type="button"
+                  class="btn btn-primary dropdown-toggle"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >Sort By</button>
+                <div class="dropdown-content" aria-labelledby="btnGroupDrop1">
+                  <button
+                    class="dropdown-item"
+                    type="submit"
+                    name="type"
+                    value="full"
+                  >
+                    View Whole Roster
+                  </button>
+                  <button
+                    class="dropdown-item"
+                    type="submit"
+                    name="type"
+                    value="qb"
+                  >
+                    View Quarterbacks
+                  </button>
+                  <button
+                    class="dropdown-item"
+                    type="submit"
+                    name="type"
+                    value="wr"
+                  >
+                    View Wide Receivers
+                  </button>
+                  <button
+                    class="dropdown-item"
+                    type="submit"
+                    name="type"
+                    value="k"
+                  >
+                    View Kickers
+                  </button>
+                  <button
+                    class="dropdown-item"
+                    type="submit"
+                    name="type"
+                    value="lb"
+                  >
+                    View Linebackers
+                  </button>
+                  <button
+                    class="dropdown-item"
+                    type="submit"
+                    name="type"
+                    value="gy"
+                  >
+                    Sort By Graduation Year (Ascending)
+                  </button>
+                  <button
+                    class="dropdown-item"
+                    type="submit"
+                    name="type"
+                    value="gyd"
+                  >
+                    Sort By Graduation Year (Descending)
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
         </div>
   
         <table class="table table-hover" style="padding: 500px">
@@ -68,6 +159,21 @@
     var dropdown = document.getElementsByClassName("dropdown-btn");
     var i;
   
+    for (i = 0; i < dropdown.length; i++) {
+      dropdown[i].addEventListener("click", function () {
+        this.classList.toggle("active");
+        var dropdownContent = this.nextElementSibling;
+        if (dropdownContent.style.display === "block") {
+          dropdownContent.style.display = "none";
+        } else {
+          dropdownContent.style.display = "block";
+        }
+      });
+    }
+    // Makes buttons work
+    var dropdown = document.getElementsByClassName("dropdown-toggle");
+    var i;
+
     for (i = 0; i < dropdown.length; i++) {
       dropdown[i].addEventListener("click", function () {
         this.classList.toggle("active");

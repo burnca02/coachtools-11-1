@@ -35,7 +35,7 @@
       <!-- Offensive line -->
       <div class="pitch oline" id="offenseLine">
         <span class="help">Offense</span>
-        <ol id="offense" class="container">
+        <ol id="offense" class="container2">
           <% var offPlayers = ['WR','WR','OL','OL','OL','OL','OL','TE','WR','RB']; %>
           <% for(var i = 0; i < players.length; i++) {%>
             <% if (players[i].Active && offPlayers.includes(players[i].Pos)) { %>
@@ -59,7 +59,7 @@
             <% } %>
           <% } %>
         </ol>
-        <ul id="qb" class="container">
+        <ul id="qb" class="container2">
           <!-- just quarterback - for bottom row-->
           <% for(var i = 0; i < players.length; i++) {%>
             <% if(players[i].Pos == 'QB') { %>
@@ -78,7 +78,7 @@
       <!-- Defensive line -->
       <div class="pitch dline" id="defenseLine">
         <span class="help">Defense</span>
-        <ol id="defense" class="container">
+        <ol id="defense" class="container2">
           <!-- wide receiver, halfback, fullback, tight end, offensive tackle, offensive guard, center -->
           <!-- list.splice (list.indexOf("kiwi"), 1); -->
           <!-- Can modify defensive players list - need to make sure appreviations in excel file match up -->
@@ -99,7 +99,7 @@
       <!-- Special Teams line -->
       <div class="pitch sline" id="specialLine">
         <span class="help">Special Teams</span>
-        <ol id="special" class="container">
+        <ol id="special" class="container2">
           <!-- wide receiver, halfback, fullback, tight end, offensive tackle, offensive guard, center -->
           <!-- list.splice (list.indexOf("kiwi"), 1); -->
           <% var spePlayers = ['K','P','K/P','P/K','LS']; %>
@@ -125,7 +125,7 @@
         <% var id2 = offBench[i] + 'subs'; %>
         <div id='<%- id %>' class="bench">
           <span class="help"><%= offBench[i] %> Subs</span>
-          <ul id='<%- id2 %>' class="container">
+          <ul id='<%- id2 %>' class="container2">
           <% for(var j = 0; j < players.length; j++) {%>
             <% if(players[j].Active != true && players[j].Pos == offBench[i]) { %>
               <li>
@@ -147,7 +147,7 @@
         <% var id2 = defBench[i] + 'subs'; %>
         <div id='<%- id %>' class="bench">
           <span class="help"><%= defBench[i] %> Subs</span>
-          <ul id='<%- id2 %>' class="container">
+          <ul id='<%- id2 %>' class="container2">
           <% for(var j = 0; j < players.length; j++) {%>
             <% if(players[j].Active != true && players[j].Pos == defBench[i]) { %>
               <li>
@@ -166,7 +166,7 @@
       <% var speBench = ['K','P','K/P','P/K','LS']; %>
         <div id='sSPE' class="bench">
           <span class="help">Special Teams Subs</span>
-          <ul id='SPsubs' class="container">
+          <ul id='SPsubs' class="container2">
           <% for(var j = 0; j < players.length; j++) {%>
             <% if(players[j].Active != true && speBench.includes(players[j].Pos)) { %>
               <li>

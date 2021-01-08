@@ -128,6 +128,42 @@
     .rBody {
       order: 2;
     }
+    .modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto; /* 15% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%; /* Could be more or less, depending on screen size */
+}
+
+/* The Close Button */
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
   }
 </style>
 <div class="bigContainer">
@@ -205,17 +241,8 @@
                         <th id="playerNameHead">Player Name Here</th>
                       </tr>
                     </thead>
-                    <table onload="javascript:hideTables();">
-                      <input
-                        type="button"
-                        onClick="javascript:showView();"
-                        value="VIEW"
-                      />
-                      <input
-                        type="button"
-                        onClick="javascript:showEdit();"
-                        value="EDIT"
-                      />
+                    <table>
+                      <button id="myBtn">Edit</button>
                       <table class="redTable" id="viewTable" border="1">
                         <tbody>
                           <tr>
@@ -247,107 +274,114 @@
                           <% } %>
                         </tbody>
                       </table>
-                      <table class="redTable" id="editTable" border="1">
-                        <tbody>
-                          <form action="/stats/addPracticeGrade" method="POST">
-                            <tr>
-                              <td>
-                                <label for="playerName">Player Name</label>
-                                <input
-                                  id="playerName"
-                                  name="playerName"
-                                  value="playerName"
-                                  readonly
-                                />
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <label for="date">Today's Date</label>
-                                <input id="date" name="date" readonly />
-                                <script type="text/javascript">
-                                  document.getElementById(
-                                    "date"
-                                  ).value = Date();
-                                </script>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <label for="scale">Grading Scale</label>
-                                <input
-                                  type="text"
-                                  name="scale"
-                                  id="scale"
-                                  value="<%= scale %>"
-                                  readonly
-                                />
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <label for="grade1"><%= ints[0] %></label>
-                                <input
-                                  type="number"
-                                  name="grade1"
-                                  id="grade1"
-                                  max="10"
-                                  min="0"
-                                  placeholder="Enter Grade"
-                                />
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <label for="grade2"><%= ints[1] %></label>
-                                <input
-                                  type="number"
-                                  name="grade2"
-                                  id="grade2"
-                                  max="10"
-                                  min="0"
-                                  placeholder="Enter Grade"
-                                />
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <label for="grade3"><%= ints[2] %></label>
-                                <input
-                                  type="number"
-                                  name="grade3"
-                                  id="grade3"
-                                  max="10"
-                                  min="0"
-                                  placeholder="Enter Grade"
-                                />
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <label for="grade4"><%= ints[3] %></label>
-                                <input
-                                  type="number"
-                                  name="grade4"
-                                  id="grade4"
-                                  max="10"
-                                  min="0"
-                                  placeholder="Enter Grade"
-                                />
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <button
-                                  type="submit"
-                                  class="btn btn-primary btn-block">
-                                  Submit Grade
-                                </button>
-                              </td>
-                            </tr>
-                          </form>
-                        </tbody>
-                      </table>
+                      <!-- The Modal PopUp Window-->
+                      <div id="myModal" class="modal">
+                        <!-- Modal content -->
+                        <div class="modal-content">
+                          <span class="close">&times;</span>
+                          <table class="redTable" id="editTable" border="1">
+                            <tbody>
+                              <form action="/stats/addPracticeGrade" method="POST">
+                                <tr>
+                                  <td>
+                                    <label for="playerName">Player Name</label>
+                                    <input
+                                      id="playerName"
+                                      name="playerName"
+                                      value="playerName"
+                                      readonly
+                                    />
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td>
+                                    <label for="date">Today's Date</label>
+                                    <input id="date" name="date" readonly />
+                                    <script type="text/javascript">
+                                      document.getElementById(
+                                        "date"
+                                      ).value = Date();
+                                    </script>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td>
+                                    <label for="scale">Grading Scale</label>
+                                    <input
+                                      type="text"
+                                      name="scale"
+                                      id="scale"
+                                      value="<%= scale %>"
+                                      readonly
+                                    />
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td>
+                                    <label for="grade1"><%= ints[0] %></label>
+                                    <input
+                                      type="number"
+                                      name="grade1"
+                                      id="grade1"
+                                      max="10"
+                                      min="0"
+                                      placeholder="Enter Grade"
+                                    />
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td>
+                                    <label for="grade2"><%= ints[1] %></label>
+                                    <input
+                                      type="number"
+                                      name="grade2"
+                                      id="grade2"
+                                      max="10"
+                                      min="0"
+                                      placeholder="Enter Grade"
+                                    />
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td>
+                                    <label for="grade3"><%= ints[2] %></label>
+                                    <input
+                                      type="number"
+                                      name="grade3"
+                                      id="grade3"
+                                      max="10"
+                                      min="0"
+                                      placeholder="Enter Grade"
+                                    />
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td>
+                                    <label for="grade4"><%= ints[3] %></label>
+                                    <input
+                                      type="number"
+                                      name="grade4"
+                                      id="grade4"
+                                      max="10"
+                                      min="0"
+                                      placeholder="Enter Grade"
+                                    />
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td>
+                                    <button
+                                      type="submit"
+                                      class="btn btn-primary btn-block">
+                                      Submit Grade
+                                    </button>
+                                  </td>
+                                </tr>
+                              </form>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
                     </table>
                   </table>
                 </td>
@@ -359,22 +393,6 @@
     </div>
   </div>
 </div>
-
-<script>
-  //called on lines 170-172
-  function showView() {
-    document.getElementById("viewTable").style.visibility = "visible";
-    document.getElementById("editTable").style.visibility = "hidden";
-  }
-  function showEdit() {
-    document.getElementById("viewTable").style.visibility = "hidden";
-    document.getElementById("editTable").style.visibility = "visible";
-  }
-  function hideTables() {
-    document.getElementById("viewTable").style.visibility = "hidden";
-    document.getElementById("editTable").style.visibility = "hidden";
-  }
-</script>
 
 <script>
   //called on line 155
@@ -408,6 +426,29 @@
       }
     });
   }
+</script>
+
+<script>
+  // Get the modal
+var modal = document.getElementById("myModal");
+// Get the button that opens the modal
+var btn = document.getElementById("myBtn");
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+// When the user clicks on the button, open the modal
+btn.onclick = function() {
+  modal.style.display = "block";
+}
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+  modal.style.display = "none";
+}
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
 </script>
 
 <!-- <script>

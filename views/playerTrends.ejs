@@ -44,6 +44,42 @@
   table.redTable thead th:first-child {
     border-left: none;
   }
+  .modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto; /* 15% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%; /* Could be more or less, depending on screen size */
+}
+
+/* The Close Button */
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
 </style>
 <script>
   var dt = new Date();
@@ -93,8 +129,8 @@
 
       <table class="redTable" style="width: 100%">
         <thead>
-            <th>Strength</th>
             <th></th>
+            <th>Strength</th>
             <th></th>
         </thead>
         <tr>
@@ -123,20 +159,22 @@
 
       <table class="redTable" style="width: 100%">
         <thead>
-          <th>Height & Weight</th>
-          <th></th>
+          <th colspan="2" width="100%">Height & Weight</th>
         </thead>
         <tr>
-          <th>Height</th>
-          <th>Weight</th>
+          <th width="50%" text-align="center" valign="middle">Height</th>
+          <th width="50%" text-align="center" valign="middle">Weight</th>
         </tr>
         <tr>
-          <td><%= height%> inches</td>
-          <td><%= weight%> lbs.</td>
+          <td width="50%" align="center" valign="middle"><%= height%> inches</td>
+          <td width="50%" align="center" valign="middle"><%= weight%> lbs.</td>
         </tr>
       </table>
       <!-- The following section is code in relation to the chart.  -->
-      <canvas id="myChart" width="250" height="250"></canvas>
+      <div class="row mt-5">
+        <div class="col-md-6 m-auto">
+          <div class="card card-body text-center">
+            <canvas id="myChart" width="600" height="600"></canvas>
       <!-- If there is information in the graph, we will create the chart. -->
       <% if (graph) { %> 
         <script type="text/javascript">
@@ -193,86 +231,125 @@
               pointRadius: 10,
             },
             ]
-          }
+          },
+          options: {
+                responsive: false
+            }
         });
 
         </script>
       <% } %>
       <div class="row mt-5">
         <div class="col-md-6 m-auto">
-          <div class="card card-body">
-            <h1 class="text-center mb-3">
-              <i class="fas fa-sign-in-alt"></i>Update Stats
-            </h1>
-            <%- include('./partials/messages'); %>
-            <form action="/player/updatestats" method="POST">
-              <div class="form-group">
-                <label for="bench">Current Max Bench Press</label>
-                <input
-                  type="bench"
-                  id="bench"
-                  name="bench"
-                  class="form-control"
-                  placeholder="Enter Weight"
-                />
-              </div>
-              <div class="form-group">
-                <label for="squat">Current Max Squat</label>
-                <input
-                  type="squat"
-                  id="squat"
-                  name="squat"
-                  class="form-control"
-                  placeholder="Enter Weight"
-                />
-              </div>
-              <div class="form-group">
-                <label for="dead">Current Max DeadLift</label>
-                <input
-                  type="dead"
-                  id="dead"
-                  name="dead"
-                  class="form-control"
-                  placeholder="Enter Weight"
-                />
-              </div>
-              <div class="form-group">
-                <label for="mile">Current Mile Time</label>
-                <input
-                  type="mile"
-                  id="mile"
-                  name="mile"
-                  class="form-control"
-                  placeholder="Enter Time"
-                />
-              </div>
-              <div class="form-group">
-                <label for="height">Current Height(in)</label>
-                <input
-                  type="height"
-                  id="height"
-                  name="height"
-                  class="form-control"
-                  placeholder="Enter Height"
-                />
-              </div>
-              <div class="form-group">
-                <label for="weight">Current Weight(lbs)</label>
-                <input
-                  type="weight"
-                  id="weight"
-                  name="weight"
-                  class="form-control"
-                  placeholder="Enter Weight"
-                />
-              </div>
-              <button type="submit" class="btn btn-primary btn-block">
-                Submit
-              </button>
-            </form>
+          <div class="card card-body text-center">
+            <button id="myBtn" width="75%" class="btn btn-primary btn-block mb-2">Update Stats</button>
           </div>
-        <div>
+        </div>
+      <div>
+      <!-- The Modal PopUp Window-->
+      <div id="myModal" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content">
+          <div class="row mt-5">
+            <div class="col-md-6 m-auto">
+              <div class="card card-body">
+                <h1 class="text-center mb-3">
+                  <i class="fas fa-sign-in-alt"></i>Update Stats
+                </h1>
+                <%- include('./partials/messages'); %>
+                <form action="/player/updatestats" method="POST">
+                  <div class="form-group">
+                    <label for="bench">Current Max Bench Press</label>
+                    <input
+                      type="bench"
+                      id="bench"
+                      name="bench"
+                      class="form-control"
+                      placeholder="Enter Weight"
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label for="squat">Current Max Squat</label>
+                    <input
+                      type="squat"
+                      id="squat"
+                      name="squat"
+                      class="form-control"
+                      placeholder="Enter Weight"
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label for="dead">Current Max DeadLift</label>
+                    <input
+                      type="dead"
+                      id="dead"
+                      name="dead"
+                      class="form-control"
+                      placeholder="Enter Weight"
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label for="mile">Current Mile Time</label>
+                    <input
+                      type="mile"
+                      id="mile"
+                      name="mile"
+                      class="form-control"
+                      placeholder="Enter Time"
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label for="height">Current Height(in)</label>
+                    <input
+                      type="height"
+                      id="height"
+                      name="height"
+                      class="form-control"
+                      placeholder="Enter Height"
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label for="weight">Current Weight(lbs)</label>
+                    <input
+                      type="weight"
+                      id="weight"
+                      name="weight"
+                      class="form-control"
+                      placeholder="Enter Weight"
+                    />
+                  </div>
+                  <button type="submit" class="btn btn-primary btn-block">
+                    Submit
+                  </button>
+                </form>
+              </div>
+            <div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </div>
+
+<script>
+  // Get the modal
+var modal = document.getElementById("myModal");
+// Get the button that opens the modal
+var btn = document.getElementById("myBtn");
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+// When the user clicks on the button, open the modal
+btn.onclick = function() {
+  modal.style.display = "block";
+}
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+  modal.style.display = "none";
+}
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+</script>

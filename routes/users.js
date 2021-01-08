@@ -153,23 +153,35 @@ router.post('/login', (req, res, next) => {
     console.log('Email is ' + req.session.email);
     User.findOne({ email: email })
         .then(user => {
-            req.session.school = user.school;
-            req.session._id = user._id; //Passing the ID to make searches easier.
-            req.session.name = user.name;
-            if(user.userType == 'coach') {
-                console.log('User type is ' + user.userType);
+
+            if(user === null) //If the user does not exist, then we show an error message that says that the email is not registered.
+            {
                 passport.authenticate('local', {
                     successRedirect: '/coachHome',
                     failureRedirect: '/users/login',
                     failureFlash: true
                 })(req, res, next);
-            } else if (user.userType == 'player') {
-                console.log('User type is ' + user.userType);
-                passport.authenticate('local', {
-                    successRedirect: '/playerHome',
-                    failureRedirect: '/users/login',
-                    failureFlash: true
-                })(req, res, next);
+            }
+            else //Otherwise than this user exists and we can move forward with the log in process. 
+            {
+                req.session.school = user.school;
+                req.session._id = user._id; //Passing the ID to make searches easier.
+                req.session.name = user.name;
+                if(user.userType == 'coach') {
+                    console.log('User type is ' + user.userType);
+                    passport.authenticate('local', {
+                        successRedirect: '/coachHome',
+                        failureRedirect: '/users/login',
+                        failureFlash: true
+                    })(req, res, next);
+                } else if (user.userType == 'player') {
+                    console.log('User type is ' + user.userType);
+                    passport.authenticate('local', {
+                        successRedirect: '/playerHome',
+                        failureRedirect: '/users/login',
+                        failureFlash: true
+                    })(req, res, next);
+                }
             }
         });
 });

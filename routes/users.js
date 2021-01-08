@@ -154,7 +154,7 @@ router.post('/login', (req, res, next) => {
     User.findOne({ email: email })
         .then(user => {
 
-            if(user === null) //If the user does not exist, then we show an error message that says that the email is not registered.
+            if(user === null) //If the user does not exist it will return null, then we show an error message that says that the email is not registered.
             {
                 passport.authenticate('local', {
                     successRedirect: '/coachHome',
@@ -162,7 +162,7 @@ router.post('/login', (req, res, next) => {
                     failureFlash: true
                 })(req, res, next);
             }
-            else //Otherwise than this user exists and we can move forward with the log in process. 
+            else //Otherwise, this user exists and we can move forward with the log in process. 
             {
                 req.session.school = user.school;
                 req.session._id = user._id; //Passing the ID to make searches easier.

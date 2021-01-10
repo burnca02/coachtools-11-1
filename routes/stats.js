@@ -126,7 +126,24 @@ router.post('/addIntang', (req, res) => {
   newIntangible.save();
   res.redirect('/coach/submitIntangibles');
 });
-
+/*
+This is the get method for dispGameGrade.ejs. The query below finds the intangibles to populate the
+dropdown similar to on gameGrade.
+*/
+router.get('/dispGameGrade', ensureAuthenticated, (req, res) => 
+  Intangibles.find({school: req.user.school})
+  .then(intangibles => {
+  const positions = [];
+  for(var i = 0; i < intangibles.length; i++){
+    positions.push(intangibles[i].pos);
+  }
+  console.log(positions);
+  res.render('gameGrade', { //need to send all stats data here too
+        'positions': positions,
+        'name': req.user.name
+      });
+  }).catch(err => console.log(err))
+);
 /*
 This method is called when a coach submits a position from gameGrade.ejs. The query pull the names
 from the database the are the position requested by the coach and send them to dispGameGrade to populate

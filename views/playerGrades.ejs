@@ -53,31 +53,31 @@
       <a href="/player/playerGrades">My Grades</a>
       <a href="/player/playerTrends">Max Trends</a>
     </nav>
-    <div class="gradeTable" style="width: 100%">
-      <h1 class="text-center mb-3"><i class="fas fa-sign-in-alt"></i>Grades Homepage <%= name%></h1>
-      <table class="redTable" style="width: 100%">
-        <th>Last Grade</th>
-        <tr>
-            <%try{ %>
-            <td style="font-size:40px;"><%= stats[0].grade %></td>
-          <% } catch(err){ %>
-              <% console.log(err); %>
-          <% } %>
-        </tr>
-        <th>Weekly Trend</th>
-        <tr>
-          <td>
-            <canvas id="weeklyChart" style="width: 300px; height: 150px"></canvas>
-          </td>
-        </tr>
-        <th>Seasonal Trend</th>
-        <tr>
-          <td>
-            <canvas id="seasonalChart" style="width: 300px; height: 150px"></canvas>
-          </td>
-        </tr>
-      </table>
-    </div>
+          <div class="gradeTable" style="width: 100%">
+            <h1 class="text-center mb-3"><i class="fas fa-sign-in-alt"></i>Grades Homepage <%= name%></h1>
+            <table class="redTable" style="width: 100%">
+              <th>Last Grade</th>
+              <tr>
+                  <%try{ %>
+                  <td style="font-size:40px;"><%= stats[0].grade %></td>
+                <% } catch(err){ %>
+                    <% console.log(err); %>
+                <% } %>
+              </tr>
+              <th>Weekly Trend</th>
+              <tr>
+                <td>
+                  <canvas id="weeklyChart" style="width: 300px; height: 150px"></canvas>
+                </td>
+              </tr>
+              <th>Seasonal Trend</th>
+              <tr>
+                <td>
+                  <canvas id="seasonalChart" style="width: 300px; height: 150px"></canvas>
+                </td>
+              </tr>
+            </table>
+          </div>
   </div>
 </div>
 <!-- <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script> -->

@@ -33,6 +33,10 @@ const mongoose = require('mongoose');
         type: Date,
         default: Date.now
     },
+    timeout: { //this represents the number of hours until the questionnaire is invalid
+        type: Number, 
+        default: 24
+    },
     completed: {  //This is so that we know when the student has completed the resume.
         type: String,
         required: true,

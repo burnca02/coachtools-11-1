@@ -196,16 +196,6 @@
                 <th>Practice Dropdown</th>
               </tr>
             </thead>
-            <tfoot>
-              <tr>
-                <td colspan="3">
-                  <div class="links">
-                    <a id="prev" class="active" onclick="prevPlayer();">Previous Player</a>
-                    <a id="next" class="active" onclick="nextPlayer();">Next Player</a>
-                  </div>
-                </td>
-              </tr>
-            </tfoot>
             <tbody>
               <tr>
                 <td>
@@ -280,6 +270,19 @@
                         <div class="modal-content">
                           <span class="close">&times;</span>
                           <table class="redTable" id="editTable" border="1">
+                            <thead>
+                              <th>Enter Practice Stats</th>
+                            </thead>
+                            <tfoot>
+                              <tr>
+                                <td colspan="3">
+                                  <div class="links">
+                                    <a id="prev" class="active" onclick="prevPlayer();">Previous Player</a>
+                                    <a id="next" class="active" onclick="nextPlayer();">Next Player</a>
+                                  </div>
+                                </td>
+                              </tr>
+                            </tfoot>
                             <tbody>
                               <form action="/stats/addPracticeGrade" method="POST">
                                 <tr>

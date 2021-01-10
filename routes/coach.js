@@ -145,7 +145,7 @@ This method is the get for the practice training stats page. The query below pul
 for each player. This data populates the table on practiceTrainingStats.ejs
 */
 router.get('/practiceTrainingStats', ensureAuthenticated, (req, res) => 
-  Stat.find({}).sort({$natural:-1})
+  Stat.find({}).sort({$natural:-1}).limit(1)
   .then(stats => {
     res.render('practiceTrainingStats', {
           'stats': stats,

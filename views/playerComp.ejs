@@ -68,33 +68,36 @@
   }
 </style>
 <div class="bigContainer">
-    <%- include("partials/topnav") %>
-    <div class="bodyContainer">
-        <%- include("partials/sidenav") %>
-        <div class="rBody">
-          <div class="container"> 
-            <div>
-              <div class='dropdown'>
-                <form action="/coach/dispComp" method="POST">
-                    <label for="name1">Choose a Player:</label>
-                    <select name="name1" id="name1" class="btn btn-primary dropdown-toggle">
-                      <% for(var i = 0; i < players.length; i++) { %>
-                      <option value="<%- players[i] %>"><%= players[i] %></option>
-                      <% } %>
-                    </select>
-                    <br><br>
-                    <label for="name2">Choose a Player:</label>
-                    <select name="name2" id="name2" class="btn btn-primary dropdown-toggle">
-                      <% for(var i = 0; i < players.length; i++) { %>
-                      <option value="<%- players[i] %>"><%= players[i] %></option>
-                      <% } %>
-                    </select>
-                    <br><br>
-                    <input type="submit" value="Submit">
-                </form>
-              </div>
-            </div> 
+  <%- include("partials/topnav") %>
+  <div class="bodyContainer">
+    <%- include("partials/sidenav") %>
+    <div class="rBody">
+      <h1 class="text-center mb-3"><i class="fas fa-sign-in-alt"></i> Season Game Grades</h1>
+      <div class="row mt-5">
+        <div class="col-md-6 m-auto">
+          <div class="card card-body">
+            <div class='dropdown' style="text-align:center">
+              <form action="/coach/dispComp" method="POST">
+                  <label for="name1">Choose a Player:</label>
+                  <select name="name1" id="name1" class="btn btn-primary dropdown-toggle">
+                    <% for(var i = 0; i < players.length; i++) { %>
+                    <option value="<%- players[i] %>"><%= players[i] %></option>
+                    <% } %>
+                  </select>
+                  <br><br>
+                  <label for="name2">Choose a Player:</label>
+                  <select name="name2" id="name2" class="btn btn-primary dropdown-toggle">
+                    <% for(var i = 0; i < players.length; i++) { %>
+                    <option value="<%- players[i] %>"><%= players[i] %></option>
+                    <% } %>
+                  </select>
+                  <br><br>
+                  <button type="submit" class="btn btn-primary btn-block">Submit</button>
+              </form>
+            </div>
           </div> 
-        </div>
+        </div> 
+      </div>
     </div>
+  </div>
 </div>

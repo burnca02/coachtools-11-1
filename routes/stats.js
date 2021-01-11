@@ -111,6 +111,23 @@ router.post('/addPracticeGrade', async (req, res) => {
   res.redirect('dispPracticeStats');
 });
 /*
+This function is called when a coach submits game grades from the dispGameGrades.ejs page. This function compiles all data
+submitted in the form and saves it to the database before reloading dispGameGrade.ejs
+*/
+router.post('/addGameGrade', async (req, res) => {
+  //this function will take in an array of data. Each index in the array will contain one submission of the html form.
+  console.log(req.body);
+  const {playerName, date, scale, grade1, grade2, grade3, grade4, grade1imp, grade2imp, grade3imp, grade4imp} = req.body;
+
+  var email;
+  var school = req.user.school;
+  await Roster.findOne({FullName: playerName, School: school})
+  .then(result => {
+    console.log(result);
+    email = result.Email;
+  }).catch(err => console.log(err));
+});
+/*
 This function is called when a coach adds an intangible on submitIntangibles.ejs. The intangble is
 then saved to the Intangibles database. 
 */

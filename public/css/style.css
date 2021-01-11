@@ -784,7 +784,7 @@ a:hover {
   outline: none;
 }
 
-a {
+/* a {
   color: #818181;
   text-decoration: none;
   background-color: transparent;
@@ -792,7 +792,7 @@ a {
 
 a:hover {
   color: white;
-}
+} */
 
 .chBody {
   display: -webkit-box;

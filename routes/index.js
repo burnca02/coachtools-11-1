@@ -13,6 +13,8 @@ router.get('/', (req, res) => res.render('landing')); //NEW WAY
 // router.get('/landing', (req,res) => {
     // res.render('landing')
 // });
+router.get('/aboutUs', (req, res) => res.render('aboutUs'));
+router.get('/contactUs', (req, res) => res.render('contactUs'));
 router.get('/test', (req, res) => res.render('test'));
 
 /*

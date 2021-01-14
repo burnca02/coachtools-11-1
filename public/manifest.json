@@ -2,7 +2,7 @@
     "name": "CoachTools Progressive Web App",
     "short_name": "CoachTools",
     "description": "Progressive Web App for the application CoachTools",
-    "start_url": "/users/login",
+    "start_url": "/",
     "background_color": "#000",
     "theme_color": "#FF0000",
     "display": "standalone",

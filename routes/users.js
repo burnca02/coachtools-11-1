@@ -198,4 +198,6 @@ router.get('/logout', (req, res) => {
     res.redirect('/users/login');
 });
 
+router.use(express.static("public"));
+
 module.exports = router;

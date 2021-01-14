@@ -1,0 +1,22 @@
+{
+    "name": "CoachTools Progressive Web App",
+    "short_name": "CoachTools",
+    "description": "Progressive Web App for the application CoachTools",
+    "start_url": "/users/login",
+    "background_color": "#000",
+    "theme_color": "#FF0000",
+    "display": "standalone",
+    "icons": [
+        {
+            "src": "images/coachtoolsLogoBlack.png",
+            "sizes": "612x210",
+            "type": "image/png"
+        },
+        {
+            "src": "images/coachtoolsLogoBlack614.png",
+            "sizes": "614x614",
+            "type": "image/png",
+            "purpose": "any maskable"
+        }
+    ]
+}

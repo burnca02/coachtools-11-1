@@ -445,6 +445,22 @@ body {
   color: white;
 }
 
+@media screen and (max-width: 600px) {
+  .sidenav {
+    width: 100%;
+    /* text-align: center; */
+  }
+  .sidenav a {
+    text-align: center;
+  }
+}
+
+@media all and (max-width: 600px) {
+  .bodyContainer {flex: 1 0px; flex-flow: column; text-align: center;}
+  .cardsK {justify-content: center;}
+  .sidenavAccordion {display: none}
+}
+
 .cardsK {
   /* display: -webkit-box; */
   display: -webkit-box;

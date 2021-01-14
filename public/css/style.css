@@ -59,7 +59,7 @@ body {
       -ms-flex-pack: end;
           justify-content: flex-end;
 }
-.topnavChild2 > a, span {
+.topnavChild2 > a, .topnavChild2 > span {
   padding: 6px 8px 6px 16px;
   text-decoration: none;
   font-size: 25px;
@@ -84,8 +84,11 @@ body {
 
 /* When you mouse over the navigation links, change their color */
 .sidenav a:hover,
-.dropdown-btn:hover {
-  color: #f1f1f1;
+.dropdown-btn:hover,
+.logOut:hover {
+  /* color: #f1f1f1; */
+  /* color: white; */
+  background-color: rgb(58, 58, 58);
 }
 .topnavParent {
   display: -webkit-box;
@@ -362,8 +365,9 @@ body {
 .dropdown-btn {
   padding: 10px 10px 10px 10px;
   text-decoration: none;
-  font-size: 25px;
-  color: #818181;
+  /* font-size: 18px; */
+  /* color: #818181; */
+  color: white;
   display: block;
   border: none;
   background: none;
@@ -435,9 +439,9 @@ body {
 .sidenav {
   background-color: black; /* Black */
   /* padding: 1em; */
-  min-height: 100%;
+  /* min-height: 100%; */
   /* position: fixed; */
-  /* width: 170px; */
+  width: 170px;
   color: white;
 }
 
@@ -577,20 +581,20 @@ h1.logo {
   color: #fff;
 } */
 
-.nav-link {
+/* .nav-link { */
   /* text-transform: uppercase; */
-  text-align: center;
-  border-top: 0.5px solid #ddd;
-}
+  /* text-align: center; */
+  /* border-top: 0.5px solid #ddd; */
+/* } */
 
-/* a:link, a:visited, a:active {
+a:link, a:visited, a:active {
   text-decoration: none;
-  color: black;
-} */
-
-a:hover {
-   text-decoration: none; 
+  /* color: black; */
 }
+
+/* a:hover {
+   text-decoration: none; 
+} */
 
 .right {
   display: -webkit-box;
@@ -610,21 +614,21 @@ a:hover {
 }
 
 @media (min-width: 800px) {
-  #nav-wrapper {
+  /* #nav-wrapper {
     overflow: hidden;
-  }
+  } */
 
-  #nav {
+  /* #nav {
     overflow: hidden;
     -webkit-box-orient: horizontal;
     -webkit-box-direction: normal;
         -ms-flex-direction: row;
             flex-direction: row;
-  }
+  } */
 
-  .nav-link {
+  /* .nav-link {
     border-top: none;
-  }
+  } */
 
   .right {
     overflow: hidden;
@@ -644,37 +648,37 @@ a:hover {
     display: none;
   }
 
-  .nav a:link.active, a:visited.active, a:active.active {
+  /* .nav a:link.active, a:visited.active, a:active.active {
     background: black;
     background: -o-linear-gradient(45deg, black, black);
     background: linear-gradient(45deg, black, black);
     color: #fff;
-  }
+  } */
 
-  .nav-link-span {
+  /* .nav-link-span {
     -webkit-transform: skew(20deg);
         -ms-transform: skew(20deg);
             transform: skew(20deg);
     display: inline-block;
-  }
+  } */
 
-  .nav-link {
+  /* .nav-link {
     -webkit-transform: skew(-20deg);
         -ms-transform: skew(-20deg);
             transform: skew(-20deg);
     color: #777;
     text-decoration: none;
-  }
-  .nav-link:last-child {
+  } */
+  /* .nav-link:last-child {
     padding-right: 3em;
-  }
+  } */
 
-  a:hover.nav-link:not(.active) {
+  /* a:hover.nav-link:not(.active) {
     color: #444;
     background: #ddd;
     background: -o-linear-gradient(45deg, #fff, #ddd);
     background: linear-gradient(45deg, #fff, #ddd);
-  }
+  } */
 }
 @-webkit-keyframes logo-hover {
   20% {
@@ -701,11 +705,10 @@ a:hover {
   border: none;
 }
 
-.dropdown {
+/* .dropdown {
   position: relative;
   display: inline-block;
-  /* z-index: 1; */
-}
+} */
 
 .dropdown-content {
   display: none;
@@ -734,17 +737,17 @@ a:hover {
   display: none;
 }
 
-@media screen and (max-width: 600px) {
+/* @media screen and (max-width: 600px) {
   .topnav a:not(:last-child), button, img, span, .topnavChild1 {display:none;}
   .topnav a.icon {
     float: left;
     display: block;
   }
   .sidenav a {display: none;}
-  /* .sidenav {overflow: hidden;} */
-}
+  .sidenav {overflow: hidden;}
+} */
 
-@media screen and (max-width: 600px) {
+/* @media screen and (max-width: 600px) {
   .topnav.responsive {position: absolute;}
   .sidenav.responsive {position: relative;}
   .topnav.responsive .icon {
@@ -758,13 +761,13 @@ a:hover {
     text-align: left;
     overflow: hidden;
   }
-}
+} */
 /* Depends on the page you are on - orders the sidenav and other things in row */
-@media all and (min-width: 600px) {
+/* @media all and (min-width: 600px) {
   .bodyContainer {-webkit-box-flex: 2;-ms-flex: 2 0px;flex: 2 0px;}
   .sidenav {-webkit-box-ordinal-group: 2;-ms-flex-order: 1;order: 1;}
   .cardsK {-webkit-box-ordinal-group: 3;-ms-flex-order: 2;order: 2;}
-}
+} */
 
 .logout {
   cursor: pointer;
@@ -805,6 +808,7 @@ a:hover {
   -webkit-box-flex: 1;
       -ms-flex-positive: 1;
           flex-grow: 1;
+  margin-top: 4rem !important;
 }
 
 .rBody {
@@ -818,6 +822,7 @@ a:hover {
   -webkit-box-flex: 5;
       -ms-flex-positive: 5;
           flex-grow: 5;
+  margin-top: 4rem !important;
 }
 
 .rosterRow {
@@ -848,4 +853,18 @@ a:hover {
 }
 .namePracticeStat:hover {
   background-color: #f5c8bf;
+}
+
+.carousel-indicators li {
+  background-color: black;
+}
+
+.carousel-control-next-icon, 
+.carousel-control-prev-icon {
+  background-color: black;
+}
+
+.colorStyle {
+  color: white;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
 }

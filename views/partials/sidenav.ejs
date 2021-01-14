@@ -1,30 +1,54 @@
 <!-- Side navigation bar that is used in all pages, saved in a partial for consistancy across pages -->
 <!-- Not used for player -->
-<nav class="sidenav" style="max-width: 170px;">
-    <a href="/coachHome">Home</a>
-    <a href="/coachHome">Schedule</a>
-    <a href="/coach/roster">Roster</a>
-    <a href="/depthChart">Depth Chart</a>
-    <button class="dropdown-btn">Game<i class="fa fa-caret-down"></i></button>
-    <div class="dropdown-container">
-      <a href="/coach/gameStats">Game Stats</a>
-      <a href="/coach/gameGrade">Game Grade</a>
-      <a href="#">Analysis</a>
-    </div>
-    <button class="dropdown-btn">
-      Grading<i class="fa fa-caret-down"></i>
-    </button>
-    <div class="dropdown-container">
-      <a href="/coach/submitIntangibles">Submit Intangibles</a>
-      <a href="/coach/practiceStats">In Season</a>
-      <a href="/coach/practiceTrainingStats">Training</a>
-    </div>
-    <button class="dropdown-btn">
-      Player Results<i class="fa fa-caret-down"></i>
-    </button>
-    <div class="dropdown-container">
-      <a href="/coach/playerFeedback">Quiz</a>
-      <a href="#">Training</a>
-    </div>
-    <a href="/coach/playerComp">Player Comparison</a>
-</nav>
+<ul class="nav flex-column sidenav" style="margin-top: 3.45rem !important; font-size: 18px; font-family: Verdana, Geneva, Tahoma, sans-serif; font-weight: 200;" id="sidenavAccordion">
+  <li class="nav-item">
+    <a class="nav-link active" href="/coachHome">Home</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link active" href="/coachHome">Schedule</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/coach/roster">Roster</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/depthChart">Depth Chart</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseGame" aria-expanded="false" aria-controls="collapseGame">
+      Game  <div style="display: inline-block;"><i class="fas fa-angle-down"></i></div>
+    </a>
+    <div class="collapse" id="collapseGame" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
+      <nav class="nav" style="font-size: 14px;">
+          <a class="nav-link" href="/coach/gameStats">Game Stats</a>
+          <a class="nav-link" href="/coach/gameGrade">Game Grade</a>
+          <a class="nav-link" href="#">Analysis</a>
+      </nav>
+  </div>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseGrade" aria-expanded="false" aria-controls="collapseGrade">
+      Grading  <div style="display: inline-block;"><i class="fas fa-angle-down"></i></div>
+    </a>
+    <div class="collapse" id="collapseGrade" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
+      <nav class="nav" style="font-size: 14px;">
+          <a class="nav-link" href="/coach/submitIntangibles">Submit Intangibles</a>
+          <a class="nav-link" href="/coach/practiceStats">In Season</a>
+          <a class="nav-link" href="/coach/practiceTrainingStats">Training</a>
+      </nav>
+  </div>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseResults" aria-expanded="false" aria-controls="collapseResults">
+      Player Results  <div style="display: inline-block;"><i class="fas fa-angle-down"></i></div>
+    </a>
+    <div class="collapse" id="collapseResults" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
+      <nav class="nav" style="font-size: 14px;">
+          <a class="nav-link" href="/coach/playerFeedback">Quiz</a>
+          <a class="nav-link" href="#">Training</a>
+      </nav>
+  </div>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/coach/playerComp">Player Comparison</a>
+  </li>
+</ul>

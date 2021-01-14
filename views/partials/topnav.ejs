@@ -1,15 +1,39 @@
 <!-- Top navigation bar saved in its own partial so it can be used everywhere and maintains consistency -->
-<nav class="topnav" id="myTopnav">
+<!-- <nav class="topnav" id="myTopnav">
     <a href="javascript:void(0);" class="icon threeLines" onclick="resizeDropdown2()">
       <i class="fa fa-bars"></i>
     </a>
     <div class="topnavChild1" id="logo">
-      <img src="images/coachToolsLogo.png" alt="CoachTools" style="width: 110px;"/>
+      <img src="images/coachtoolsLogoBlack.png" alt="CoachTools" style="width: 110px;"/>
     </div>
     <div class="topnavChild2">
-      <!-- <span class="dateDisp" id="datetime"></span> -->
       <a style="color: #818181;" id="datetime"></a>
       <a style="color: #818181;"><%= name %></a>
       <a class="logout" onclick="window.location.href='/users/logout'">Logout</a>
     </div>
- </nav>
+ </nav> -->
+
+ <nav class="navbar navbar-expand-sm navbar-dark bg-dark fixed-top mb-3">
+  <div class="container-fluid" style="padding-right: 5px; padding-left: 5px;">
+    <a class="navbar-brand" style="padding-top:0; padding-bottom:0" href="#"><img src="images/coachtoolsLogoBlack.png" alt="CoachTools" style="width: 110px; cursor: default;"/></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" style="font-family: Verdana, Geneva, Tahoma, sans-serif; font-weight:500" id="navbarResponsive">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item dropdown no-arrow">
+          <a class="nav-link dropdown-toggle logOut" style="color: white" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <%= name %>  <!--class="mr-2 d-none d-lg-inline text-gray-600 small"-->
+          </a>
+          <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+            <a class="dropdown-item" href="/users/logout"><i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+              Logout</a>
+          </div>
+        </li>
+        <!-- <li class="nav-item">
+          <a class="nav-link" href="/users/logout">Logout</a>
+        </li> -->
+      </ul>
+    </div>
+  </div>
+</nav>

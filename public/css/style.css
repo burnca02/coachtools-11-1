@@ -12,6 +12,19 @@ body {
   margin: 0;
   -webkit-text-size-adjust: 100%;
 }
+.bg {
+  /* The image used */
+  background-color: #cccccc;
+  background-image: radial-gradient(red, yellow);
+
+  /* Full height */
+  height: 100%;
+
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
 
 .top-dropdown-btn {
   padding: 6px 8px 6px 16px;

@@ -65,7 +65,8 @@ router.get('/playerTrends', ensureAuthenticated, (req, res) =>
           mile: stat.mile,
           height: stat.height,
           weight: stat.weight,
-          graph: stats
+          'graph': stats,
+          'name': req.session.name
         });
     })
         console.log(req.session);

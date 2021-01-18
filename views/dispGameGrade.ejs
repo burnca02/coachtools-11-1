@@ -161,7 +161,7 @@
             <table class="redTable">
               <thead>
                 <tr>
-                  <th id="playerNameHead">Date of Game being Viewed</th>
+                  <th id="gameNum">Game #</th>
                 </tr>
               </thead>
               <table id="viewTable">
@@ -233,15 +233,25 @@
                 <tr>
                   <td colspan="3">
                     <div class="links">
-                      <a id="prev" class="active" onclick="prevPlayer();">Previous Player</a>
-                      <a id="next" class="active" onclick="nextPlayer();">Next Player</a>
+                      <a id="prev" class="active" onclick="prevPlayer();">Previous Play</a>
+                      <a id="next" class="active" onclick="nextPlayer();">Next Play</a>
                       <a id="next" class="active" onclick="submit();">Submit</a>
                     </div>
                   </td>
                 </tr>
               </tfoot>
               <tbody>
-                <form action="/stats/addGameGrade" method="POST">
+                <form id="form" action="/stats/addGameGrade" method="POST">
+                  <tr>
+                    <td colspan="2">
+                      <label for="playType">Play Type</label>
+                      <select name="playType" id="playType" class="btn btn-primary dropdown-toggle mt-3">
+                        <% for(var i = 0; i < plays.length; i++) { %>
+                        <option value="<%- plays[i] %>"><%= plays[i] %></option>
+                        <% } %>
+                      </select>
+                    </td>
+                  </tr>
                   <tr>
                     <td colspan="2">
                       <label for="date">Today's Date</label>
@@ -251,6 +261,18 @@
                           "date"
                         ).value = Date();
                       </script>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colspan="2">
+                      <label for="numPlayers">Number of Players</label>
+                      <input id="numPlayers" name="numPlayers" value =" <%- players.length %>" readonly />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colspan="2">
+                      <label for="pos">Position</label>
+                      <input id="pos" name="pos" value =" <%- players[0].Pos %>" readonly />
                     </td>
                   </tr>
                   <tr>
@@ -269,32 +291,27 @@
                   <tr>
                     <td colspan="2">
                       <label for="playerName">Player Name</label>
-                      <input
-                        id="playerName"
-                        name="playerName1"
-                        value="<%= players[i].FullName %>"
-                        readonly
-                      />
+                      <input id="playerName<%- i %>" name="playerName1" value="<%= players[i].FullName %>" readonly/>
                     </td>
                   </tr>
                   <tr>
                     <td>
                       <label for="grade1"><%= ints[0] %></label>
-                      <input type="number" name="grade1" id="grade1" max="10" placeholder="Enter Grade"/>
+                      <input type="number" name="grade1" id="grade1-<%- i %>" max="10" placeholder="Enter Grade"/>
                     </td>
                     <td>
                       <label for="grade2"><%= ints[1] %></label>
-                      <input type="number" name="grade2" id="grade2" max="10" placeholder="Enter Grade"/>
+                      <input type="number" name="grade2" id="grade2-<%- i %>" max="10" placeholder="Enter Grade"/>
                     </td>
                   </tr>
                   <tr>
                     <td>
                       <label for="grade3"><%= ints[2] %></label>
-                      <input type="number" name="grade3" id="grade3" max="10" placeholder="Enter Grade"/>
+                      <input type="number" name="grade3" id="grade3-<%- i %>" max="10" placeholder="Enter Grade"/>
                     </td>
                     <td>
                       <label for="grade4"><%= ints[3] %></label>
-                      <input type="number" name="grade4" id="grade4" max="10" placeholder="Enter Grade"/>
+                      <input type="number" name="grade4" id="grade4-<%- i %>" max="10" placeholder="Enter Grade"/>
                     </td>
                   </tr>
                   <% } %>
@@ -312,6 +329,23 @@
     </div>
   </div>
 </div>
+
+<!-- <script>
+  function handleSubmit(event) {
+    event.preventDefault();
+
+    const data = new FormData(event.target);
+    const value = Object.fromEntries(data.entries());
+    console.log("Testing handleSubmit script");
+
+    console.log({ value });
+  }
+
+  const form = document.querySelector('form');
+  form.addEventListener('submit', handleSubmit);
+
+  const handleFormSubmit = event => {
+</script> -->
   
 <script>
     //Functions for submitting Game Grades

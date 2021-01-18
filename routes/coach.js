@@ -67,22 +67,28 @@ playerFeedback screem.
 router.post('/submitquest', async(req,res) => {
   const { participants, whichpos, type, q1, q2, q3 } = req.body;
       var participantsArr = [];
-        if(participants == 'all'){
-          console.log('inside if');
-          await Roster.find({School : req.session.school}, 'Email')
-          .then(results => {
-            for(var i = 0; i < results.length; i++){
-              participantsArr.push(results[i].Email);
-            }
-          });
-        } else {
-          await Roster.find({ Pos: whichpos, School: req.session.school }, 'Email')//find all the documents where Pos = whichpos
-          .then(results => {
+      console.log('inside submit quest');
+      if(participants == 'all'){
+        await Roster.find({School : req.session.school}, 'Email')
+        .then(results => {
           for(var i = 0; i < results.length; i++){
             participantsArr.push(results[i].Email);
+            results[i].Attendance[1]++; //increment the # of questionnaires given [taken, given]
+          }
+        });
+      } else {
+        await Roster.find({ Pos: whichpos, School: req.session.school }, 'Email')//find all the documents where Pos = whichpos
+        .then(results => {
+          console.log('inside if');
+          console.log('results' + results[0].Attendance);
+          for(var i = 0; i < results.length; i++){
+            participantsArr.push(results[i].Email);
+            Roster.findOneAndUpdate(results[i]._id)
+            .then(result => {
+              result.Attendance[1]++; //increment players given questionnaires
+            })
           }});
-        }
-      console.log('arr:' + participantsArr);
+      }
     var questions = [q1, q2, q3];
     const newQuestionnaire = new Questionnaire({
       participants: participantsArr, //make sure variables passed match the model or refer to model variables
@@ -90,7 +96,6 @@ router.post('/submitquest', async(req,res) => {
       questions,
       school: req.user.school
     });
-    console.log('newQuest' + newQuestionnaire);
     //save user
     newQuestionnaire.save() //save to database
     .then(user => {

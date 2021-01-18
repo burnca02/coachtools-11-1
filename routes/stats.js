@@ -7,6 +7,8 @@ const mongoose = require('mongoose');
 const Roster = require('../models/Roster');
 const PracticeStat = require('../models/PracticeStat');
 const Intangibles = require('../models/Intangibles');
+const Play = require('../models/Play');
+const GameGrade = require('../models/GameGrade');
 
 router.use(express.static("public"));
 
@@ -115,17 +117,46 @@ This function is called when a coach submits game grades from the dispGameGrades
 submitted in the form and saves it to the database before reloading dispGameGrade.ejs
 */
 router.post('/addGameGrade', async (req, res) => {
-  //this function will take in an array of data. Each index in the array will contain one submission of the html form.
-  console.log(req.body);
-  const {playerName, date, scale, grade1, grade2, grade3, grade4, grade1imp, grade2imp, grade3imp, grade4imp} = req.body;
+  //this function will take in a variable length form. 
+  console.log("inside addGamGrade");
+  console.dir(req.body);
 
-  var email;
-  var school = req.user.school;
-  await Roster.findOne({FullName: playerName, School: school})
-  .then(result => {
-    console.log(result);
-    email = result.Email;
-  }).catch(err => console.log(err));
+  const {numPlayers, date, pos} = req.body;
+  const gradesArray = [];
+  const school = req.user.school;
+  console.log('numPlayers =' + numPlayers);
+  //import intangible names and importance levels
+
+  //for each player that is submitted in the form
+  for(var i = 0; i < numPlayers.length; i++) {
+    //find the email that corresponds to the playerName
+    var email;
+    const {playerName1} = req.body;
+    await Roster.findOne({FullName: playerName1, School: school})
+    .then(result => {
+      //console.log(result);
+      email = result.Email;
+    }).catch(err => console.log(err));
+    //create new gameGrade object to store individual grade
+    const int1 = [name1, grade1, grade1imp];
+    const int2 = [name2, grade2, grade2imp];
+    const int3 = [name3, grade3, grade3imp];
+    const int4 = [name4,grade4, grade4imp];
+
+    const gameGrade = {email, int1, int2, int3, int4};
+    console.log(gameGrade);
+    //push to array
+    gradesArray.push(gameGrade);
+  }
+  //Save newGameGrade to database
+  const newGameGrade = new GameGrade({
+    grades: gradesArray,
+    pos,
+    school,
+    date
+  });
+  console.log(newGameGrade);
+  newGameGrade.save();
 });
 /*
 This function is called when a coach adds an intangible on submitIntangibles.ejs. The intangble is
@@ -147,8 +178,8 @@ router.post('/addIntang', (req, res) => {
 This is the get method for dispGameGrade.ejs. The query below finds the intangibles to populate the
 dropdown similar to on gameGrade.
 */
-router.get('/dispGameGrade', ensureAuthenticated, (req, res) => 
-  Intangibles.find({school: req.user.school})
+router.get('/dispGameGrade', ensureAuthenticated, async (req, res) => 
+  await Intangibles.find({school: req.user.school})
   .then(intangibles => {
   const positions = [];
   for(var i = 0; i < intangibles.length; i++){
@@ -156,9 +187,9 @@ router.get('/dispGameGrade', ensureAuthenticated, (req, res) =>
   }
   console.log(positions);
   res.render('gameGrade', { //need to send all stats data here too
-        'positions': positions,
-        'name': req.user.name
-      });
+    'positions': positions,
+    'name': req.user.name
+  });
   }).catch(err => console.log(err))
 );
 /*
@@ -184,14 +215,21 @@ router.post('/dispGameGrade', async(req, res) => {
       } else {
         PracticeStat.find({school: req.user.school}).sort({date:-1})
         .then(stats => {
-          res.render('dispGameGrade', {
-                'players': players,
-                'ints': intangibles[0].ints,
-                'scale': intangibles.scale,
-                'positions': positions,
-                'stats': stats,
-                'name': req.user.name   
-              });
+          Play.find({school: req.user.school})
+          .then(plays => {
+            console.log("plays ->");
+            console.log(plays);
+            console.log(plays[0].plays);
+            res.render('dispGameGrade', {
+                  'players': players,
+                  'ints': intangibles[0].ints,
+                  'scale': intangibles.scale,
+                  'positions': positions,
+                  'stats': stats,
+                  'plays': plays[0].plays,
+                  'name': req.user.name   
+            });
+          })
         })
       }
     }).catch(err => console.log(err));

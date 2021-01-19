@@ -94,7 +94,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
 <div class="bigContainer">
   <!-- header -->
-  <nav class="topnav">
+  <%- include("partials/topnav") %>
+  <!-- <nav class="topnav">
     <a
       href="javascript:void(0);"
       class="icon threeLines"
@@ -110,21 +111,22 @@
       />
     </div>
     <div class="topnavChild2">
-      <!-- <span class="dateDisp" id="datetime"></span> -->
+      <span class="dateDisp" id="datetime"></span>
       <a id="datetime" style="color: #818181"></a>
-      <!--style="padding-left: 75%;"-->
+      style="padding-left: 75%;"
       <a class="logout" onclick="window.location.href='/users/logout'"
         >Logout</a
       >
     </div>
-  </nav>
+  </nav> -->
 
-  <div class="bodyContainer">
-    <nav class="sidenav" id="mySidenav">
+  <div class="bodyContainer" style="margin-top: 3.45rem !important;">
+    <%- include("partials/sidenavPlayer") %>
+    <!-- <nav class="sidenav" id="mySidenav">
       <a href="/playerHome">Home</a>
       <a href="/player/playerGrades">My Grades</a>
       <a href="/player/playerTrends">Max Trends</a>
-    </nav>
+    </nav> -->
     <div class="chBody">
 
       <table class="redTable" style="width: 100%">
@@ -233,7 +235,7 @@
             ]
           },
           options: {
-                responsive: false
+                responsive: true
             }
         });
 

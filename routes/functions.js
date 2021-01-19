@@ -56,17 +56,5 @@ const multer = require('multer');
 const upload = multer({
     dest: 'uploads/' // this saves your file into a directory called "uploads"
   }); 
-        
-
-// router.get('/views/coachHome.ejs', (req, res) => //This is the same as function(req,res)
-// {
-//     // Sorting by the position Alhpabetically.
-
-//     db.collection('Roster').find({ "Pos": { "$exists": true }, "School" : req.session.school }).sort({'Pos': 1}).toArray()
-//     .then(results => {
-//         res.render('coachHome.ejs', {players: results})
-//     })
-//     .catch(error => console.error(error))
-// })
 
 module.exports = router;

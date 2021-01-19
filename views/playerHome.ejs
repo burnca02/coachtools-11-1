@@ -11,7 +11,7 @@
 />
 <div class="bigContainer">
   <!-- header -->
-  <nav class="topnav" id="myTopnav">
+  <!-- <nav class="topnav" id="myTopnav">
     <a href="javascript:void(0);" class="icon threeLines" onclick="resizeDropdown2()">
       <i class="fa fa-bars"></i>
     </a>
@@ -23,14 +23,16 @@
       <a ><%= name %></a>
       <a class="logout" onclick="window.location.href='/users/logout'">Logout</a>
     </div>
-  </nav>
-  <div class="bodyContainer">
+  </nav> -->
+  <%- include("partials/topnav") %>
+  <div class="bodyContainer" style="margin-top: 3.45rem !important;">
     <!-- Side navigation  resizeDropdown2()--> 
-    <nav class="sidenav" id="mySidenav">
+    <!-- <nav class="sidenav" id="mySidenav">
       <a href="./playerHome">Home</a>
       <a href="/player/playerGrades">My Grades</a>
       <a href="/player/playerTrends">Max Trends</a>
-    </nav>
+    </nav> -->
+    <%- include("partials/sidenavPlayer") %>
 
     <ul class="cardsK">
       <li class="cards__itemK">

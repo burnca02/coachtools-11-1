@@ -17,54 +17,32 @@
   <!-- Custom styles for this template -->
   <!-- <link href="css/business-frontpage.css" rel="stylesheet"> -->
 
-<!-- </head> -->
-
-<script>
-  import ImageGallery from 'react-image-gallery';
- 
- const images = [
-   {
-     original: 'https://picsum.photos/id/1018/1000/600/',
-     thumbnail: 'https://picsum.photos/id/1018/250/150/',
-   },
-   {
-     original: 'https://picsum.photos/id/1015/1000/600/',
-     thumbnail: 'https://picsum.photos/id/1015/250/150/',
-   },
-   {
-     original: 'https://picsum.photos/id/1019/1000/600/',
-     thumbnail: 'https://picsum.photos/id/1019/250/150/',
-   },
- ];
   
- class MyGallery extends React.Component {
-   render() {
-     return <ImageGallery items={images} />;
-   }
- }
-</script>
-<div style="padding-top: 56px; overflow-x: visible;">
+
+<!-- </head> -->
+<div style="padding-top: 56px; overflow-x: visible; overflow-y: visible;">
   <!-- Navigation -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+  <nav class="navbar navbar-expand-sm navbar-dark bg-dark fixed-top">
     <div class="container">
-      <a class="navbar-brand" style="padding-top:0; padding-bottom:0" href="#"><img src="images/coachtoolsLogoBlack.png" alt="CoachTools" style="width: 150px;"/></a>
+      <div class="bg"></div>
+      <a class="navbar-brand" style="padding-top:0; padding-bottom:0" href="#"><img src="images/coachtoolsLogoBlack.png" alt="CoachTools" style="width: 110px;"/></a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse" style="font-family: Arial, Helvetica, sans-serif;" id="navbarResponsive">
-        <ul class="navbar-nav ml-auto">
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto" style="font-family: Verdana, Geneva, Tahoma, sans-serif; font-weight: 400">
           <li class="nav-item">
-            <a class="nav-link" href="/">Home
+            <a class="nav-link active logOut" href="/">Home
               <span class="sr-only">(current)</span>
             </a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item logOut">
             <a class="nav-link" href="/aboutUs">About Us</a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item logOut">
             <a class="nav-link" href="/contactUs">Contact Us</a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item logOut">
             <a class="nav-link" href="/users/login">Login</a>
           </li>
         </ul>
@@ -92,27 +70,45 @@
 
   <!-- Page Content -->
   <div class="container">
-    <div class="row">
-        <div class="col-sm-4 mb-5">  <!-- offset-md-1 -->
-            <img class="img-fluid" src="images/playerGradingPic.png" style="box-shadow: 5px 5px 2px #ccc;" alt="Player Grading Ex"> 
+    <div class="row mb-5">
+      <div id="carouselExampleIndicators" class="carousel slide" data-pause="hover" data-interval="10000" data-ride="carousel">
+        <ol class="carousel-indicators">
+          <li data-target="#carouselExampleIndicators" style="color: black;" data-slide-to="0" class="active"></li>
+          <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+          <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+        </ol>
+        <!-- ALL SAME SIZE IMAGE SO CAROUSEL LOOKS NICE -->
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <img class="d-block w-100" src="images/playerGradingPic2.png" alt="First slide">
+          </div>
+          <div class="carousel-item">
+            <img class="d-block w-100" src="images/rosterPic2.png" alt="Second slide">
+          </div>
+          <div class="carousel-item">
+            <img class="d-block w-100" src="images/homeScreenPic2.png" alt="Third slide">
+          </div>
         </div>
-        <div class="col-sm-4 mb-5">
-            <img class="img-fluid" src="images/rosterPic.png" style="box-shadow: 5px 5px 2px #ccc;" alt="Player Grading Ex"> 
-        </div>
-        <div class="col-sm-4 mb-5">
-            <img class="img-fluid" src="images/homeScreenPic.png" style="box-shadow: 5px 5px 2px #ccc;" alt="Player Grading Ex"> 
-        </div>
+        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="sr-only">Next</span>
+        </a>
+      </div>
     </div>
 
     <div class="row">
-      <div class="col-md-12 mb-5">
+      <div class="col-sm-12 mb-5">
         <h2 style="text-align: center;"><strong>Key Benefits</strong></h2>
         <hr style="border-top: 2px solid black;">
       </div>
     </div>
     <!-- /.row -->
     <div class="row">
-        <div class="col-md-3 mb-5">
+        <div class="col-sm-3 mb-5">
             <h6 class="display-8 mb-5 mt-5"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="green" class="bi bi-check-square" viewBox="0 0 16 16">
                 <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
                 <path d="M10.97 4.97a.75.75 0 0 1 1.071 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.235.235 0 0 1 .02-.022z"/>
@@ -126,10 +122,10 @@
                 <path d="M10.97 4.97a.75.75 0 0 1 1.071 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.235.235 0 0 1 .02-.022z"/>
               </svg> <strong>Compare Players</strong></h6>
         </div>
-        <div class="col-md-6 mb-5">
-            <img class="img-fluid" src="images/questionnairePic.png" style="box-shadow: 5px 5px 2px #ccc;" alt="Player Grading Ex">
+        <div class="col-sm-6 mb-5">
+            <img class="img-fluid" src="images/homeScreenPic2.png" style="box-shadow: 5px 5px 2px #ccc;" alt="Player Grading Ex">
         </div>
-        <div class="col-md-3 mb-5 display-6">
+        <div class="col-sm-3 mb-5 display-6">
             <h6 class="display-8 mb-5 mt-5"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="green" class="bi bi-check-square" viewBox="0 0 16 16">
                 <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
                 <path d="M10.97 4.97a.75.75 0 0 1 1.071 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.235.235 0 0 1 .02-.022z"/>
@@ -146,18 +142,32 @@
     </div>
 
     <div class="row">
-        <div class="col-md-12 mb-5">
+        <div class="col-sm-12 mb-5">
           <h2 style="text-align: center;"><strong>Testimonials</strong></h2>
           <hr style="border-top: 2px solid black;">
         </div>
     </div>
 
     <div class="row">
-        <div class="col-md-3 mb-5">
-            <img class="img-fluid" src="images/albrightCoachQuotePic.png" alt="Player Grading Ex">
+        <div class="col-sm-4 mb-5">
+            <img class="img-fluid" src="images/ArronBrady.png" alt="Arron Brady">
+        </div>
+        <div class="col-sm-4 mb-5">
+          <img class="img-fluid" src="images/JoshCarter.png" alt="Josh Carter">
+        </div>
+        <div class="col-sm-4 mb-5">
+          <img class="img-fluid" src="images/MauriceBanks.png" alt="Maurice Banks">
         </div>
     </div>
-    <!-- /.row -->
+    <div class="row">
+      <div class="col-sm-2"></div>
+      <div class="col-sm-4 mb-5">
+        <img class="img-fluid" src="images/RichNagy.png" alt="Rich Nagy">
+      </div>
+      <div class="col-sm-4 mb-5">
+        <img class="img-fluid" src="images/ShaunWeaver.png" alt="Shaun Weaver">
+      </div>
+    </div>
 
   </div>
   <!-- /.container -->
@@ -171,6 +181,6 @@
   </footer>
 
   <!-- Bootstrap core JavaScript -->
-  <script src="vendor/jquery/jquery.min.js"></script>
-  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <!-- <script src="vendor/jquery/jquery.min.js"></script> -->
+  <!-- <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script> -->
 </div>

@@ -14,10 +14,14 @@ router.get('/login', (req, res) => {
     res.render('login')
 });
 
-//photo
-router.get('/coachToolsLogo.png', (req, res) => {
-    res.sendFile('coachToolsLogo.png', { root: '.' })
-  });
+//photos
+// router.get('/coachtoolsLogoBlack.png', (req, res) => {
+//     res.sendFile('coachtoolsLogoBlack.png', { root: '.' })
+//   });
+
+// router.get('/coachToolsLogo.png', (req, res) => {
+//     res.sendFile('coachToolsLogo.png', { root: '.' })
+// });
 
 //Register Page
 router.get('/register', (req, res) => res.render('register'));
@@ -193,5 +197,7 @@ router.get('/logout', (req, res) => {
     req.flash('success_msg', 'You are logged out');
     res.redirect('/users/login');
 });
+
+router.use(express.static("public"));
 
 module.exports = router;

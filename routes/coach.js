@@ -67,22 +67,28 @@ playerFeedback screem.
 router.post('/submitquest', async(req,res) => {
   const { participants, whichpos, type, q1, q2, q3 } = req.body;
       var participantsArr = [];
-        if(participants == 'all'){
-          console.log('inside if');
-          await Roster.find({School : req.session.school}, 'Email')
-          .then(results => {
-            for(var i = 0; i < results.length; i++){
-              participantsArr.push(results[i].Email);
-            }
-          });
-        } else {
-          await Roster.find({ Pos: whichpos, School: req.session.school }, 'Email')//find all the documents where Pos = whichpos
-          .then(results => {
+      console.log('inside submit quest');
+      if(participants == 'all'){
+        await Roster.find({School : req.session.school}, 'Email')
+        .then(results => {
           for(var i = 0; i < results.length; i++){
             participantsArr.push(results[i].Email);
+            results[i].Attendance[1]++; //increment the # of questionnaires given [taken, given]
+          }
+        });
+      } else {
+        await Roster.find({ Pos: whichpos, School: req.session.school }, 'Email')//find all the documents where Pos = whichpos
+        .then(results => {
+          console.log('inside if');
+          console.log('results' + results[0].Attendance);
+          for(var i = 0; i < results.length; i++){
+            participantsArr.push(results[i].Email);
+            Roster.findOneAndUpdate(results[i]._id)
+            .then(result => {
+              result.Attendance[1]++; //increment players given questionnaires
+            })
           }});
-        }
-      console.log('arr:' + participantsArr);
+      }
     var questions = [q1, q2, q3];
     const newQuestionnaire = new Questionnaire({
       participants: participantsArr, //make sure variables passed match the model or refer to model variables
@@ -90,7 +96,6 @@ router.post('/submitquest', async(req,res) => {
       questions,
       school: req.user.school
     });
-    console.log('newQuest' + newQuestionnaire);
     //save user
     newQuestionnaire.save() //save to database
     .then(user => {
@@ -240,14 +245,25 @@ router.post('/dispComp', ensureAuthenticated, async(req, res) => {
             } else {
               practice2 = stat.grade;
             }
-            res.render('dispComp', {
-              'name1': name1,
-              'name2': name2,
-              'pos1': pos1,
-              'pos2': pos2,
-              'practice1': practice1,
-              'practice2': practice2,
-              name: req.user.name, //pass the name that was entered into the database to dashboard
+            //This will get the information needed for the graph. 
+            Stat.find({ email: email1 }).sort({createdAt:1}) //This query will be used to populate the graph.
+            .then(stats =>
+            {
+              Stat.find({ email: email2 }).sort({createdAt:1}) //This query will be used to populate the graph.
+              .then(stats2 =>
+                {
+                  res.render('dispComp', {
+                    'name1': name1,
+                    'name2': name2,
+                    'pos1': pos1,
+                    'pos2': pos2,
+                    'practice1': practice1,
+                    'practice2': practice2,
+                    name: req.user.name, //pass the name that was entered into the database to dashboard
+                    'graph1': stats,
+                    'graph2': stats2
+                  })
+                })  
             })
           })
         })

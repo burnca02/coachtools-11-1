@@ -7,8 +7,7 @@ var mongoose = require('mongoose');
 
 const playerSchema = mongoose.Schema({
     Email:String,
-    Number: 
-    {
+    Number: {
       type: Number,
       default: -1
     },
@@ -18,8 +17,8 @@ const playerSchema = mongoose.Schema({
     Hometown: String,
     School: String, //Their current school
     Active: Boolean, //Are they on the active line?
-    Grade: 
-    {
+    Attendance: Array, // [questionnaires taken, questionnaires given]
+    Grade: {
       type: Number,
       default: -1
     }

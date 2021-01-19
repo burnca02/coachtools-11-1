@@ -39,7 +39,6 @@ Questionnaire.find({type: "meeting"}).limit(1).sort({$natural: -1}) //gets most 
     }
 }
 ));
-
 /**
  * THis method does the same as the above, but it deals with practice questionairres.
  */
@@ -61,7 +60,6 @@ Questionnaire.find({type: "practice"}).limit(1).sort({$natural: -1}) //gets most
     }
 }
 ));
-
 /**
  * This method is for viewing training questionairres.
  */

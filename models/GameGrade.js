@@ -6,7 +6,7 @@
 
 const mongoose = require('mongoose');
 
- const GameGradeSchema = new mongoose.Schema({
+const GameGradeSchema = new mongoose.Schema({
 
 grades: [{
     email: String,
@@ -16,6 +16,15 @@ grades: [{
     int4: Array,
     grade: String
 }],
+playType: {
+    type: String,
+    required: true,
+    default: "NONE"
+},
+pos: {
+    type: String,
+    required: true
+},
 school: {
     type: String,
     required: true
@@ -24,9 +33,6 @@ date: {
     type: Date,
     default: Date.now
 }
-
-
-
 })
 
 const GameGrade = mongoose.model('GameGrade', GameGradeSchema);

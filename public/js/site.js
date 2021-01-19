@@ -1,3 +1,12 @@
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("sw.js").then(registration => {
+    console.log("SW Registered!");
+    console.log(registration);
+  }).catch(error => {
+    console.log("SW Registration Failed!");
+    console.log(error);
+  });
+} else { alert("application not supported")}
 // Hides all the subs in CoachHome
 function hideSubs() {
     var pos = ["sQB", "sRB", "sWR", "sOL","sTE",'sDE','sDL','sDT','sCB','sOLB','sMLB','sSS','sFS','sSPE']; //,"LT","LG","C", "RG","RT","TE","CB","DE","DT","OLB","MLB","SS","FS"];

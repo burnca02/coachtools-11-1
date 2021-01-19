@@ -1,0 +1,31 @@
+<div class="row mt-5">
+    <div class="col-md-6 m-auto">
+      <div class="card card-body">
+        <h1 class="text-center mb-3"><i class="fas fa-sign-in-alt"></i> Submit Exercises</h1>
+        <%- include('./partials/messages'); %>
+        <h3>Submit the Exercises that you would like to grade players to upload to CoachTools.</h3>
+        <form action="/stats/addExercises" method="POST">
+          <div class="form-group">
+            <label for="e1">Exercise 1</label>
+            <input type="e1" id="e1" name="e1" class="form-control" placeholder="Enter Exercise Name"/>
+          </div>
+          <div class="form-group">
+            <label for="e2">Exercise 2</label>
+            <input type="e2" id="e2" name="e2" class="form-control" placeholder="Enter Exercise Name"/>
+          </div>
+          <div class="form-group">
+            <label for="e3">Exercise 3</label>
+            <input type="e3" id="e3" name="e3" class="form-control" placeholder="Enter Exercise Name"/>
+          </div>
+          <div class="form-group">
+            <label for="e4">Exercise 4</label>
+            <input type="e4" id="e4" name="e4" class="form-control" placeholder="Enter Exercise Name"/>
+          </div>
+          <button type="submit" class="btn btn-primary btn-block">Submit Excercises</button>
+        </form>
+        <p class="lead mt-4">
+          Done? <a href="/coachHome">Home Page</a>
+        </p>
+      </div>
+    </div>
+  </div>

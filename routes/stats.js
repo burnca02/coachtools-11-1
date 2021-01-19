@@ -176,6 +176,19 @@ router.post('/addIntang', (req, res) => {
   res.redirect('/coach/submitIntangibles');
 });
 /*
+This function is called when a coach adds an intangible on submitIntangibles.ejs. The intangble is
+then saved to the Intangibles database. 
+*/
+router.post('/addExercises', (req, res) => {
+  const {e1, e2, e3, e4} = req.body;
+  const newExercises = new Exercises({
+    school: req.user.School,
+    exercises: [e1, e2, e3, e4]
+  });
+  newExercises.save();
+  res.redirect('/coachHome');
+});
+/*
 This is the get method for dispGameGrade.ejs. The query below finds the intangibles to populate the
 dropdown similar to on gameGrade.
 */

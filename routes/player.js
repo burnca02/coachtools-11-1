@@ -69,8 +69,6 @@ router.get('/playerTrends', ensureAuthenticated, (req, res) =>
           'name': req.session.name
         });
     })
-        console.log(req.session);
-
   }
 ));
 /*

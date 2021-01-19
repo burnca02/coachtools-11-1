@@ -59,14 +59,13 @@ router.post('/dispPracticeStats', async(req, res) => {
       } else {
         PracticeStat.find({school: req.session.school}).sort({date:-1})
         .then(stats => {
-          console.log(intangibles[0].scale);
           res.render('dispPracticeStats', {
                 'players': players,
                 'ints': intangibles[0].ints,
                 'scale': intangibles[0].scale,
                 'positions': positions,
                 'stats': stats,
-                'name': req.user.name   
+                'name': req.user.name,
               });
         })
       }
@@ -97,6 +96,8 @@ router.post('/addPracticeGrade', async (req, res) => {
   int4 = [grade4, 4];
   //Calculating the day's overall practice grade
   var grade = Math.round((((grade1/scale)*.4) + ((grade2/scale)*.3) + ((grade3/scale)*.2) + ((grade4/scale)*.1)) * 100);
+
+  //Finding the overall season average. 
 
   const newPracticeStat = new PracticeStat({
     email,

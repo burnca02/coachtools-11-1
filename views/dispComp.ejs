@@ -100,6 +100,8 @@
   cursor: pointer;
 }
 </style>
+<!-- This script will be used for the responsive chart in Player Trends and Maxes. The graph is bootstrap created by Chart.js. -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
 <div class="bigContainer">
     <%- include("partials/topnav") %>
     <div class="bodyContainer">
@@ -149,7 +151,72 @@
   <!-- Modal content -->
   <div class="modal-content">
     <span class="close">&times;</span>
-    Graph Goes Here
+    <div class="row mt-5">
+      <div class="col-md-6 m-auto">
+        <div class="card card-body text-center">
+          <canvas id="myChart" width="100" height="100"></canvas>
+    <% if (graph1) { %> 
+      <script type="text/javascript">
+      var graph = JSON.parse('<%- JSON.stringify(graph1) %>');
+      console.log("Hello world");
+
+    // Our labels along the x-axis
+    var input = []; //Input will be the Max session that will be on the x axis.
+    // For drawing the lines      
+    var bench = []; //The bench press maxes
+    var squat = []; //The squat maxes
+    var deadlift = []; //Deadlift maxes.
+    
+
+    //We will go through all the information pased by the graph variable and push it onto our arrays.
+    for (var i = 0; i < graph.length; i++) {
+        input.push("Max Session " + i);
+        bench.push(parseInt(graph[i].bench));
+        squat.push(parseInt(graph[i].squat));
+        deadlift.push(parseInt(graph[i].dead));
+    }
+
+      var ctx = document.getElementById("myChart"); //Retrieving the elementID of the chart above in canvas.
+      var myChart = new Chart(ctx, { //Styling the graph. If you need more information on styling the graph please go to the Chart.js Documentation online.
+        type: 'line',
+        data: {
+          labels: input,
+          datasets: [
+          { 
+            data: squat,
+            label: "Squat",
+            borderColor: "red",
+            fill: false,
+            pointRadius: 10
+
+          },
+          { 
+            data: bench,
+            label: "Bench",
+            borderColor: "black",
+            fill: false,
+            pointRadius: 10
+
+          },
+          { 
+            data: deadlift,
+            label: "Deadlift",
+            borderColor: "Blue",
+            fill: false,
+            pointRadius: 10,
+          },
+          ]
+        },
+        options: {
+              responsive: true
+          }
+      });
+
+      </script>
+    <% } %>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -157,7 +224,72 @@
   <!-- Modal content -->
   <div class="modal-content">
     <span class="close">&times;</span>
-    Graph Goes Here
+    <div class="row mt-5">
+      <div class="col-md-6 m-auto">
+        <div class="card card-body text-center">
+          <canvas id="myChart2" width="100" height="100"></canvas>
+    <% if (graph2) { %> 
+      <script type="text/javascript">
+      var graph = JSON.parse('<%- JSON.stringify(graph2) %>');
+      console.log("Hello world");
+
+    // Our labels along the x-axis
+    var input = []; //Input will be the Max session that will be on the x axis.
+    // For drawing the lines      
+    var bench = []; //The bench press maxes
+    var squat = []; //The squat maxes
+    var deadlift = []; //Deadlift maxes.
+    
+
+    //We will go through all the information pased by the graph variable and push it onto our arrays.
+    for (var i = 0; i < graph.length; i++) {
+        input.push("Max Session " + i);
+        bench.push(parseInt(graph[i].bench));
+        squat.push(parseInt(graph[i].squat));
+        deadlift.push(parseInt(graph[i].dead));
+    }
+
+      var ctx = document.getElementById("myChart2"); //Retrieving the elementID of the chart above in canvas.
+      var myChart = new Chart(ctx, { //Styling the graph. If you need more information on styling the graph please go to the Chart.js Documentation online.
+        type: 'line',
+        data: {
+          labels: input,
+          datasets: [
+          { 
+            data: squat,
+            label: "Squat",
+            borderColor: "red",
+            fill: false,
+            pointRadius: 10
+
+          },
+          { 
+            data: bench,
+            label: "Bench",
+            borderColor: "black",
+            fill: false,
+            pointRadius: 10
+
+          },
+          { 
+            data: deadlift,
+            label: "Deadlift",
+            borderColor: "Blue",
+            fill: false,
+            pointRadius: 10,
+          },
+          ]
+        },
+        options: {
+              responsive: true
+          }
+      });
+
+      </script>
+    <% } %>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -211,4 +343,5 @@ window.onclick = function(event) {
         }
       });
       }
+      
 </script>

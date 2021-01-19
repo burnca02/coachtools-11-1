@@ -245,14 +245,25 @@ router.post('/dispComp', ensureAuthenticated, async(req, res) => {
             } else {
               practice2 = stat.grade;
             }
-            res.render('dispComp', {
-              'name1': name1,
-              'name2': name2,
-              'pos1': pos1,
-              'pos2': pos2,
-              'practice1': practice1,
-              'practice2': practice2,
-              name: req.user.name, //pass the name that was entered into the database to dashboard
+            //This will get the information needed for the graph. 
+            Stat.find({ email: email1 }).sort({createdAt:1}) //This query will be used to populate the graph.
+            .then(stats =>
+            {
+              Stat.find({ email: email2 }).sort({createdAt:1}) //This query will be used to populate the graph.
+              .then(stats2 =>
+                {
+                  res.render('dispComp', {
+                    'name1': name1,
+                    'name2': name2,
+                    'pos1': pos1,
+                    'pos2': pos2,
+                    'practice1': practice1,
+                    'practice2': practice2,
+                    name: req.user.name, //pass the name that was entered into the database to dashboard
+                    'graph1': stats,
+                    'graph2': stats2
+                  })
+                })  
             })
           })
         })

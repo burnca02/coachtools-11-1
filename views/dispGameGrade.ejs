@@ -225,7 +225,7 @@
         <div class="col-md-6 m-auto">
           <div class="card card-body">
             <span class="close">&times;</span>
-            <table class="redTable" id="editTable" border="1" onload="loadFirstPlayer();">
+            <table class="redTable" id="editTable" border="1">
               <thead>
                 <th colspan="2">Enter Game Grades</th>
               </thead>
@@ -288,33 +288,39 @@
                     </td>
                   </tr>
                   <% for(var i = 0; i < players.length; i++) { %>
+                      <tr name="p<%- i %>">
+                        <td colspan="2">
+                          <label for="playerName">Player Name</label>
+                          <input id="playerName<%- i %>" name="playerName1" value="<%= players[i].FullName %>" readonly/>
+                        </td>
+                      </tr>
+                      <tr name="p<%- i %>">
+                        <td>
+                          <label for="grade1"><%= ints[0] %></label>
+                          <input type="number" name="grade1" id="grade1-<%- i %>" max="10" placeholder="Enter Grade"/>
+                        </td>
+                        <td>
+                          <label for="grade2"><%= ints[1] %></label>
+                          <input type="number" name="grade2" id="grade2-<%- i %>" max="10" placeholder="Enter Grade"/>
+                        </td>
+                      </tr>
+                      <tr name="p<%- i %>">
+                        <td>
+                          <label for="grade3"><%= ints[2] %></label>
+                          <input type="number" name="grade3" id="grade3-<%- i %>" max="10" placeholder="Enter Grade"/>
+                        </td>
+                        <td>
+                          <label for="grade4"><%= ints[3] %></label>
+                          <input type="number" name="grade4" id="grade4-<%- i %>" max="10" placeholder="Enter Grade"/>
+                        </td>
+                      </tr>
+                  <% } %>
                   <tr>
                     <td colspan="2">
-                      <label for="playerName">Player Name</label>
-                      <input id="playerName<%- i %>" name="playerName1" value="<%= players[i].FullName %>" readonly/>
+                      <a id="prev" class="active" onclick="previousPlayer()">Previous Player</a>
+                      <a id="next" class="active" onclick="nextPlayer()">Next Player</a>
                     </td>
                   </tr>
-                  <tr>
-                    <td>
-                      <label for="grade1"><%= ints[0] %></label>
-                      <input type="number" name="grade1" id="grade1-<%- i %>" max="10" placeholder="Enter Grade"/>
-                    </td>
-                    <td>
-                      <label for="grade2"><%= ints[1] %></label>
-                      <input type="number" name="grade2" id="grade2-<%- i %>" max="10" placeholder="Enter Grade"/>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <label for="grade3"><%= ints[2] %></label>
-                      <input type="number" name="grade3" id="grade3-<%- i %>" max="10" placeholder="Enter Grade"/>
-                    </td>
-                    <td>
-                      <label for="grade4"><%= ints[3] %></label>
-                      <input type="number" name="grade4" id="grade4-<%- i %>" max="10" placeholder="Enter Grade"/>
-                    </td>
-                  </tr>
-                  <% } %>
                   <tr>
                     <td colspan="2">
                       <button type="submit" class="btn btn-primary btn-block">Submit Grades</button>
@@ -348,19 +354,82 @@
 </script> -->
   
 <script>
-    //Functions for submitting Game Grades
-    function previousPlayer() {
-    //this function needs to load the previous form with the previous player's name
-    }
-    function nextPlayer() {
-    //this function needs to load another form with the next player's name
-    const playerName = document.querySelector('#playerName');
-    playerName.value = players[i++];
-    }
-    function submit() {
-    //this function needs to hold all data gathered by the forms and store them to the database
+  // document.addEventListener(
+  //   "DOMContentLoaded",
+  //   function () {
+  //     //alert("Ready!");
+  //     initGameGrade();
+  //   },
+  //   false
+  // );
 
+  // Cycle players
+  function initGameGrade() {
+    alert("init");
+    var firstPlayer = document.getElementById("p0");
+    window.currPlayer = 0;
+    for (j = 1; j < 10; j++) {
+      var elementID = "p"+j;
+      // var p = document.getElementById(elementID);
+      var p = document.getElementsByName(elementID);
+      // var p = document.querySelector(elementID);
+      for (k = 0; k < p.length; k++) {
+        p[k].style.display = "none";
+      }
+      // p.style.display = none;
     }
+  }
+  
+  function getCurr() {
+    // alert("currPlayer = " + window.currPlayer);
+    return window.currPlayer;
+  }
+
+  function previousPlayer() {
+    //this function needs to load the previous form with the previous player's name
+    alert("prev player");
+    if (getCurr() > 0) {
+      alert("inside if");
+      var elementID = "p"+window.currPlayer;
+      alert("elementID: " + elementID);
+      var curP = document.getElementsByName(elementID);
+      for (k = 0; k < curP.length; k++) {
+          curP[k].style.display = "none";
+      }
+      window.currPlayer -= 1;
+      var elementID = "p"+window.currPlayer;
+      var curP = document.getElementsByName(elementID);
+      for (k = 0; k < curP.length; k++) {
+          curP[k].style.display = "block";
+      }
+    }
+  }
+
+  function nextPlayer() {
+    //this function needs to load another form with the next player's name
+    alert("next player");
+    if(window.currPlayer < 10) {
+      alert("inside if");
+      var elementID = "p"+window.currPlayer;
+      alert("elementID: " + elementID);
+      var curP = document.getElementsByName(elementID);
+      for (k = 0; k < curP.length; k++) {
+          curP[k].style.display = "none";
+      }
+      window.currPlayer += 1;
+      var elementID = "p"+window.currPlayer;
+      alert("elementID: " + elementID);
+      var curP = document.getElementsByName(elementID);
+      for (k = 0; k < curP.length; k++) {
+          curP[k].style.display = "block";
+      }
+      getCurr();
+    }
+  }
+  function submit() {
+  //this function needs to hold all data gathered by the forms and store them to the database
+
+  }
 </script>
 
 <script>
@@ -416,9 +485,16 @@ var btn = document.getElementById("myBtn");
 // Get the <span> element that closes the modal
 var span = document.getElementsByClassName("close")[0];
 // When the user clicks on the button, open the modal
-btn.onclick = function() {
+const delay = ms => new Promise(res => setTimeout(res, ms));
+
+const modalDisp = async() => {
   modal.style.display = "block";
+  await delay(1500);
+  initGameGrade();
 }
+
+btn.onclick = modalDisp;
+
 // When the user clicks on <span> (x), close the modal
 span.onclick = function() {
   modal.style.display = "none";

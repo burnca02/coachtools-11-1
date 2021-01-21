@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 
 const Roster = require('../models/Roster');
 const PracticeStat = require('../models/PracticeStat');
+const SeasonalPracticeStat = require('../models/SeasonalPracticeStats');
 const Intangibles = require('../models/Intangibles');
 const Play = require('../models/Play');
 const GameGrade = require('../models/GameGrade');
@@ -29,7 +30,6 @@ router.get('/dispPracticeStats', ensureAuthenticated, (req, res) =>
   for(var i = 0; i < intangibles.length; i++){
     positions.push(intangibles[i].pos);
   }
-  console.log(positions);
   res.render('practiceStats', { //need to send all stats data here too
         'positions': positions,
         'name': req.user.name
@@ -79,39 +79,122 @@ as input. The method calculates the grade for the day from the input and then sa
 practiceStats database.
 */
 router.post('/addPracticeGrade', async (req, res) => {
-  const {playerName, date, scale, grade1, grade2, grade3, grade4, grade1imp, grade2imp, grade3imp, grade4imp} = req.body;
+  const {playerNames, date, scale, grade1, grade2, grade3, grade4} = req.body;
   console.group(req.body);
 
   var email;
   var school = req.user.school;
-  await Roster.findOne({FullName: playerName, School: school})
-  .then(result => {
-    console.log(result);
-    email = result.Email;
-  }).catch(err => console.log(err));
-  console.log('email' + email);
-  int1 = [grade1, 1];
-  int2 = [grade2, 2];
-  int3 = [grade3, 3];
-  int4 = [grade4, 4];
-  //Calculating the day's overall practice grade
-  var grade = Math.round((((grade1/scale)*.4) + ((grade2/scale)*.3) + ((grade3/scale)*.2) + ((grade4/scale)*.1)) * 100);
+  var numPlayers = req.body.numPlayers;
+  var players = playerNames;
 
-  //Finding the overall season average. 
+  //This version currently works with the full form layout.
 
-  const newPracticeStat = new PracticeStat({
-    email,
-    school,
-    int1,
-    int2,
-    int3,
-    int4,
-    grade,
-    date
-  });
-  console.log(newPracticeStat);
-  newPracticeStat.save();
+  for(var i = 0; i < playerNames.length; i++)
+  {
+    console.log(playerNames[i]);
+
+    /**
+     * If all the grades have been filled out, then this is a valid practice stat. We do not want to add practice stats
+     * if none of the information has been filled out. This may change if it it is done individually by player,
+     * but as of now this is how it is done. 
+    **/
+    if(grade1[i] !== '' && grade2[i] !== '' && grade3[i] !== '' && grade4[i] !== '')
+    {
+      console.log('This has all of the fields submitted')
+      await Roster.findOne({FullName: playerNames[i], School: school})
+      .then(result => {
+        console.log(result);
+        email = result.Email;
+        console.log('email' + email);
+  
+      }).catch(err => console.log(err));
+
+      var Numgrade1 = parseInt(grade1[i]);
+      var Numgrade2 = parseInt(grade2[i]);
+      var Numgrade3 = parseInt(grade3[i]);
+      var Numgrade4 = parseInt(grade4[i]);
+
+
+      const int1 = [Numgrade1, 1];
+      const int2 = [Numgrade2, 2];
+      const int3 = [Numgrade3, 3];
+      const int4 = [Numgrade4, 4];
+
+      console.log(int1);
+      console.log(int1.length);
+
+      //Calculating the day's overall practice grade
+      var grade = Math.round((((Numgrade1/scale)*.4) + ((Numgrade2/scale)*.3) + ((Numgrade3/scale)*.2) + ((Numgrade4/scale)*.1)) * 100);
+
+      console.log("The grade is " + grade);
+        // Finding the overall season average. 
+      //To get the season overall average we have to get the number all the stats from the specific player
+      await PracticeStat.find({email: email, school: school})
+      .then(stats => 
+        {
+          console.log("The number of stats that this player has is ");
+          console.log(stats.length);
+          var numOfStats = stats.length; //This is the number of data entries that the player has. We will need to figure out how to get the data so it works by each season.
+
+          var intagible1GradeAvg = 0;
+          var intagible2GradeAvg = 0;
+          var intagible3GradeAvg = 0;
+          var intagible4GradeAvg = 0;
+          var overall = 0;
+
+          for(var j = 0; j < numOfStats; j++)
+          {
+            intagible1GradeAvg += stats[j].int1[0];
+            intagible2GradeAvg += stats[j].int2[0];
+            intagible3GradeAvg += stats[j].int3[0];
+            intagible4GradeAvg += stats[j].int4[0];
+            overall += parseInt(stats[j].grade);
+
+
+          }
+
+          console.log(intagible1GradeAvg);
+          console.log(intagible2GradeAvg);
+          console.log(intagible3GradeAvg);
+          console.log(intagible4GradeAvg);
+          console.log(overall);
+          
+          overall = Math.round( overall / numOfStats);
+
+          const newSeasonalPracticeStat = new SeasonalPracticeStat(
+            {
+              email,
+              school,
+              Overall : overall,
+              Intagible1Average: intagible1GradeAvg,
+              Intagible2Average: intagible2GradeAvg,
+              Intagible3Average: intagible3GradeAvg,
+              Intagible4Average: intagible4GradeAvg
+            }
+          );
+          console.log(newSeasonalPracticeStat);
+          newSeasonalPracticeStat.save();
+
+        }).catch(err => console.log(err));
+
+      //Adding a new practice stat
+      console.log("Email is" + email);
+      const newPracticeStat = new PracticeStat({
+        email,
+        school,
+        int1,
+        int2,
+        int3,
+        int4,
+        grade,
+        date
+      });
+      console.log(newPracticeStat);
+      newPracticeStat.save();
+    }
+  }
   res.redirect('dispPracticeStats');
+  
 });
 /*
 This function is called when a coach submits game grades from the dispGameGrades.ejs page. This function compiles all data

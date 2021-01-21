@@ -277,7 +277,7 @@
                 </tr>
               </tfoot>
               <tbody>
-                <form action="/stats/addGameGrade" method="POST">
+                <form action="/stats/addPracticeGrade" method="POST">
                   <tr>
                     <td colspan="2">
                       <label for="date">Today's Date</label>
@@ -313,7 +313,7 @@
                       <label for="playerName">Player Name</label>
                       <input
                         id="playerName"
-                        name="playerName1"
+                        name="playerNames"
                         value="<%= players[i].FullName %>"
                         readonly
                       />
@@ -322,21 +322,21 @@
                   <tr>
                     <td>
                       <label for="grade1"><%= ints[0] %></label>
-                      <input type="number" name="grade1" id="grade1" max="10" placeholder="Enter Grade"/>
+                      <input type="number" name="grade1" id="grade1" max="10" min = "0" placeholder="Enter Grade"/>
                     </td>
                     <td>
                       <label for="grade2"><%= ints[1] %></label>
-                      <input type="number" name="grade2" id="grade2" max="10" placeholder="Enter Grade"/>
+                      <input type="number" name="grade2" id="grade2" max="10" min = "0" placeholder="Enter Grade"/>
                     </td>
                   </tr>
                   <tr>
                     <td>
                       <label for="grade3"><%= ints[2] %></label>
-                      <input type="number" name="grade3" id="grade3" max="10" placeholder="Enter Grade"/>
+                      <input type="number" name="grade3" id="grade3" max="10" min = "0" placeholder="Enter Grade"/>
                     </td>
                     <td>
                       <label for="grade4"><%= ints[3] %></label>
-                      <input type="number" name="grade4" id="grade4" max="10" placeholder="Enter Grade"/>
+                      <input type="number" name="grade4" id="grade4" max="10" min = "0" placeholder="Enter Grade"/>
                     </td>
                   </tr>
                   <% } %>

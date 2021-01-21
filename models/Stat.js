@@ -1,7 +1,8 @@
 /**
  * Latest Date Modified: Fall 2020
  * Authors: Ricardo Hernandez, Cameron Burns, Kayl Murdough
- * This file contains the model that will be user to enter data into the stats database collection. This file relates to the benchmarks used for players in playerTrends.
+ * This file contains the model that will be user to enter data into the stats database collection. This file relates to the benchmarks used for players in playerTrends. 
+ * Stats is related to Benchmarks and specific excercises that Coaches use.
  */
 
 const mongoose = require('mongoose');

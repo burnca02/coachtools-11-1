@@ -159,16 +159,13 @@ router.post('/addPracticeGrade', async (req, res) => {
           intagible3GradeAvg = Math.round(intagible3GradeAvg/numOfStats);
           intagible4GradeAvg = Math.round(intagible4GradeAvg/numOfStats);
           overall = Math.round( overall / numOfStats);
-          console.log("Overall is " + overall);
-          
-          console.log(intagible1GradeAvg);
-          console.log(intagible2GradeAvg);
-          console.log(intagible3GradeAvg);
-          console.log(intagible4GradeAvg);
 
-          console.log(typeof(grade));
-          console.log(grade);
+          /**
+            This will find and update the player in the seasonal practice stat table. This is beneficial because there will be no duplicates in the season practice stats table.
+            If the player has no record in the table, the it will create it automatically. 
 
+            We still want to keep practice stats so that players and coaches can see their practice grade trends.
+           */
           SeasonalPracticeStat.findOneAndUpdate({email: email, school: school},
             {
               // email,

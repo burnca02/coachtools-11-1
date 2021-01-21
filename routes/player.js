@@ -10,7 +10,7 @@ router.use(express.static("public"));
 //Connect DB again??
 const mongoose = require('mongoose');
 const db = 'mongodb+srv://hernri01:Capstone2020@cluster0.3ln2m.mongodb.net/test?authSource=admin&replicaSet=atlas-9q0n4l-shard-0&readPreference=primary&appname=MongoDB%20Compass&ssl=true&useUnifiedTopology=true&useNewUrlParser=true';
-mongoose.connect(db, { useNewUrlParser: true ,useUnifiedTopology: true})
+mongoose.connect(db, { useNewUrlParser: true ,useUnifiedTopology: true, useFindAndModify: false})
 .then(() => console.log('Mongo DB Connected...'))
 .catch(err => console.log(err));
 

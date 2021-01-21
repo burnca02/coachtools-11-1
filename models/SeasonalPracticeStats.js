@@ -15,6 +15,10 @@ const mongoose = require('mongoose');
         type: String, 
         required: true
     },
+    Current: { //This is the most recent Practice Grade. 
+        type: Number,
+        default: 0
+    },
     Overall: {
         type: Number, //The overall season average. The average of all the scores 
         default: 0

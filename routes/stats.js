@@ -15,7 +15,7 @@ router.use(express.static("public"));
 
 //Connect DB again??
 const db = 'mongodb+srv://hernri01:Capstone2020@cluster0.3ln2m.mongodb.net/test?authSource=admin&replicaSet=atlas-9q0n4l-shard-0&readPreference=primary&appname=MongoDB%20Compass&ssl=true&useUnifiedTopology=true&useNewUrlParser=true';
-mongoose.connect(db, { useNewUrlParser: true ,useUnifiedTopology: true})
+mongoose.connect(db, { useNewUrlParser: true ,useUnifiedTopology: true, useFindAndModify: false})
 .then(() => console.log('Mongo DB Connected...'))
 .catch(err => console.log(err));
 
@@ -57,7 +57,7 @@ router.post('/dispPracticeStats', async(req, res) => {
       if(players.length == 0){
         res.render('practiceStats');
       } else {
-        PracticeStat.find({school: req.session.school}).sort({date:-1})
+        SeasonalPracticeStat.find({school: req.session.school}).sort({date:-1})
         .then(stats => {
           res.render('dispPracticeStats', {
                 'players': players,
@@ -80,7 +80,6 @@ practiceStats database.
 */
 router.post('/addPracticeGrade', async (req, res) => {
   const {playerNames, date, scale, grade1, grade2, grade3, grade4} = req.body;
-  console.group(req.body);
 
   var email;
   var school = req.user.school;
@@ -120,15 +119,15 @@ router.post('/addPracticeGrade', async (req, res) => {
       const int3 = [Numgrade3, 3];
       const int4 = [Numgrade4, 4];
 
-      console.log(int1);
-      console.log(int1.length);
-
       //Calculating the day's overall practice grade
       var grade = Math.round((((Numgrade1/scale)*.4) + ((Numgrade2/scale)*.3) + ((Numgrade3/scale)*.2) + ((Numgrade4/scale)*.1)) * 100);
 
       console.log("The grade is " + grade);
         // Finding the overall season average. 
       //To get the season overall average we have to get the number all the stats from the specific player
+      
+      //This will create a practice stat. And a seasonal stat. We need to either create a new SeasonalPracticeStat 
+      //or either update the current record in the database.
       await PracticeStat.find({email: email, school: school})
       .then(stats => 
         {
@@ -142,43 +141,53 @@ router.post('/addPracticeGrade', async (req, res) => {
           var intagible4GradeAvg = 0;
           var overall = 0;
 
+          
+          //Going through the number of stats and adding up the stats to get the overall. 
           for(var j = 0; j < numOfStats; j++)
           {
-            intagible1GradeAvg += stats[j].int1[0];
-            intagible2GradeAvg += stats[j].int2[0];
-            intagible3GradeAvg += stats[j].int3[0];
-            intagible4GradeAvg += stats[j].int4[0];
+            intagible1GradeAvg += ((stats[j].int1[0] /scale)*100);
+            intagible2GradeAvg += ((stats[j].int2[0] /scale)*100);
+            intagible3GradeAvg += ((stats[j].int3[0] /scale)*100);
+            intagible4GradeAvg += ((stats[j].int4[0] /scale)*100);
             overall += parseInt(stats[j].grade);
-
 
           }
 
+          //Getting the averages.
+          intagible1GradeAvg = Math.round(intagible1GradeAvg/numOfStats);
+          intagible2GradeAvg = Math.round(intagible2GradeAvg/numOfStats);
+          intagible3GradeAvg = Math.round(intagible3GradeAvg/numOfStats);
+          intagible4GradeAvg = Math.round(intagible4GradeAvg/numOfStats);
+          overall = Math.round( overall / numOfStats);
+          console.log("Overall is " + overall);
+          
           console.log(intagible1GradeAvg);
           console.log(intagible2GradeAvg);
           console.log(intagible3GradeAvg);
           console.log(intagible4GradeAvg);
-          console.log(overall);
-          
-          overall = Math.round( overall / numOfStats);
 
-          const newSeasonalPracticeStat = new SeasonalPracticeStat(
+          console.log(typeof(grade));
+          console.log(grade);
+
+          SeasonalPracticeStat.findOneAndUpdate({email: email, school: school},
             {
-              email,
-              school,
+              // email,
+              // school,
+              Current : grade, //The most recent practice grade.
               Overall : overall,
               Intagible1Average: intagible1GradeAvg,
               Intagible2Average: intagible2GradeAvg,
               Intagible3Average: intagible3GradeAvg,
               Intagible4Average: intagible4GradeAvg
-            }
-          );
-          console.log(newSeasonalPracticeStat);
-          newSeasonalPracticeStat.save();
-
+            }, {upsert: true} 
+            ,function(err,doc)
+            {
+              if(err)
+                return console.log(err);
+            });
         }).catch(err => console.log(err));
 
       //Adding a new practice stat
-      console.log("Email is" + email);
       const newPracticeStat = new PracticeStat({
         email,
         school,

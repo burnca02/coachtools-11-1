@@ -81,17 +81,31 @@ practiceStats database.
 router.post('/addPracticeGrade', async (req, res) => {
   const {playerNames, date, scale, grade1, grade2, grade3, grade4} = req.body;
 
+  console.log(req.body);
+
   var email;
   var school = req.user.school;
-  var numPlayers = req.body.numPlayers;
+  var numPlayers = parseInt(req.body.numPlayers);
   var players = playerNames;
+  console.log( numPlayers + " is the length");
+  var name;
+
 
   //This version currently works with the full form layout.
 
-  for(var i = 0; i < playerNames.length; i++)
-  {
-    console.log(playerNames[i]);
 
+  for(var i = 0; i < numPlayers; i++)
+  {
+    //This is a temporary fix to a bug. If the number of players equals one, it does not return as an array. 
+    //It returns as a string, otherwise if there are more than 1 name it will return as an array.
+    if(numPlayers === 1)
+    {
+      name = playerNames;
+    }
+    else 
+    {
+      name = playerNames[i];
+    }
     /**
      * If all the grades have been filled out, then this is a valid practice stat. We do not want to add practice stats
      * if none of the information has been filled out. This may change if it it is done individually by player,
@@ -100,7 +114,7 @@ router.post('/addPracticeGrade', async (req, res) => {
     if(grade1[i] !== '' && grade2[i] !== '' && grade3[i] !== '' && grade4[i] !== '')
     {
       console.log('This has all of the fields submitted')
-      await Roster.findOne({FullName: playerNames[i], School: school})
+      await Roster.findOne({FullName: name, School: school})
       .then(result => {
         console.log(result);
         email = result.Email;
@@ -176,11 +190,13 @@ router.post('/addPracticeGrade', async (req, res) => {
               Intagible2Average: intagible2GradeAvg,
               Intagible3Average: intagible3GradeAvg,
               Intagible4Average: intagible4GradeAvg
-            }, {upsert: true} 
+            }, {new:true, upsert: true} 
             ,function(err,doc)
             {
               if(err)
                 return console.log(err);
+
+              console.log(doc);
             });
         }).catch(err => console.log(err));
 

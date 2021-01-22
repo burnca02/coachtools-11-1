@@ -59,14 +59,18 @@ router.post('/dispPracticeStats', async(req, res) => {
       } else {
         SeasonalPracticeStat.find({school: req.session.school}).sort({date:-1})
         .then(stats => {
+          Play.find({school: req.user.school})
+          .then(plays => {
           res.render('dispPracticeStats', {
                 'players': players,
                 'ints': intangibles[0].ints,
                 'scale': intangibles[0].scale,
                 'positions': positions,
                 'stats': stats,
+                'plays': plays[0].plays,
                 'name': req.user.name,
               });
+          })
         })
       }
     }).catch(err => console.log(err));

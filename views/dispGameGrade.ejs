@@ -279,8 +279,11 @@
                   <% for(var i = 0; i < players.length; i++) { %>
                       <tr name="p<%- i %>">
                         <td colspan="2">
-                          <label for="playerName">Player Name</label>
-                          <input id="playerName<%- i %>" name="playerName1" value="<%= players[i].FullName %>" readonly/>
+                          <label for="playerName">Player Name</label>                        
+                          <input list="players" name="playerName" id="playerName">
+                          <datalist id="players">
+                            <option value="<%- players[i].FullName %>">
+                          </datalist>
                         </td>
                       </tr>
                       <tr name="p<%- i %>">

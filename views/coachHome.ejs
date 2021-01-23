@@ -5,6 +5,38 @@
     .sidenav {order: 1;}
     .chBody {order: 2;}
   }
+    .dropdown {
+    position: center;
+    display: inline-block;
+  }
+  .dropdown-content {
+    display: none;
+    position: fixed;
+    background-color: #f1f1f1;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+  }
+  .dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+  }
+  .dropdown-content a:hover {
+    background-color: #ddd;
+  }
+  .dropdown:hover .dropdown-content {
+    display: block;
+    text-align: center;
+  }
+  .dDown:hover .dropdown-content {
+    display: block;
+    text-align: center;
+  }
+  .dropdown:hover .dropbtn {
+    background-color: rgb(192, 26, 26);
+  }
 </style>
 <div class="bigContainer">
   <!-- Includes topnav -->
@@ -13,6 +45,14 @@
     <!-- Includes Side navigation -->
     <%- include("partials/sidenav") %>
     <div class="chBody">
+      <div class="dDown" style="text-align: center;">
+        <button class="btn btn-primary" href="./questionnaire">Create New Questionnaire</button>
+        <div class="dropdown-content">
+          <a href="./coach/questionnaire">New Meeting Questionnaire</a>
+          <a href="./coach/questionnaire">New Practice Questionnaire</a>
+          <a href="./coach/questionnaire">New Lifting Questionnaire</a>
+        </div>
+      </div>
       <img src="images/calendarBasic.jpg" alt="calendar">
     </div>
   </div>

@@ -79,18 +79,20 @@
             <div class='dropdown' style="text-align:center">
               <form action="/coach/dispComp" method="POST">
                   <label for="name1">Choose a Player:</label>
-                  <select name="name1" id="name1" class="btn btn-primary dropdown-toggle">
+                  <input list="players" name="name1" id="name1">
+                  <datalist id="players">
                     <% for(var i = 0; i < players.length; i++) { %>
-                    <option value="<%- players[i] %>"><%= players[i] %></option>
+                    <option value="<%- players[i] %>">
                     <% } %>
-                  </select>
+                  </datalist>
                   <br><br>
                   <label for="name2">Choose a Player:</label>
-                  <select name="name2" id="name2" class="btn btn-primary dropdown-toggle">
+                  <input list="players" name="name2" id="name2">
+                  <datalist id="players">
                     <% for(var i = 0; i < players.length; i++) { %>
-                    <option value="<%- players[i] %>"><%= players[i] %></option>
+                    <option value="<%- players[i] %>">
                     <% } %>
-                  </select>
+                  </datalist>
                   <br><br>
                   <button type="submit" class="btn btn-primary btn-block">Submit</button>
               </form>

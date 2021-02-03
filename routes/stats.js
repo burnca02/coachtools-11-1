@@ -8,6 +8,7 @@ const Roster = require('../models/Roster');
 const PracticeStat = require('../models/PracticeStat');
 const SeasonalPracticeStat = require('../models/SeasonalPracticeStats');
 const Intangibles = require('../models/Intangibles');
+const Exercise = require('../models/Exercise');
 const Play = require('../models/Play');
 const GameGrade = require('../models/GameGrade');
 
@@ -94,9 +95,7 @@ router.post('/addPracticeGrade', async (req, res) => {
   console.log( numPlayers + " is the length");
   var name;
 
-
   //This version currently works with the full form layout.
-
 
   for(var i = 0; i < numPlayers; i++)
   {
@@ -220,7 +219,6 @@ router.post('/addPracticeGrade', async (req, res) => {
     }
   }
   res.redirect('dispPracticeStats');
-  
 });
 /*
 This function is called when a coach submits game grades from the dispGameGrades.ejs page. This function compiles all data
@@ -285,16 +283,17 @@ router.post('/addIntang', (req, res) => {
   res.redirect('/coach/submitIntangibles');
 });
 /*
-This function is called when a coach adds an intangible on submitIntangibles.ejs. The intangble is
-then saved to the Intangibles database. 
+This function is called when a coach adds exercises on submitExercises.ejs
 */
 router.post('/addExercises', (req, res) => {
   const {e1, e2, e3, e4} = req.body;
-  const newExercises = new Exercises({
-    school: req.user.School,
+  const newExercise = new Exercise({
+    school: req.user.school,
     exercises: [e1, e2, e3, e4]
   });
-  newExercises.save();
+  console.log(newExercise);
+  newExercise.save(); //not working 
+  console.log("exercises saved");
   res.redirect('/coachHome');
 });
 /*

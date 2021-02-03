@@ -30,7 +30,8 @@ const mongoose = require('mongoose');
     },
     mile: {
         type: String,
-        required: true
+        required: true,
+        default: "N/A"
     },
     height: {
         type: String,

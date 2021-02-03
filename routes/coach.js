@@ -316,6 +316,13 @@ router.get('/submitIntangibles', ensureAuthenticated, (req, res) =>
     });
   }).catch(err => console.log(err))
 );
+/*
+This method displays the submitExercises page.
+*/
+router.get('/submitExercises', ensureAuthenticated, (req, res) => 
+  res.render('submitExercises', {
+    name: req.user.name //pass the name that was entered into the database to dashboard
+}));
 
 
 /**

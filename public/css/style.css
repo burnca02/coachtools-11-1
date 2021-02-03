@@ -165,6 +165,7 @@ body {
   color: black;
   font-family: sans-serif;
   font-size: 3vmin;
+  margin-left: 10px;
 }
 
 .pitch {
@@ -897,4 +898,8 @@ a:hover {
 .colorStyle {
   color: white;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.posLabel {
+  font-weight: bold;
 }

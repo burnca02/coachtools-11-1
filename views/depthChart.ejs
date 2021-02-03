@@ -17,19 +17,21 @@
     <%- include("partials/sidenav") %>
     <div class="chBody">
       <div id="offenseLine">
-        <span class="help">Offense</span>
+        <span class="help">Depth Chart</span>
         <ul id="offense">
           <% var offPlayers = ['WR','OL','TE','WR','RB','QB']; %>
-          <% var prevPos = 'DB'; %>
+          <% var prevPos = players[0].Pos; %>
           <% var curPos; %>
+          <span class="posLabel"><%= players[0].Pos %></span>
           <% for(var i = 0; i < players.length; i++) {%>
             <% curPos = players[i].Pos; %>
             <% if (prevPos != curPos)  {%>
-                <br>    
+                <br>
+                <span class="posLabel"><%= players[i].Pos %></span>    
             <% }%>
-              <span class="number"><%= players[i].Number %></span>
+              <!-- <span class="number"><%= players[i].Number %></span> -->
               <span class="name"><%= players[i].FullName %></span>
-              <span class="num"><%= players[i].Pos %></span>
+              <!-- <span class="num"><%= players[i].Pos %></span> -->
             <% prevPos = curPos; %>
           <% } %>
         </ul>

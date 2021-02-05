@@ -18,19 +18,76 @@
     <div class="chBody">
       <div id="offenseLine">
         <span class="help">Depth Chart</span>
+        <!-- Quarterback, Running Back, Wide Receiver, Offensive Lineman, Tight End -->
+        <% var offPlayers = ['QB','RB','WR','TE','OL', 'FB']; %>
+        <% var defPlayers = ['DB','DE','DT','DL','OLB','MLB','OLB','ILB','LB','CB', 'SS', 'FS']; %>
+        <% var spePlayers = ['K','P','K/P','P/K','LS']; %>
+        <% var offPlayerIndices = []; var defPlayerIndices = []; var spePlayerIndices = []; %>
+        <% var numWr = 0; %>
+        <% for(var i = 0; i < players.length; i++) {
+            if (offPlayers.includes(players[i].Pos.replace(/\s+/g, ''))) {
+              offPlayerIndices.push(i);
+              if (players[i].Pos == 'WR') {
+                numWr++
+              }
+            }
+            else if (defPlayers.includes(players[i].Pos.replace(/\s+/g, ''))) {
+              defPlayerIndices.push(i);
+            }
+            else if (spePlayers.includes(players[i].Pos.replace(/\s+/g, ''))) {
+              spePlayerIndices.push(i);
+            }
+        } %>
+        <br>
+        <br>
+        <span class="help">Offense</span>
         <ul id="offense">
-          <% var offPlayers = ['WR','OL','TE','WR','RB','QB']; %>
-          <% var prevPos = players[0].Pos; %>
-          <% var curPos; %>
-          <span class="posLabel"><%= players[0].Pos %></span>
-          <% for(var i = 0; i < players.length; i++) {%>
-            <% curPos = players[i].Pos; %>
+          <% var prevPos = players[offPlayerIndices[0]].Pos.replace(/\s+/g, ''); %>
+          <span class="posLabel"><%= players[offPlayerIndices[0]].Pos %></span> 
+          <% var counter = 0; %>
+          <% for(var i = 0; i < offPlayerIndices.length; i++) {
+            curPos = players[offPlayerIndices[i]].Pos.replace(/\s+/g, '');
+            if (curPos == 'WR') {counter++;}
+            if (counter >= numWr / 3 || prevPos != curPos)  {%>
+                <br>
+                <span class="posLabel"><%= players[offPlayerIndices[i]].Pos.replace(/\s+/g, '') %></span>    
+            <%  counter = 0 }%>
+              <!-- <span class="number"><%= players[i].Number %></span> -->
+              <span class="Dname"><%= players[offPlayerIndices[i]].FullName %></span>
+              <!-- <span class="num"><%= players[i].Pos %></span> -->
+            <% prevPos = curPos; %>
+          <% } %>
+        </ul>
+        
+        <span class="help">Defense</span>
+        <ul id="defense">
+          <% var prevPos = players[defPlayerIndices[0]].Pos %>
+          <span class="posLabel"><%= players[defPlayerIndices[0]].Pos %></span> 
+          <% for(var i = 0; i < defPlayerIndices.length; i++) {%>
+            <% curPos = players[defPlayerIndices[i]].Pos; %>
             <% if (prevPos != curPos)  {%>
                 <br>
-                <span class="posLabel"><%= players[i].Pos %></span>    
+                <span class="posLabel"><%= players[defPlayerIndices[i]].Pos %></span>    
             <% }%>
               <!-- <span class="number"><%= players[i].Number %></span> -->
-              <span class="name"><%= players[i].FullName %></span>
+              <span class="Dname"><%= players[defPlayerIndices[i]].FullName %></span>
+              <!-- <span class="num"><%= players[i].Pos %></span> -->
+            <% prevPos = curPos; %>
+          <% } %>
+        </ul>
+        
+        <span class="help">Special Teams</span>
+        <ul id="special">
+          <% var prevPos = players[spePlayerIndices[0]].Pos.replace(/\s+/g, '') %>
+          <span class="posLabel"><%= players[spePlayerIndices[0]].Pos %></span> 
+          <% for(var i = 0; i < spePlayerIndices.length; i++) {%>
+            <% curPos = players[spePlayerIndices[i]].Pos.replace(/\s+/g, ''); %>
+            <% if (prevPos != curPos)  {%>
+                <br>
+                <span class="posLabel"><%= players[spePlayerIndices[i]].Pos.replace(/\s+/g, '') %></span>    
+            <% }%>
+              <!-- <span class="number"><%= players[i].Number %></span> -->
+              <span class="Dname"><%= players[spePlayerIndices[i]].FullName %></span>
               <!-- <span class="num"><%= players[i].Pos %></span> -->
             <% prevPos = curPos; %>
           <% } %>

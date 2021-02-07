@@ -4,6 +4,7 @@ const { ensureAuthenticated } = require('../config/auth');
 
 const Stat = require('../models/Stat');
 const PracticeStat = require('../models/PracticeStat');
+const Exercise = require('../models/Exercise');
 
 router.use(express.static("public"));
 
@@ -55,19 +56,25 @@ router.get('/playerTrends', ensureAuthenticated, (req, res) =>
     Stat.find({ email: req.session.email }).sort({createdAt:1}) //This query will be used to populate the graph.
     .then(stats =>
     {
-      console.log(stat.bench);
-      res.render('playerTrends', 
-        {
-          email: stat.email,
-          bench: stat.bench,
-          squat: stat.squat,
-          dead: stat.dead,
-          mile: stat.mile,
-          height: stat.height,
-          weight: stat.weight,
-          'graph': stats,
-          'name': req.session.name
-        });
+      Exercise.find({school: req.session.school}).limit(1).sort({$natural:-1}) // Query to find the most recent exercises.
+      .then(exercises => 
+      {
+          console.log(stat.bench);
+          console.log(exercises);
+          res.render('playerTrends', 
+            {
+              email: stat.email,
+              bench: stat.bench,
+              squat: stat.squat,
+              dead: stat.dead,
+              mile: stat.mile,
+              height: stat.height,
+              weight: stat.weight,
+              'graph': stats,
+              'exercises': exercises.exercises,
+              'name': req.session.name
+            });
+      })
     })
   }
 ));

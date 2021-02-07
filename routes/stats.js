@@ -226,15 +226,15 @@ submitted in the form and saves it to the database before reloading dispGameGrad
 */
 router.post('/addGameGrade', async (req, res) => {
   //this function will take in a variable length form. 
-  console.log("inside addGamGrade");
+  console.log("inside addGameGrade");
   console.dir(req.body);
 
-  const {numPlayers, date, pos} = req.body;
+  const {numPlayers, date, pos, idGrade1} = req.body;
   const gradesArray = [];
   const school = req.user.school;
   console.log('numPlayers =' + numPlayers);
   //import intangible names and importance levels
-
+  console.log("id1 " + idGrade1);
   //for each player that is submitted in the form
   for(var i = 0; i < numPlayers.length; i++) {
     //find the email that corresponds to the playerName

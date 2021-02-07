@@ -250,7 +250,7 @@
                 <%- include('./partials/messages'); %>
                 <form action="/player/updatestats" method="POST">
                   <div class="form-group">
-                    <label for="bench">Current Max Bench Press</label>
+                    <label for="bench">Current Max <%= exercises[0] %></label>
                     <input
                       type="bench"
                       id="bench"
@@ -260,7 +260,7 @@
                     />
                   </div>
                   <div class="form-group">
-                    <label for="squat">Current Max Squat</label>
+                    <label for="squat">Current Max <%= exercises[1] %></label>
                     <input
                       type="squat"
                       id="squat"
@@ -270,7 +270,7 @@
                     />
                   </div>
                   <div class="form-group">
-                    <label for="dead">Current Max DeadLift</label>
+                    <label for="dead">Current Max <%= exercises[2] %></label>
                     <input
                       type="dead"
                       id="dead"
@@ -280,7 +280,7 @@
                     />
                   </div>
                   <div class="form-group">
-                    <label for="mile">Current Mile Time</label>
+                    <label for="mile">Current Max <%= exercises[3] %></label>
                     <input
                       type="mile"
                       id="mile"

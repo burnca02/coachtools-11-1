@@ -39,6 +39,7 @@ exports.post =  function (req, res) {
          data['School'] = req.session.school; //Add the school name to the specific player.
          data['Active'] = false; //All players are inactive by default.
          //data['Attendance'] = [0, 0];
+         data['Rank'] = 0;
          players.push(data);
      })
      .on("end", function(){

@@ -271,8 +271,8 @@ This function is called when a coach adds an intangible on submitIntangibles.ejs
 then saved to the Intangibles database. 
 */
 router.post('/addIntang', (req, res) => {
-  const {pos, scale, i1, i2, i3, i4, il1, il2, il3, il4} = req.body;
-  const ints = [i1, i2, i3, i4, il1, il2, il3, il4];
+  const {pos, scale, i1, i2, i3, i4} = req.body;
+  const ints = [i1, i2, i3, i4];
   const newIntangible = new Intangibles({
     school: req.user.school,
     pos,

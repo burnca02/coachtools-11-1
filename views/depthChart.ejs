@@ -17,7 +17,10 @@
     <%- include("partials/sidenav") %>
     <div class="chBody">
       <div id="offenseLine">
-        <span class="help">Depth Chart</span>
+        <div class="row" style="text-align: center;">
+          <span class="help col-sm-5" style="text-align: left;">Depth Chart</span>
+          <button class="btn btn-primary">Update Rankings</button>
+        </div>
         <!-- Quarterback, Running Back, Wide Receiver, Offensive Lineman, Tight End -->
         <% var offPlayers = ['QB','RB','WR','TE','OL', 'FB']; %>
         <% var defPlayers = ['DB','DE','DT','DL','OLB','MLB','OLB','ILB','LB','CB', 'SS', 'FS']; %>

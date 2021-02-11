@@ -288,7 +288,8 @@ router.get('/roster', ensureAuthenticated, (req, res) =>
 router.get('/depthChart', ensureAuthenticated, (req, res) => 
   Roster.find({ "Pos": { "$exists": true }, "School" :req.session.school }).sort({'Pos': 1})
   .then(results => {
-  res.render('depthChart', {players: results,
+  res.render('depthChart', {
+    players: results,
     name : req.session.name,
     school: req.session.school})
   })
@@ -306,11 +307,12 @@ router.get('/submitIntangibles', ensureAuthenticated, (req, res) =>
   const positions = [];
   for(var i = 0; i < players.length; i++){
     if(!(positions.includes(players[i].Pos))){ //adds only unique positions to array, no duplicates
-      positions.push(players[i].Pos);
-      console.log('addedint' + positions[i]);
+      if(typeof(players[i].Pos) !== 'undefined'){
+        positions.push(players[i].Pos);
+      }
     }
   }
-  console.log(positions);
+  console.log("all positions " + positions);
   res.render('submitIntangibles', {
       'positions': positions 
     });

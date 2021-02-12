@@ -29,8 +29,9 @@ const mongoose = require('mongoose');
         required: false,
         default: 'null'
     },
-    date: {
+    createdAt: {
         type: Date,
+        required: true,
         default: Date.now
     },
     timeout: { //this represents the number of hours until the questionnaire is invalid

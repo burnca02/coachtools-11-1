@@ -73,7 +73,7 @@ router.post('/submitquest', async(req,res) => {
         .then(results => {
           for(var i = 0; i < results.length; i++){
             participantsArr.push(results[i].Email);
-            results[i].Attendance[1]++; //increment the # of questionnaires given [taken, given]
+            //results[i].Attendance[1]++; //increment the # of questionnaires given [taken, given]
           }
         });
       } else {

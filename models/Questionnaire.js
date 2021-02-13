@@ -24,23 +24,15 @@ const mongoose = require('mongoose');
         required: true,
         default: 'meeting'
     },
-    grade: {
-        type: String,
-        required: false,
-        default: 'null'
-    },
-    date: {
+    createdAt: {
         type: Date,
+        required: true,
         default: Date.now
     },
     timeout: { //this represents the number of hours until the questionnaire is invalid
-        type: Number, 
+        type: Number,
+        required: true, 
         default: 24
-    },
-    completed: {  //This is so that we know when the student has completed the resume.
-        type: String,
-        required: true,
-        default: 'false'
     }
  })
 

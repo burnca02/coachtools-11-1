@@ -24,9 +24,9 @@
               </div>
           <div class="form-group">
             <label for="type"><strong>Choose Questionnaire Type</strong></label><br>
-            <input type="radio" id="meeting" name="type" value="meeting" autocomplete="off"><label for="gburg">Meeting</label><br>
-            <input type="radio" id="practice" name="type" value="practice" autocomplete="off"><label for="albright">Practice</label><br>
-            <input type="radio" id="training" name="type" value="training" autocomplete="off"><label for="albright">Lifting</label><br>
+            <input type="radio" id="meeting" name="type" value="Meeting" autocomplete="off"><label for="gburg">Meeting</label><br>
+            <input type="radio" id="practice" name="type" value="Practice" autocomplete="off"><label for="albright">Practice</label><br>
+            <input type="radio" id="training" name="type" value="Training" autocomplete="off"><label for="albright">Lifting</label><br>
           </div>
           <div class="form-group">
             <label for="q1"><strong>Question 1</strong></label>
@@ -39,6 +39,13 @@
           <div class="form-group">
             <label for="q3"><strong>Question 3</strong></label>
             <textarea id="q3" name="q3" rows="4" cols="50"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="date"><strong>Expiration Date</strong></label>
+            <input type="radio" name="timeout" id="24" value="24" required>
+            <label for="24">24 Hours</label>
+            <input type="radio" name="timeout" id="48" value="48" required>
+            <label for="48">48 Hours</label>
           </div>
           <button type="submit" class="btn btn-primary btn-block">Submit Questionnaire</button>
         </form>

@@ -65,7 +65,7 @@ questionnaire to be sent to. The method then creates the new questionnaire and r
 playerFeedback screem.
 */
 router.post('/submitquest', async(req,res) => {
-  const { participants, whichpos, type, q1, q2, q3 } = req.body;
+  const { participants, whichpos, type, q1, q2, q3, timeout} = req.body;
       var participantsArr = [];
       console.log('inside submit quest');
       if(participants == 'all'){
@@ -94,6 +94,7 @@ router.post('/submitquest', async(req,res) => {
       participants: participantsArr, //make sure variables passed match the model or refer to model variables
       type,
       questions,
+      timeout,
       school: req.user.school
     });
     //save user

@@ -285,17 +285,80 @@ router.get('/roster', ensureAuthenticated, (req, res) =>
   .catch(error => console.error(error))
 );
 
-router.get('/depthChart', ensureAuthenticated, (req, res) => 
+//USES THIS HOWEVER AFTER A POST METHOD....hmmm
+router.get('/depthChart', ensureAuthenticated, (req, res) => {
+  console.log("Did we get in coach router get");
   Roster.find({ "Pos": { "$exists": true }, "School" :req.session.school }).sort({'Pos': 1})
-  .then(results => {
-  res.render('depthChart', {
-    players: results,
-    name : req.session.name,
-    school: req.session.school})
+    .then(results => {
+    // var aPlayers = results;
+      res.render('depthChart', {aPlayers : results, players : results,
+      name : req.session.name,
+      school: req.session.school})
   })
   .catch(error => console.error(error))
-);
+});
 
+router.post('/depthChart', ensureAuthenticated, (req, res) => {
+  const type = req.body.type;
+  console.log("type: " + type);
+  Roster.find({ "Pos": { "$exists": true }, "School" :req.session.school }).sort({'Pos': 1})
+      .then(results1 => {
+        //  aPlayers : results1;
+    if (type != 'full') {
+      Roster.find( {"Pos" : type, "School" :req.session.school })
+        .then(results => {
+          res.render('depthChart', {players: results, aPlayers: results1,
+            name : req.session.name,
+            school: req.session.school})
+        })
+        .catch(error => console.error(error))
+    }
+    else //Otherwise view the whole roster alphabetically. 
+    {
+        Roster.find({ "Pos": { "$exists": true }, "School" :req.session.school }).sort({'Pos': 1})
+        .then(results => {
+          res.render('depthChart', {players: results, aPlayers: results1,
+            name : req.session.name,
+            school: req.session.school})
+        })
+        .catch(error => console.error(error))
+    }
+    console.log(req.body)
+  });
+});
+
+router.post('/submitRank', ensureAuthenticated, async (req, res) => {
+  const rank = req.body.rank
+  const pNames = req.body.playerNames
+  // const {rank} = req.body;
+  console.log('rank: ' + rank)
+  // const type = req.body.type;
+  // console.log('type is: ' + type);
+  // Roster.update({})
+  for (var i = 0; i < rank.length; i++) {
+    console.log('rank[i] ' + rank[i])
+    console.log('pNames[i] ' + pNames[i])
+    let doc = await Roster.findOneAndUpdate({FullName : pNames[i]}, {Rank : rank[i]}, {new:true, upsert: true});
+    doc.save();
+    console.log("doc: " + doc);
+    // Roster.findOneAndUpdate({FullName : pNames[i]}, {Rank : rank[i]})
+    // .then(player => {
+    //   console.log(player)
+    // })
+    // .catch(error => console.error(error))
+  }
+  console.log('submit rank called');
+  await Roster.find({ "Pos": { "$exists": true }, "School" :req.session.school }).sort({'Pos': 1})
+      .then(results => {
+        res.render('depthChart', {
+          players: results, 
+          aPlayers: results,
+          name : req.session.name,
+          school: req.session.school})
+      })
+      .catch(error => console.error(error)) 
+  // console.log(req.body)
+});
 
 /*
 This method searches the roster databases and finds all unique position codes in a school's roster. 
@@ -331,45 +394,13 @@ router.get('/submitExercises', ensureAuthenticated, (req, res) =>
  * This post method deals with the sorting function available in the coach's side for sorting a roster by position, or school year. 
  * You have the ability to sort by Position, graduation year, or showing the whole roster. Initially all rosters will be ordered alphabetically by position. 
  */
-router.post('/table', (req,res) => 
+router.post('/table', ensureAuthenticated, (req,res) => 
   {    
     const type = req.body.type;
-  
-    console.log("Did we get here");
-    if(type == "wr") //Given the type selected in the sort roster function, the query will only search for that position.
-    {
-      //We add the school name in the find query because we only care about searching the roster database of the coach's school.
-      Roster.find( {"Pos" : "WR", "School" :req.session.school})
-        .then(results => {
-            res.render('roster', {players: results,
-                                  name : req.session.name,
-                                  school: req.session.school})
-        })
-        .catch(error => console.error(error))
-    }
-    else if(type == "qb") //Will sort by quarterback
-    {
-      Roster.find( {"Pos" : "QB", "School" :req.session.school})
-        .then(results => {
-          res.render('roster', {players: results,
-            name : req.session.name,
-            school: req.session.school})
-        })
-        .catch(error => console.error(error))
-    }
-    else if(type == 'k') //Will sort by Kicker
-    {
-      Roster.find( {"Pos" : "K", "School" :req.session.school})
-        .then(results => {
-          res.render('roster', {players: results,
-            name : req.session.name,
-            school: req.session.school})
-        })
-        .catch(error => console.error(error))
-    }
-    else if(type == 'lb') //Will sort by Linebackers
-    {
-      Roster.find( {"Pos" : "LB" , "School" :req.session.school })
+    // console.log("type: " + type);
+    // console.log("Did we get here");
+    if (type != 'gy' && type != 'gyd' && type != 'full') {
+      Roster.find( {"Pos" : type, "School" :req.session.school })
         .then(results => {
           res.render('roster', {players: results,
             name : req.session.name,

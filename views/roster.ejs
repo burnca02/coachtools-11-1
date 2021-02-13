@@ -52,46 +52,16 @@
                 aria-expanded="false"
               >Sort By</button>
               <div class="dropdown-content" aria-labelledby="btnGroupDrop1">
+                <% var allPlayers = ['QB','RB','WR','TE','OL', 'FB', 'DB','DE','DT','DL','OLB','MLB','OLB','ILB','LB','CB', 'SS', 'FS', 'K','P','K/P','P/K','LS']; %>
                 <button
                   class="dropdown-item"
                   type="submit"
                   name="type"
                   value="full"
                 >
-                  View Whole Roster
-                </button>
-                <button
-                  class="dropdown-item"
-                  type="submit"
-                  name="type"
-                  value="qb"
-                >
-                  View Quarterbacks
-                </button>
-                <button
-                  class="dropdown-item"
-                  type="submit"
-                  name="type"
-                  value="wr"
-                >
-                  View Wide Receivers
-                </button>
-                <button
-                  class="dropdown-item"
-                  type="submit"
-                  name="type"
-                  value="k"
-                >
-                  View Kickers
-                </button>
-                <button
-                  class="dropdown-item"
-                  type="submit"
-                  name="type"
-                  value="lb"
-                >
-                  View Linebackers
-                </button>
+                <% for (var i = 0; i < allPlayers.length; i++) { %>
+                  <button class="dropdown-item" type="submit" name="type" value="<%- allPlayers[i] %>">View <%= allPlayers[i] %>s</button>
+                <% } %>
                 <button
                   class="dropdown-item"
                   type="submit"

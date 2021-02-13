@@ -8,6 +8,53 @@
     .sidenav {order: 1;}
     .chBody {order: 2;}
   }
+  @media all and (min-width: 600px) {
+    .bodyContainer {
+      flex: 2 0px;
+    }
+    .sidenav {
+      order: 1;
+    }
+    .rBody {
+      order: 2;
+    }
+    .modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto; /* 15% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%; /* Could be more or less, depending on screen size */
+}
+
+/* The Close Button */
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+  }
 </style>
 <div class="bigContainer">
   <!-- Includes topnav -->
@@ -19,7 +66,7 @@
       <div id="offenseLine">
         <div class="row" style="text-align: center;">
           <span class="help col-sm-5" style="text-align: left;">Depth Chart</span>
-          <button class="btn btn-primary">Update Rankings</button>
+          <button class="btn btn-primary" id="myBtn">Update Rankings</button>
         </div>
         <!-- Quarterback, Running Back, Wide Receiver, Offensive Lineman, Tight End -->
         <% var offPlayers = ['QB','RB','WR','TE','OL', 'FB']; %>
@@ -27,17 +74,17 @@
         <% var spePlayers = ['K','P','K/P','P/K','LS']; %>
         <% var offPlayerIndices = []; var defPlayerIndices = []; var spePlayerIndices = []; %>
         <% var numWr = 0; %>
-        <% for(var i = 0; i < players.length; i++) {
-            if (offPlayers.includes(players[i].Pos.replace(/\s+/g, ''))) {
+        <% for(var i = 0; i < aPlayers.length; i++) {
+            if (offPlayers.includes(aPlayers[i].Pos.replace(/\s+/g, ''))) {
               offPlayerIndices.push(i);
-              if (players[i].Pos == 'WR') {
+              if (aPlayers[i].Pos == 'WR') {
                 numWr++
               }
             }
-            else if (defPlayers.includes(players[i].Pos.replace(/\s+/g, ''))) {
+            else if (defPlayers.includes(aPlayers[i].Pos.replace(/\s+/g, ''))) {
               defPlayerIndices.push(i);
             }
-            else if (spePlayers.includes(players[i].Pos.replace(/\s+/g, ''))) {
+            else if (spePlayers.includes(aPlayers[i].Pos.replace(/\s+/g, ''))) {
               spePlayerIndices.push(i);
             }
         } %>
@@ -45,56 +92,107 @@
         <br>
         <span class="help">Offense</span>
         <ul id="offense">
-          <% var prevPos = players[offPlayerIndices[0]].Pos.replace(/\s+/g, ''); %>
-          <span class="posLabel"><%= players[offPlayerIndices[0]].Pos %></span> 
+          <% var prevPos = aPlayers[offPlayerIndices[0]].Pos.replace(/\s+/g, ''); %>
+          <span class="posLabel"><%= aPlayers[offPlayerIndices[0]].Pos %></span> 
           <% var counter = 0; %>
           <% for(var i = 0; i < offPlayerIndices.length; i++) {
-            curPos = players[offPlayerIndices[i]].Pos.replace(/\s+/g, '');
+            curPos = aPlayers[offPlayerIndices[i]].Pos.replace(/\s+/g, '');
             if (curPos == 'WR') {counter++;}
             if (counter >= numWr / 3 || prevPos != curPos)  {%>
                 <br>
-                <span class="posLabel"><%= players[offPlayerIndices[i]].Pos.replace(/\s+/g, '') %></span>    
+                <span class="posLabel"><%= aPlayers[offPlayerIndices[i]].Pos.replace(/\s+/g, '') %></span>    
             <%  counter = 0 }%>
-              <!-- <span class="number"><%= players[i].Number %></span> -->
-              <span class="Dname"><%= players[offPlayerIndices[i]].FullName %></span>
-              <!-- <span class="num"><%= players[i].Pos %></span> -->
+              <!-- <span class="number"><%= aPlayers[offPlayerIndices[i]].Number %></span> -->
+              <span class="Dname"><%= aPlayers[offPlayerIndices[i]].FullName %></span>
+              <span class="Dname"> <%= aPlayers[offPlayerIndices[i]].Rank %></span>
+              <!-- <span class="num"><%= aPlayers[offPlayerIndices[i]].Pos %></span> -->
             <% prevPos = curPos; %>
           <% } %>
         </ul>
         
         <span class="help">Defense</span>
         <ul id="defense">
-          <% var prevPos = players[defPlayerIndices[0]].Pos %>
-          <span class="posLabel"><%= players[defPlayerIndices[0]].Pos %></span> 
+          <% var prevPos = aPlayers[defPlayerIndices[0]].Pos %>
+          <span class="posLabel"><%= aPlayers[defPlayerIndices[0]].Pos %></span> 
           <% for(var i = 0; i < defPlayerIndices.length; i++) {%>
-            <% curPos = players[defPlayerIndices[i]].Pos; %>
+            <% curPos = aPlayers[defPlayerIndices[i]].Pos; %>
             <% if (prevPos != curPos)  {%>
                 <br>
-                <span class="posLabel"><%= players[defPlayerIndices[i]].Pos %></span>    
+                <span class="posLabel"><%= aPlayers[defPlayerIndices[i]].Pos %></span>    
             <% }%>
-              <!-- <span class="number"><%= players[i].Number %></span> -->
-              <span class="Dname"><%= players[defPlayerIndices[i]].FullName %></span>
-              <!-- <span class="num"><%= players[i].Pos %></span> -->
+              <!-- <span class="number"><%= aPlayers[defPlayerIndices[i]].Number %></span> -->
+              <span class="Dname"><%= aPlayers[defPlayerIndices[i]].FullName %></span>
+              <span class="Dname"> <%= aPlayers[defPlayerIndices[i]].Rank %></span>
+              <!-- <span class="num"><%= aPlayers[defPlayerIndices[i]].Pos %></span> -->
             <% prevPos = curPos; %>
           <% } %>
         </ul>
         
         <span class="help">Special Teams</span>
         <ul id="special">
-          <% var prevPos = players[spePlayerIndices[0]].Pos.replace(/\s+/g, '') %>
-          <span class="posLabel"><%= players[spePlayerIndices[0]].Pos %></span> 
+          <% var prevPos = aPlayers[spePlayerIndices[0]].Pos.replace(/\s+/g, '') %>
+          <span class="posLabel"><%= aPlayers[spePlayerIndices[0]].Pos %></span> 
           <% for(var i = 0; i < spePlayerIndices.length; i++) {%>
-            <% curPos = players[spePlayerIndices[i]].Pos.replace(/\s+/g, ''); %>
+            <% curPos = aPlayers[spePlayerIndices[i]].Pos.replace(/\s+/g, ''); %>
             <% if (prevPos != curPos)  {%>
                 <br>
-                <span class="posLabel"><%= players[spePlayerIndices[i]].Pos.replace(/\s+/g, '') %></span>    
+                <span class="posLabel"><%= aPlayers[spePlayerIndices[i]].Pos.replace(/\s+/g, '') %></span>    
             <% }%>
-              <!-- <span class="number"><%= players[i].Number %></span> -->
-              <span class="Dname"><%= players[spePlayerIndices[i]].FullName %></span>
-              <!-- <span class="num"><%= players[i].Pos %></span> -->
+              <!-- <span class="number"><%= aPlayers[spePlayerIndices[i]].Number %></span> -->
+              <span class="Dname"><%= aPlayers[spePlayerIndices[i]].FullName %></span>
+              <span class="Dname"> <%= aPlayers[spePlayerIndices[i]].Rank %></span>
+              <!-- <span class="num"><%= aPlayers[spePlayerIndices[i]].Pos %></span> -->
             <% prevPos = curPos; %>
           <% } %>
         </ul>
+      </div>
+
+      <!-- Start of Modal Content for entering practice grades -->
+      <!-- The Modal PopUp Window-->
+      <div id="myModal" class="modal" style="overflow-y:auto;">
+        <!-- Modal content -->
+        <div class="modal-content">
+          <div class="form-group" role="group" aria-label="Button group with nested dropdown">
+          <form action="/coach/depthChart" method="POST">
+            <!-- <button type="button" class="btn btn-primary">Sort By</button> -->
+            <div class="dropdown" role="group" style="padding-top: 10px;">
+              <span class="close">&times;</span>
+              <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Sort By
+              </button>
+              <div class="dropdown-content" aria-labelledby="btnGroupDrop1">
+                <!-- 'SS','MLB','FS','K','P','CB', ,'LS'-->
+                <% var allPlayers = ['QB','RB','WR','TE','OL', 'FB', 'DB','DE','DT','DL','OLB','OLB','ILB','LB','K/P','P/K']; %>
+                <button class="dropdown-item" type="submit" name="type" value="full">ALL</button>
+                <% for (var i = 0; i < allPlayers.length; i++) { %>
+                  <button class="dropdown-item" type="submit" name="type" value="<%- allPlayers[i] %>">View <%= allPlayers[i] %>s</button>
+                <% } %>
+              </div>
+            </div>
+          </form>
+          </div>
+          <% if (offPlayers.includes(players[0].Pos)) { %>
+            <span class="help">Offense</span>
+          <% }
+          else if (defPlayers.includes(players[0].Pos)) { %>
+            <span class="help">Defense</span>
+          <% }
+          else if (spePlayers.includes(players[0].Pos)) { %>
+            <span class="help">Special Teams</span>
+          <% } %>
+          <br>
+          <span class="help"><%= players[0].Pos %></span>
+          <br>
+          <form action="/coach/submitRank" method="POST">
+          <% for (var i = 0; i < players.length; i++) { %>
+            <!-- <span class="posLabel"><%= players[i].FullName %></span> -->
+            <input type="name" name="playerNames" value="<%- players[i].FullName %>" readonly>
+            <input type="number" name="rank" value="<%- players[i].Rank %>">
+            <br>
+          <% } %>
+          <input type="submit" value="Submit">
+          </form>
+        </div>
       </div>
 
       <!-- <div>
@@ -266,6 +364,48 @@
   </div>
 </div> 
 <script>
+  // Get the modal
+var modal = document.getElementById("myModal");
+// Get the button that opens the modal
+var btn = document.getElementById("myBtn");
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+// When the user clicks on the button, open the modal
+const delay = ms => new Promise(res => setTimeout(res, ms));
+
+const modalDisp = async() => {
+  modal.style.display = "block";
+  // await delay(500);
+  // initGameGrade();
+}
+
+btn.onclick = modalDisp;
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+  modal.style.display = "none";
+}
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+// Makes buttons work
+var dropdown = document.getElementsByClassName("dropdown-toggle");
+  var i;
+  modal.style.display = "block";
+  for (i = 0; i < dropdown.length; i++) {
+    dropdown[i].addEventListener("click", function () {
+      this.classList.toggle("active");
+      var dropdownContent = this.nextElementSibling;
+      if (dropdownContent.style.display === "block") {
+        dropdownContent.style.display = "none";
+      } else {
+        dropdownContent.style.display = "block";
+      }
+    });
+  }
   // Drag and drop code
   // var drake = dragula({
   //   containers: [

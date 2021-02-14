@@ -198,7 +198,6 @@ router.post('/addPracticeGrade', async (req, res) => {
             {
               if(err)
                 return console.log(err);
-
               console.log(doc);
             });
         }).catch(err => console.log(err));

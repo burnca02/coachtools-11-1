@@ -287,16 +287,39 @@ router.get('/roster', ensureAuthenticated, (req, res) =>
 );
 
 //USES THIS HOWEVER AFTER A POST METHOD....hmmm
-router.get('/depthChart', ensureAuthenticated, (req, res) => {
+router.get('/depthChart', ensureAuthenticated, async(req, res) => {
+  const offPlayersPos1 = ['FB','OL', 'QB','RB','TE','WR'];
+  const defPlayersPos = ['DB','DE','DT','DL','OLB','MLB','OLB','ILB','LB','CB', 'SS', 'FS'];
+  const spePlayersPos = ['K','P','K/P','P/K','LS'];
   console.log("Did we get in coach router get");
-  Roster.find({ "Pos": { "$exists": true }, "School" :req.session.school }).sort({'Pos': 1})
-    .then(results => {
-    // var aPlayers = results;
-      res.render('depthChart', {aPlayers : results, players : results,
-      name : req.session.name,
-      school: req.session.school})
-  })
-  .catch(error => console.error(error))
+  Roster.find({ "Pos": { "$exists": true}, "School" :req.session.school, "Pos": offPlayersPos1}).sort({'Pos': 1})
+  .then(offPlayers => {
+    Roster.find({ "Pos": { "$exists": true }, "School" :req.session.school, "Pos": defPlayersPos }).sort({'Pos': 1})
+    .then(defPlayers => {
+      Roster.find({ "Pos": { "$exists": true }, "School" :req.session.school, "Pos": spePlayersPos }).sort({'Pos': 1})
+      .then(spePlayers => {
+        console.log("offplayers length: "+ offPlayers.length)
+        res.render('depthChart', {
+          offPlayersPos : offPlayersPos1,
+          "defPlayersPos" : defPlayersPos,
+          "spePlayersPos" : spePlayersPos,
+          "offPlayers" : offPlayers, 
+          "defPlayers" : defPlayers,
+          "spePlayers" : spePlayers,
+          name: req.session.name,
+          school: req.session.school})
+      }).catch(error => console.error(error))
+    }).catch(error => console.error(error))
+  }).catch(error => console.error(error))
+  
+  // Roster.find({ "Pos": { "$exists": true }, "School" :req.session.school }).sort({'Pos': 1})
+  //   .then(results => {
+  //   // var aPlayers = results;
+  //     res.render('depthChart', {aPlayers : results, players : results,
+  //     name : req.session.name,
+  //     school: req.session.school})
+  // })
+  // .catch(error => console.error(error))
 });
 
 router.post('/depthChart', ensureAuthenticated, (req, res) => {
@@ -339,7 +362,7 @@ router.post('/submitRank', ensureAuthenticated, async (req, res) => {
   for (var i = 0; i < rank.length; i++) {
     console.log('rank[i] ' + rank[i])
     console.log('pNames[i] ' + pNames[i])
-    let doc = await Roster.findOneAndUpdate({FullName : pNames[i]}, {Rank : rank[i]}, {new:true, upsert: true});
+    let doc = await Roster.findOneAndUpdate({FullName : pNames[i], School : req.session.school}, {Rank : rank[i]}, {new:true, upsert: true});
     doc.save();
     console.log("doc: " + doc);
     // Roster.findOneAndUpdate({FullName : pNames[i]}, {Rank : rank[i]})

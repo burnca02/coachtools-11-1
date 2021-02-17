@@ -85,8 +85,12 @@
           <tr>
             <td><%= offPlayersPos[i] %></td>
             <% k = 0;
-            while (j < offPlayers.length && k < 5 && offPlayers[j].Pos == offPlayersPos[i]) { %>
+            console.log('k: ' + k)
+            console.log('j: ' + j)
+            while (j < offPlayers.length && offPlayers[j].Pos == offPlayersPos[i]) { %>
+              <% if (k < 5) { %>
               <td><%= offPlayers[j].FullName %><%= offPlayers[j].Rank %></td>
+              <% } %>
               <% j++; k++;%>
             <% } %>
           </tr>
@@ -201,5 +205,3 @@ var dropdown = document.getElementsByClassName("dropdown-toggle");
   //   false
   // );
 </script>
-
- 

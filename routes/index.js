@@ -167,13 +167,14 @@ router.post('/viewQuestionnaire', async(req, res) => {
         const defPlayersPos = ['DB','DE','DT','DL','OLB','MLB','OLB','ILB','LB','CB', 'SS', 'FS'];
         const spePlayersPos = ['K','P','K/P','P/K','LS'];
         console.log("Did we get in index router get");
-        await db.collection('Roster').find({ "Pos": { "$exists": true}, "School" :req.session.school, "Pos": { "$in" : offPlayersPos1}}).sort({'Pos': 1}).toArray()
+        await db.collection('Roster').find({ "Pos": { "$exists": true}, "School" :req.session.school, "Pos": { "$in" : offPlayersPos1}}).sort({'Pos': 1, 'Rank' : 1}).toArray()
         .then(offPlayers => {
-            db.collection('Roster').find({ "Pos": { "$exists": true }, "School" :req.session.school, "Pos": defPlayersPos}).sort({'Pos': 1}).toArray()
+            db.collection('Roster').find({ "Pos": { "$exists": true }, "School" :req.session.school, "Pos": defPlayersPos}).sort({'Pos': 1, 'Rank' : 1}).toArray()
             .then(defPlayers => {
-                db.collection('Roster').find({ "Pos": { "$exists": true }, "School" :req.session.school, "Pos": spePlayersPos}).sort({'Pos': 1}).toArray()
+                db.collection('Roster').find({ "Pos": { "$exists": true }, "School" :req.session.school, "Pos": spePlayersPos}).sort({'Pos': 1, 'Rank': 1}).toArray()
                 .then(spePlayers => {
                     console.log("offplayers length: "+ offPlayers.length)
+                    console.log("offplayers: "+ offPlayers)
                     res.render('depthChart', {
                         offPlayersPos : offPlayersPos1,
                         "defPlayersPos" : defPlayersPos,

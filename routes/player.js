@@ -61,6 +61,7 @@ router.get('/playerTrends', ensureAuthenticated, (req, res) =>
       {
           console.log(stat.bench);
           console.log(exercises);
+          console.log(stats);
           res.render('playerTrends', 
             {
               email: stat.email,
@@ -70,8 +71,8 @@ router.get('/playerTrends', ensureAuthenticated, (req, res) =>
               mile: stat.mile,
               height: stat.height,
               weight: stat.weight,
-              'graph': stats,
-              'exercises': exercises.exercises,
+              graph: stats,
+              exercises : exercises,
               'name': req.session.name
             });
       })

@@ -174,6 +174,7 @@ router.post('/viewQuestionnaire', async(req, res) => {
                 db.collection('Roster').find({ "Pos": { "$exists": true }, "School" :req.session.school, "Pos": { "$in" : spePlayersPos}}).sort({'Pos': 1, 'Rank': 1}).toArray()
                 .then(spePlayers => {
                     res.render('depthChart', {
+                        players : offPlayers + defPlayers + spePlayers,
                         offPlayersPos : offPlayersPos1,
                         "defPlayersPos" : defPlayersPos,
                         "spePlayersPos" : spePlayersPos,

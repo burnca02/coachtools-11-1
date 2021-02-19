@@ -58,9 +58,10 @@
   table.redTable {
     border: 2px solid #a40808;
     background-color: #eee7db;
-    width: 100%;
+    width: 90%;
     text-align: center;
     border-collapse: collapse;
+    margin-left: 40px;
   }
   table.redTable td,
   table.redTable th {
@@ -115,7 +116,7 @@
   <div class="bodyContainer">
     <!-- Includes Side navigation -->
     <%- include("partials/sidenav") %>
-    <div class="chBody">
+    <div class="chBody" style="text-align: center;">
       <div id="offenseLine">
         <div class="row" style="text-align: center;">
           <span class="help col-sm-5" style="text-align: left;">Depth Chart</span>
@@ -124,7 +125,7 @@
         <br>
         <br>
         <span class="help">Offense</span>
-        <table class="redTable" id="viewTable" style="width: 100%;" border="1">
+        <table class="redTable" id="viewTable" style="width: 95%;" border="1">
           <tr>
             <th></th>
             <th>First String</th>
@@ -149,7 +150,7 @@
         </table>
         <br><br>
         <span class="help">Defense</span>
-        <table class="redTable" id="viewTable" style="width: 100%;" border="1">
+        <table class="redTable" id="viewTable" style="width: 95%;" border="1">
           <tr>
             <th></th>
             <th>First String</th>
@@ -174,7 +175,7 @@
         </table>
         <br><br>
         <span class="help">Special Teams</span>
-        <table class="redTable" id="viewTable" style="width: 100%;" border="1">
+        <table class="redTable" id="viewTable" style="width: 95%;" border="1">
           <tr>
             <th></th>
             <th>First String</th>
@@ -198,6 +199,44 @@
           <% } %>
         </table>
 
+        <!-- Start of Modal Content for entering practice grades -->
+      <!-- The Modal PopUp Window-->
+      <div id="myModal" class="modal" style="overflow-y:auto;">
+        <!-- Modal content -->
+        <div class="modal-content">
+          <div class="form-group" role="group" aria-label="Button group with nested dropdown">
+          <form action="/coach/depthChart" method="POST">
+            <!-- <button type="button" class="btn btn-primary">Sort By</button> -->
+            <div class="dropdown" role="group" style="padding-top: 10px;">
+              <span class="close">&times;</span>
+              <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Sort By
+              </button>
+              <div class="dropdown-content" aria-labelledby="btnGroupDrop1">
+                <!-- 'SS','MLB','FS','K','P','CB', ,'LS'-->
+                <% var allPlayers = ['QB','RB','WR','TE','OL', 'FB', 'DB','DE','DT','DL','OLB','OLB','ILB','LB','K/P','P/K']; %>
+                <button class="dropdown-item" type="submit" name="type" value="full">ALL</button>
+                <% for (var i = 0; i < allPlayers.length; i++) { %>
+                  <button class="dropdown-item" type="submit" name="type" value="<%- allPlayers[i] %>">View <%= allPlayers[i] %>s</button>
+                <% } %>
+              </div>
+            </div>
+            </form>
+          </div>
+          <br>
+          <span class="help"><%= players[0].Pos %></span>
+          <br>
+          <form action="/coach/submitRank" method="POST">
+          <% for (var i = 0; i < players.length; i++) { %>
+            <!-- <span class="posLabel"><%= players[i].FullName %></span> -->
+            <input type="name" name="playerNames" value="<%- players[i].FullName %>" readonly>
+            <input type="number" name="rank" value="<%- players[i].Rank %>">
+            <br>
+          <% } %>
+          <input type="submit" value="Submit">
+          </form>
+        </div>
+      </div>
       
 
       

@@ -468,6 +468,9 @@ body {
   .sidenav a {
     text-align: center;
   }
+  .navbar-brand {
+    width: 80%;
+  }
 }
 
 @media all and (max-width: 600px) {

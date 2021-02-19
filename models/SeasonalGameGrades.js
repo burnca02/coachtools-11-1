@@ -42,6 +42,6 @@ const mongoose = require('mongoose');
     },
  })
 
- const SeasonalGameGrades = mongoose.model('SeasonalGameGrades', SeasonalGameGradesSchema);
+ const SeasonalGameGrades = mongoose.model('SeasonalGameGrades', SeasonalGameGradeSchema);
 
  module.exports = SeasonalGameGrades;

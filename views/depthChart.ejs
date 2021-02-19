@@ -55,6 +55,59 @@
   cursor: pointer;
 }
   }
+  table.redTable {
+    border: 2px solid #a40808;
+    background-color: #eee7db;
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+  }
+  table.redTable td,
+  table.redTable th {
+    border: 1px solid #aaaaaa;
+    padding: 3px 2px;
+  }
+  table.redTable tbody td {
+    font-size: 13px;
+    text-align: center;
+  }
+  table.redTable tr:nth-child(even) {
+    background: #f5c8bf;
+  }
+  table.redTable thead {
+    background: #a40808;
+  }
+  table.redTable thead th {
+    font-size: 19px;
+    font-weight: bold;
+    color: #ffffff;
+    text-align: center;
+    border-left: 2px solid #a40808;
+  }
+  table.redTable thead th:first-child {
+    border-left: none;
+  }
+
+  table.redTable tfoot {
+    font-size: 13px;
+    font-weight: bold;
+    color: #ffffff;
+    background: #a40808;
+  }
+  table.redTable tfoot td {
+    font-size: 13px;
+    text-align: center;
+  }
+  table.redTable tfoot .links {
+    text-align: right;
+  }
+  table.redTable tfoot .links a {
+    display: inline-block;
+    background: #ffffff;
+    color: #a40808;
+    padding: 2px 8px;
+    border-radius: 5px;
+  }
 </style>
 <div class="bigContainer">
   <!-- Includes topnav -->
@@ -71,7 +124,7 @@
         <br>
         <br>
         <span class="help">Offense</span>
-        <table style="width: 100%;">
+        <table class="redTable" id="viewTable" style="width: 100%;" border="1">
           <tr>
             <th></th>
             <th>First String</th>
@@ -85,11 +138,59 @@
           <tr>
             <td><%= offPlayersPos[i] %></td>
             <% k = 0;
-            console.log('k: ' + k)
-            console.log('j: ' + j)
             while (j < offPlayers.length && offPlayers[j].Pos == offPlayersPos[i]) { %>
               <% if (k < 5) { %>
               <td><%= offPlayers[j].FullName %><%= offPlayers[j].Rank %></td>
+              <% } %>
+              <% j++; k++;%>
+            <% } %>
+          </tr>
+          <% } %>
+        </table>
+        <br><br>
+        <span class="help">Defense</span>
+        <table class="redTable" id="viewTable" style="width: 100%;" border="1">
+          <tr>
+            <th></th>
+            <th>First String</th>
+            <th>Second String</th> 
+            <th>Third String</th>
+            <th>Fourth String</th>
+            <th>Other</th>
+          </tr>
+          <% j = 0; k = 0;
+          for(var i = 0; i < defPlayersPos.length; i++) { %>
+          <tr>
+            <td><%= defPlayersPos[i] %></td>
+            <% k = 0;
+            while (j < defPlayers.length && defPlayers[j].Pos == defPlayersPos[i]) { %>
+              <% if (k < 5) { %>
+              <td><%= defPlayers[j].FullName %><%= defPlayers[j].Rank %></td>
+              <% } %>
+              <% j++; k++;%>
+            <% } %>
+          </tr>
+          <% } %>
+        </table>
+        <br><br>
+        <span class="help">Special Teams</span>
+        <table class="redTable" id="viewTable" style="width: 100%;" border="1">
+          <tr>
+            <th></th>
+            <th>First String</th>
+            <th>Second String</th> 
+            <th>Third String</th>
+            <th>Fourth String</th>
+            <th>Other</th>
+          </tr>
+          <% j = 0; k = 0;
+          for(var i = 0; i < spePlayersPos.length; i++) { %>
+          <tr>
+            <td><%= spePlayersPos[i] %></td>
+            <% k = 0;
+            while (j < spePlayers.length && spePlayers[j].Pos == spePlayersPos[i]) { %>
+              <% if (k < 5) { %>
+              <td><%= spePlayers[j].FullName %><%= spePlayers[j].Rank %></td>
               <% } %>
               <% j++; k++;%>
             <% } %>

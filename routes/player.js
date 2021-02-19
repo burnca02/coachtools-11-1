@@ -59,9 +59,6 @@ router.get('/playerTrends', ensureAuthenticated, (req, res) =>
       Exercise.find({school: req.session.school}).limit(1).sort({$natural:-1}) // Query to find the most recent exercises.
       .then(exercises => 
       {
-          console.log(stat.bench);
-          console.log(exercises);
-          console.log(stats);
           res.render('playerTrends', 
             {
               email: stat.email,

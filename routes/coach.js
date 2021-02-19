@@ -391,17 +391,17 @@ These position codes are then sent to submitIntangibles.ejs to display in a drop
 router.get('/submitIntangibles', ensureAuthenticated, (req, res) => 
   Roster.find({School: req.user.school})
   .then(players => {
+    console.log(players[0].Pos);
     const positions = [];
     for(var i = 0; i < players.length; i++){
       if(!(positions.includes(players[i].Pos))){ //adds only unique positions to array, no duplicates
-        if(typeof(players[i].Pos) !== 'undefined'){
+        //if(typeof(players[i].Pos) !== 'undefined'){
           positions.push(players[i].Pos);
-        }
       }
     }
     console.log("all positions " + positions);
     res.render('submitIntangibles', {
-        'positions': positions 
+        positions: positions 
       });
     }).catch(err => console.log(err))
 );

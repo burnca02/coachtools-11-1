@@ -7,6 +7,7 @@ const mongoose = require('mongoose');
 const Roster = require('../models/Roster');
 const PracticeStat = require('../models/PracticeStat');
 const SeasonalPracticeStat = require('../models/SeasonalPracticeStats');
+const SeasonalGameGrade = require('../models/SeasonalGameGrades');
 const Intangibles = require('../models/Intangibles');
 const Exercise = require('../models/Exercise');
 const Play = require('../models/Play');
@@ -97,16 +98,13 @@ router.post('/addPracticeGrade', async (req, res) => {
 
   //This version currently works with the full form layout.
 
-  for(var i = 0; i < numPlayers; i++)
-  {
+  for(var i = 0; i < numPlayers; i++) {
     //This is a temporary fix to a bug. If the number of players equals one, it does not return as an array. 
     //It returns as a string, otherwise if there are more than 1 name it will return as an array.
-    if(numPlayers === 1)
-    {
+    if(numPlayers === 1) {
       name = playerNames;
     }
-    else 
-    {
+    else {
       name = playerNames[i];
     }
     /**
@@ -114,8 +112,7 @@ router.post('/addPracticeGrade', async (req, res) => {
      * if none of the information has been filled out. This may change if it it is done individually by player,
      * but as of now this is how it is done. 
     **/
-    if(grade1[i] !== '' && grade2[i] !== '' && grade3[i] !== '' && grade4[i] !== '')
-    {
+    if(grade1[i] !== '' && grade2[i] !== '' && grade3[i] !== '' && grade4[i] !== '') {
       console.log('This has all of the fields submitted')
       await Roster.findOne({FullName: name, School: school})
       .then(result => {
@@ -226,52 +223,144 @@ submitted in the form and saves it to the database before reloading dispGameGrad
 router.post('/addGameGrade', async (req, res) => {
   //this function will take in a variable length form. 
   console.log("inside addGameGrade");
-  console.dir(req.body);
+  const {playerNames, date, scale, grade1, grade2, grade3, grade4} = req.body;
 
-  const {numPlayers, date, pos, idGrade1} = req.body;
-  const gradesArray = [];
-  const school = req.user.school;
-  console.log('numPlayers =' + numPlayers);
-  //import intangible names and importance levels
-  console.log("id1 " + idGrade1);
-  //for each player that is submitted in the form
-  for(var i = 0; i < numPlayers.length; i++) {
-    //find the email that corresponds to the playerName
-    var email;
-    const {playerName1} = req.body;
-    await Roster.findOne({FullName: playerName1, School: school})
-    .then(result => {
-      //console.log(result);
-      email = result.Email;
-    }).catch(err => console.log(err));
-    //create new gameGrade object to store individual grade
-    const int1 = [name1, grade1, grade1imp];
-    const int2 = [name2, grade2, grade2imp];
-    const int3 = [name3, grade3, grade3imp];
-    const int4 = [name4,grade4, grade4imp];
+  console.log(req.body);
 
-    const gameGrade = {email, int1, int2, int3, int4};
-    console.log(gameGrade);
-    //push to array
-    gradesArray.push(gameGrade);
+  var email;
+  var school = req.user.school;
+  var numPlayers = parseInt(req.body.numPlayers);
+  var players = playerNames;
+  console.log( numPlayers + " is the length");
+  var name;
+
+  //This version currently works with the full form layout.
+
+  for(var i = 0; i < numPlayers; i++) {
+    //This is a temporary fix to a bug. If the number of players equals one, it does not return as an array. 
+    //It returns as a string, otherwise if there are more than 1 name it will return as an array.
+    if(numPlayers === 1) {
+      name = playerNames;
+    }
+    else {
+      name = playerNames[i];
+    }
+    /**
+     * If all the grades have been filled out, then this is a valid practice stat. We do not want to add practice stats
+     * if none of the information has been filled out. This may change if it it is done individually by player,
+     * but as of now this is how it is done. 
+    **/
+    if(grade1[i] !== '' && grade2[i] !== '' && grade3[i] !== '' && grade4[i] !== '') {
+      console.log('This has all of the fields submitted')
+      await Roster.findOne({FullName: name, School: school})
+      .then(result => {
+        console.log(result);
+        email = result.Email;
+        console.log('email' + email);
+  
+      }).catch(err => console.log(err));
+
+      var Numgrade1 = parseInt(grade1[i]);
+      var Numgrade2 = parseInt(grade2[i]);
+      var Numgrade3 = parseInt(grade3[i]);
+      var Numgrade4 = parseInt(grade4[i]);
+
+
+      const int1 = [Numgrade1, 1];
+      const int2 = [Numgrade2, 2];
+      const int3 = [Numgrade3, 3];
+      const int4 = [Numgrade4, 4];
+
+      //Calculating the day's overall practice grade
+      var grade = Math.round((((Numgrade1/scale)) + ((Numgrade2/scale)) + ((Numgrade3/scale)) + ((Numgrade4/scale))) * 100);
+
+      console.log("The grade is " + grade);
+        // Finding the overall season average. 
+      //To get the season overall average we have to get the number all the stats from the specific player
+      
+      //This will create a practice stat. And a seasonal stat. We need to either create a new SeasonalPracticeStat 
+      //or either update the current record in the database.
+      await GameGrade.find({email: email, school: school})
+      .then(stats => 
+        {
+          console.log("The number of stats that this player has is ");
+          console.log(stats.length);
+          var numOfStats = stats.length; //This is the number of data entries that the player has. We will need to figure out how to get the data so it works by each season.
+
+          var intagible1GradeAvg = 0;
+          var intagible2GradeAvg = 0;
+          var intagible3GradeAvg = 0;
+          var intagible4GradeAvg = 0;
+          var overall = 0;
+
+          
+          //Going through the number of stats and adding up the stats to get the overall. 
+          for(var j = 0; j < numOfStats; j++) {
+            intagible1GradeAvg += ((stats[j].int1[0] /scale)*100);
+            intagible2GradeAvg += ((stats[j].int2[0] /scale)*100);
+            intagible3GradeAvg += ((stats[j].int3[0] /scale)*100);
+            intagible4GradeAvg += ((stats[j].int4[0] /scale)*100);
+            overall += parseInt(stats[j].grade);
+          }
+
+          //Getting the averages.
+          intagible1GradeAvg = Math.round(intagible1GradeAvg/numOfStats);
+          intagible2GradeAvg = Math.round(intagible2GradeAvg/numOfStats);
+          intagible3GradeAvg = Math.round(intagible3GradeAvg/numOfStats);
+          intagible4GradeAvg = Math.round(intagible4GradeAvg/numOfStats);
+          overall = Math.round( overall / numOfStats);
+
+          /**
+            This will find and update the player in the seasonal practice stat table. This is beneficial because there will be no duplicates in the season practice stats table.
+            If the player has no record in the table, the it will create it automatically. 
+
+            We still want to keep practice stats so that players and coaches can see their practice grade trends.
+           */
+          SeasonalGameGrade.findOneAndUpdate({email: email, school: school},
+            {
+              // email,
+              // school,
+              Current : grade, //The most recent practice grade.
+              Overall : overall,
+              Intagible1Average: intagible1GradeAvg,
+              Intagible2Average: intagible2GradeAvg,
+              Intagible3Average: intagible3GradeAvg,
+              Intagible4Average: intagible4GradeAvg
+            }, {new:true, upsert: true} 
+            ,function(err,doc)
+            {
+              if(err)
+                return console.log(err);
+              console.log(doc);
+            });
+        }).catch(err => console.log(err));
+
+      //Adding a new practice stat
+      const newGameGrade = new GameGrade({
+        email,
+        school,
+        int1,
+        int2,
+        int3,
+        int4,
+        grade,
+        date
+      });
+      console.log(newGameGrade);
+      newGameGrade.save();
+    }
   }
-  //Save newGameGrade to database
-  const newGameGrade = new GameGrade({
-    grades: gradesArray,
-    pos,
-    school,
-    date
-  });
-  console.log(newGameGrade);
-  newGameGrade.save();
+  res.redirect('dispGameGrade');
 });
 /*
 This function is called when a coach adds an intangible on submitIntangibles.ejs. The intangble is
 then saved to the Intangibles database. 
 */
 router.post('/addIntang', (req, res) => {
+  console.log("in post method");
   const {pos, scale, i1, i2, i3, i4} = req.body;
   const ints = [i1, i2, i3, i4];
+  console.log("intangibles added");
   const newIntangible = new Intangibles({
     school: req.user.school,
     pos,
@@ -321,8 +410,10 @@ tables.
 router.post('/dispGameGrade', async(req, res) => {
   const {pos} = req.body;
     const ints = [];
+    console.log("pos" + pos);
     Roster.find({Pos: pos, School: req.user.school}) 
     .then(players => {
+      console.log(players[0]);
       Intangibles.find({school: req.user.school, pos: pos})
       .then(intangibles => {
       const positions = [];
@@ -338,9 +429,6 @@ router.post('/dispGameGrade', async(req, res) => {
         .then(stats => {
           Play.find({school: req.user.school})
           .then(plays => {
-            console.log("plays ->");
-            console.log(plays);
-            console.log(plays[0].plays);
             res.render('dispGameGrade', {
                   'players': players,
                   'ints': intangibles[0].ints,

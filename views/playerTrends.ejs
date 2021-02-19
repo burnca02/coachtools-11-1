@@ -111,13 +111,7 @@
 
   <div class="bodyContainer" style="margin-top: 3.45rem !important;">
     <%- include("partials/sidenavPlayer") %>
-    <!-- <nav class="sidenav" id="mySidenav">
-      <a href="/playerHome">Home</a>
-      <a href="/player/playerGrades">My Grades</a>
-      <a href="/player/playerTrends">Max Trends</a>
-    </nav> -->
     <div class="chBody">
-
       <table class="redTable" style="width: 100%">
         <thead>
             <th></th>
@@ -125,9 +119,9 @@
             <th></th>
         </thead>
         <tr>
-          <th>Current Max Bench</th>
-          <th>Current Max Squat</th>
-          <th>Current Max Dead</th>
+          <th>Current Max <% exercises[0] %></th>
+          <th>Current Max <% exercises[1] %></th>
+          <th>Current Max <% exercises[2] %></th>
         </tr>
         <tr>
           <td><%= bench%> lbs.</td>
@@ -141,7 +135,7 @@
           <th>Agility</th>
         </thead>
         <tr>
-          <th>Mile Time</th>
+          <th><% exercises[3] %></th>
         </tr>
         <tr>
           <td><%= mile%></td>

@@ -44,8 +44,7 @@ router.post('/register', (req, res) => {
     if(password.length < 6) {
         errors.push({ msg: 'Password must be at least characters'});
     }
-    if(errors.length > 0) 
-    {
+    if(errors.length > 0) {
         res.render('register', 
         {
             errors,
@@ -57,8 +56,7 @@ router.post('/register', (req, res) => {
             userType
         });
     } 
-    else
-    {
+    else {
         //validation passed
         User.findOne({ email: email })
         .then(user => {
@@ -75,65 +73,14 @@ router.post('/register', (req, res) => {
                     userType
                 });
             }
-             else {
-                if(userType == 'player')
-                {
-                    //We want to check their email addresss matches the information in the roster.
-                    Roster.findOne({ FullName: name, School : school})
-                    .then(player => {
-                        if(player.Email != email)
-                        {
-                            errors.push({msg: 'Ask your coach for email registration.'});
-                            res.render('register', {
-                                errors,
-                                name,
-                                email,
-                                password,
-                                password2,
-                                school,
-                                userType
-                            });
-                        }
-                        else 
-                        {
-                            //Add new User
-                            const newUser = new User({
-                                name,
-                                email,
-                                password,
-                                school,
-                                userType
-                            });
-
-                            //Hash Password
-                            bcrypt.genSalt(10, (err, salt) => {
-                                bcrypt.hash(newUser.password, salt, (err, hash) => {
-                                    if(err) throw err;
-                                    //set password to hashed
-                                    newUser.password = hash;
-                                    //save user
-                                    req.session._id = newUser._id; //Passing the ID to make searches easier.
-                                    newUser.save()
-                                    .then(user => {
-                                        console.log(newUser.userType);
-                                        if(newUser.userType == 'coach') {
-                                            req.flash('success_msg', 'You are now registered and can log in');
-                                            res.redirect('/users/login');
-                                        } else {
-                                            req.flash('success_msg', 'You are registered. Please fill in benchmark data');
-                                            req.session.name = name;
-                                            req.session.email = email; //This will be passed to the benchmarks so that users do not fill out the information.
-                                            res.redirect('/functions/benchmarks');
-                                        }
-                                    })
-                                    .catch(err => console.log(err));
-                                });
-                            });
-                        }
-                        console.log("This is a valid email" + player.Email);
-                    })
-                    .catch(err => {
-                        errors.push({msg: "Verify that you are using the same name as the Coach's Roster Database."});
+            else if(userType == 'player'){
+                //We want to check their email addresss matches the information in the roster.
+                Roster.findOne({ FullName: name, School : school})
+                .then(player => {
+                    console.log("player.Email" + player.Email);
+                    console.log("email" + email);
+                    if(player.Email != email) {
+                        errors.push({msg: 'Ask your coach for email registration.'});
                         res.render('register', {
                             errors,
                             name,
@@ -143,12 +90,67 @@ router.post('/register', (req, res) => {
                             school,
                             userType
                         });
+                    }
+                    else {
+                        createUser(name, email, password, school, userType, req, res);
+                    }
+                }).catch(err => {
+                    errors.push({msg: "Verify that you are using the same name as the Coach's Roster Database."});
+                    res.render('register', {
+                        errors,
+                        name,
+                        email,
+                        password,
+                        password2,
+                        school,
+                        userType
                     });
-                }
+                });
+            }
+            else {
+                //when user is a coach
+                createUser(name, email, password, school, userType, req, res);
             }
         });
     }
 });
+
+function createUser(name, email, password, school, userType, req, res) {
+    //Add new User
+    const newUser = new User({
+        name,
+        email,
+        password,
+        school,
+        userType
+    });
+
+    //Hash Password
+    bcrypt.genSalt(10, (err, salt) => {
+        bcrypt.hash(newUser.password, salt, (err, hash) => {
+            if(err) throw err;
+            //set password to hashed
+            newUser.password = hash;
+            //save user
+            req.session._id = newUser._id; //Passing the ID to make searches easier.
+            newUser.save()
+            .then(user => {
+                console.log(newUser.userType);
+                console.log("newUser saved");
+                if(newUser.userType == 'coach') {
+                    req.flash('success_msg', 'You are now registered and can log in');
+                    res.redirect('/users/login');
+                } else {
+                    req.flash('success_msg', 'You are registered. Please fill in benchmark data');
+                    req.session.name = name;
+                    req.session.email = email; //This will be passed to the benchmarks so that users do not fill out the information.
+                    res.redirect('/functions/benchmarks');
+                }
+            })
+            .catch(err => console.log(err));
+        });
+    });
+}
 
 //Login Handle
 router.post('/login', (req, res, next) => {

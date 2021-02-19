@@ -23,7 +23,8 @@ playType: {
 },
 pos: {
     type: String,
-    required: true
+    required: true,
+    default: "N/A"
 },
 school: {
     type: String,

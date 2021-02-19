@@ -7,7 +7,7 @@
 
 const mongoose = require('mongoose');
 
- const SeasonalGameGradeSchema = new mongoose.Schema({
+ const SeasonalGameGradesSchema = new mongoose.Schema({
      email: {
          type: String,
          required: true

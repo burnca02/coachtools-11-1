@@ -223,7 +223,7 @@ submitted in the form and saves it to the database before reloading dispGameGrad
 router.post('/addGameGrade', async (req, res) => {
   //this function will take in a variable length form. 
   console.log("inside addGameGrade");
-  const {playerNames, date, scale, grade1, grade2, grade3, grade4} = req.body;
+  const {playerNames, playType, date, scale, grade1, grade2, grade3, grade4} = req.body;
 
   console.log(req.body);
 
@@ -231,11 +231,12 @@ router.post('/addGameGrade', async (req, res) => {
   var school = req.user.school;
   var numPlayers = parseInt(req.body.numPlayers);
   var players = playerNames;
+  console.log("playerNames" + playerNames);
   console.log( numPlayers + " is the length");
   var name;
+  const grades = [];
 
   //This version currently works with the full form layout.
-
   for(var i = 0; i < numPlayers; i++) {
     //This is a temporary fix to a bug. If the number of players equals one, it does not return as an array. 
     //It returns as a string, otherwise if there are more than 1 name it will return as an array.
@@ -335,21 +336,19 @@ router.post('/addGameGrade', async (req, res) => {
             });
         }).catch(err => console.log(err));
 
-      //Adding a new practice stat
-      const newGameGrade = new GameGrade({
-        email,
-        school,
-        int1,
-        int2,
-        int3,
-        int4,
-        grade,
-        date
-      });
-      console.log(newGameGrade);
-      newGameGrade.save();
+        grades[i] = {email, int1, int2, int3, int4, grade};
     }
   }
+  //Adding a new practice stat
+  const newGameGrade = new GameGrade({
+    grades,
+    playType,
+    position,
+    school,
+    date
+  });
+  console.log(newGameGrade);
+  newGameGrade.save();
   res.redirect('dispGameGrade');
 });
 /*

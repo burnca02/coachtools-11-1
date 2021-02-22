@@ -24,7 +24,17 @@ router.get('/login', (req, res) => {
 // });
 
 //Register Page
-router.get('/register', (req, res) => res.render('register'));
+router.get('/register', (req, res) => 
+{
+    Roster.distinct("School", function(error, results){
+        console.log(results);
+        res.render('register',
+        {
+            Schools : results
+        })
+      });
+}
+);
 
 //Register Handle
 router.post('/register', (req, res) => {
@@ -32,6 +42,10 @@ router.post('/register', (req, res) => {
 
     console.log(req.body);
     let errors = [];
+    if(school === 'School Not Listed' && userType === 'player') //If the school is not listed then you either sign up your team through the coach portal, or you cannot access it as a player.
+    {
+        errors.push({msg:"Your school does not have access to Coach Tools"});
+    }
     //Check required fields
     if(!name || !email || !password || !password2 || !school || !userType){
         errors.push({msg: 'Please fill in all fields'});
@@ -45,15 +59,19 @@ router.post('/register', (req, res) => {
         errors.push({ msg: 'Password must be at least characters'});
     }
     if(errors.length > 0) {
-        res.render('register', 
-        {
-            errors,
-            name,
-            email,
-            password,
-            password2,
-            school,
-            userType
+        Roster.distinct("School", function(error, results){
+            console.log(results);
+            res.render('register', 
+            {
+                errors,
+                name,
+                email,
+                password,
+                password2,
+                school,
+                userType,
+                Schools : results
+            });
         });
     } 
     else {
@@ -63,14 +81,19 @@ router.post('/register', (req, res) => {
             if(user) {
                 //User exists
                 errors.push({ msg: 'Email is already in use.'});
-                res.render('register', {
-                    errors,
-                    name,
-                    email,
-                    password,
-                    password2,
-                    school,
-                    userType
+                Roster.distinct("School", function(error, results){
+                    console.log(results);
+                    res.render('register', 
+                    {
+                        errors,
+                        name,
+                        email,
+                        password,
+                        password2,
+                        school,
+                        userType,
+                        Schools : results
+                    });
                 });
             }
             else if(userType == 'player'){
@@ -81,14 +104,19 @@ router.post('/register', (req, res) => {
                     console.log("email" + email);
                     if(player.Email != email) {
                         errors.push({msg: 'Ask your coach for email registration.'});
-                        res.render('register', {
-                            errors,
-                            name,
-                            email,
-                            password,
-                            password2,
-                            school,
-                            userType
+                        Roster.distinct("School", function(error, results){
+                            console.log(results);
+                            res.render('register', 
+                            {
+                                errors,
+                                name,
+                                email,
+                                password,
+                                password2,
+                                school,
+                                userType,
+                                Schools : results
+                            });
                         });
                     }
                     else {
@@ -96,14 +124,19 @@ router.post('/register', (req, res) => {
                     }
                 }).catch(err => {
                     errors.push({msg: "Verify that you are using the same name as the Coach's Roster Database."});
-                    res.render('register', {
-                        errors,
-                        name,
-                        email,
-                        password,
-                        password2,
-                        school,
-                        userType
+                    Roster.distinct("School", function(error, results){ //This command will find all the schools so that it can be listed in the dropdown menu.
+                        console.log(results);
+                        res.render('register', 
+                        {
+                            errors,
+                            name,
+                            email,
+                            password,
+                            password2,
+                            school,
+                            userType,
+                            Schools : results
+                        });
                     });
                 });
             }
@@ -199,6 +232,11 @@ router.get('/logout', (req, res) => {
     req.flash('success_msg', 'You are logged out');
     res.redirect('/users/login');
 });
+
+router.get('/coachRegistration',(req,res) =>
+{
+    res.render('coachRegistration')
+})
 
 router.use(express.static("public"));
 

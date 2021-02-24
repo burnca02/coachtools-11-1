@@ -34,10 +34,11 @@
 /* Modal Content/Box */
 .modal-content {
   background-color: #fefefe;
-  margin: 15% auto; /* 15% from the top and centered */
-  padding: 20px;
+  margin: 5% auto; /* 15% from the top and centered */
+  padding: 25px;
   border: 1px solid #888;
   width: 80%; /* Could be more or less, depending on screen size */
+  align-self: center;
 }
 
 /* The Close Button */
@@ -207,7 +208,7 @@
           <div class="form-group" role="group" aria-label="Button group with nested dropdown">
           <form action="/coach/depthChart" method="POST">
             <!-- <button type="button" class="btn btn-primary">Sort By</button> -->
-            <div class="dropdown" role="group" style="padding-top: 10px;">
+            <div class="dropdown" role="group" style="padding-top: 10px; text-align: center;">
               <span class="close">&times;</span>
               <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Sort By
@@ -274,15 +275,15 @@ window.onclick = function(event) {
 // Makes buttons work
 var dropdown = document.getElementsByClassName("dropdown-toggle");
   var i;
-  // modal.style.display = "block";
+  modal.style.display = "block";
   for (i = 0; i < dropdown.length; i++) {
     dropdown[i].addEventListener("click", function () {
       this.classList.toggle("active");
       var dropdownContent = this.nextElementSibling;
-      if (dropdownContent.style.display === "block") {
+      if (dropdownContent.style.display === "inline-block") {
         dropdownContent.style.display = "none";
       } else {
-        dropdownContent.style.display = "block";
+        dropdownContent.style.display = "inline-block";
       }
     });
   }

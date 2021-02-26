@@ -234,6 +234,7 @@
             </form>
           </div>
           <br>
+          <% if (players.length > 0) { %>
           <span class="help"><%= players[0].Pos %></span>
           <br>
           <form action="/coach/submitRank" method="POST">
@@ -249,6 +250,7 @@
           </div>
           
           </form>
+          <% } %>
         </div>
       </div>
       

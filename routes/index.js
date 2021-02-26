@@ -163,9 +163,9 @@ router.post('/viewQuestionnaire', async(req, res) => {
     //    .catch(error => console.error(error))
     //    );
     router.get('/depthChart', ensureAuthenticated, async(req, res) => {
-        const offPlayersPos1 = ['FB','OL', 'QB','RB','TE','WR'];
-        const defPlayersPos = ['DB','DE','DL','DT','ILB','MLB','OLB','LB','CB', 'SS', 'FS'];
-        const spePlayersPos = ['K','P','K/P','P/K','LS'];
+        const offPlayersPos1 = ['QB','RB','FB','WR','TE','LT','LG','C','RG','RT']
+        const defPlayersPos = ['CB','DB','DE','DL','DT','FS','ILB','LB','MLB','OLB','SS']
+        const spePlayersPos = ['K/P','LS']
         // console.log("Did we get in index router get");
         await db.collection('Roster').find({ "Pos": { "$exists": true}, "School" :req.session.school, "Pos": { "$in" : offPlayersPos1}}).sort({'Pos': 1, 'Rank' : 1}).toArray()
         .then(offPlayers => {
@@ -173,11 +173,12 @@ router.post('/viewQuestionnaire', async(req, res) => {
               .then(defPlayers => {
                 db.collection('Roster').find({ "Pos": { "$exists": true }, "School" :req.session.school, "Pos": { "$in" : spePlayersPos}}).sort({'Pos': 1, 'Rank': 1}).toArray()
                   .then(spePlayers => {
-                    db.collection('Roster').find({ "Pos": { "$exists": true }, "School" :req.session.school }).sort({'Pos': 1}).toArray()
+                    // db.collection('Roster').find({ "Pos": { "$exists": true }, "School" :req.session.school }).sort({'Pos': 1}).toArray()
+                    db.collection('Roster').find({ "Pos": 'QB', "School" :req.session.school }).toArray()
                       .then(aPlayers => {
                         res.render('depthChart', {
                             players : aPlayers,
-                            offPlayersPos : offPlayersPos1,
+                            "offPlayersPos" : offPlayersPos1,
                             "defPlayersPos" : defPlayersPos,
                             "spePlayersPos" : spePlayersPos,
                             "offPlayers" : offPlayers, 

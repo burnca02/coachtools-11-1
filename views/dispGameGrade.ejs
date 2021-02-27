@@ -193,7 +193,7 @@
                           <% if(players[i].Email == stats[j].email) {%>
                             <tr>
                             <td><%=players[i].FullName %></td>
-                            <td><%=stats[j].grade %></td>
+                            <td><%=stats[j].grades[j].grade %></td>
                             <td>#</td>
                             <td>*</td>
                             <td>#</td>
@@ -267,13 +267,7 @@
                   <tr>
                     <td colspan="2">
                       <label for="scale">Grading Scale</label>
-                      <input
-                        type="text"
-                        name="scale"
-                        id="scale"
-                        value="<%- scale %>"
-                        readonly
-                      />
+                      <input type="text" name="scale" id="scale" value="<%- scale %>" readonly/>
                     </td>
                   </tr>
                   <% for(var i = 0; i < players.length; i++) { %>

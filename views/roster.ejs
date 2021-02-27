@@ -52,7 +52,7 @@
                 aria-expanded="false"
               >Sort By</button>
               <div class="dropdown-content" aria-labelledby="btnGroupDrop1">
-                <% var allPlayers = ['QB','RB','WR','TE','OL', 'FB', 'DB','DE','DT','DL','OLB','MLB','OLB','ILB','LB','CB', 'SS', 'FS', 'K','P','K/P','P/K','LS']; %>
+                <% var allPlayers = ['QB','RB','FB','WR','TE','LT','LG','C','RG','RT','CB','DB','DE','DL','DT','FS','ILB','LB','MLB','OLB','SS','K/P','LS']; %>
                 <button
                   class="dropdown-item"
                   type="submit"
@@ -110,7 +110,7 @@
             <th scope="col">Name</th>
             <th scope="col">Position</th>
             <th scope="col">Graduation Year</th>
-            <!-- <th scope="col">Active</th> -->
+            <th scope="col">Rank</th>
             <th scope="col">Number</th>
           </tr>
         </thead>
@@ -121,6 +121,7 @@
               <td><%= players[i].FullName %></td>
               <td><%= players[i].Pos %></td>
               <td><%= players[i].GradYear %></td>
+              <td><%= players[i].Rank %></td>
               <td><%= players[i].Number %></td>
             </tr>
             <% } %>

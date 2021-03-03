@@ -192,14 +192,14 @@
                       <% for(var j = 0; j < stats.length; j++) { %>
                           <% if(players[i].Email == stats[j].email) {%>
                             <tr>
-                            <td><%=players[i].FullName %></td>
-                            <td><%=stats[j].grades[j].grade %></td>
-                            <td>#</td>
-                            <td>*</td>
-                            <td>#</td>
-                            <td>#</td>
-                            <td>#</td>
-                            <td>#</td>
+                              <td><%=players[i].FullName %></td>
+                              <td><%=stats[j].Current %></td>
+                              <td><%=stats[j].Overall %></td>
+                              <td>*</td>
+                              <td><%=stats[j].Intagible1Average %></td>
+                              <td><%=stats[j].Intagible2Average %></td>
+                              <td><%=stats[j].Intagible3Average %></td>
+                              <td><%=stats[j].Intagible4Average %></td>
                             </tr>
                             <% break; %>
                           <% } %>

@@ -183,6 +183,7 @@ router.get('/practiceStats', ensureAuthenticated, (req, res) =>
 );
 
 router.get('/gameGrade', ensureAuthenticated, (req, res) => 
+  // console.log("in coach gameGrade")
   Intangibles.find({school: req.user.school})
   .then(intangibles => {
   const positions = [];
@@ -315,7 +316,7 @@ router.get('/depthChart', ensureAuthenticated, async(req, res) => {
       .then(defPlayers => {
           Roster.find({ "Pos": { "$exists": true }, "School" :req.session.school, "Pos": { "$in" : spePlayersPos}}).sort({'Pos': 1, 'Rank': 1})
           .then(spePlayers => {
-            Roster.find({ "Pos": { "$exists": true }, "School" :req.session.school }).sort({'Pos': 1})
+            Roster.find({ "Pos": { "$exists": true }, "School" :req.session.school, "Pos": "QB" }).sort({'Pos': 1})
               .then(aPlayers => {
                 res.render('depthChart', {
                     players: aPlayers,
@@ -387,6 +388,45 @@ router.post('/depthChart', ensureAuthenticated, async(req, res) => {
           }).catch(error => console.error(error))
       }).catch(error => console.error(error))
   }).catch(error => console.error(error))
+});
+//Error with reloading here - the get function cant get the current position
+//Can we store a session variable or something?
+router.get('/position', ensureAuthenticated, async(req, res) => {
+  console.log("coach position get called")
+  const pos = req.body.pos
+  console.log("pos: " + pos)
+  res.render('position', {
+    name: req.session.name,
+    school: req.session.school})
+})
+
+router.post('/position', ensureAuthenticated, async (req, res) => {
+  console.log("called")
+  const pos = req.body.pos
+  console.log("pos: " + pos)
+  await Roster.find({ "Pos": { "$exists": true}, "School" :req.session.school, "Pos": pos}).sort({'Pos': 1, 'Rank' : 1})
+            .then(posPlayers => {
+              const gameGrades = [];
+              for (var i = 0; i < posPlayers.length; i++) {
+                console.log(posPlayers[i].Email)
+                GameGrade.findOne({'email': {"$exists":true}, 'email': posPlayers[i].Email}).sort({$natural:-1})
+                .then(grade => {
+                  if (grade != null) {
+                    console.log("grade: "+grade)
+                    console.log("grade.grade: " + grade.grade)
+                    gameGrades.push(grade.grade);
+                  } else {
+                    gameGrades.push('N/A');
+                  }
+                }).catch(error => console.error(error))
+              }
+              console.log("gamegrades: " + gameGrades)
+                res.render('position', {
+                    posPlayers : posPlayers,
+                    gameGrades : gameGrades,
+                    name: req.session.name,
+                    school: req.session.school})
+            }).catch(error => console.error(error))
 });
 
 router.post('/submitRank', ensureAuthenticated, async (req, res) => {

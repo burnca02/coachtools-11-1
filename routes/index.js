@@ -149,7 +149,18 @@ router.post('/viewQuestionnaire', async(req, res) => {
       })
       .catch(error => console.error(error))
     );
-
+    
+    router.get('/position', ensureAuthenticated, async(req, res) => {
+        const pos = req.body.pos
+        console.log("pos in index: " + pos)
+        await db.collection('Roster').find({ "Pos": { "$exists": true}, "School" :req.session.school, "Pos": pos}).sort({'Pos': 1, 'Rank' : 1}).toArray()
+            .then(posPlayers => {
+                res.render('position', {
+                    posPlayers : posPlayers,
+                    name: req.session.name,
+                    school: req.session.school})
+            }).catch(error => console.error(error))
+      })
     //   router.get('/depthChart', ensureAuthenticated, (req, res) => 
 
     //   db.collection('Roster').find({ "Pos": { "$exists": true }, "School": req.session.school}).sort({'Pos': 1}).toArray()

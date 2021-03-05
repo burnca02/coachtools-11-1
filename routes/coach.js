@@ -15,6 +15,7 @@ const CompleteQuest = require('../models/CompleteQuest');
 const Stat = require('../models/Stat');
 const Intangibles = require('../models/Intangibles');
 const PracticeStat = require('../models/PracticeStat');
+const GameGrade = require('../models/GameGrade');
 
 router.use(express.static("public"));
 
@@ -191,7 +192,7 @@ router.get('/gameGrade', ensureAuthenticated, (req, res) =>
       console.log('added' + positions[i]);
     }
   }
-  console.log('positions' + positions);
+  console.log('positions COACH.js ' + positions);
   res.render('gameGrade', { //need to send all stats data here too
         'positions': positions,
         'name': req.user.name
@@ -246,30 +247,48 @@ router.post('/dispComp', ensureAuthenticated, async(req, res) => {
             } else {
               practice2 = stat.grade;
             }
-            //This will get the information needed for the graph. 
-            Stat.find({ email: email1 }).sort({createdAt:1}) //This query will be used to populate the graph.
-            .then(stats =>
-            {
-              Stat.find({ email: email2 }).sort({createdAt:1}) //This query will be used to populate the graph.
-              .then(stats2 =>
-                {
-                  res.render('dispComp', {
-                    'name1': name1,
-                    'name2': name2,
-                    'pos1': pos1,
-                    'pos2': pos2,
-                    'practice1': practice1,
-                    'practice2': practice2,
-                    name: req.user.name, //pass the name that was entered into the database to dashboard
-                    'graph1': stats,
-                    'graph2': stats2
+            GameGrade.findOne({'email': email2}).sort({$natural: -1})
+            .then(game => {
+              var game1 = '';
+              if(game == null){
+                game1 = 'No Grade'
+              } else {
+                game1 = game.grade;
+              }
+              GameGrade.findOne({'email': email2}).sort({$natural: -1})
+              .then(game => {
+                var game2 = '';
+                if(game == null){
+                  game2 = 'No Grade'
+                } else {
+                  game2 = game.grade;
+                }
+                //This will get the information needed for the graph. 
+                Stat.find({ email: email1 }).sort({createdAt:1}) //This query will be used to populate the graph.
+                .then(stats => {
+                  Stat.find({ email: email2 }).sort({createdAt:1}) //This query will be used to populate the graph.
+                  .then(stats2 => {
+                      res.render('dispComp', {
+                        'name1': name1,
+                        'name2': name2,
+                        'pos1': pos1,
+                        'pos2': pos2,
+                        'practice1': practice1,
+                        'practice2': practice2,
+                        'game1': game1,
+                        'game2': game2,
+                        name: req.user.name, //pass the name that was entered into the database to dashboard
+                        'graph1': stats,
+                        'graph2': stats2
+                      })
+                    })  
                   })
-                })  
+                })
+              })
             })
           })
         })
-    })
-  })
+      })
 });
 
 

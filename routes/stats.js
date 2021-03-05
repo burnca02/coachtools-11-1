@@ -263,6 +263,7 @@ router.post('/addGameGrade', async (req, res) => {
     **/
     if(grade1[i] !== '' && grade2[i] !== '' && grade3[i] !== '' && grade4[i] !== '') {
       console.log('This has all of the fields submitted')
+      console.log('name ' + name);
       await Roster.findOne({FullName: name, School: school})
       .then(result => {
         email = result.Email;
@@ -433,7 +434,7 @@ router.post('/dispGameGrade', async(req, res) => {
     console.log("pos in POST " + pos);
     Roster.find({Pos: pos, School: req.user.school}) 
     .then(players => {
-      console.log('playerList ' + players);
+      //console.log('playerList ' + players);
       Intangibles.find({school: req.user.school, pos: pos})
       .then(intangibles => {
       const positions = [];
@@ -451,11 +452,11 @@ router.post('/dispGameGrade', async(req, res) => {
           //console.log("gamegrade stats " + stats);
           Play.find({school: req.user.school})
           .then(plays => {
-            for(var i = 0; i < players.length; i++) {
-              for(var j = 0; j < stats.length; j++) {
-                console.log('email match 1 ' + players[i].Email  + ' = ' + stats[j].email);
-              }
-            }
+            // for(var i = 0; i < players.length; i++) {
+            //   for(var j = 0; j < stats.length; j++) {
+            //     console.log('email match 1 ' + players[i].Email  + ' = ' + stats[j].email);
+            //   }
+            // }
             res.render('dispGameGrade', {
                   'players': players,
                   'ints': intangibles[0].ints,

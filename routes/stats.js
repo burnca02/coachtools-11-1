@@ -85,27 +85,28 @@ as input. The method calculates the grade for the day from the input and then sa
 practiceStats database.
 */
 router.post('/addPracticeGrade', async (req, res) => {
-  const {playerNames, date, scale, grade1, grade2, grade3, grade4} = req.body;
+  const {playerName, date, scale, grade1, grade2, grade3, grade4} = req.body;
 
   console.log(req.body);
 
   var email;
   var school = req.user.school;
   var numPlayers = parseInt(req.body.numPlayers);
-  var players = playerNames;
+  var players = playerName;
   console.log( numPlayers + " is the length");
   var name;
 
+  console.log("playerName" + playerName);
   //This version currently works with the full form layout.
 
   for(var i = 0; i < numPlayers; i++) {
     //This is a temporary fix to a bug. If the number of players equals one, it does not return as an array. 
     //It returns as a string, otherwise if there are more than 1 name it will return as an array.
     if(numPlayers === 1) {
-      name = playerNames;
+      name = playerName;
     }
     else {
-      name = playerNames[i];
+      name = playerName[i];
     }
     /**
      * If all the grades have been filled out, then this is a valid practice stat. We do not want to add practice stats
@@ -143,12 +144,11 @@ router.post('/addPracticeGrade', async (req, res) => {
       //This will create a practice stat. And a seasonal stat. We need to either create a new SeasonalPracticeStat 
       //or either update the current record in the database.
       await PracticeStat.find({email: email, school: school})
-      .then(stats => 
-        {
+      .then(stats => {
           console.log("The number of stats that this player has is ");
           console.log(stats.length);
           var numOfStats = stats.length; //This is the number of data entries that the player has. We will need to figure out how to get the data so it works by each season.
-
+          numOfStats++;
           var intagible1GradeAvg = 0;
           var intagible2GradeAvg = 0;
           var intagible3GradeAvg = 0;
@@ -157,22 +157,32 @@ router.post('/addPracticeGrade', async (req, res) => {
 
           
           //Going through the number of stats and adding up the stats to get the overall. 
-          for(var j = 0; j < numOfStats; j++)
-          {
+          for(var j = 0; j < numOfStats-1; j++) {
             intagible1GradeAvg += ((stats[j].int1[0] /scale)*100);
             intagible2GradeAvg += ((stats[j].int2[0] /scale)*100);
             intagible3GradeAvg += ((stats[j].int3[0] /scale)*100);
             intagible4GradeAvg += ((stats[j].int4[0] /scale)*100);
             overall += parseInt(stats[j].grade);
-
           }
+          overall += grade; // add the new grade to the overall as well
+          console.log("intangible1avg #1 " + intagible1GradeAvg);
 
-          //Getting the averages.
-          intagible1GradeAvg = Math.round(intagible1GradeAvg/numOfStats);
-          intagible2GradeAvg = Math.round(intagible2GradeAvg/numOfStats);
-          intagible3GradeAvg = Math.round(intagible3GradeAvg/numOfStats);
-          intagible4GradeAvg = Math.round(intagible4GradeAvg/numOfStats);
-          overall = Math.round( overall / numOfStats);
+          //Getting the averages. 
+          if(numOfStats-1 != 0){ //when there is already a stat in the database
+            intagible1GradeAvg = Math.round((intagible1GradeAvg + ((Numgrade1 / scale) * 100))/ numOfStats); 
+            console.log("intangible1avg #2 " + intagible1GradeAvg);
+            intagible2GradeAvg = Math.round((intagible2GradeAvg + ((Numgrade2 / scale) * 100))/ numOfStats);
+            intagible3GradeAvg = Math.round((intagible3GradeAvg + ((Numgrade3 / scale) * 100))/ numOfStats);
+            intagible4GradeAvg = Math.round((intagible4GradeAvg + ((Numgrade4 / scale) * 100))/ numOfStats);
+            overall = Math.round(overall / numOfStats);
+          }
+          else{ //when its the first stat
+            intagible1GradeAvg = Math.round((Numgrade1 / scale) * 100);
+            intagible2GradeAvg = Math.round((Numgrade2 / scale) * 100);
+            intagible3GradeAvg = Math.round((Numgrade3 / scale) * 100);
+            intagible4GradeAvg = Math.round((Numgrade4 / scale) * 100);
+            overall = Math.round(grade);
+          }
 
           /**
             This will find and update the player in the seasonal practice stat table. This is beneficial because there will be no duplicates in the season practice stats table.
@@ -223,42 +233,40 @@ submitted in the form and saves it to the database before reloading dispGameGrad
 router.post('/addGameGrade', async (req, res) => {
   //this function will take in a variable length form. 
   console.log("inside addGameGrade");
-  const {playerNames, playType, date, scale, grade1, grade2, grade3, grade4} = req.body;
+  const {playerName, pos, playType, date, scale, grade1, grade2, grade3, grade4} = req.body;
 
   console.log(req.body);
 
   var email;
   var school = req.user.school;
   var numPlayers = parseInt(req.body.numPlayers);
-  var players = playerNames;
-  console.log("playerNames" + playerNames);
+  var players = playerName;
+  console.log("playerNames" + playerName);
   console.log( numPlayers + " is the length");
   var name;
-  const grades = [];
+  //const grades = [];
 
   //This version currently works with the full form layout.
   for(var i = 0; i < numPlayers; i++) {
     //This is a temporary fix to a bug. If the number of players equals one, it does not return as an array. 
     //It returns as a string, otherwise if there are more than 1 name it will return as an array.
     if(numPlayers === 1) {
-      name = playerNames;
+      name = playerName;
     }
     else {
-      name = playerNames[i];
+      name = playerName[i];
     }
     /**
-     * If all the grades have been filled out, then this is a valid practice stat. We do not want to add practice stats
+     * If all the grades have been filled out, then this is a valid game grade. We do not want to add game grades
      * if none of the information has been filled out. This may change if it it is done individually by player,
      * but as of now this is how it is done. 
     **/
     if(grade1[i] !== '' && grade2[i] !== '' && grade3[i] !== '' && grade4[i] !== '') {
       console.log('This has all of the fields submitted')
+      console.log('name ' + name);
       await Roster.findOne({FullName: name, School: school})
       .then(result => {
-        console.log(result);
         email = result.Email;
-        console.log('email' + email);
-  
       }).catch(err => console.log(err));
 
       var Numgrade1 = parseInt(grade1[i]);
@@ -266,28 +274,25 @@ router.post('/addGameGrade', async (req, res) => {
       var Numgrade3 = parseInt(grade3[i]);
       var Numgrade4 = parseInt(grade4[i]);
 
-
       const int1 = [Numgrade1, 1];
       const int2 = [Numgrade2, 2];
       const int3 = [Numgrade3, 3];
       const int4 = [Numgrade4, 4];
 
-      //Calculating the day's overall practice grade
-      var grade = Math.round((((Numgrade1/scale)) + ((Numgrade2/scale)) + ((Numgrade3/scale)) + ((Numgrade4/scale))) * 100);
+      //Calculating the day's overall game grade
+      var grade = Math.round((((Numgrade1/scale)) + ((Numgrade2/scale)) + ((Numgrade3/scale)) + ((Numgrade4/scale))) * 25);
 
       console.log("The grade is " + grade);
         // Finding the overall season average. 
       //To get the season overall average we have to get the number all the stats from the specific player
       
-      //This will create a practice stat. And a seasonal stat. We need to either create a new SeasonalPracticeStat 
+      //This will create a game stat. And a seasonal stat. We need to either create a new SeasonalGameGrade
       //or either update the current record in the database.
-      await GameGrade.find({email: email, school: school})
-      .then(stats => 
-        {
-          console.log("The number of stats that this player has is ");
-          console.log(stats.length);
+      await GameGrade.find({email: email, school: school}) //NEEDS TO LOOK UP grades.email
+      .then(stats => {
+          console.log("The number of game stats that this player has is " + stats.length);
           var numOfStats = stats.length; //This is the number of data entries that the player has. We will need to figure out how to get the data so it works by each season.
-
+          numOfStats++; //Add one for the new stat
           var intagible1GradeAvg = 0;
           var intagible2GradeAvg = 0;
           var intagible3GradeAvg = 0;
@@ -296,32 +301,45 @@ router.post('/addGameGrade', async (req, res) => {
 
           
           //Going through the number of stats and adding up the stats to get the overall. 
-          for(var j = 0; j < numOfStats; j++) {
+          //Gets total for each intangible stat
+          for(var j = 0; j < numOfStats-1; j++) {
             intagible1GradeAvg += ((stats[j].int1[0] /scale)*100);
             intagible2GradeAvg += ((stats[j].int2[0] /scale)*100);
             intagible3GradeAvg += ((stats[j].int3[0] /scale)*100);
             intagible4GradeAvg += ((stats[j].int4[0] /scale)*100);
             overall += parseInt(stats[j].grade);
           }
+          overall += grade; // add the new grade to the overall as well
+          console.log("intangible1avg #1 " + intagible1GradeAvg);
 
-          //Getting the averages.
-          intagible1GradeAvg = Math.round(intagible1GradeAvg/numOfStats);
-          intagible2GradeAvg = Math.round(intagible2GradeAvg/numOfStats);
-          intagible3GradeAvg = Math.round(intagible3GradeAvg/numOfStats);
-          intagible4GradeAvg = Math.round(intagible4GradeAvg/numOfStats);
-          overall = Math.round( overall / numOfStats);
+          //Getting the averages. 
+          if(numOfStats-1 != 0){ //when there is already a stat in the database
+            intagible1GradeAvg = Math.round((intagible1GradeAvg + ((Numgrade1 / scale) * 100))/ numOfStats); 
+            console.log("intangible1avg #2 " + intagible1GradeAvg);
+            intagible2GradeAvg = Math.round((intagible2GradeAvg + ((Numgrade2 / scale) * 100))/ numOfStats);
+            intagible3GradeAvg = Math.round((intagible3GradeAvg + ((Numgrade3 / scale) * 100))/ numOfStats);
+            intagible4GradeAvg = Math.round((intagible4GradeAvg + ((Numgrade4 / scale) * 100))/ numOfStats);
+            overall = Math.round(overall / numOfStats);
+          }
+          else{ //when its the first stat
+            intagible1GradeAvg = Math.round((Numgrade1 / scale) * 100);
+            intagible2GradeAvg = Math.round((Numgrade2 / scale) * 100);
+            intagible3GradeAvg = Math.round((Numgrade3 / scale) * 100);
+            intagible4GradeAvg = Math.round((Numgrade4 / scale) * 100);
+            overall = Math.round(grade);
+          }
 
           /**
-            This will find and update the player in the seasonal practice stat table. This is beneficial because there will be no duplicates in the season practice stats table.
+            This will find and update the player in the seasonal game stat table. This is beneficial because there will be no duplicates in the season game stats table.
             If the player has no record in the table, the it will create it automatically. 
 
-            We still want to keep practice stats so that players and coaches can see their practice grade trends.
+            We still want to keep practice stats so that players and coaches can see their game grade trends.
            */
           SeasonalGameGrade.findOneAndUpdate({email: email, school: school},
             {
               // email,
               // school,
-              Current : grade, //The most recent practice grade.
+              Current : grade, //The most recent game grade.
               Overall : overall,
               Intagible1Average: intagible1GradeAvg,
               Intagible2Average: intagible2GradeAvg,
@@ -335,21 +353,25 @@ router.post('/addGameGrade', async (req, res) => {
               console.log(doc);
             });
         }).catch(err => console.log(err));
-
-        grades[i] = {email, int1, int2, int3, int4, grade};
+ 
+        //Adding a new game grade
+        const newGameGrade = new GameGrade({
+          email,
+          int1,
+          int2,
+          int3,
+          int4,
+          grade,
+          playType,
+          pos,
+          school,
+          date
+        });
+        console.log(newGameGrade);
+        newGameGrade.save();
+        }
     }
-  }
-  //Adding a new practice stat
-  const newGameGrade = new GameGrade({
-    grades,
-    playType,
-    position,
-    school,
-    date
-  });
-  console.log(newGameGrade);
-  newGameGrade.save();
-  res.redirect('dispGameGrade');
+    res.redirect('dispGameGrade');
 });
 /*
 This function is called when a coach adds an intangible on submitIntangibles.ejs. The intangble is
@@ -394,11 +416,11 @@ router.get('/dispGameGrade', ensureAuthenticated, async (req, res) =>
   for(var i = 0; i < intangibles.length; i++){
     positions.push(intangibles[i].pos);
   }
-  console.log(positions);
-  res.render('gameGrade', { //need to send all stats data here too
-    'positions': positions,
-    'name': req.user.name
-  });
+  console.log("GET " + positions);
+    res.render('gameGrade', { //need to send all stats data here too
+      'positions': positions,
+      'name': req.user.name
+    });
   }).catch(err => console.log(err))
 );
 /*
@@ -409,13 +431,14 @@ tables.
 router.post('/dispGameGrade', async(req, res) => {
   const {pos} = req.body;
     const ints = [];
-    console.log("pos" + pos);
+    console.log("pos in POST " + pos);
     Roster.find({Pos: pos, School: req.user.school}) 
     .then(players => {
-      console.log(players[0]);
+      //console.log('playerList ' + players);
       Intangibles.find({school: req.user.school, pos: pos})
       .then(intangibles => {
       const positions = [];
+      const scale = intangibles[0].scale;
       for(var i = 0; i < intangibles.length; i++){
         if(!(positions.includes(intangibles[i].pos))){ //adds only unique positions to array, no duplicates
           positions.push(intangibles[i].pos);
@@ -424,14 +447,20 @@ router.post('/dispGameGrade', async(req, res) => {
       if(players.length == 0){
         res.render('gameGrade');
       } else {
-        PracticeStat.find({school: req.user.school}).sort({date:-1})
+        SeasonalGameGrade.find({school: req.session.school}).sort({date:-1})
         .then(stats => {
+          //console.log("gamegrade stats " + stats);
           Play.find({school: req.user.school})
           .then(plays => {
+            // for(var i = 0; i < players.length; i++) {
+            //   for(var j = 0; j < stats.length; j++) {
+            //     console.log('email match 1 ' + players[i].Email  + ' = ' + stats[j].email);
+            //   }
+            // }
             res.render('dispGameGrade', {
                   'players': players,
                   'ints': intangibles[0].ints,
-                  'scale': intangibles.scale,
+                  scale: scale,
                   'positions': positions,
                   'stats': stats,
                   'plays': plays[0].plays,

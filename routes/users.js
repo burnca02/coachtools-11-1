@@ -207,7 +207,7 @@ router.post('/login', (req, res, next) => {
             if(user === null) //If the user does not exist it will return null, then we show an error message that says that the email is not registered.
             {
                 passport.authenticate('local', {
-                    successRedirect: '/coachHome',
+                    successRedirect: '/depthChart', //coachHome originally
                     failureRedirect: '/users/login',
                     failureFlash: true
                 })(req, res, next);
@@ -220,7 +220,7 @@ router.post('/login', (req, res, next) => {
                 if(user.userType == 'coach') {
                     console.log('User type is ' + user.userType);
                     passport.authenticate('local', {
-                        successRedirect: '/coachHome',
+                        successRedirect: '/depthChart', //coachHome originally
                         failureRedirect: '/users/login',
                         failureFlash: true
                     })(req, res, next);

@@ -38,9 +38,9 @@ exports.post =  function (req, res) {
          data['_id'] = new mongoose.Types.ObjectId(); //Creating a uniqueID.
          data['School'] = req.session.school; //Add the school name to the specific player.
          data['Active'] = false; //All players are inactive by default.
-         data['Rank']   = 0;
+         data['Rank']   = 1;
          //data['Attendance'] = [0, 0];
-         data['Rank'] = 0;
+        //  data['Rank'] = 0;
          players.push(data);
      })
      .on("end", function(){

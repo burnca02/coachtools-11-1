@@ -18,7 +18,10 @@ const playerSchema = mongoose.Schema({
     School: String, //Their current school
     Active: Boolean, //Are they on the active line?
     Attendance: Array, // [questionnaires taken, questionnaires given]
-    Rank: Number,
+    Rank: {
+      Number,
+      default: 1
+    },
     Grade: {
       type: Number,
       default: -1

@@ -192,14 +192,14 @@
                       <% for(var j = 0; j < stats.length; j++) { %>
                           <% if(players[i].Email == stats[j].email) {%>
                             <tr>
-                            <td><%=players[i].FullName %></td>
-                            <td><%=stats[j].grade %></td>
-                            <td>#</td>
-                            <td>*</td>
-                            <td>#</td>
-                            <td>#</td>
-                            <td>#</td>
-                            <td>#</td>
+                              <td><%=players[i].FullName %></td>
+                              <td><%=stats[j].Current %></td>
+                              <td><%=stats[j].Overall %></td>
+                              <td>*</td>
+                              <td><%=stats[j].Intagible1Average %></td>
+                              <td><%=stats[j].Intagible2Average %></td>
+                              <td><%=stats[j].Intagible3Average %></td>
+                              <td><%=stats[j].Intagible4Average %></td>
                             </tr>
                             <% break; %>
                           <% } %>
@@ -267,28 +267,24 @@
                   <tr>
                     <td colspan="2">
                       <label for="scale">Grading Scale</label>
-                      <input
-                        type="text"
-                        name="scale"
-                        id="scale"
-                        value="<%- scale %>"
-                        readonly
-                      />
+                      <input type="text" name="scale" id="scale" value="<%- scale %>" readonly/>
                     </td>
                   </tr>
                   <% for(var i = 0; i < players.length; i++) { %>
                       <tr name="p<%- i %>">
                         <td colspan="2">
                           <label for="playerName">Player Name</label>                        
-                          <input list="players" name="playerName" id="playerName">
-                          <datalist id="players">
-                            <option value="<%- players[i].FullName %>">
-                          </datalist>
+                          <!-- <input list="players" name="playerName" id="playerName"> -->
+                          <select name="playerName" id="playerName">
+                            <% for(var j = 0; j < players.length; j++) { %>
+                              <option value="<%- players[j].FullName %>"><%= players[j].FullName %></option>
+                            <% } %>
+                          </select>
                         </td>
                       </tr>
                       <tr name="p<%- i %>">
                         <td>
-                          <label for="grade1" id="idGrade1"><%= ints[0] %></label>
+                          <label for="grade1"><%= ints[0] %></label>
                           <input type="number" name="grade1" id="grade1-<%- i %>" max="10" placeholder="Enter Grade"/>
                         </td>
                         <td>
@@ -402,13 +398,9 @@
       const id = '#playerButton' + i;
       const playerName = document.querySelector(id);
       const name = document.querySelector('#playerName');
-      const topLeft = document.querySelector('#topLeft');
-      const playerNameHead = document.querySelector('#playerNameHead');
       const prev = document.querySelector('#prev');
       const next = document.querySelector('#next');
-      name.value = playerName.textContent.replace('/[\n\r]'+'|[\s]{2,}/g', ' ').trim();
-      topLeft.textContent = playerName.textContent;
-      playerNameHead.textContent = playerName.textContent;
+      //name.value = playerName.textContent.replace('/[\n\r]'+'|[\s]{2,}/g', ' ').trim();
       prev.value = i;
       next.value = i;
     }

@@ -18,6 +18,7 @@ const CompleteQuest = require('../models/CompleteQuest');
 const Stat = require('../models/Stat');
 const Intangibles = require('../models/Intangibles');
 const PracticeStat = require('../models/PracticeStat');
+const GameGrade = require('../models/GameGrade');
 
 router.use(multer({dest:'/uploads'}).single('playbook'));
 
@@ -192,6 +193,7 @@ router.get('/practiceStats', ensureAuthenticated, (req, res) =>
 );
 
 router.get('/gameGrade', ensureAuthenticated, (req, res) => 
+  // console.log("in coach gameGrade")
   Intangibles.find({school: req.user.school})
   .then(intangibles => {
   const positions = [];
@@ -201,7 +203,7 @@ router.get('/gameGrade', ensureAuthenticated, (req, res) =>
       console.log('added' + positions[i]);
     }
   }
-  console.log('positions' + positions);
+  console.log('positions COACH.js ' + positions);
   res.render('gameGrade', { //need to send all stats data here too
         'positions': positions,
         'name': req.user.name
@@ -256,30 +258,48 @@ router.post('/dispComp', ensureAuthenticated, async(req, res) => {
             } else {
               practice2 = stat.grade;
             }
-            //This will get the information needed for the graph. 
-            Stat.find({ email: email1 }).sort({createdAt:1}) //This query will be used to populate the graph.
-            .then(stats =>
-            {
-              Stat.find({ email: email2 }).sort({createdAt:1}) //This query will be used to populate the graph.
-              .then(stats2 =>
-                {
-                  res.render('dispComp', {
-                    'name1': name1,
-                    'name2': name2,
-                    'pos1': pos1,
-                    'pos2': pos2,
-                    'practice1': practice1,
-                    'practice2': practice2,
-                    name: req.user.name, //pass the name that was entered into the database to dashboard
-                    'graph1': stats,
-                    'graph2': stats2
+            GameGrade.findOne({'email': email2}).sort({$natural: -1})
+            .then(game => {
+              var game1 = '';
+              if(game == null){
+                game1 = 'No Grade'
+              } else {
+                game1 = game.grade;
+              }
+              GameGrade.findOne({'email': email2}).sort({$natural: -1})
+              .then(game => {
+                var game2 = '';
+                if(game == null){
+                  game2 = 'No Grade'
+                } else {
+                  game2 = game.grade;
+                }
+                //This will get the information needed for the graph. 
+                Stat.find({ email: email1 }).sort({createdAt:1}) //This query will be used to populate the graph.
+                .then(stats => {
+                  Stat.find({ email: email2 }).sort({createdAt:1}) //This query will be used to populate the graph.
+                  .then(stats2 => {
+                      res.render('dispComp', {
+                        'name1': name1,
+                        'name2': name2,
+                        'pos1': pos1,
+                        'pos2': pos2,
+                        'practice1': practice1,
+                        'practice2': practice2,
+                        'game1': game1,
+                        'game2': game2,
+                        name: req.user.name, //pass the name that was entered into the database to dashboard
+                        'graph1': stats,
+                        'graph2': stats2
+                      })
+                    })  
                   })
-                })  
+                })
+              })
             })
           })
         })
-    })
-  })
+      })
 });
 
 
@@ -296,53 +316,45 @@ router.get('/roster', ensureAuthenticated, (req, res) =>
   .catch(error => console.error(error))
 );
 
-//USES THIS HOWEVER AFTER A POST METHOD....hmmm
 router.get('/depthChart', ensureAuthenticated, async(req, res) => {
-  const offPlayersPos1 = ['FB','OL', 'QB','RB','TE','WR'];
-  const defPlayersPos = ['DB','DE','DL','DT','ILB','MLB','OLB','LB','CB', 'SS', 'FS'];
-  const spePlayersPos = ['K','P','K/P','P/K','LS'];
-  console.log("Did we get in index router get");
-  await db.collection('Roster').find({ "Pos": { "$exists": true}, "School" :req.session.school, "Pos": { "$in" : offPlayersPos1}}).sort({'Pos': 1, 'Rank' : 1}).toArray()
+  const offPlayersPos1= ['QB','RB','FB','WR','TE','LT','LG','C','RG','RT']
+  const defPlayersPos = ['CB','DB','DE','DL','DT','FS','ILB','LB','MLB','OLB','SS']
+  const spePlayersPos = ['K/P','LS']
+  await Roster.find({ "Pos": { "$exists": true}, "School" :req.session.school, "Pos": { "$in" : offPlayersPos1}}).sort({'Pos': 1, 'Rank' : 1})
   .then(offPlayers => {
-      db.collection('Roster').find({ "Pos": { "$exists": true }, "School" :req.session.school, "Pos": { "$in" : defPlayersPos}}).sort({'Pos': 1, 'Rank' : 1}).toArray()
+      Roster.find({ "Pos": { "$exists": true }, "School" :req.session.school, "Pos": { "$in" : defPlayersPos}}).sort({'Pos': 1, 'Rank' : 1})
       .then(defPlayers => {
-          db.collection('Roster').find({ "Pos": { "$exists": true }, "School" :req.session.school, "Pos": { "$in" : spePlayersPos}}).sort({'Pos': 1, 'Rank': 1}).toArray()
+          Roster.find({ "Pos": { "$exists": true }, "School" :req.session.school, "Pos": { "$in" : spePlayersPos}}).sort({'Pos': 1, 'Rank': 1})
           .then(spePlayers => {
-              res.render('depthChart', {
-                  offPlayersPos : offPlayersPos1,
-                  "defPlayersPos" : defPlayersPos,
-                  "spePlayersPos" : spePlayersPos,
-                  "offPlayers" : offPlayers, 
-                  "defPlayers" : defPlayers,
-                  "spePlayers" : spePlayers,
-                  name: req.session.name,
-                  school: req.session.school})
+            Roster.find({ "Pos": { "$exists": true }, "School" :req.session.school, "Pos": "QB" }).sort({'Pos': 1})
+              .then(aPlayers => {
+                res.render('depthChart', {
+                    players: aPlayers,
+                    offPlayersPos : offPlayersPos1,
+                    "defPlayersPos" : defPlayersPos,
+                    "spePlayersPos" : spePlayersPos,
+                    "offPlayers" : offPlayers, 
+                    "defPlayers" : defPlayers,
+                    "spePlayers" : spePlayers,
+                    name: req.session.name,
+                    school: req.session.school})
+            }).catch(error => console.error(error))
           }).catch(error => console.error(error))
       }).catch(error => console.error(error))
   }).catch(error => console.error(error))
-  
-  // Roster.find({ "Pos": { "$exists": true }, "School" :req.session.school }).sort({'Pos': 1})
-  //   .then(results => {
-  //   // var aPlayers = results;
-  //     res.render('depthChart', {aPlayers : results, players : results,
-  //     name : req.session.name,
-  //     school: req.session.school})
-  // })
-  // .catch(error => console.error(error))
 });
 
+//BUG WITH RELOADING!!!!NOT SURE HOW TO FIX!!!DATA ISN'T STORED
 router.post('/depthChart', ensureAuthenticated, async(req, res) => {
   const type = req.body.type;
-  console.log("type: " + type);
-  const offPlayersPos1 = ['FB','OL', 'QB','RB','TE','WR'];
-  const defPlayersPos = ['DB','DE','DL','DT','ILB','MLB','OLB','LB','CB', 'SS', 'FS'];
-  const spePlayersPos = ['K','P','K/P','P/K','LS'];
-  console.log("Did we get in index router get");
-  await Roster.find({ "Pos": { "$exists": true}, "School" :req.session.school, "Pos": { "$in" : offPlayersPos1}}).sort({'Pos': 1, 'Rank' : 1}).toArray()
+  const offPlayersPos1 = ['QB','RB','FB','WR','TE','LT','LG','C','RG','RT']
+  const defPlayersPos = ['CB','DB','DE','DL','DT','FS','ILB','LB','MLB','OLB','SS']
+  const spePlayersPos = ['K/P','LS']
+  await Roster.find({ "Pos": { "$exists": true}, "School" :req.session.school, "Pos": { "$in" : offPlayersPos1}}).sort({'Pos': 1, 'Rank' : 1})
   .then(offPlayers => {
-      Roster.find({ "Pos": { "$exists": true }, "School" :req.session.school, "Pos": { "$in" : defPlayersPos}}).sort({'Pos': 1, 'Rank' : 1}).toArray()
+      Roster.find({ "Pos": { "$exists": true }, "School" :req.session.school, "Pos": { "$in" : defPlayersPos}}).sort({'Pos': 1, 'Rank' : 1})
       .then(defPlayers => {
-          Roster.find({ "Pos": { "$exists": true }, "School" :req.session.school, "Pos": { "$in" : spePlayersPos}}).sort({'Pos': 1, 'Rank': 1}).toArray()
+          Roster.find({ "Pos": { "$exists": true }, "School" :req.session.school, "Pos": { "$in" : spePlayersPos}}).sort({'Pos': 1, 'Rank': 1})
           .then(spePlayers => {
             Roster.find({ "Pos": { "$exists": true }, "School" :req.session.school }).sort({'Pos': 1})
               .then(aPlayers => {
@@ -386,64 +398,106 @@ router.post('/depthChart', ensureAuthenticated, async(req, res) => {
           }).catch(error => console.error(error))
       }).catch(error => console.error(error))
   }).catch(error => console.error(error))
-  
-  // Roster.find({ "Pos": { "$exists": true }, "School" :req.session.school }).sort({'Pos': 1})
-  //     .then(results1 => {
-  //       //  aPlayers : results1;
-  //   if (type != 'full') {
-  //     Roster.find( {"Pos" : type, "School" :req.session.school })
-  //       .then(results => {
-  //         res.render('depthChart', {players: results, aPlayers: results1,
-  //           name : req.session.name,
-  //           school: req.session.school})
-  //       })
-  //       .catch(error => console.error(error))
-  //   }
-  //   else //Otherwise view the whole roster alphabetically. 
-  //   {
-  //       Roster.find({ "Pos": { "$exists": true }, "School" :req.session.school }).sort({'Pos': 1})
-  //       .then(results => {
-  //         res.render('depthChart', {players: results, aPlayers: results1,
-  //           name : req.session.name,
-  //           school: req.session.school})
-  //       })
-  //       .catch(error => console.error(error))
-  //   }
-  //   console.log(req.body)
-  // });
+});
+//Error with reloading here - the get function cant get the current position
+//Can we store a session variable or something?
+router.get('/position', ensureAuthenticated, async(req, res) => {
+  console.log("coach position get called")
+  const pos = req.body.pos
+  console.log("pos: " + pos)
+  res.render('position', {
+    name: req.session.name,
+    school: req.session.school})
+})
+
+router.post('/position', ensureAuthenticated, async (req, res) => {
+  console.log("called")
+  const pos = req.body.pos
+  console.log("pos: " + pos)
+  await Roster.find({ "Pos": { "$exists": true}, "School" :req.session.school, "Pos": pos}).sort({'Pos': 1, 'Rank' : 1})
+            .then(posPlayers => {
+              const gameGrades = [];
+              for (var i = 0; i < posPlayers.length; i++) {
+                console.log(posPlayers[i].Email)
+                GameGrade.findOne({'email': {"$exists":true}, 'email': posPlayers[i].Email}).sort({$natural:-1})
+                .then(grade => {
+                  if (grade != null) {
+                    console.log("grade: "+grade)
+                    console.log("grade.grade: " + grade.grade)
+                    gameGrades.push(grade.grade);
+                  } else {
+                    gameGrades.push('N/A');
+                  }
+                }).catch(error => console.error(error))
+              }
+              console.log("gamegrades: " + gameGrades)
+                res.render('position', {
+                    posPlayers : posPlayers,
+                    gameGrades : gameGrades,
+                    name: req.session.name,
+                    school: req.session.school})
+            }).catch(error => console.error(error))
 });
 
 router.post('/submitRank', ensureAuthenticated, async (req, res) => {
   const rank = req.body.rank
   const pNames = req.body.playerNames
-  // const {rank} = req.body;
-  console.log('rank: ' + rank)
-  // const type = req.body.type;
-  // console.log('type is: ' + type);
-  // Roster.update({})
+  const type = req.body.type
   for (var i = 0; i < rank.length; i++) {
-    console.log('rank[i] ' + rank[i])
-    console.log('pNames[i] ' + pNames[i])
     let doc = await Roster.findOneAndUpdate({FullName : pNames[i], School : req.session.school}, {Rank : rank[i]}, {new:true, upsert: true});
     doc.save();
-    console.log("doc: " + doc);
-    // Roster.findOneAndUpdate({FullName : pNames[i]}, {Rank : rank[i]})
-    // .then(player => {
-    //   console.log(player)
-    // })
-    // .catch(error => console.error(error))
   }
-  console.log('submit rank called');
-  await Roster.find({ "Pos": { "$exists": true }, "School" :req.session.school }).sort({'Pos': 1})
-      .then(results => {
-        res.render('depthChart', {
-          players: results, 
-          aPlayers: results,
-          name : req.session.name,
-          school: req.session.school})
-      })
-      .catch(error => console.error(error)) 
-  // console.log(req.body)
+  const offPlayersPos1 = ['QB','RB','FB','WR','TE','LT','LG','C','RG','RT']
+  const defPlayersPos = ['CB','DB','DE','DL','DT','FS','ILB','LB','MLB','OLB','SS']
+  const spePlayersPos = ['K/P','LS'];
+  await Roster.find({ "Pos": { "$exists": true}, "School" :req.session.school, "Pos": { "$in" : offPlayersPos1}}).sort({'Pos': 1, 'Rank' : 1})
+  .then(offPlayers => {
+      Roster.find({ "Pos": { "$exists": true }, "School" :req.session.school, "Pos": { "$in" : defPlayersPos}}).sort({'Pos': 1, 'Rank' : 1})
+      .then(defPlayers => {
+          Roster.find({ "Pos": { "$exists": true }, "School" :req.session.school, "Pos": { "$in" : spePlayersPos}}).sort({'Pos': 1, 'Rank': 1})
+          .then(spePlayers => {
+            Roster.find({ "Pos": { "$exists": true }, "School" :req.session.school }).sort({'Pos': 1})
+              .then(aPlayers => {
+                if (type != 'full') {
+                  Roster.find( {"Pos" : type, "School" :req.session.school })
+                    .then(results => {
+                      res.render('depthChart', {
+                        players: results, 
+                        aPlayers: aPlayers,
+                        offPlayersPos : offPlayersPos1,
+                        "defPlayersPos" : defPlayersPos,
+                        "spePlayersPos" : spePlayersPos,
+                        "offPlayers" : offPlayers, 
+                        "defPlayers" : defPlayers,
+                        "spePlayers" : spePlayers,
+                        name : req.session.name,
+                        school: req.session.school})
+                    })
+                    .catch(error => console.error(error))
+                }
+                else //Otherwise view the whole roster alphabetically. 
+                {
+                    Roster.find({ "Pos": { "$exists": true }, "School" :req.session.school }).sort({'Pos': 1})
+                    .then(results => {
+                      res.render('depthChart', {
+                        players: results, 
+                        aPlayers: aPlayers,
+                        offPlayersPos : offPlayersPos1,
+                        "defPlayersPos" : defPlayersPos,
+                        "spePlayersPos" : spePlayersPos,
+                        "offPlayers" : offPlayers, 
+                        "defPlayers" : defPlayers,
+                        "spePlayers" : spePlayers,
+                        name : req.session.name,
+                        school: req.session.school
+                      })
+                    })
+                    .catch(error => console.error(error))
+                }
+              }).catch(error => console.error(error))
+          }).catch(error => console.error(error))
+      }).catch(error => console.error(error))
+  }).catch(error => console.error(error))
 });
 
 /*

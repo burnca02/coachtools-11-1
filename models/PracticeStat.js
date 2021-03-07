@@ -15,7 +15,7 @@ const mongoose = require('mongoose');
         type: String,
         required: true
     },
-     int1: {
+    int1: {
         type: Array, //int1[0]= score, int[1]= importanceLevel
         required: true
     },

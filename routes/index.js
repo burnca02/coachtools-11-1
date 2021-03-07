@@ -149,7 +149,18 @@ router.post('/viewQuestionnaire', async(req, res) => {
       })
       .catch(error => console.error(error))
     );
-
+    
+    router.get('/position', ensureAuthenticated, async(req, res) => {
+        const pos = req.body.pos
+        console.log("pos in index: " + pos)
+        await db.collection('Roster').find({ "Pos": { "$exists": true}, "School" :req.session.school, "Pos": pos}).sort({'Pos': 1, 'Rank' : 1}).toArray()
+            .then(posPlayers => {
+                res.render('position', {
+                    posPlayers : posPlayers,
+                    name: req.session.name,
+                    school: req.session.school})
+            }).catch(error => console.error(error))
+      })
     //   router.get('/depthChart', ensureAuthenticated, (req, res) => 
 
     //   db.collection('Roster').find({ "Pos": { "$exists": true }, "School": req.session.school}).sort({'Pos': 1}).toArray()
@@ -163,26 +174,30 @@ router.post('/viewQuestionnaire', async(req, res) => {
     //    .catch(error => console.error(error))
     //    );
     router.get('/depthChart', ensureAuthenticated, async(req, res) => {
-        const offPlayersPos1 = ['FB','OL', 'QB','RB','TE','WR'];
-        const defPlayersPos = ['DB','DE','DL','DT','ILB','MLB','OLB','LB','CB', 'SS', 'FS'];
-        const spePlayersPos = ['K','P','K/P','P/K','LS'];
-        console.log("Did we get in index router get");
+        const offPlayersPos1 = ['QB','RB','FB','WR','TE','LT','LG','C','RG','RT']
+        const defPlayersPos = ['CB','DB','DE','DL','DT','FS','ILB','LB','MLB','OLB','SS']
+        const spePlayersPos = ['K/P','LS']
+        // console.log("Did we get in index router get");
         await db.collection('Roster').find({ "Pos": { "$exists": true}, "School" :req.session.school, "Pos": { "$in" : offPlayersPos1}}).sort({'Pos': 1, 'Rank' : 1}).toArray()
         .then(offPlayers => {
             db.collection('Roster').find({ "Pos": { "$exists": true }, "School" :req.session.school, "Pos": { "$in" : defPlayersPos}}).sort({'Pos': 1, 'Rank' : 1}).toArray()
-            .then(defPlayers => {
+              .then(defPlayers => {
                 db.collection('Roster').find({ "Pos": { "$exists": true }, "School" :req.session.school, "Pos": { "$in" : spePlayersPos}}).sort({'Pos': 1, 'Rank': 1}).toArray()
-                .then(spePlayers => {
-                    res.render('depthChart', {
-                        players : offPlayers + defPlayers + spePlayers,
-                        offPlayersPos : offPlayersPos1,
-                        "defPlayersPos" : defPlayersPos,
-                        "spePlayersPos" : spePlayersPos,
-                        "offPlayers" : offPlayers, 
-                        "defPlayers" : defPlayers,
-                        "spePlayers" : spePlayers,
-                        name: req.session.name,
-                        school: req.session.school})
+                  .then(spePlayers => {
+                    // db.collection('Roster').find({ "Pos": { "$exists": true }, "School" :req.session.school }).sort({'Pos': 1}).toArray()
+                    db.collection('Roster').find({ "Pos": 'QB', "School" :req.session.school }).toArray()
+                      .then(aPlayers => {
+                        res.render('depthChart', {
+                            players : aPlayers,
+                            "offPlayersPos" : offPlayersPos1,
+                            "defPlayersPos" : defPlayersPos,
+                            "spePlayersPos" : spePlayersPos,
+                            "offPlayers" : offPlayers, 
+                            "defPlayers" : defPlayers,
+                            "spePlayers" : spePlayers,
+                            name: req.session.name,
+                            school: req.session.school})
+                    }).catch(error => console.error(error))
                 }).catch(error => console.error(error))
             }).catch(error => console.error(error))
         }).catch(error => console.error(error))

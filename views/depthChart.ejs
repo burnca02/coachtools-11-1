@@ -34,10 +34,11 @@
 /* Modal Content/Box */
 .modal-content {
   background-color: #fefefe;
-  margin: 15% auto; /* 15% from the top and centered */
-  padding: 20px;
+  margin: 5% auto; /* 15% from the top and centered */
+  padding: 25px;
   border: 1px solid #888;
-  width: 80%; /* Could be more or less, depending on screen size */
+  width: 50%; /* Could be more or less, depending on screen size */
+  align-self: center;
 }
 
 /* The Close Button */
@@ -72,9 +73,9 @@
     font-size: 13px;
     text-align: center;
   }
-  table.redTable tr:nth-child(even) {
+  /* table.redTable tr:nth-child(even) {
     background: #f5c8bf;
-  }
+  } */
   table.redTable thead {
     background: #a40808;
   }
@@ -118,7 +119,7 @@
     <%- include("partials/sidenav") %>
     <div class="chBody" style="text-align: center;">
       <div id="offenseLine">
-        <div class="row" style="text-align: center;">
+        <div class="row" style="margin-right: 0; margin-left: 0;">
           <span class="help col-sm-5" style="text-align: left;">Depth Chart</span>
           <button class="btn btn-primary" id="myBtn">Update Rankings</button>
         </div>
@@ -134,19 +135,30 @@
             <th>Fourth String</th>
             <th>Other</th>
           </tr>
-          <% var j = 0; var k = 0;
+          <form action="/coach/position" method="POST">
+          <% var k = 0;
           for(var i = 0; i < offPlayersPos.length; i++) { %>
           <tr>
-            <td><%= offPlayersPos[i] %></td>
-            <% k = 0;
-            while (j < offPlayers.length && offPlayers[j].Pos == offPlayersPos[i]) { %>
+            <td><button class="btn btn-primary" type="submit" name="pos" value="<%- offPlayersPos[i] %>" style="font-size: 13px;"><%= offPlayersPos[i] %></button></td>
+            <%
+            var playerIndex = -1;
+            var c = 0;
+            while (c < offPlayers.length && offPlayers[c].Pos != offPlayersPos[i]) {
+              c++;
+            }
+            if (c < offPlayers.length && offPlayers[c].Pos == offPlayersPos[i]) {
+              playerIndex = c;
+            }
+            k = 0;
+            while (playerIndex >= 0 && playerIndex < offPlayers.length && offPlayers[playerIndex].Pos == offPlayersPos[i]) { %>
               <% if (k < 5) { %>
-              <td><%= offPlayers[j].FullName %><%= offPlayers[j].Rank %></td>
+              <td><%= offPlayers[playerIndex].FullName %></td>
               <% } %>
-              <% j++; k++;%>
+              <% k++; playerIndex++;%>
             <% } %>
           </tr>
           <% } %>
+        </form>
         </table>
         <br><br>
         <span class="help">Defense</span>
@@ -159,23 +171,25 @@
             <th>Fourth String</th>
             <th>Other</th>
           </tr>
+          <form action="/coach/position" method="POST">
           <% j = 0; k = 0;
           for(var i = 0; i < defPlayersPos.length; i++) { %>
           <tr>
-            <td><%= defPlayersPos[i] %></td>
+            <td><button class="btn btn-primary" type="submit" name="pos" value="<%- defPlayersPos[i] %>" style="font-size: 13px;"><%= defPlayersPos[i] %></button></td>
             <% k = 0;
             while (j < defPlayers.length && defPlayers[j].Pos == defPlayersPos[i]) { %>
               <% if (k < 5) { %>
-              <td><%= defPlayers[j].FullName %><%= defPlayers[j].Rank %></td>
+              <td><%= defPlayers[j].FullName %></td>
               <% } %>
               <% j++; k++;%>
             <% } %>
           </tr>
           <% } %>
+        </form>
         </table>
         <br><br>
         <span class="help">Special Teams</span>
-        <table class="redTable" id="viewTable" style="width: 95%;" border="1">
+        <table class="redTable" id="viewTable" style="width: 95%; margin-bottom: 40px;" border="1">
           <tr>
             <th></th>
             <th>First String</th>
@@ -184,19 +198,21 @@
             <th>Fourth String</th>
             <th>Other</th>
           </tr>
+          <form action="/coach/position" method="POST">
           <% j = 0; k = 0;
           for(var i = 0; i < spePlayersPos.length; i++) { %>
           <tr>
-            <td><%= spePlayersPos[i] %></td>
+            <td><button class="btn btn-primary" type="submit" name="pos" value="<%- spePlayersPos[i] %>" style="font-size: 13px;"><%= spePlayersPos[i] %></button></td>
             <% k = 0;
             while (j < spePlayers.length && spePlayers[j].Pos == spePlayersPos[i]) { %>
               <% if (k < 5) { %>
-              <td><%= spePlayers[j].FullName %><%= spePlayers[j].Rank %></td>
+              <td name="pos"><%= spePlayers[j].FullName %></td>
               <% } %>
               <% j++; k++;%>
             <% } %>
           </tr>
           <% } %>
+          </form>
         </table>
 
         <!-- Start of Modal Content for entering practice grades -->
@@ -205,17 +221,17 @@
         <!-- Modal content -->
         <div class="modal-content">
           <div class="form-group" role="group" aria-label="Button group with nested dropdown">
-          <form action="/coach/depthChart" method="POST">
+          <form id="modalForm" action="/coach/depthChart" method="POST">
             <!-- <button type="button" class="btn btn-primary">Sort By</button> -->
-            <div class="dropdown" role="group" style="padding-top: 10px;">
+            <div class="dropdown" role="group" style="padding-top: 10px; text-align: center;">
               <span class="close">&times;</span>
               <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Sort By
+              Choose Position
               </button>
               <div class="dropdown-content" aria-labelledby="btnGroupDrop1">
                 <!-- 'SS','MLB','FS','K','P','CB', ,'LS'-->
-                <% var allPlayers = ['QB','RB','WR','TE','OL', 'FB', 'DB','DE','DT','DL','OLB','OLB','ILB','LB','K/P','P/K']; %>
-                <button class="dropdown-item" type="submit" name="type" value="full">ALL</button>
+                <% var allPlayers = ['QB','RB','FB','WR','TE','LT','LG','C','RG','RT','CB','DB','DE','DL','DT','FS','ILB','LB','MLB','OLB','SS','K/P','LS']; %>
+                <button class="dropdown-item" type="submit" name="type" value="full" >ALL</button>
                 <% for (var i = 0; i < allPlayers.length; i++) { %>
                   <button class="dropdown-item" type="submit" name="type" value="<%- allPlayers[i] %>">View <%= allPlayers[i] %>s</button>
                 <% } %>
@@ -224,17 +240,23 @@
             </form>
           </div>
           <br>
+          <% if (players.length > 0) { %>
           <span class="help"><%= players[0].Pos %></span>
           <br>
           <form action="/coach/submitRank" method="POST">
           <% for (var i = 0; i < players.length; i++) { %>
             <!-- <span class="posLabel"><%= players[i].FullName %></span> -->
             <input type="name" name="playerNames" value="<%- players[i].FullName %>" readonly>
-            <input type="number" name="rank" value="<%- players[i].Rank %>">
+            <input type="number" name="rank" min='1' max='5' value="<%- players[i].Rank %>">
+            <input class="hidden" name="type" value="<%- players[i].Pos %>" hidden>
             <br>
           <% } %>
-          <input type="submit" value="Submit">
+          <div style="padding-top: 15px;">
+            <input type="submit" class="btn btn-primary dropdown-toggle" value="Submit">
+          </div>
+          
           </form>
+          <% } %>
         </div>
       </div>
       
@@ -255,11 +277,19 @@ const delay = ms => new Promise(res => setTimeout(res, ms));
 
 const modalDisp = async() => {
   modal.style.display = "block";
-  // await delay(500);
-  // initGameGrade();
 }
 
 btn.onclick = modalDisp;
+
+// async function modalDisp2() {
+//   await delay(2000);
+//   modal.style.display = "block";
+//   $('.myModal').show()
+// }
+
+// $("form").on('submit', function async() {
+//     modalDisp2();
+// });
 
 // When the user clicks on <span> (x), close the modal
 span.onclick = function() {
@@ -274,17 +304,23 @@ window.onclick = function(event) {
 // Makes buttons work
 var dropdown = document.getElementsByClassName("dropdown-toggle");
   var i;
-  // modal.style.display = "block";
+  modal.style.display = "block";
+
   for (i = 0; i < dropdown.length; i++) {
     dropdown[i].addEventListener("click", function () {
       this.classList.toggle("active");
       var dropdownContent = this.nextElementSibling;
-      if (dropdownContent.style.display === "block") {
+      if (dropdownContent.style.display === "inline-block") {
         dropdownContent.style.display = "none";
       } else {
-        dropdownContent.style.display = "block";
+        dropdownContent.style.display = "inline-block";
       }
     });
+  }
+
+  function modalOpen() {
+    alert("GOT HERE");
+    modal.style.display = "block";
   }
   // Drag and drop code
   // var drake = dragula({

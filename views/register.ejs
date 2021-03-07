@@ -47,13 +47,12 @@
           <div class='form-group'>
                 <label for="SchoolName">Your School</label>
                 <br>
-                <input list="Schools" type = "school" name="school" id="school" class="form-control", placeholder='Enter School Name or Select "School Not Listed" if not found'>
-                <datalist id="Schools">
+                <select list="Schools" type = "school" name="school" id="school" class="form-control" placeholder='Enter School Name or Select "School Not Listed" if not found'>
                   <% for(var i = 0; i < Schools.length; i++) { %>
-                  <option value="<%- Schools[i] %>">
+                  <option value="<%- Schools[i] %>"> <%- Schools[i] %> </option>
                   <% } %>
-                  <option value="School Not Listed" >
-                </datalist>
+                  <option value="School Not Listed" >School Not Listed</option>
+                </select>
           </div>
           <div class="form-group">
             <label for="email">Email</label>

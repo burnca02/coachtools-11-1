@@ -6,6 +6,7 @@ const session = require('express-session');
 const passport = require('passport');
 const fileUpload = require('express-fileupload');
 const csv = require('fast-csv');
+const multer = require('multer');
 
 const app = express();
 

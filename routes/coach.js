@@ -3,9 +3,12 @@ const router = express.Router();
 const { ensureAuthenticated } = require('../config/auth');
 var fileUpload = require('express-fileupload');
 var template = require('../template');
-var upload = require('../upload');
+const multer = require('multer');
 const csv = require('fast-csv');
+const upload = require('../upload');
 const mongoose = require('mongoose');
+const fs = require("fs");
+var serveIndex = require('serve-index')
 const MongoClient = require('mongodb').MongoClient
 const uri = "mongodb+srv://hernri01:Capstone2020@cluster0.3ln2m.mongodb.net/test?authSource=admin&replicaSet=atlas-9q0n4l-shard-0&readPreference=primary&appname=MongoDB%20Compass&ssl=true&useUnifiedTopology=true";
 
@@ -15,6 +18,9 @@ const CompleteQuest = require('../models/CompleteQuest');
 const Stat = require('../models/Stat');
 const Intangibles = require('../models/Intangibles');
 const PracticeStat = require('../models/PracticeStat');
+
+router.use(multer({dest:'/uploads'}).single('playbook'));
+
 
 router.use(express.static("public"));
 
@@ -37,7 +43,11 @@ router.get('/upload', ensureAuthenticated, (req, res) =>
   res.render('coachHome', {
     name: req.user.name //pass the name that was entered into the database to dashboard
 }));
-
+router.get('/playbookUpload', ensureAuthenticated, (req, res) => {
+  res.render('playbookUpload', {
+    name: req.user.name
+  });
+}); 
 router.get('/playerFeedback', ensureAuthenticated, (req, res) => {
   res.render('playerFeedback', {
     name: req.user.name
@@ -517,5 +527,24 @@ router.post('/table', ensureAuthenticated, (req,res) =>
     console.log(req.body)
 
 })
+
+//Upload playbook
+router.post('/uploadPlaybook', function(req,res)
+{
+  var tmp_path = req.file.path;
+  console.log(tmp_path);
+
+  /** The original name of the uploaded file
+      stored in the variable "originalname". **/
+  var target_path = 'uploads/' + req.file.originalname;
+  console.log(target_path);
+
+  /** A better way to copy the uploaded file. **/
+  var src = fs.createReadStream(tmp_path);
+  var dest = fs.createWriteStream(target_path);
+  src.pipe(dest);
+  src.on('end', function() { res.redirect('/coach/playbookUpload'); });
+  src.on('error', function(err) { res.render('playbookUpload'); })
+});
 
 module.exports = router;

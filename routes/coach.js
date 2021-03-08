@@ -402,12 +402,7 @@ router.post('/depthChart', ensureAuthenticated, async(req, res) => {
 //Error with reloading here - the get function cant get the current position
 //Can we store a session variable or something?
 router.get('/position', ensureAuthenticated, async(req, res) => {
-  // console.log("coach position get called")
-  // const pos = req.body.pos
-  // console.log("pos: " + pos)
-  // res.render('position', {
-  //   name: req.session.name,
-  //   school: req.session.school})
+  // console.log("in coach call of position")
   await Roster.find({ "Pos": { "$exists": true}, "School" :req.session.school, "Pos": 'QB'}).sort({'Pos': 1, 'Rank' : 1})
             .then(posPlayers => {
               var emails = [];

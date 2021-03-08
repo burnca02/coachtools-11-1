@@ -400,32 +400,53 @@ router.get('/position', ensureAuthenticated, async(req, res) => {
     school: req.session.school})
 })
 
-router.post('/position', ensureAuthenticated, async (req, res) => {
-  console.log("called")
+router.post('/position', ensureAuthenticated, async(req, res) => {
   const pos = req.body.pos
-  console.log("pos: " + pos)
   await Roster.find({ "Pos": { "$exists": true}, "School" :req.session.school, "Pos": pos}).sort({'Pos': 1, 'Rank' : 1})
             .then(posPlayers => {
-              const gameGrades = [];
+              var emails = [];
               for (var i = 0; i < posPlayers.length; i++) {
-                console.log(posPlayers[i].Email)
-                GameGrade.findOne({'email': {"$exists":true}, 'email': posPlayers[i].Email}).sort({$natural:-1})
-                .then(grade => {
-                  if (grade != null) {
-                    console.log("grade: "+grade)
-                    console.log("grade.grade: " + grade.grade)
-                    gameGrades.push(grade.grade);
-                  } else {
-                    gameGrades.push('N/A');
-                  }
-                }).catch(error => console.error(error))
+                emails.push(posPlayers[i].Email)
               }
-              console.log("gamegrades: " + gameGrades)
+                GameGrade.find({'email': {"$exists":true}, 'email': emails}).sort({$natural:-1})
+                .then(grade => {
+                  var grades = [];
+                  for (var i = 0; i < posPlayers.length; i++) {
+                    var f = false
+                    for (var j = 0; j < grade.length; j++) {
+                      if (posPlayers[i].Email == grade[j].email) {
+                        grades.push(grade[j].grade)
+                        f = true
+                      }
+                    }
+                    if (f == false) {
+                      grades.push('N/A')
+                    }
+                  }
+                  PracticeStat.find({'email': {"$exists":true}, 'email': emails}).sort({$natural:-1})
+                .then(stat => {
+                  var stats = [];
+                  for (var i = 0; i < posPlayers.length; i++) {
+                    var f = false
+                    for (var j = 0; j < stat.length; j++) {
+                      if (posPlayers[i].Email == stat[j].email) {
+                        stats.push(stat[j].grade)
+                        f = true
+                        break;
+                      }
+                    }
+                    if (f == false) {
+                      stats.push('N/A')
+                    }
+                  }
                 res.render('position', {
                     posPlayers : posPlayers,
-                    gameGrades : gameGrades,
+                    gameGrades : grades,
+                    practiceStats : stats,
                     name: req.session.name,
                     school: req.session.school})
+                  }).catch(error => console.error(error))
+                }).catch(error => console.error(error))
             }).catch(error => console.error(error))
 });
 

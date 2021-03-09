@@ -188,6 +188,7 @@ function createUser(name, email, password, school, userType, req, res) {
                     req.flash('success_msg', 'You are registered. Please fill in benchmark data');
                     req.session.name = name;
                     req.session.email = email; //This will be passed to the benchmarks so that users do not fill out the information.
+                    req.session.school = school;
                     res.redirect('/functions/benchmarks');
                 }
             })

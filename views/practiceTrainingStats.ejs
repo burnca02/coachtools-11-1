@@ -75,20 +75,20 @@
             <tbody>
             <tr>
                 <td></td>
-                <td>Season Average(Bench)</td>
-                <td>Season Average(Squat)</td>
-                <td>Season Average(Dead)</td>
-                <td>Season Average(Mile)</td>
+                <td>Season Average(<%= exercises.exercises[0] %>)</td>
+                <td>Season Average(<%= exercises.exercises[1] %>)</td>
+                <td>Season Average(<%= exercises.exercises[2] %>)</td>
+                <td>Season Average(<%= exercises.exercises[3] %>)</td>
                 <td>Height</td>
                 <td>Weight</td>
             </tr>
             <% for(var i = 0; i < stats.length; i++) { %>
             <tr>
                 <td><%=stats[i].name%> %></td>
-                <td><%=stats[i].bench%> %></td>
-                <td><%=stats[i].squat%> %></td>
-                <td><%=stats[i].dead%> %></td>
-                <td><%=stats[i].mile%> %></td>
+                <td><%=stats[i].e1%> %></td>
+                <td><%=stats[i].e2%> %></td>
+                <td><%=stats[i].e3%> %></td>
+                <td><%=stats[i].e4%> %></td>
                 <td><%=stats[i].height%> %></td>
                 <td><%=stats[i].weight%> %></td>
             </tr>

@@ -119,14 +119,14 @@
             <th></th>
         </thead>
         <tr>
-          <th>Current Max <% exercises[0] %></th>
-          <th>Current Max <% exercises[1] %></th>
-          <th>Current Max <% exercises[2] %></th>
+          <th>Current Max <%= exercises.exercises[0] %></th>
+          <th>Current Max <%= exercises.exercises[1] %></th>
+          <th>Current Max <%= exercises.exercises[2] %></th>
         </tr>
         <tr>
-          <td><%= bench%> lbs.</td>
-          <td><%= squat%> lbs.</td>
-          <td><%= dead%> lbs.</td>
+          <td><%= e1 %> lbs.</td>
+          <td><%= e2 %> lbs.</td>
+          <td><%= e3 %> lbs.</td>
         </tr>
       </table>
 
@@ -135,10 +135,10 @@
           <th>Agility</th>
         </thead>
         <tr>
-          <th><% exercises[3] %></th>
+          <th>Current Max <%= exercises.exercises[3] %></th>
         </tr>
         <tr>
-          <td><%= mile%></td>
+          <td><%= e4 %></td>
         </tr>
       </table>
 
@@ -169,21 +169,24 @@
       // Our labels along the x-axis
       var input = []; //Input will be the Max session that will be on the x axis.
       // For drawing the lines      
-      var bench = []; //The bench press maxes
-      var squat = []; //The squat maxes
-      var deadlift = []; //Deadlift maxes.
+      var e1 = []; //The bench press maxes
+      var e2 = []; //The squat maxes
+      var e3 = []; //Deadlift maxes.
+      var e4 = [];
       
 
       //We will go through all the information pased by the graph variable and push it onto our arrays.
       for (var i = 0; i < graph.length; i++) {
           input.push("Max Session " + i);
-          bench.push(parseInt(graph[i].bench));
-          squat.push(parseInt(graph[i].squat));
-          deadlift.push(parseInt(graph[i].dead));
+          e1.push(parseInt(graph[i].e1));
+          e2.push(parseInt(graph[i].e2));
+          e3.push(parseInt(graph[i].e3));
+          e4.push(parseInt(graph[i].e4));
           console.log(input);
-          console.log(bench);
-          console.log(squat);
-          console.log(deadlift);
+          console.log(e1);
+          console.log(e2);
+          console.log(e3);
+          console.log(e4);
       }
 
         var ctx = document.getElementById("myChart"); //Retrieving the elementID of the chart above in canvas.
@@ -193,25 +196,32 @@
             labels: input,
             datasets: [
             { 
-              data: squat,
-              label: "Squat",
+              data: e1,
+              label: exercises.exercises[0],
               borderColor: "red",
               fill: false,
               pointRadius: 10
 
             },
             { 
-              data: bench,
-              label: "Bench",
+              data: e2,
+              label: exercises.exercises[1],
               borderColor: "black",
               fill: false,
               pointRadius: 10
 
             },
             { 
-              data: deadlift,
-              label: "Deadlift",
+              data: e3,
+              label: exercises.exercises[2],
               borderColor: "Blue",
+              fill: false,
+              pointRadius: 10,
+            },
+            { 
+              data: e4,
+              label: exercises.exercises[3],
+              borderColor: "Green",
               fill: false,
               pointRadius: 10,
             },
@@ -244,41 +254,52 @@
                 <%- include('./partials/messages'); %>
                 <form action="/player/updatestats" method="POST">
                   <div class="form-group">
-                    <label for="bench">Current Max <%= exercises[0] %></label>
+                      <label for="email">Email</label>
+                      <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        class="form-control"
+                        value='<%- email %>'
+                        readonly
+                      />
+                  </div>
+                  <div class="form-group">
+                    <label for="e1">Current Max <%= exercises.exercises[0] %></label>
                     <input
-                      type="bench"
-                      id="bench"
-                      name="bench"
+                      type="e1"
+                      id="e1"
+                      name="e1"
                       class="form-control"
                       placeholder="Enter Weight"
                     />
                   </div>
                   <div class="form-group">
-                    <label for="squat">Current Max <%= exercises[1] %></label>
+                    <label for="e2">Current Max <%= exercises.exercises[1] %></label>
                     <input
-                      type="squat"
-                      id="squat"
-                      name="squat"
+                      type="e2"
+                      id="e2"
+                      name="e2"
                       class="form-control"
                       placeholder="Enter Weight"
                     />
                   </div>
                   <div class="form-group">
-                    <label for="dead">Current Max <%= exercises[2] %></label>
+                    <label for="e3">Current Max <%= exercises.exercises[2] %></label>
                     <input
-                      type="dead"
-                      id="dead"
-                      name="dead"
+                      type="e3"
+                      id="e3"
+                      name="e3"
                       class="form-control"
                       placeholder="Enter Weight"
                     />
                   </div>
                   <div class="form-group">
-                    <label for="mile">Current Max <%= exercises[3] %></label>
+                    <label for="e4">Current Max <%= exercises.exercises[3] %></label>
                     <input
-                      type="mile"
-                      id="mile"
-                      name="mile"
+                      type="e4"
+                      id="e4"
+                      name="e4"
                       class="form-control"
                       placeholder="Enter Time"
                     />
@@ -303,9 +324,7 @@
                       placeholder="Enter Weight"
                     />
                   </div>
-                  <button type="submit" class="btn btn-primary btn-block">
-                    Submit
-                  </button>
+                  <button type="submit" class="btn btn-primary btn-block">Submit</button>
                 </form>
               </div>
             <div>

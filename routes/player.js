@@ -51,21 +51,18 @@ for the user and then finds the rest to populate the table which appears on play
 router.get('/playerTrends', ensureAuthenticated, (req, res) => 
 
   Stat.findOne({ email: req.session.email }).sort({createdAt:-1}).limit(1) // Query to find the most recent stat for the user.
-  .then(stat => 
-  {
+  .then(stat => {
     Stat.find({ email: req.session.email }).sort({createdAt:1}) //This query will be used to populate the graph.
-    .then(stats =>
-    {
-      Exercise.find({school: req.session.school}).limit(1).sort({$natural:-1}) // Query to find the most recent exercises.
-      .then(exercises => 
-      {
-          res.render('playerTrends', 
-            {
+    .then(stats => {
+      Exercise.findOne({'school': req.session.school}).sort({$natural:-1}) // Query to find the most recent exercises.
+      .then(exercises => {
+          console.log(stats.length);
+          res.render('playerTrends', {
               email: stat.email,
-              bench: stat.bench,
-              squat: stat.squat,
-              dead: stat.dead,
-              mile: stat.mile,
+              e1: stat.e1,
+              e2: stat.e2,
+              e3: stat.e3,
+              e4: stat.e4,
               height: stat.height,
               weight: stat.weight,
               graph: stats,
@@ -82,7 +79,7 @@ fields as input and saves a new Stat to the Stat database for the user.
 */
 router.post('/updatestats', (req, res) => {
   //how to get it to recognize player email without them having to type it in?
-  const {bench, squat, dead, mile, height, weight} = req.body;
+  const {e1, e2, e3, e4, height, weight} = req.body;
   console.log(req.body);
 
   //Add new Stat to the database
@@ -90,10 +87,10 @@ router.post('/updatestats', (req, res) => {
       // _id: req.session._id, //MongoDB does not allow for ID's to be duplicated. You can create a database column for playerID, but not set _id.
       email: req.session.email,
       name: req.session.name,
-      bench,
-      squat,
-      dead,
-      mile,
+      e1,
+      e2,
+      e3,
+      e4,
       height,
       weight
   });

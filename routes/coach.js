@@ -17,10 +17,11 @@ const Questionnaire = require('../models/Questionnaire');
 const CompleteQuest = require('../models/CompleteQuest');
 const Stat = require('../models/Stat');
 const Intangibles = require('../models/Intangibles');
+const Exercises= require('../models/Exercise');
 const PracticeStat = require('../models/PracticeStat');
 const GameGrade = require('../models/GameGrade');
 
-router.use(multer({dest:'/uploads'}).single('playbook'));
+//router.use(multer({dest:'/uploads'}).single('playbook'));
 
 
 router.use(express.static("public"));
@@ -65,10 +66,24 @@ router.get('/submitquest', ensureAuthenticated, (req, res) => {
   res.render('playerFeedback');
 });
 
-router.get('/questionnaire', ensureAuthenticated, (req, res) => 
-  res.render('questionnaire', {
-    name: req.user.name //pass the name that was entered into the database to dashboard
-}));
+router.get('/questionnaire', ensureAuthenticated, (req, res) => {
+  console.log('inside questionnaire');
+  Roster.find({school: req.user.school})
+  .then(roster => {
+  const positions = [];
+  for(var i = 0; i < roster.length; i++){
+    if(!(positions.includes(roster[i].Pos))){ //adds only unique positions to array, no duplicates
+      positions.push(roster[i].Pos);
+      console.log('added' + positions[i]);
+    }
+  }
+  console.log('positions COACH.js ' + positions);
+  res.render('questionnaire', { //need to send all stats data here too
+        'positions': positions,
+        'name': req.user.name
+      });
+  }).catch(err => console.log(err))
+});
 /*
 This method is called when a coach submits a questionnaire. It takes all fields on the questionnaire 
 as input. The query then searches the Roster database to find the appropriate emails for the 
@@ -164,10 +179,14 @@ for each player. This data populates the table on practiceTrainingStats.ejs
 router.get('/practiceTrainingStats', ensureAuthenticated, (req, res) => 
   Stat.find({}).sort({$natural:-1}).limit(1)
   .then(stats => {
-    res.render('practiceTrainingStats', {
-          'stats': stats,
-          'name': req.user.name
-    });
+    Exercises.findOne({school: req.session.school}).sort({$natural:-1})
+    .then(exercises => {
+      res.render('practiceTrainingStats', {
+        'stats': stats,
+        'exercises': exercises,
+        'name': req.user.name
+      });
+    })
   })
 );
 /*
@@ -258,7 +277,7 @@ router.post('/dispComp', ensureAuthenticated, async(req, res) => {
             } else {
               practice2 = stat.grade;
             }
-            GameGrade.findOne({'email': email2}).sort({$natural: -1})
+            GameGrade.findOne({'email': email1}).sort({$natural: -1})
             .then(game => {
               var game1 = '';
               if(game == null){
@@ -266,6 +285,7 @@ router.post('/dispComp', ensureAuthenticated, async(req, res) => {
               } else {
                 game1 = game.grade;
               }
+              console.log("game1 " + game1);
               GameGrade.findOne({'email': email2}).sort({$natural: -1})
               .then(game => {
                 var game2 = '';
@@ -274,6 +294,7 @@ router.post('/dispComp', ensureAuthenticated, async(req, res) => {
                 } else {
                   game2 = game.grade;
                 }
+                console.log("game2 " + game2);
                 //This will get the information needed for the graph. 
                 Stat.find({ email: email1 }).sort({createdAt:1}) //This query will be used to populate the graph.
                 .then(stats => {

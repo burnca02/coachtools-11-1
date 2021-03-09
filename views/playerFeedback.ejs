@@ -13,12 +13,12 @@
   }
   .dropdown {
     position: center;
-    display: inline-block;
+    display: block;
   }
 
   .dropdown-content {
     display: none;
-    position: fixed;
+    /* position: static; */
     background-color: #f1f1f1;
     min-width: 160px;
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
@@ -58,18 +58,32 @@
       <p>Move the mouse over the button to open the dropdown menu.</p>
 
       <div class="rosterRow2">
-          <div class="dDown" style="text-align: center;">
+          <div class="dDown" style="text-align: center; padding-right: 50px;">
             <button class="btn btn-primary" href="./questionnaire">Create New Questionnaire</button>
             <div class="dropdown-content">
               <a href="./questionnaire">New Meeting Questionnaire</a>
               <a href="./questionnaire">New Practice Questionnaire</a>
               <a href="./questionnaire">New Lifting Questionnaire</a>
             </div>
-            </div>
           </div>
-          <br>
-          <br>
           <div class="dDown" style="text-align: center;">
+          <form action="./viewResponse" method="POST">
+            <button class="btn btn-primary">View Questionnaire Responses</button>
+            <div class="dropdown-content">
+              <a><input type="radio" value="Meeting" name="type" href="./viewResponse"
+                />Meeting Questionnaire Responses</a>
+              <a><input type="radio" value="Practice" name="type" href="./viewResponse"
+                />Practice Questionnaire Responses</a>
+              <a><input type="radio" value="Training" name="type" href="./viewResponse"
+                />Lifting Questionnaire Responses</a>
+              <a><button type="submit" href="./viewResponse">Go</button></a>
+            </div>
+        </form>
+      </div>
+      </div>
+          <br>
+          <br>
+          <!-- <div class="dDown" style="text-align: center;">
             <form action="./viewResponse" method="POST">
                 <button class="btn btn-primary">View Questionnaire Responses</button>
                 <div class="dropdown-content">
@@ -82,7 +96,7 @@
                   <a><button type="submit" href="./viewResponse">Go</button></a>
                 </div>
             </form>
-          </div>
+          </div> -->
       </div>
     </div>
   </div>
@@ -96,10 +110,10 @@
       dropdown[i].addEventListener("click", function () {
         this.classList.toggle("active");
         var dropdownContent = this.nextElementSibling;
-        if (dropdownContent.style.display === "block") {
+        if (dropdownContent.style.display === "inline-block") {
           dropdownContent.style.display = "none";
         } else {
-          dropdownContent.style.display = "block";
+          dropdownContent.style.display = "inline-block";
         }
       });
     }

@@ -306,8 +306,8 @@
                   <tfoot>
                     <tr>
                       <td colspan="2" class="links">
-                        <a id="prev" class="active" onclick="previousPlayer()">Previous Player</a>
-                        <a id="next" class="active" onclick="nextPlayer()">Next Player</a>
+                        <a id="prev" class="active" onclick="previousPlayer()"style="cursor:pointer">Previous Player</a>
+                        <a id="next" class="active" onclick="nextPlayer()"style="cursor:pointer">Next Player</a>
                         <button type="submit" id="submit" class="active" style="background-color: white; color: #a40808; border-radius: 5px; padding:2px 8px; font-weight:bold; font-size:13px;">Submit Grades</button>
                       </td>
                     </tr>
@@ -326,8 +326,9 @@
   // Cycle players
   function initGameGrade() {
     var firstPlayer = document.getElementById("p0");
+    var numPlayers = document.getElementById("numPlayers");
     window.currPlayer = 0;
-    for (j = 1; j < 10; j++) {
+    for (j = 1; j < numPlayers.value; j++) {
       var elementID = "p"+j;
       // var p = document.getElementById(elementID);
       var p = document.getElementsByName(elementID);
@@ -362,8 +363,9 @@
   }
 
   function nextPlayer() {
+    var numPlayers = document.getElementById("numPlayers");
     //this function needs to load another form with the next player's name
-    if(window.currPlayer < 10) {
+    if(window.currPlayer < numPlayers.value-1) {
       var elementID = "p"+window.currPlayer;
       var curP = document.getElementsByName(elementID);
       for (k = 0; k < curP.length; k++) {

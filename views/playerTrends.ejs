@@ -161,10 +161,12 @@
           <div class="card card-body text-center">
             <canvas id="myChart" width="300" height="300"></canvas>
       <!-- If there is information in the graph, we will create the chart. -->
-      <% if (graph) { %> 
+      <% if (graph && exercises) { %> 
         <script type="text/javascript">
         var graph = JSON.parse('<%- JSON.stringify(graph) %>');
+        var exercises = JSON.parse('<%- JSON.stringify(exercises) %>');
         console.log("Hello world");
+        console.log('exercises ' + exercises);
 
       // Our labels along the x-axis
       var input = []; //Input will be the Max session that will be on the x axis.
@@ -183,13 +185,14 @@
           e3.push(parseInt(graph[i].e3));
           e4.push(parseInt(graph[i].e4));
           console.log(input);
-          console.log(e1);
+          console.log('e1 ' + e1);
           console.log(e2);
           console.log(e3);
           console.log(e4);
       }
 
         var ctx = document.getElementById("myChart"); //Retrieving the elementID of the chart above in canvas.
+        console.log('before data');
         var myChart = new Chart(ctx, { //Styling the graph. If you need more information on styling the graph please go to the Chart.js Documentation online.
           type: 'line',
           data: {
@@ -231,7 +234,7 @@
                 responsive: true
             }
         });
-
+        console.log('after data');
         </script>
       <% } %>
       <div class="row mt-5">

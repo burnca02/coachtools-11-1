@@ -5,35 +5,11 @@
   .cardsK {order: 2;}
 }
 </style>
-<link
-  rel="stylesheet"
-  href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/cyborg/bootstrap.min.css"
-/>
+<!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/cyborg/bootstrap.min.css"/> -->
 <div class="bigContainer">
-  <!-- header -->
-  <!-- <nav class="topnav" id="myTopnav">
-    <a href="javascript:void(0);" class="icon threeLines" onclick="resizeDropdown2()">
-      <i class="fa fa-bars"></i>
-    </a>
-    <div class="topnavChild1" id="logo">
-      <img src="images/coachToolsLogo.png" alt="CoachTools" style="width: 110px;"/>
-    </div>
-    <div class="topnavChild2">
-      <a id="datetime"></a>
-      <a ><%= name %></a>
-      <a class="logout" onclick="window.location.href='/users/logout'">Logout</a>
-    </div>
-  </nav> -->
   <%- include("partials/topnav") %>
   <div class="bodyContainer" style="margin-top: 3.45rem !important;">
-    <!-- Side navigation  resizeDropdown2()--> 
-    <!-- <nav class="sidenav" id="mySidenav">
-      <a href="./playerHome">Home</a>
-      <a href="/player/playerGrades">My Grades</a>
-      <a href="/player/playerTrends">Max Trends</a>
-    </nav> -->
     <%- include("partials/sidenavPlayer") %>
-
     <ul class="cardsK">
       <li class="cards__itemK">
         <div class="cardK">
@@ -66,15 +42,6 @@
         </div>
       </li>
     </ul>
-
-    <!-- <div class="middleText">
-      Hello World
-    </div>
-
-    <div class="rightText">
-      Hello World 2
-    </div> -->
-
   </div>
 </div>
 <script>
@@ -97,67 +64,67 @@
   //   $("#qtest").load("viewQuestionnaire.ejs");
   // });
 
-  var util = {
-  mobileMenu() {
-    $("#nav").toggleClass("nav-visible");
-  },
-  windowResize() {
-    if ($(window).width() > 800) {
-      $("#nav").removeClass("nav-visible");
-    }
-  },
-  scrollEvent() {
-    var scrollPosition = $(document).scrollTop();
+//   var util = {
+//   mobileMenu() {
+//     $("#nav").toggleClass("nav-visible");
+//   },
+//   windowResize() {
+//     if ($(window).width() > 800) {
+//       $("#nav").removeClass("nav-visible");
+//     }
+//   },
+//   scrollEvent() {
+//     var scrollPosition = $(document).scrollTop();
     
-    $.each(util.scrollMenuIds, function(i) {
-      var link = util.scrollMenuIds[i],
-          container = $(link).attr("href"),
-          containerOffset = $(container).offset().top,
-          containerHeight = $(container).outerHeight(),
-          containerBottom = containerOffset + containerHeight;
+//     $.each(util.scrollMenuIds, function(i) {
+//       var link = util.scrollMenuIds[i],
+//           container = $(link).attr("href"),
+//           containerOffset = $(container).offset().top,
+//           containerHeight = $(container).outerHeight(),
+//           containerBottom = containerOffset + containerHeight;
 
-      if (scrollPosition < containerBottom - 20 && scrollPosition >= containerOffset - 20) {
-        $(link).addClass("active");
-      } else {
-        $(link).removeClass("active");
-      }
-    });
-  }
-};
+//       if (scrollPosition < containerBottom - 20 && scrollPosition >= containerOffset - 20) {
+//         $(link).addClass("active");
+//       } else {
+//         $(link).removeClass("active");
+//       }
+//     });
+//   }
+// };
 
-$(document).ready(function() {
+// $(document).ready(function() {
   
-  util.scrollMenuIds = $("a.nav-link[href]");
-  $("#menu").click(util.mobileMenu);
-  $(window).resize(util.windowResize);
-  $(document).scroll(util.scrollEvent);
+//   util.scrollMenuIds = $("a.nav-link[href]");
+//   $("#menu").click(util.mobileMenu);
+//   $(window).resize(util.windowResize);
+//   $(document).scroll(util.scrollEvent);
   
-});
+// });
 
-function resizeDropdown() {
-  var x = document.getElementById("myTopnav");
-  if (x.className === "topnav") {
-    x.className += " responsive";
-  } else {
-    x.className = "topnav";
-  }
-}
+// function resizeDropdown() {
+//   var x = document.getElementById("myTopnav");
+//   if (x.className === "topnav") {
+//     x.className += " responsive";
+//   } else {
+//     x.className = "topnav";
+//   }
+// }
 
-function resizeDropdown2() {
-  var x = document.getElementById("mySidenav");
-  if (x.className === "sidenav") {
-    x.className += " responsive";
-  } else {
-    x.className = "sidenav";
-  }
-}
-  var dt = new Date();
-  document.getElementById("datetime").innerHTML =
-    ("0" + (dt.getMonth() + 1)).slice(-2) +
-    "/" +
-    ("0" + dt.getDate()).slice(-2) +
-    "/" +
-    dt.getFullYear();
+// function resizeDropdown2() {
+//   var x = document.getElementById("mySidenav");
+//   if (x.className === "sidenav") {
+//     x.className += " responsive";
+//   } else {
+//     x.className = "sidenav";
+//   }
+// }
+  // var dt = new Date();
+  // document.getElementById("datetime").innerHTML =
+  //   ("0" + (dt.getMonth() + 1)).slice(-2) +
+  //   "/" +
+  //   ("0" + dt.getDate()).slice(-2) +
+  //   "/" +
+  //   dt.getFullYear();
 </script>
 
 

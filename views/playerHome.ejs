@@ -2,46 +2,49 @@
   @media all and (min-width: 600px) {
   .bodyContainer {flex: 2 0px;}
   .sidenav {order: 1;}
-  .cardsK {order: 2;}
+  /* .cardsK {order: 2;} */
+  .chBody {order: 2;}
 }
 </style>
 <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/cyborg/bootstrap.min.css"/> -->
 <div class="bigContainer">
   <%- include("partials/topnav") %>
-  <div class="bodyContainer" style="margin-top: 3.45rem !important;">
+  <div class="bodyContainer">
     <%- include("partials/sidenavPlayer") %>
-    <ul class="cardsK">
-      <li class="cards__itemK">
-        <div class="cardK">
-          <div class="card__image card__image--fence"></div>
-          <div class="card__content">
-            <div class="card__title">Meeting</div>
-            <!-- <p class="card__text"></p> -->
-            <a class="btn2 btn--block card__btn" href="/viewMQuestionnaire">View Meeting Questionnaire</a>
+    <div class="chBody">
+      <ul class="cardsK">
+        <li class="cards__itemK">
+          <div class="cardK">
+            <div class="card__image card__image--fence"></div>
+            <div class="card__content">
+              <div class="card__title">Meeting</div>
+              <!-- <p class="card__text"></p> -->
+              <a class="btn2 btn--block card__btn" href="/viewMQuestionnaire">View Meeting Questionnaire</a>
+            </div>
           </div>
-        </div>
-      </li>
-      <li class="cards__itemK">
-        <div class="cardK">
-          <div class="card__image card__image--river"></div>
-          <div class="card__content">
-            <div class="card__title">Training</div>
-            <!-- <p class="card__text">This defines the ability for a flex item to grow if necessary. It accepts a unitless value that serves as a proportion. It dictates what amount of the available space inside the flex container the item should take up.</p> -->
-            <a class="btn2 btn--block card__btn" href="/viewTQuestionnaire">View Training Questionnaire</a>
+        </li>
+        <li class="cards__itemK">
+          <div class="cardK">
+            <div class="card__image card__image--river"></div>
+            <div class="card__content">
+              <div class="card__title">Training</div>
+              <!-- <p class="card__text">This defines the ability for a flex item to grow if necessary. It accepts a unitless value that serves as a proportion. It dictates what amount of the available space inside the flex container the item should take up.</p> -->
+              <a class="btn2 btn--block card__btn" href="/viewTQuestionnaire">View Training Questionnaire</a>
+            </div>
           </div>
-        </div>
-      </li>
-      <li class="cards__itemK">
-        <div class="cardK">
-          <div class="card__image card__image--record"></div>
-          <div class="card__content">
-            <div class="card__title">Practice</div>
-            <!-- <p class="card__text">This defines the ability for a flex item to shrink if necessary. Negative numbers are invalid.</p> -->
-            <a class="btn2 btn--block card__btn" href="/viewPQuestionnaire">View Practice Questionnaire</a>
+        </li>
+        <li class="cards__itemK">
+          <div class="cardK">
+            <div class="card__image card__image--record"></div>
+            <div class="card__content">
+              <div class="card__title">Practice</div>
+              <!-- <p class="card__text">This defines the ability for a flex item to shrink if necessary. Negative numbers are invalid.</p> -->
+              <a class="btn2 btn--block card__btn" href="/viewPQuestionnaire">View Practice Questionnaire</a>
+            </div>
           </div>
-        </div>
-      </li>
-    </ul>
+        </li>
+      </ul>
+    </div>
   </div>
 </div>
 <script>

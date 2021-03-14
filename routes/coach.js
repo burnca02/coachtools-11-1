@@ -510,6 +510,7 @@ router.get('/position', ensureAuthenticated, async(req, res) => {
                     }
                   }
                 res.render('position', {
+                    pos : 'QB',
                     posPlayers : posPlayers,
                     gameGrades : grades,
                     practiceStats : stats,
@@ -560,6 +561,7 @@ router.post('/position', ensureAuthenticated, async(req, res) => {
                     }
                   }
                 res.render('position', {
+                    pos : pos,
                     posPlayers : posPlayers,
                     gameGrades : grades,
                     practiceStats : stats,
@@ -677,8 +679,29 @@ router.post('/table', ensureAuthenticated, (req,res) =>
     const type = req.body.type;
     // console.log("type: " + type);
     // console.log("Did we get here");
-    if (type != 'gy' && type != 'gyd' && type != 'full') {
+    if (type != 'gy' && type != 'gyd' && type != 'full' && type != 'name' && type != 'pos'
+              && type != 'rank' && type != 'num') {
       Roster.find( {"Pos" : type, "School" :req.session.school })
+        .then(results => {
+          res.render('roster', {players: results,
+            name : req.session.name,
+            school: req.session.school})
+        })
+        .catch(error => console.error(error))
+    }
+    else if( type == 'name')
+    {
+      Roster.find({ "FullName": { "$exists": true }, "School" :req.session.school }).sort({'FullName': 1})
+        .then(results => {
+          res.render('roster', {players: results,
+            name : req.session.name,
+            school: req.session.school})
+        })
+        .catch(error => console.error(error))
+    }
+    else if( type == 'pos')
+    {
+      Roster.find({ "Pos": { "$exists": true }, "School" :req.session.school }).sort({'Pos': 1})
         .then(results => {
           res.render('roster', {players: results,
             name : req.session.name,
@@ -699,6 +722,26 @@ router.post('/table', ensureAuthenticated, (req,res) =>
     else if(type == 'gyd') //Will sort by grad year descending
     {
       Roster.find({ "GradYear": { "$exists": true }, "School" :req.session.school }).sort({'GradYear': -1})
+        .then(results => {
+          res.render('roster', {players: results,
+            name : req.session.name,
+            school: req.session.school})
+        })
+        .catch(error => console.error(error))
+    }
+    else if( type == 'rank')
+    {
+      Roster.find({ "Rank": { "$exists": true }, "School" :req.session.school }).sort({'Rank': 1})
+        .then(results => {
+          res.render('roster', {players: results,
+            name : req.session.name,
+            school: req.session.school})
+        })
+        .catch(error => console.error(error))
+    }
+    else if( type == 'num')
+    {
+      Roster.find({ "Number": { "$exists": true }, "School" :req.session.school }).sort({'Number': 1})
         .then(results => {
           res.render('roster', {players: results,
             name : req.session.name,

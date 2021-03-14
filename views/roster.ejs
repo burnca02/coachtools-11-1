@@ -12,6 +12,15 @@
       order: 2;
     }
   }
+  .table-btn {
+    background: none;
+    color: inherit;
+    border: none;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
+  }
 </style>
 <link rel="stylesheet" type="text/css" href="css/style.css"/>
 <div class="bigContainer">
@@ -22,7 +31,7 @@
 
     <div class="rBody">
       <div class="rosterRow">
-        <div class="btn-group" style="padding: 10px">
+        <!-- <div class="btn-group" style="padding: 10px">
           <button
             class="btn btn-primary dropdown-toggle"
             data-toggle="dropdown"
@@ -34,7 +43,7 @@
             <a class="dropdown-item"><%= school %> 2019</a>
             <a class="dropdown-item"><%= school %> 2020</a>
           </div>
-        </div>
+        </div> -->
         <div
           class="form-group"
           role="group"
@@ -42,7 +51,7 @@
         >
           <form action="/coach/table" method="POST">
             <!-- <button type="button" class="btn btn-primary">Sort By</button> -->
-            <div class="dropdown" role="group" style="padding-top: 10px;">
+            <div class="dropdown" role="group" style="padding: 10px;">
               <button
                 id="btnGroupDrop1"
                 type="button"
@@ -62,22 +71,6 @@
                 <% for (var i = 0; i < allPlayers.length; i++) { %>
                   <button class="dropdown-item" type="submit" name="type" value="<%- allPlayers[i] %>">View <%= allPlayers[i] %>s</button>
                 <% } %>
-                <button
-                  class="dropdown-item"
-                  type="submit"
-                  name="type"
-                  value="gy"
-                >
-                  Sort By Graduation Year (Ascending)
-                </button>
-                <button
-                  class="dropdown-item"
-                  type="submit"
-                  name="type"
-                  value="gyd"
-                >
-                  Sort By Graduation Year (Descending)
-                </button>
               </div>
             </div>
           </form>
@@ -107,11 +100,13 @@
       <table class="table table-hover" style="padding: 500px">
         <thead>
           <tr class="table-dark">
-            <th scope="col">Name</th>
-            <th scope="col">Position</th>
-            <th scope="col">Graduation Year</th>
-            <th scope="col">Rank</th>
-            <th scope="col">Number</th>
+            <form action="/coach/table" method="POST">
+              <th scope="col"><button type="submit" name="type" value="name" class="table-btn">Name</button></th>
+              <th scope="col"><button type="submit" name="type" value="pos" class="table-btn">Position</button></th>
+              <th scope="col"><button type="submit" name="type" value="gy" class="table-btn">Graduation Year</button></th>
+              <th scope="col"><button type="submit" name="type" value="rank" class="table-btn">Rank</button></th>
+              <th scope="col"><button type="submit" name="type" value="num" class="table-btn">Number</button></th>
+            </form>
           </tr>
         </thead>
         <tbody>

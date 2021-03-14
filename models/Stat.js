@@ -12,6 +12,10 @@ const mongoose = require('mongoose');
         type: String,
         required: true
     },
+    pos: {
+        type: String,
+        required: true
+    },
     email: {
          type: String,
          required: true

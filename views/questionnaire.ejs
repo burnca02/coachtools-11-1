@@ -9,16 +9,20 @@
             <label for="email"><strong>Participants</strong></label>
               <div>
                 <div>
-                  <input type="radio" name="participants" id="all" value="all" required>
+                  <input type="radio" name="participants" id="all" value="all"onclick="javascript:yesnoCheck();">
                   <label for="all">All Players</label>
                 </div>
                 <div>
-                  <input type="radio" name="participants" id="bypos" value="bypos">
+                  <input type="radio" name="participants" id="bypos" value="bypos" onclick="javascript:yesnoCheck();">
                   <label for="bypos">By Position</label>
-                
-                  <div class="reveal-if-active">
+                  <div id="whichpos" onload="javascript:onLoad();">
                     <label for="whichpos">Which Position?</label>
-                    <input type="text" id="whichpos" name="whichpos" class="require-if-active" data-require-pair="#bypos">
+                    <input list="positions" name="whichpos" id="whichpos">
+                    <datalist id="positions">
+                      <% for(var i = 0; i < positions.length; i++) { %>
+                      <option value="<%- positions[i] %>">
+                      <% } %>
+                    </datalist>
                   </div>
                 </div>
               </div>
@@ -27,6 +31,9 @@
             <input type="radio" id="meeting" name="type" value="Meeting" autocomplete="off"><label for="gburg">Meeting</label><br>
             <input type="radio" id="practice" name="type" value="Practice" autocomplete="off"><label for="albright">Practice</label><br>
             <input type="radio" id="training" name="type" value="Training" autocomplete="off"><label for="albright">Lifting</label><br>
+          </div>
+          <div>
+            <h4>All Questionnaires will be graded on a yes/no scale.</h4>
           </div>
           <div class="form-group">
             <label for="q1"><strong>Question 1</strong></label>
@@ -52,3 +59,19 @@
       </div>
     </div>
   </div>
+
+  <script type="text/javascript">
+    function onLoad(){
+      console.log("inside onload function");
+      document.getElementById('whichpos').style.display = 'none';
+    }
+    function yesnoCheck(){
+      console.log("inside check function");
+      if (document.getElementById('bypos').checked) {
+          document.getElementById('whichpos').style.display = 'block';
+      }
+      else {
+        document.getElementById('whichpos').style.display = 'none';
+      }
+    }
+  </script>

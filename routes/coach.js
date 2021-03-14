@@ -50,6 +50,13 @@ router.get('/playbookUpload', ensureAuthenticated, (req, res) => {
     name: req.user.name
   });
 }); 
+
+router.get('/viewPDF', ensureAuthenticated, (req, res) => {
+  res.render('viewPDF', {
+    name: req.user.name
+  });
+}); 
+
 router.get('/playerFeedback', ensureAuthenticated, (req, res) => {
   res.render('playerFeedback', {
     name: req.user.name

@@ -192,4 +192,5 @@ router.get('/playerHome', ensureAuthenticated, (req, res) =>
         name: req.user.name //pass the name that was entered into the database to dashboard
     })
 );
+  
 module.exports = router;

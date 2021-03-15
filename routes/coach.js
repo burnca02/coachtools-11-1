@@ -99,6 +99,28 @@ playerFeedback screem.
 */
 router.post('/submitquest', async(req,res) => {
   const { participants, whichpos, type, q1, q2, q3, timeout} = req.body;
+  let errors = [];
+  if(q1 == '' || q2 == '' || q3 == ''){
+    errors.push({msg: "Please enter 3 questions"});
+  }
+  if(errors.length > 0){
+    Roster.find({school: req.user.school})
+    .then(roster => {
+      const positions = [];
+      for(var i = 0; i < roster.length; i++){
+        if(!(positions.includes(roster[i].Pos))){ //adds only unique positions to array, no duplicates
+          positions.push(roster[i].Pos);
+          console.log('added' + positions[i]);
+        }
+      }
+      console.log('positions COACH.js ' + positions);
+      res.render('questionnaire', { //need to send all stats data here too
+            errors,
+            'positions': positions,
+            'name': req.user.name
+      });
+    }).catch(err => console.log(err))
+  }
       var participantsArr = [];
       console.log('inside submit quest');
       if(participants == 'all'){
@@ -171,10 +193,10 @@ router.post('/viewResponse', ensureAuthenticated, async(req, res) => {
         quests[i] = quest.questions[i];
       });
     }
-    Roster.findOne({email: email})
-      .then(player => {
-        name = player.FullName;
-      });
+    // Roster.findOne({email: email})
+    //   .then(player => {
+    //     name = player.FullName;
+    //   });
     res.render('viewResponse', {
         'type': type,
         'name': req.session.name,

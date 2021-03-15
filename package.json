@@ -25,6 +25,7 @@
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
     "react-image-gallery": "^1.0.8",
+    "serve": "^11.2.0",
     "serve-index": "^1.9.1"
   },
   "devDependencies": {

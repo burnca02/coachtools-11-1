@@ -137,6 +137,11 @@ method takes the questionnaire type as input. The queries below find all complet
 questionnaire. Currently the method is not pulling the questions from the Questionnaire database, only
 the scores from the CompletedQuestionnaire database.
 */
+router.get('/viewResponse', ensureAuthenticated, (req, res) => {
+  res.render('coachHome', {
+    name: req.user.name
+  });
+}); 
 router.post('/viewResponse', ensureAuthenticated, async(req, res) => {
   const {type} = req.body;
   await CompleteQuest.find({type: type, school: req.session.school}) //.sort({email: 1})

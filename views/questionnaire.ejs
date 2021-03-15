@@ -13,9 +13,9 @@
                   <label for="all">All Players</label>
                 </div>
                 <div>
-                  <input type="radio" name="participants" id="bypos" value="bypos" onclick="javascript:yesnoCheck();">
+                  <input type="radio" name="participants" id="bypos" value="bypos" onclick="javascript:yesnoCheck();" checked="checked">
                   <label for="bypos">By Position</label>
-                  <div id="whichpos" onload="javascript:onLoad();">
+                  <div id="whichpos">
                     <label for="whichpos">Which Position?</label>
                     <input list="positions" name="whichpos" id="whichpos">
                     <datalist id="positions">
@@ -32,7 +32,7 @@
             <input type="radio" id="practice" name="type" value="Practice" autocomplete="off"><label for="albright">Practice</label><br>
             <input type="radio" id="training" name="type" value="Training" autocomplete="off"><label for="albright">Lifting</label><br>
           </div>
-          <div>
+          <div style="justify-content: center; padding-top: 40px;">
             <h4>All Questionnaires will be graded on a yes/no scale.</h4>
           </div>
           <div class="form-group">

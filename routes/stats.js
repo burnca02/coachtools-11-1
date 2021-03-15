@@ -403,7 +403,27 @@ router.post('/addExercises', (req, res) => {
   console.log(newExercise);
   newExercise.save(); //not working 
   console.log("exercises saved");
-  res.redirect('/coachHome');
+  res.redirect('/practiceTrainingStats');
+});
+/*
+This function is called when a coach adds plays on submitPlays.ejs
+*/
+router.post('/addPlays', (req, res) => {
+  const {p1, p2, p3, p4} = req.body;
+  Play.findOneAndUpdate({school: req.session.school},
+    {
+      school : req.user.school, //The most recent game grade.
+      plays: [p1,p2,p3,p4]
+    }, {new:true, upsert: true} 
+    ,function(err,doc)
+    {
+      if(err)
+        return console.log(err);
+      else
+        console.log("plays saved");
+        res.redirect('/coach/gameGrade');
+      console.log(doc);
+    });
 });
 /*
 This is the get method for dispGameGrade.ejs. The query below finds the intangibles to populate the

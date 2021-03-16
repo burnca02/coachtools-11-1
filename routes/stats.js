@@ -30,7 +30,9 @@ router.get('/dispPracticeStats', ensureAuthenticated, (req, res) =>
   .then(intangibles => {
   const positions = [];
   for(var i = 0; i < intangibles.length; i++){
-    positions.push(intangibles[i].pos);
+    if(!(positions.includes(intangibles[i].pos))){
+      positions.push(intangibles[i].pos);
+    }
   }
   res.render('practiceStats', { //need to send all stats data here too
         'positions': positions,
@@ -434,7 +436,9 @@ router.get('/dispGameGrade', ensureAuthenticated, async (req, res) =>
   .then(intangibles => {
   const positions = [];
   for(var i = 0; i < intangibles.length; i++){
-    positions.push(intangibles[i].pos);
+    if(!(positions.includes(intangibles[i].pos))){
+      positions.push(intangibles[i].pos);
+    }
   }
   console.log("GET " + positions);
     res.render('gameGrade', { //need to send all stats data here too
@@ -464,6 +468,7 @@ router.post('/dispGameGrade', async(req, res) => {
           positions.push(intangibles[i].pos);
         }
       }
+      console.log("positions in post " + positions);
       if(players.length == 0){
         res.render('gameGrade');
       } else {

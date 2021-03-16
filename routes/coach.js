@@ -555,6 +555,59 @@ router.get('/position', ensureAuthenticated, async(req, res) => {
             }).catch(error => console.error(error))
 })
 
+//Error with reloading here - the get function cant get the current position
+//Can we store a session variable or something?
+router.get('/posSubmitRank', ensureAuthenticated, async(req, res) => {
+  // console.log("in coach call of position")
+  await Roster.find({ "Pos": { "$exists": true}, "School" :req.session.school, "Pos": 'QB'}).sort({'Pos': 1, 'Rank' : 1})
+            .then(posPlayers => {
+              var emails = [];
+              for (var i = 0; i < posPlayers.length; i++) {
+                emails.push(posPlayers[i].Email)
+              }
+                GameGrade.find({'email': {"$exists":true}, 'email': emails}).sort({$natural:-1})
+                .then(grade => {
+                  var grades = [];
+                  for (var i = 0; i < posPlayers.length; i++) {
+                    var f = false
+                    for (var j = 0; j < grade.length; j++) {
+                      if (posPlayers[i].Email == grade[j].email) {
+                        grades.push(grade[j].grade)
+                        f = true
+                      }
+                    }
+                    if (f == false) {
+                      grades.push('N/A')
+                    }
+                  }
+                  PracticeStat.find({'email': {"$exists":true}, 'email': emails}).sort({$natural:-1})
+                .then(stat => {
+                  var stats = [];
+                  for (var i = 0; i < posPlayers.length; i++) {
+                    var f = false
+                    for (var j = 0; j < stat.length; j++) {
+                      if (posPlayers[i].Email == stat[j].email) {
+                        stats.push(stat[j].grade)
+                        f = true
+                        break;
+                      }
+                    }
+                    if (f == false) {
+                      stats.push('N/A')
+                    }
+                  }
+                res.render('position', {
+                    pos : 'QB',
+                    posPlayers : posPlayers,
+                    gameGrades : grades,
+                    practiceStats : stats,
+                    name: req.session.name,
+                    school: req.session.school})
+                  }).catch(error => console.error(error))
+                }).catch(error => console.error(error))
+            }).catch(error => console.error(error))
+})
+
 router.post('/position', ensureAuthenticated, async(req, res) => {
   const pos = req.body.pos
   await Roster.find({ "Pos": { "$exists": true}, "School" :req.session.school, "Pos": pos}).sort({'Pos': 1, 'Rank' : 1})
@@ -665,6 +718,66 @@ router.post('/submitRank', ensureAuthenticated, async (req, res) => {
           }).catch(error => console.error(error))
       }).catch(error => console.error(error))
   }).catch(error => console.error(error))
+});
+
+router.post('/posSubmitRank', ensureAuthenticated, async (req, res) => {
+  const pos = req.body.pos
+  // console.log("pos in posSubmit: " + pos)
+  const rank = req.body.rank
+  // console.log("ranks in posSubmit: " + rank)
+  const pNames = req.body.playerNames
+  // console.log("pNames in posSubmit: " + pNames)
+  for (var i = 0; i < rank.length; i++) {
+    let doc = await Roster.findOneAndUpdate({FullName : pNames[i], School : req.session.school}, {Rank : rank[i]}, {new:true, upsert: true});
+    doc.save();
+  }
+  await Roster.find({ "Pos": { "$exists": true}, "School" :req.session.school, "Pos": pos}).sort({'Pos': 1, 'Rank' : 1})
+            .then(posPlayers => {
+              var emails = [];
+              for (var i = 0; i < posPlayers.length; i++) {
+                emails.push(posPlayers[i].Email)
+              }
+                GameGrade.find({'email': {"$exists":true}, 'email': emails}).sort({$natural:-1})
+                .then(grade => {
+                  var grades = [];
+                  for (var i = 0; i < posPlayers.length; i++) {
+                    var f = false
+                    for (var j = 0; j < grade.length; j++) {
+                      if (posPlayers[i].Email == grade[j].email) {
+                        grades.push(grade[j].grade)
+                        f = true
+                      }
+                    }
+                    if (f == false) {
+                      grades.push('N/A')
+                    }
+                  }
+                  PracticeStat.find({'email': {"$exists":true}, 'email': emails}).sort({$natural:-1})
+                .then(stat => {
+                  var stats = [];
+                  for (var i = 0; i < posPlayers.length; i++) {
+                    var f = false
+                    for (var j = 0; j < stat.length; j++) {
+                      if (posPlayers[i].Email == stat[j].email) {
+                        stats.push(stat[j].grade)
+                        f = true
+                        break;
+                      }
+                    }
+                    if (f == false) {
+                      stats.push('N/A')
+                    }
+                  }
+                res.render('position', {
+                    pos : pos,
+                    posPlayers : posPlayers,
+                    gameGrades : grades,
+                    practiceStats : stats,
+                    name: req.session.name,
+                    school: req.session.school})
+                  }).catch(error => console.error(error))
+                }).catch(error => console.error(error))
+            }).catch(error => console.error(error))
 });
 
 /*

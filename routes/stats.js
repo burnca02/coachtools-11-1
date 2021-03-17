@@ -30,7 +30,9 @@ router.get('/dispPracticeStats', ensureAuthenticated, (req, res) =>
   .then(intangibles => {
   const positions = [];
   for(var i = 0; i < intangibles.length; i++){
-    positions.push(intangibles[i].pos);
+    if(!(positions.includes(intangibles[i].pos))){
+      positions.push(intangibles[i].pos);
+    }
   }
   res.render('practiceStats', { //need to send all stats data here too
         'positions': positions,
@@ -380,50 +382,92 @@ then saved to the Intangibles database.
 router.post('/addIntang', (req, res) => {
   console.log("in post method");
   const {pos, scale, i1, i2, i3, i4} = req.body;
-  const ints = [i1, i2, i3, i4];
-  console.log("intangibles added");
-  const newIntangible = new Intangibles({
-    school: req.user.school,
-    pos,
-    scale,
-    ints
-  });
-  newIntangible.save();
-  res.redirect('/coach/submitIntangibles');
+  let errors = [];
+  if(i1 == '' || i2 == '' || i3 == '' || i4 == ''){
+    errors.push({msg: "Please Enter 4 Intangibles"});
+    Roster.find({School: req.user.school})
+    .then(players => {
+    console.log(players[0].Pos);
+    const positions = [];
+    for(var i = 0; i < players.length; i++){
+      if(!(positions.includes(players[i].Pos))){ //adds only unique positions to array, no duplicates
+        //if(typeof(players[i].Pos) !== 'undefined'){
+          positions.push(players[i].Pos);
+      }
+    }
+    console.log("all positions " + positions);
+    res.render('submitIntangibles', {
+        errors,
+        positions: positions 
+      });
+    }).catch(err => console.log(err))
+  }
+  else{
+    const ints = [i1, i2, i3, i4];
+    console.log("intangibles added");
+    const newIntangible = new Intangibles({
+      school: req.user.school,
+      pos,
+      scale,
+      ints
+    });
+    newIntangible.save();
+    res.redirect('/coach/submitIntangibles');
+  }
 });
 /*
 This function is called when a coach adds exercises on submitExercises.ejs
 */
 router.post('/addExercises', (req, res) => {
   const {e1, e2, e3, e4} = req.body;
-  const newExercise = new Exercise({
-    school: req.user.school,
-    exercises: [e1, e2, e3, e4]
-  });
-  console.log(newExercise);
-  newExercise.save(); //not working 
-  console.log("exercises saved");
-  res.redirect('/practiceTrainingStats');
+  let errors =[];
+  if(e1 == '' || e2 == '' || e3 == '' || e4 == ''){
+    errors.push({msg: "Please Enter 4 Exercises"});
+    res.render('submitExercises', {
+      errors,
+      name: req.user.name //pass the name that was entered into the database to dashboard
+    })
+  }
+  else{
+    const newExercise = new Exercise({
+      school: req.user.school,
+      exercises: [e1, e2, e3, e4]
+    });
+    console.log(newExercise);
+    newExercise.save(); //not working 
+    console.log("exercises saved");
+    res.redirect('/coach/practiceTrainingStats');
+  } 
 });
 /*
 This function is called when a coach adds plays on submitPlays.ejs
 */
 router.post('/addPlays', (req, res) => {
   const {p1, p2, p3, p4} = req.body;
-  Play.findOneAndUpdate({school: req.session.school},
-    {
-      school : req.user.school, //The most recent game grade.
-      plays: [p1,p2,p3,p4]
-    }, {new:true, upsert: true} 
-    ,function(err,doc)
-    {
-      if(err)
-        return console.log(err);
-      else
-        console.log("plays saved");
-        res.redirect('/coach/gameGrade');
-      console.log(doc);
-    });
+  let errors =[];
+  if(p1 == '' || p2 == '' || p3 == '' || p4 == ''){
+    errors.push({msg: "Please Enter 4 Plays"});
+    res.render('submitPlays', {
+      errors,
+      name: req.user.name //pass the name that was entered into the database to dashboard
+    })
+  }
+  else{
+    Play.findOneAndUpdate({school: req.session.school},
+      {
+        school : req.user.school, //The most recent game grade.
+        plays: [p1,p2,p3,p4]
+      }, {new:true, upsert: true} 
+      ,function(err,doc)
+      {
+        if(err)
+          return console.log(err);
+        else
+          console.log("plays saved");
+          res.redirect('/coach/gameGrade');
+        console.log(doc);
+      });
+  }
 });
 /*
 This is the get method for dispGameGrade.ejs. The query below finds the intangibles to populate the
@@ -434,7 +478,9 @@ router.get('/dispGameGrade', ensureAuthenticated, async (req, res) =>
   .then(intangibles => {
   const positions = [];
   for(var i = 0; i < intangibles.length; i++){
-    positions.push(intangibles[i].pos);
+    if(!(positions.includes(intangibles[i].pos))){
+      positions.push(intangibles[i].pos);
+    }
   }
   console.log("GET " + positions);
     res.render('gameGrade', { //need to send all stats data here too
@@ -464,6 +510,7 @@ router.post('/dispGameGrade', async(req, res) => {
           positions.push(intangibles[i].pos);
         }
       }
+      console.log("positions in post " + positions);
       if(players.length == 0){
         res.render('gameGrade');
       } else {

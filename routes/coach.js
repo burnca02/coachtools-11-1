@@ -20,6 +20,7 @@ const Intangibles = require('../models/Intangibles');
 const Exercises= require('../models/Exercise');
 const PracticeStat = require('../models/PracticeStat');
 const GameGrade = require('../models/GameGrade');
+const Exercise = require('../models/Exercise');
 
 //router.use(multer({dest:'/uploads'}).single('playbook'));
 
@@ -210,8 +211,16 @@ router.post('/viewResponse', ensureAuthenticated, async(req, res) => {
 This method is the get for the practice training stats page. The query below pulls the most recent stats
 for each player. This data populates the table on practiceTrainingStats.ejs
 */
-router.get('/practiceTrainingStats', ensureAuthenticated, (req, res) => 
-  Stat.find({}).sort({$natural:-1})
+router.get('/practiceTrainingStats', ensureAuthenticated, (req, res) => {
+  const school = req.user.school;
+  Exercise.findOne({school: school}).sort({$natural:-1})
+  .then(exercise => {
+    console.log("exercise " + exercise);
+    if(exercise == null){
+      res.redirect('/coach/submitExercises');
+    }
+  }),
+  Stat.find({school: school}).sort({$natural:-1})
   .then(stats => {
     Intangibles.find({school: req.user.school})
     .then(intangibles => {
@@ -233,9 +242,9 @@ router.get('/practiceTrainingStats', ensureAuthenticated, (req, res) =>
     })
   })
   })
-);
+});
 /* Post method to change position group */
-router.get('/practiceTrainingStats', ensureAuthenticated, (req, res) => 
+router.post('/practiceTrainingStats', ensureAuthenticated, (req, res) => 
   Stat.find({}).sort({$natural:-1})
   .then(stats => {
     Exercises.findOne({school: req.session.school}).sort({$natural:-1})

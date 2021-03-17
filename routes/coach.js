@@ -8,7 +8,8 @@ const csv = require('fast-csv');
 const upload = require('../upload');
 const mongoose = require('mongoose');
 const fs = require("fs");
-var serveIndex = require('serve-index')
+var serveIndex = require('serve-index');
+const path = require('path');
 const MongoClient = require('mongodb').MongoClient
 const uri = "mongodb+srv://hernri01:Capstone2020@cluster0.3ln2m.mongodb.net/test?authSource=admin&replicaSet=atlas-9q0n4l-shard-0&readPreference=primary&appname=MongoDB%20Compass&ssl=true&useUnifiedTopology=true";
 
@@ -20,9 +21,15 @@ const Intangibles = require('../models/Intangibles');
 const Exercises= require('../models/Exercise');
 const PracticeStat = require('../models/PracticeStat');
 const GameGrade = require('../models/GameGrade');
+const temp = require('temp');
 
 //router.use(multer({dest:'/uploads'}).single('playbook'));
-
+const tmp = require('tmp');
+ 
+const tmpobj = tmp.dirSync();
+console.log('Dir: ', tmpobj.name);
+// Manual cleanup
+tmpobj.removeCallback();
 
 router.use(express.static("public"));
 
@@ -40,6 +47,12 @@ mongoose.connect(db, { useNewUrlParser: true ,useUnifiedTopology: true, useFindA
 
 router.get('/template', template.get);
 router.post('/upload', upload.post);
+
+router.get('/pbUpload2', ensureAuthenticated, (req, res) => {
+  res.render('pbUpload2', {
+    school: req.session.school
+  });
+}); 
 //upload function
 router.get('/upload', ensureAuthenticated, (req, res) => 
   res.render('coachHome', {
@@ -778,12 +791,13 @@ router.post('/table', ensureAuthenticated, (req,res) =>
 //Upload playbook
 router.post('/uploadPlaybook', function(req,res)
 {
-  var tmp_path = req.file.path;
+  var tmp_path = req.files.file;
   console.log(tmp_path);
 
   /** The original name of the uploaded file
       stored in the variable "originalname". **/
-  var target_path = 'uploads/' + req.file.originalname;
+  console.log(req.session.school);
+  var target_path = 'public/uploads/' +req.session.school + ' Playbook.pdf';
   console.log(target_path);
 
   /** A better way to copy the uploaded file. **/
@@ -791,7 +805,9 @@ router.post('/uploadPlaybook', function(req,res)
   var dest = fs.createWriteStream(target_path);
   src.pipe(dest);
   src.on('end', function() { res.redirect('/coach/playbookUpload'); });
-  src.on('error', function(err) { res.render('playbookUpload'); })
+  src.on('error', function(err) { res.render('playbookUpload', {
+    name: req.user.name
+  }); })
 });
 
 module.exports = router;

@@ -89,6 +89,7 @@
               type="submit"
               class="btn btn-primary dropdown-toggle"
               value="Upload Roster"
+              disabled
             />
           </form>
           <p>
@@ -158,3 +159,19 @@
     });
   }
 </script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script><script type="text/javascript">
+  $(document).ready(
+      function(){
+          $('input:file').change(
+              function(){
+                  if ($(this).val()) {
+                      $('input:submit').attr('disabled',false);
+                      // or, as has been pointed out elsewhere:
+                      // $('input:submit').removeAttr('disabled'); 
+                  } 
+              }
+              );
+      });
+    </script>
+  </script>
+  

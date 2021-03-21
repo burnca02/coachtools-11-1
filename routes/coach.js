@@ -3,13 +3,11 @@ const router = express.Router();
 const { ensureAuthenticated } = require('../config/auth');
 var fileUpload = require('express-fileupload');
 var template = require('../template');
-const multer = require('multer');
 const csv = require('fast-csv');
 const upload = require('../upload');
 const mongoose = require('mongoose');
+const multer = require('multer')
 const fs = require("fs");
-var serveIndex = require('serve-index');
-const path = require('path');
 const MongoClient = require('mongodb').MongoClient
 const uri = "mongodb+srv://hernri01:Capstone2020@cluster0.3ln2m.mongodb.net/test?authSource=admin&replicaSet=atlas-9q0n4l-shard-0&readPreference=primary&appname=MongoDB%20Compass&ssl=true&useUnifiedTopology=true";
 
@@ -23,13 +21,11 @@ const PracticeStat = require('../models/PracticeStat');
 const GameGrade = require('../models/GameGrade');
 const Exercise = require('../models/Exercise');
 
-//router.use(multer({dest:'/uploads'}).single('playbook'));
-const tmp = require('tmp');
- 
-const tmpobj = tmp.dirSync();
-console.log('Dir: ', tmpobj.name);
-// Manual cleanup
-tmpobj.removeCallback();
+//router.use(multer({dest:'/uploads'}).single('playbook')); 
+// const tmpobj = tmp.dirSync();
+// console.log('Dir: ', tmpobj.name);
+// // Manual cleanup
+// tmpobj.removeCallback();
 
 router.use(express.static("public"));
 
@@ -38,7 +34,11 @@ router.get('/coachToolsLogo.png', (req, res) => {
   res.sendFile('coachToolsLogo.png', { root: '.' })
 });
 
-router.use(fileUpload());
+router.use(fileUpload({
+  useTempFiles : true,
+  tempFileDir : '/tmp/',
+  debug : true
+}));
 //Connect DB again??
 const db = 'mongodb+srv://hernri01:Capstone2020@cluster0.3ln2m.mongodb.net/test?authSource=admin&replicaSet=atlas-9q0n4l-shard-0&readPreference=primary&appname=MongoDB%20Compass&ssl=true&useUnifiedTopology=true&useNewUrlParser=true';
 mongoose.connect(db, { useNewUrlParser: true ,useUnifiedTopology: true, useFindAndModify: false})
@@ -934,7 +934,12 @@ router.post('/table', ensureAuthenticated, (req,res) =>
 //Upload playbook
 router.post('/uploadPlaybook', function(req,res)
 {
-  var tmp_path = req.files.file;
+  // console.log(req);
+  if (!req.files)
+  {
+    return res.status(400).send('No files were uploaded.');
+  }
+  var tmp_path = req.files.playbook.tempFilePath;
   console.log(tmp_path);
 
   /** The original name of the uploaded file
@@ -944,6 +949,7 @@ router.post('/uploadPlaybook', function(req,res)
   console.log(target_path);
 
   /** A better way to copy the uploaded file. **/
+
   var src = fs.createReadStream(tmp_path);
   var dest = fs.createWriteStream(target_path);
   src.pipe(dest);

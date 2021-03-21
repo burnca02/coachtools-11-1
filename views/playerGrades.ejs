@@ -26,7 +26,10 @@
     .sidenav {
       order: 1;
     }
-    .gradeTable {
+    /* .gradeTable {
+      order: 2;
+    } */
+    .chBody {
       order: 2;
     }
   }
@@ -34,52 +37,36 @@
 <div class="bigContainer">
   <!-- header -->
   <%- include("partials/topnav") %>
-  <!-- <nav class="topnav" id="myTopnav">
-    <a href="javascript:void(0);" class="icon threeLines" onclick="resizeDropdown2()">
-      <i class="fa fa-bars"></i>
-    </a>
-    <div class="topnavChild1" id="logo">
-      <img src="images/coachToolsLogo.png" alt="CoachTools" style="width: 110px;"/>
-    </div>
-    <div class="topnavChild2">
-      <a id="datetime"></a>
-      <a ><%= name %></a>
-      <a class="logout" onclick="window.location.href='/users/logout'">Logout</a>
-    </div>
-  </nav> -->
-  <div class="bodyContainer" style="margin-top: 3.45rem !important;">
+  <div class="bodyContainer">
     <!-- Side navigation -->
     <%- include("partials/sidenavPlayer") %>
-    <!-- <nav class="sidenav" id="mySidenav">
-      <a href="/playerHome">Home</a>
-      <a href="/player/playerGrades">My Grades</a>
-      <a href="/player/playerTrends">Max Trends</a>
-    </nav> -->
-          <div class="gradeTable" style="width: 100%">
-            <h1 class="text-center mb-3"><i class="fas fa-sign-in-alt"></i>Grades Homepage <%= name%></h1>
-            <table class="redTable" style="width: 100%">
-              <th>Last Grade</th>
-              <tr>
-                  <%try{ %>
-                  <td style="font-size:40px;"><%= stats[0].grade %></td>
-                <% } catch(err){ %>
-                    <% console.log(err); %>
-                <% } %>
-              </tr>
-              <th>Weekly Trend</th>
-              <tr>
-                <td>
-                  <canvas id="weeklyChart" style="width: 300px; height: 150px"></canvas>
-                </td>
-              </tr>
-              <th>Seasonal Trend</th>
-              <tr>
-                <td>
-                  <canvas id="seasonalChart" style="width: 300px; height: 150px"></canvas>
-                </td>
-              </tr>
-            </table>
-          </div>
+    <div class="chBody">
+        <div class="gradeTable" style="width: 100%">
+          <h1 class="text-center mb-3"><i class="fas fa-sign-in-alt"></i>Player Grades</h1>
+          <table class="redTable" style="width: 100%">
+            <th>Last Grade</th>
+            <tr>
+                <%try{ %>
+                <td style="font-size:40px;"><%= stats[0].grade %></td>
+              <% } catch(err){ %>
+                  <% console.log(err); %>
+              <% } %>
+            </tr>
+            <th>Weekly Trend</th>
+            <tr>
+              <td>
+                <canvas id="weeklyChart" style="width: 300px; height: 150px"></canvas>
+              </td>
+            </tr>
+            <th>Seasonal Trend</th>
+            <tr>
+              <td>
+                <canvas id="seasonalChart" style="width: 300px; height: 150px"></canvas>
+              </td>
+            </tr>
+          </table>
+        </div>
+    </div>
   </div>
 </div>
 <!-- <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script> -->

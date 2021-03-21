@@ -22,18 +22,20 @@ The following three methods serve almost the same purpose. They find the questio
 from the database and send it to viewQuestionnaire.ejs. There is one method for each questionnaire type.
 */
 router.get('/viewMQuestionnaire', (req, res) => 
-Questionnaire.find({type: "meeting"}).limit(1).sort({$natural: -1}) //gets most recent doc, need to change so that all come through
-.then(questionnaires => {
-  if(questionnaires.length == 0){
+Questionnaire.find({'type' : "Meeting"}).limit(1).sort({$natural: -1}) //gets most recent doc, need to change so that all come through
+.then(quest => {
+    console.log("quest " + quest);
+    console.log("quest.length= " + quest.length);
+  if(quest.length == 0){
       res.render('hold');
   }
   else{
     res.render('viewQuestionnaire', {
-            q1: questionnaires[0].questions[0],
-            q2: questionnaires[0].questions[1],
-            q3: questionnaires[0].questions[2],
-            type: questionnaires[0].type,
-            _id: questionnaires[0]._id.toString(),
+            q1: quest[0].questions[0],
+            q2: quest[0].questions[1],
+            q3: quest[0].questions[2],
+            type: quest[0].type,
+            _id: quest[0]._id.toString(),
             name: req.user.name
         });
     }
@@ -95,7 +97,7 @@ router.post('/viewQuestionnaire', async(req, res) => {
     var qID = qid;
     const email = req.user.email;
     const school = req.user.school;
-    console.log('type' + qtype);
+    console.log('type ' + qtype);
     const type = qtype;
     const newCompleteQuest = new CompleteQuest({
         qID,
@@ -107,6 +109,7 @@ router.post('/viewQuestionnaire', async(req, res) => {
         comment
     });
     //remove player from questionnaire participants list
+    console.log('before Questionnaire Query');
     await Questionnaire.findOneAndUpdate({_id: qID})
     .then(result => {
         console.log('result' + result);
@@ -116,7 +119,7 @@ router.post('/viewQuestionnaire', async(req, res) => {
             result.participants.splice(index, 1);
         }
         result.save();
-    });
+    }).catch(error => console.error(error));
     //save completed questionnaire
     console.log('saving complete questionnaire');
     newCompleteQuest.save()
@@ -149,30 +152,7 @@ router.post('/viewQuestionnaire', async(req, res) => {
       })
       .catch(error => console.error(error))
     );
-    
-    router.get('/position', ensureAuthenticated, async(req, res) => {
-        const pos = req.body.pos
-        console.log("pos in index: " + pos)
-        await db.collection('Roster').find({ "Pos": { "$exists": true}, "School" :req.session.school, "Pos": pos}).sort({'Pos': 1, 'Rank' : 1}).toArray()
-            .then(posPlayers => {
-                res.render('position', {
-                    posPlayers : posPlayers,
-                    name: req.session.name,
-                    school: req.session.school})
-            }).catch(error => console.error(error))
-      })
-    //   router.get('/depthChart', ensureAuthenticated, (req, res) => 
 
-    //   db.collection('Roster').find({ "Pos": { "$exists": true }, "School": req.session.school}).sort({'Pos': 1}).toArray()
-    //   .then(results => {
-    //       res.render('depthChart', {aPlayers : results, players: results,
-    //                               name: req.user.name,
-    //                               school: req.session.school   
-    //                               }
-    //                )
-    //    })
-    //    .catch(error => console.error(error))
-    //    );
     router.get('/depthChart', ensureAuthenticated, async(req, res) => {
         const offPlayersPos1 = ['QB','RB','FB','WR','TE','LT','LG','C','RG','RT']
         const defPlayersPos = ['CB','DB','DE','DL','DT','FS','ILB','LB','MLB','OLB','SS']
@@ -209,6 +189,12 @@ router.post('/viewQuestionnaire', async(req, res) => {
 //Player Home Page
 router.get('/playerHome', ensureAuthenticated, (req, res) =>
     res.render('playerHome', {
+        name: req.user.name //pass the name that was entered into the database to dashboard
+    })
+);
+
+router.get('/pbUpload2', ensureAuthenticated, (req, res) =>
+    res.render('pbUpload2', {
         name: req.user.name //pass the name that was entered into the database to dashboard
     })
 );

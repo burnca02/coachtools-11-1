@@ -8,7 +8,8 @@ const csv = require('fast-csv');
 const upload = require('../upload');
 const mongoose = require('mongoose');
 const fs = require("fs");
-var serveIndex = require('serve-index')
+var serveIndex = require('serve-index');
+const path = require('path');
 const MongoClient = require('mongodb').MongoClient
 const uri = "mongodb+srv://hernri01:Capstone2020@cluster0.3ln2m.mongodb.net/test?authSource=admin&replicaSet=atlas-9q0n4l-shard-0&readPreference=primary&appname=MongoDB%20Compass&ssl=true&useUnifiedTopology=true";
 
@@ -17,11 +18,18 @@ const Questionnaire = require('../models/Questionnaire');
 const CompleteQuest = require('../models/CompleteQuest');
 const Stat = require('../models/Stat');
 const Intangibles = require('../models/Intangibles');
+const Exercises= require('../models/Exercise');
 const PracticeStat = require('../models/PracticeStat');
 const GameGrade = require('../models/GameGrade');
+const Exercise = require('../models/Exercise');
 
-router.use(multer({dest:'/uploads'}).single('playbook'));
-
+//router.use(multer({dest:'/uploads'}).single('playbook'));
+const tmp = require('tmp');
+ 
+const tmpobj = tmp.dirSync();
+console.log('Dir: ', tmpobj.name);
+// Manual cleanup
+tmpobj.removeCallback();
 
 router.use(express.static("public"));
 
@@ -39,6 +47,12 @@ mongoose.connect(db, { useNewUrlParser: true ,useUnifiedTopology: true, useFindA
 
 router.get('/template', template.get);
 router.post('/upload', upload.post);
+
+router.get('/pbUpload2', ensureAuthenticated, (req, res) => {
+  res.render('pbUpload2', {
+    school: req.session.school
+  });
+}); 
 //upload function
 router.get('/upload', ensureAuthenticated, (req, res) => 
   res.render('coachHome', {
@@ -49,6 +63,13 @@ router.get('/playbookUpload', ensureAuthenticated, (req, res) => {
     name: req.user.name
   });
 }); 
+
+router.get('/viewPDF', ensureAuthenticated, (req, res) => {
+  res.render('viewPDF', {
+    name: req.user.name
+  });
+}); 
+
 router.get('/playerFeedback', ensureAuthenticated, (req, res) => {
   res.render('playerFeedback', {
     name: req.user.name
@@ -65,10 +86,24 @@ router.get('/submitquest', ensureAuthenticated, (req, res) => {
   res.render('playerFeedback');
 });
 
-router.get('/questionnaire', ensureAuthenticated, (req, res) => 
-  res.render('questionnaire', {
-    name: req.user.name //pass the name that was entered into the database to dashboard
-}));
+router.get('/questionnaire', ensureAuthenticated, (req, res) => {
+  console.log('inside questionnaire');
+  Roster.find({school: req.user.school})
+  .then(roster => {
+    const positions = [];
+    for(var i = 0; i < roster.length; i++){
+      if(!(positions.includes(roster[i].Pos))){ //adds only unique positions to array, no duplicates
+        positions.push(roster[i].Pos);
+        console.log('added' + positions[i]);
+      }
+    }
+    console.log('positions COACH.js ' + positions);
+    res.render('questionnaire', { //need to send all stats data here too
+          'positions': positions,
+          'name': req.user.name
+    });
+  }).catch(err => console.log(err))
+});
 /*
 This method is called when a coach submits a questionnaire. It takes all fields on the questionnaire 
 as input. The query then searches the Roster database to find the appropriate emails for the 
@@ -77,6 +112,28 @@ playerFeedback screem.
 */
 router.post('/submitquest', async(req,res) => {
   const { participants, whichpos, type, q1, q2, q3, timeout} = req.body;
+  let errors = [];
+  if(q1 == '' || q2 == '' || q3 == ''){
+    errors.push({msg: "Please enter 3 questions"});
+  }
+  if(errors.length > 0){
+    Roster.find({school: req.user.school})
+    .then(roster => {
+      const positions = [];
+      for(var i = 0; i < roster.length; i++){
+        if(!(positions.includes(roster[i].Pos))){ //adds only unique positions to array, no duplicates
+          positions.push(roster[i].Pos);
+          console.log('added' + positions[i]);
+        }
+      }
+      console.log('positions COACH.js ' + positions);
+      res.render('questionnaire', { //need to send all stats data here too
+            errors,
+            'positions': positions,
+            'name': req.user.name
+      });
+    }).catch(err => console.log(err))
+  }
       var participantsArr = [];
       console.log('inside submit quest');
       if(participants == 'all'){
@@ -122,6 +179,11 @@ method takes the questionnaire type as input. The queries below find all complet
 questionnaire. Currently the method is not pulling the questions from the Questionnaire database, only
 the scores from the CompletedQuestionnaire database.
 */
+router.get('/viewResponse', ensureAuthenticated, (req, res) => {
+  res.render('coachHome', {
+    name: req.user.name
+  });
+}); 
 router.post('/viewResponse', ensureAuthenticated, async(req, res) => {
   const {type} = req.body;
   await CompleteQuest.find({type: type, school: req.session.school}) //.sort({email: 1})
@@ -144,10 +206,10 @@ router.post('/viewResponse', ensureAuthenticated, async(req, res) => {
         quests[i] = quest.questions[i];
       });
     }
-    Roster.findOne({email: email})
-      .then(player => {
-        name = player.FullName;
-      });
+    // Roster.findOne({email: email})
+    //   .then(player => {
+    //     name = player.FullName;
+    //   });
     res.render('viewResponse', {
         'type': type,
         'name': req.session.name,
@@ -161,13 +223,51 @@ router.post('/viewResponse', ensureAuthenticated, async(req, res) => {
 This method is the get for the practice training stats page. The query below pulls the most recent stats
 for each player. This data populates the table on practiceTrainingStats.ejs
 */
-router.get('/practiceTrainingStats', ensureAuthenticated, (req, res) => 
-  Stat.find({}).sort({$natural:-1}).limit(1)
+router.get('/practiceTrainingStats', ensureAuthenticated, (req, res) => {
+  const school = req.user.school;
+  Exercise.findOne({school: school}).sort({$natural:-1})
+  .then(exercise => {
+    console.log("exercise " + exercise);
+    if(exercise == null){
+      res.redirect('/coach/submitExercises');
+    }
+  }),
+  Stat.find({school: school}).sort({$natural:-1})
   .then(stats => {
-    res.render('practiceTrainingStats', {
-          'stats': stats,
-          'name': req.user.name
-    });
+    Intangibles.find({school: req.user.school})
+    .then(intangibles => {
+    const positions = [];
+    for(var i = 0; i < intangibles.length; i++){
+      if(!(positions.includes(intangibles[i].pos))){ //adds only unique positions to array, no duplicates
+        positions.push(intangibles[i].pos);
+        console.log('added' + positions[i]);
+      }
+    }
+    Exercises.findOne({school: req.session.school}).sort({$natural:-1})
+    .then(exercises => {
+      res.render('practiceTrainingStats', {
+        'stats': stats,
+        'positions': positions,
+        'exercises': exercises,
+        'name': req.user.name
+      });
+    })
+  })
+  })
+});
+/* Post method to change position group */
+router.post('/practiceTrainingStats', ensureAuthenticated, (req, res) => 
+  Stat.find({}).sort({$natural:-1})
+  .then(stats => {
+    Exercises.findOne({school: req.session.school}).sort({$natural:-1})
+    .then(exercises => {
+      res.render('practiceTrainingStats', {
+        'stats': stats,
+        'positions': positions,
+        'exercises': exercises,
+        'name': req.user.name
+      });
+    })
   })
 );
 /*
@@ -233,73 +333,97 @@ player names as inputs and then finds both players' practice stats. Eventually i
 players' game grades and attendance rates once that data is available in the database.
 */
 router.post('/dispComp', ensureAuthenticated, async(req, res) => {
-    const {name1, name2} = req.body; 
-    await Roster.findOne({'FullName': name1})
-    .then(player => {
-      const email1 = player.Email;
-      const pos1 = player.Pos;
-      Roster.findOne({'FullName': name2})
+    const {name1, name2} = req.body;
+    let errors = [];
+    if(name1 == '' || name2 == ''){
+      errors.push({msg: "Please select two players to compare."})
+    }
+    console.log(errors.length);
+    if(errors.length > 0){
+      Roster.find({School: req.user.school})
+      .then(players => {
+        const names = [];
+        for(var i = 0; i < players.length; i++) {
+          names[i] = players[i].FullName;
+        }
+        res.render('playerComp', {
+          errors,
+          name: req.user.name,
+          'players': names
+        })
+      })
+    }
+    else {
+      await Roster.findOne({'FullName': name1})
       .then(player => {
-        const email2 = player.Email;
-        const pos2 = player.Pos;
-        PracticeStat.findOne({'email': email1}).sort({$natural: -1})
-        .then(stat => {
-          var practice1 = '';
-          if(stat == null){
-            practice1 = 'No Grade'
-          } else {
-            practice1 = stat.grade;
-          }
-          PracticeStat.findOne({'email': email2}).sort({$natural: -1})
+        const email1 = player.Email;
+        const pos1 = player.Pos;
+        Roster.findOne({'FullName': name2})
+        .then(player => {
+          const email2 = player.Email;
+          const pos2 = player.Pos;
+          PracticeStat.findOne({'email': email1}).sort({$natural: -1})
           .then(stat => {
-            var practice2 = '';
+            var practice1 = '';
             if(stat == null){
-              practice2 = 'No Grade'
+              practice1 = 'No Grade'
             } else {
-              practice2 = stat.grade;
+              practice1 = stat.grade;
             }
-            GameGrade.findOne({'email': email2}).sort({$natural: -1})
-            .then(game => {
-              var game1 = '';
-              if(game == null){
-                game1 = 'No Grade'
+            PracticeStat.findOne({'email': email2}).sort({$natural: -1})
+            .then(stat => {
+              var practice2 = '';
+              if(stat == null){
+                practice2 = 'No Grade'
               } else {
-                game1 = game.grade;
+                practice2 = stat.grade;
               }
-              GameGrade.findOne({'email': email2}).sort({$natural: -1})
+              GameGrade.findOne({'email': email1}).sort({$natural: -1})
               .then(game => {
-                var game2 = '';
+                var game1 = '';
                 if(game == null){
-                  game2 = 'No Grade'
+                  game1 = 'No Grade'
                 } else {
-                  game2 = game.grade;
+                  game1 = game.grade;
                 }
-                //This will get the information needed for the graph. 
-                Stat.find({ email: email1 }).sort({createdAt:1}) //This query will be used to populate the graph.
-                .then(stats => {
-                  Stat.find({ email: email2 }).sort({createdAt:1}) //This query will be used to populate the graph.
-                  .then(stats2 => {
-                      res.render('dispComp', {
-                        'name1': name1,
-                        'name2': name2,
-                        'pos1': pos1,
-                        'pos2': pos2,
-                        'practice1': practice1,
-                        'practice2': practice2,
-                        'game1': game1,
-                        'game2': game2,
-                        name: req.user.name, //pass the name that was entered into the database to dashboard
-                        'graph1': stats,
-                        'graph2': stats2
-                      })
-                    })  
+                console.log("game1 " + game1);
+                GameGrade.findOne({'email': email2}).sort({$natural: -1})
+                .then(game => {
+                  var game2 = '';
+                  if(game == null){
+                    game2 = 'No Grade'
+                  } else {
+                    game2 = game.grade;
+                  }
+                  console.log("game2 " + game2);
+                  //This will get the information needed for the graph. 
+                  Stat.find({ email: email1 }).sort({createdAt:1}) //This query will be used to populate the graph.
+                  .then(stats => {
+                    Stat.find({ email: email2 }).sort({createdAt:1}) //This query will be used to populate the graph.
+                    .then(stats2 => {
+                        res.render('dispComp', {
+                          errors,
+                          'name1': name1,
+                          'name2': name2,
+                          'pos1': pos1,
+                          'pos2': pos2,
+                          'practice1': practice1,
+                          'practice2': practice2,
+                          'game1': game1,
+                          'game2': game2,
+                          name: req.user.name, //pass the name that was entered into the database to dashboard
+                          'graph1': stats,
+                          'graph2': stats2
+                        })
+                      })  
+                    })
                   })
                 })
               })
             })
           })
         })
-      })
+      }
 });
 
 
@@ -402,12 +526,7 @@ router.post('/depthChart', ensureAuthenticated, async(req, res) => {
 //Error with reloading here - the get function cant get the current position
 //Can we store a session variable or something?
 router.get('/position', ensureAuthenticated, async(req, res) => {
-  // console.log("coach position get called")
-  // const pos = req.body.pos
-  // console.log("pos: " + pos)
-  // res.render('position', {
-  //   name: req.session.name,
-  //   school: req.session.school})
+  // console.log("in coach call of position")
   await Roster.find({ "Pos": { "$exists": true}, "School" :req.session.school, "Pos": 'QB'}).sort({'Pos': 1, 'Rank' : 1})
             .then(posPlayers => {
               var emails = [];
@@ -446,6 +565,60 @@ router.get('/position', ensureAuthenticated, async(req, res) => {
                     }
                   }
                 res.render('position', {
+                    pos : 'QB',
+                    posPlayers : posPlayers,
+                    gameGrades : grades,
+                    practiceStats : stats,
+                    name: req.session.name,
+                    school: req.session.school})
+                  }).catch(error => console.error(error))
+                }).catch(error => console.error(error))
+            }).catch(error => console.error(error))
+})
+
+//Error with reloading here - the get function cant get the current position
+//Can we store a session variable or something?
+router.get('/posSubmitRank', ensureAuthenticated, async(req, res) => {
+  // console.log("in coach call of position")
+  await Roster.find({ "Pos": { "$exists": true}, "School" :req.session.school, "Pos": 'QB'}).sort({'Pos': 1, 'Rank' : 1})
+            .then(posPlayers => {
+              var emails = [];
+              for (var i = 0; i < posPlayers.length; i++) {
+                emails.push(posPlayers[i].Email)
+              }
+                GameGrade.find({'email': {"$exists":true}, 'email': emails}).sort({$natural:-1})
+                .then(grade => {
+                  var grades = [];
+                  for (var i = 0; i < posPlayers.length; i++) {
+                    var f = false
+                    for (var j = 0; j < grade.length; j++) {
+                      if (posPlayers[i].Email == grade[j].email) {
+                        grades.push(grade[j].grade)
+                        f = true
+                      }
+                    }
+                    if (f == false) {
+                      grades.push('N/A')
+                    }
+                  }
+                  PracticeStat.find({'email': {"$exists":true}, 'email': emails}).sort({$natural:-1})
+                .then(stat => {
+                  var stats = [];
+                  for (var i = 0; i < posPlayers.length; i++) {
+                    var f = false
+                    for (var j = 0; j < stat.length; j++) {
+                      if (posPlayers[i].Email == stat[j].email) {
+                        stats.push(stat[j].grade)
+                        f = true
+                        break;
+                      }
+                    }
+                    if (f == false) {
+                      stats.push('N/A')
+                    }
+                  }
+                res.render('position', {
+                    pos : 'QB',
                     posPlayers : posPlayers,
                     gameGrades : grades,
                     practiceStats : stats,
@@ -496,6 +669,7 @@ router.post('/position', ensureAuthenticated, async(req, res) => {
                     }
                   }
                 res.render('position', {
+                    pos : pos,
                     posPlayers : posPlayers,
                     gameGrades : grades,
                     practiceStats : stats,
@@ -567,6 +741,66 @@ router.post('/submitRank', ensureAuthenticated, async (req, res) => {
   }).catch(error => console.error(error))
 });
 
+router.post('/posSubmitRank', ensureAuthenticated, async (req, res) => {
+  const pos = req.body.pos
+  // console.log("pos in posSubmit: " + pos)
+  const rank = req.body.rank
+  // console.log("ranks in posSubmit: " + rank)
+  const pNames = req.body.playerNames
+  // console.log("pNames in posSubmit: " + pNames)
+  for (var i = 0; i < rank.length; i++) {
+    let doc = await Roster.findOneAndUpdate({FullName : pNames[i], School : req.session.school}, {Rank : rank[i]}, {new:true, upsert: true});
+    doc.save();
+  }
+  await Roster.find({ "Pos": { "$exists": true}, "School" :req.session.school, "Pos": pos}).sort({'Pos': 1, 'Rank' : 1})
+            .then(posPlayers => {
+              var emails = [];
+              for (var i = 0; i < posPlayers.length; i++) {
+                emails.push(posPlayers[i].Email)
+              }
+                GameGrade.find({'email': {"$exists":true}, 'email': emails}).sort({$natural:-1})
+                .then(grade => {
+                  var grades = [];
+                  for (var i = 0; i < posPlayers.length; i++) {
+                    var f = false
+                    for (var j = 0; j < grade.length; j++) {
+                      if (posPlayers[i].Email == grade[j].email) {
+                        grades.push(grade[j].grade)
+                        f = true
+                      }
+                    }
+                    if (f == false) {
+                      grades.push('N/A')
+                    }
+                  }
+                  PracticeStat.find({'email': {"$exists":true}, 'email': emails}).sort({$natural:-1})
+                .then(stat => {
+                  var stats = [];
+                  for (var i = 0; i < posPlayers.length; i++) {
+                    var f = false
+                    for (var j = 0; j < stat.length; j++) {
+                      if (posPlayers[i].Email == stat[j].email) {
+                        stats.push(stat[j].grade)
+                        f = true
+                        break;
+                      }
+                    }
+                    if (f == false) {
+                      stats.push('N/A')
+                    }
+                  }
+                res.render('position', {
+                    pos : pos,
+                    posPlayers : posPlayers,
+                    gameGrades : grades,
+                    practiceStats : stats,
+                    name: req.session.name,
+                    school: req.session.school})
+                  }).catch(error => console.error(error))
+                }).catch(error => console.error(error))
+            }).catch(error => console.error(error))
+});
+
 /*
 This method searches the roster databases and finds all unique position codes in a school's roster. 
 These position codes are then sent to submitIntangibles.ejs to display in a dropdown menu for the coach.
@@ -595,6 +829,13 @@ router.get('/submitExercises', ensureAuthenticated, (req, res) =>
   res.render('submitExercises', {
     name: req.user.name //pass the name that was entered into the database to dashboard
 }));
+/*
+This method displays the submitPlays page.
+*/
+router.get('/submitPlays', ensureAuthenticated, (req, res) => 
+  res.render('submitPlays', {
+    name: req.user.name //pass the name that was entered into the database to dashboard
+}));
 
 
 /**
@@ -606,8 +847,29 @@ router.post('/table', ensureAuthenticated, (req,res) =>
     const type = req.body.type;
     // console.log("type: " + type);
     // console.log("Did we get here");
-    if (type != 'gy' && type != 'gyd' && type != 'full') {
+    if (type != 'gy' && type != 'gyd' && type != 'full' && type != 'name' && type != 'pos'
+              && type != 'rank' && type != 'num') {
       Roster.find( {"Pos" : type, "School" :req.session.school })
+        .then(results => {
+          res.render('roster', {players: results,
+            name : req.session.name,
+            school: req.session.school})
+        })
+        .catch(error => console.error(error))
+    }
+    else if( type == 'name')
+    {
+      Roster.find({ "FullName": { "$exists": true }, "School" :req.session.school }).sort({'FullName': 1})
+        .then(results => {
+          res.render('roster', {players: results,
+            name : req.session.name,
+            school: req.session.school})
+        })
+        .catch(error => console.error(error))
+    }
+    else if( type == 'pos')
+    {
+      Roster.find({ "Pos": { "$exists": true }, "School" :req.session.school }).sort({'Pos': 1})
         .then(results => {
           res.render('roster', {players: results,
             name : req.session.name,
@@ -635,6 +897,26 @@ router.post('/table', ensureAuthenticated, (req,res) =>
         })
         .catch(error => console.error(error))
     }
+    else if( type == 'rank')
+    {
+      Roster.find({ "Rank": { "$exists": true }, "School" :req.session.school }).sort({'Rank': 1})
+        .then(results => {
+          res.render('roster', {players: results,
+            name : req.session.name,
+            school: req.session.school})
+        })
+        .catch(error => console.error(error))
+    }
+    else if( type == 'num')
+    {
+      Roster.find({ "Number": { "$exists": true }, "School" :req.session.school }).sort({'Number': 1})
+        .then(results => {
+          res.render('roster', {players: results,
+            name : req.session.name,
+            school: req.session.school})
+        })
+        .catch(error => console.error(error))
+    }
     else //Otherwise view the whole roster alphabetically. 
     {
         Roster.find({ "Pos": { "$exists": true }, "School" :req.session.school }).sort({'Pos': 1})
@@ -652,12 +934,13 @@ router.post('/table', ensureAuthenticated, (req,res) =>
 //Upload playbook
 router.post('/uploadPlaybook', function(req,res)
 {
-  var tmp_path = req.file.path;
+  var tmp_path = req.files.file;
   console.log(tmp_path);
 
   /** The original name of the uploaded file
       stored in the variable "originalname". **/
-  var target_path = 'uploads/' + req.file.originalname;
+  console.log(req.session.school);
+  var target_path = 'public/uploads/' +req.session.school + ' Playbook.pdf';
   console.log(target_path);
 
   /** A better way to copy the uploaded file. **/
@@ -665,7 +948,9 @@ router.post('/uploadPlaybook', function(req,res)
   var dest = fs.createWriteStream(target_path);
   src.pipe(dest);
   src.on('end', function() { res.redirect('/coach/playbookUpload'); });
-  src.on('error', function(err) { res.render('playbookUpload'); })
+  src.on('error', function(err) { res.render('playbookUpload', {
+    name: req.user.name
+  }); })
 });
 
 module.exports = router;

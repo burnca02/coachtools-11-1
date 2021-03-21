@@ -12,26 +12,29 @@ const mongoose = require('mongoose');
         type: String,
         required: true
     },
+    pos: {
+        type: String,
+        required: true
+    },
     email: {
          type: String,
          required: true
      },
-     bench: {
+     e1: {
         type: String,
         required: true
     },
-    squat: {
+    e2: {
         type: String,
         required: true
     },
-    dead: {
+    e3: {
         type: String,
         required: true
     },
-    mile: {
+    e4: {
         type: String,
-        required: true,
-        default: "N/A"
+        required: true
     },
     height: {
         type: String,

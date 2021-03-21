@@ -7,6 +7,10 @@
 const mongoose = require('mongoose');
 
  const CompleteQuestSchema = new mongoose.Schema({
+    qID: {
+        type: String,
+        required: true
+    },
     email: {
         type: String,
         required: true

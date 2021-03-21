@@ -4,6 +4,7 @@ const router = express.Router();
 //require player model
 const Roster = require('../models/Roster');
 const Stat = require('../models/Stat');
+const Exercise = require('../models/Exercise');
 
 //photo
 router.get('/coachToolsLogo.png', (req, res) => {
@@ -12,10 +13,15 @@ router.get('/coachToolsLogo.png', (req, res) => {
 
 //Benchmarks Functions
 router.get('/benchmarks', (req, res) => {
-    res.render('benchmarks', {
-        //'name': req.user.name,
-        'email': req.session.email
-    });
+    Exercise.findOne({'school': req.session.school}).sort({$natural:-1})
+    .then(exercise => {
+        console.log(exercise);
+        res.render('benchmarks', {
+            //'name': req.user.name,
+            exercise: exercise,
+            'email': req.session.email
+        });
+    })
 });
 /**
  * This function deals with submitting benchmarks of each individual lift or exercise. This function will be used 
@@ -24,7 +30,7 @@ router.get('/benchmarks', (req, res) => {
  */
 router.post('/benchmarks', (req, res, next) => {
     //how to get it to recognize player email without them having to type it in?
-    const { email, bench, squat, dead, mile, height, weight} = req.body;
+    const { email, e1, e2, e3, e4, height, weight} = req.body;
     console.log(req.body);
     console.log(req.session);
 
@@ -33,10 +39,10 @@ router.post('/benchmarks', (req, res, next) => {
         // _id: req.session._id, /
         name: req.session.name,
         email,
-        bench, 
-        squat,
-        dead,
-        mile,
+        e1, 
+        e2,
+        e3,
+        e4,
         height,
         weight
     });

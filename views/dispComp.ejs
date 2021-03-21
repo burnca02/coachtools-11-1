@@ -107,18 +107,13 @@
     <div class="bodyContainer">
         <%- include("partials/sidenav") %>
         <div class="rBody">
-          <div class="container"> 
+          <div class="container" style="justify-content: center; padding-top: 40px;"> 
             <div>
               <table style="font-size:30px;margin-left:auto;margin-right:auto;" class="redTable" id="viewTable" border="1">
                 <tr>
                   <th><%= name1 %>(<%= pos1 %>)</th>
                   <th>Attribute</th>
                   <th><%= name2 %>(<%= pos2 %>)</th>
-                </tr>
-                <tr>
-                  <td>#</td>
-                  <td>Game Stats</td>
-                  <td>#</td>
                 </tr>
                 <tr>
                   <td><%= game1 %></td>
@@ -130,11 +125,11 @@
                   <td>Practice Grade</td>
                   <td><%= practice2 %></td>
                 </tr>
-                <tr>
+                <!-- <tr>
                   <td>#</td>
                   <td>Quiz Results</td>
                   <td>#</td>
-                </tr>
+                </tr> -->
                 <tr>
                   <td><button id="myBtn" width="75%" class="btn btn-primary btn-block mb-2">See Graph</button></td>
                   <td>Training Results</td>

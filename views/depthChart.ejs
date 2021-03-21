@@ -215,7 +215,7 @@
           </form>
         </table>
 
-        <!-- Start of Modal Content for entering practice grades -->
+      <!-- Start of Modal Content for entering practice grades -->
       <!-- The Modal PopUp Window-->
       <div id="myModal" class="modal" style="overflow-y:auto;">
         <!-- Modal content -->
@@ -246,7 +246,7 @@
           <form action="/coach/submitRank" method="POST">
           <% for (var i = 0; i < players.length; i++) { %>
             <!-- <span class="posLabel"><%= players[i].FullName %></span> -->
-            <input type="name" name="playerNames" value="<%- players[i].FullName %>" readonly>
+            <input type="name" name="playerNames" value="<%= players[i].FullName %>" readonly>
             <input type="number" name="rank" min='1' max='5' value="<%- players[i].Rank %>">
             <input class="hidden" name="type" value="<%- players[i].Pos %>" hidden>
             <br>
@@ -266,7 +266,7 @@
   </div>
 </div> 
 <script>
-  // Get the modal
+// Get the modal
 var modal = document.getElementById("myModal");
 // Get the button that opens the modal
 var btn = document.getElementById("myBtn");

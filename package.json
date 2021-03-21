@@ -25,7 +25,10 @@
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
     "react-image-gallery": "^1.0.8",
-    "serve-index": "^1.9.1"
+    "serve": "^11.2.0",
+    "serve-index": "^1.9.1",
+    "temp": "^0.9.4",
+    "tmp": "^0.2.1"
   },
   "devDependencies": {
     "nodemon": "^2.0.6"

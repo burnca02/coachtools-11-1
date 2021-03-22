@@ -6,7 +6,7 @@
 var mongoose = require('mongoose');
 
 const playerSchema = mongoose.Schema({
-    Email:String,
+    Email: String,
     Number: {
       type: Number,
       default: -1

@@ -4,7 +4,7 @@ const { ensureAuthenticated } = require('../config/auth');
 var fileUpload = require('express-fileupload');
 var template = require('../template');
 const csv = require('fast-csv');
-const upload = require('../upload');
+// const upload = require('../upload');
 const mongoose = require('mongoose');
 const multer = require('multer')
 const fs = require("fs");
@@ -34,6 +34,8 @@ router.get('/coachToolsLogo.png', (req, res) => {
   res.sendFile('coachToolsLogo.png', { root: '.' })
 });
 
+// router.use(fileUpload());
+
 router.use(fileUpload({
   useTempFiles : true,
   tempFileDir : '/tmp/',
@@ -46,7 +48,7 @@ mongoose.connect(db, { useNewUrlParser: true ,useUnifiedTopology: true, useFindA
 .catch(err => console.log(err));
 
 router.get('/template', template.get);
-router.post('/upload', upload.post);
+// router.post('/upload', upload.post);
 
 router.get('/pbUpload2', ensureAuthenticated, (req, res) => {
   res.render('pbUpload2', {

@@ -119,7 +119,7 @@
                       <input type="submit" class="input-group-text" value="Upload Playbook" disabled />
                     </form>
             </div>
-            <h1><a href="/coach/pbUpload2" >View Playbook </a> </h1>
+            <h1 id = "link"><a href="#">View Playbook </a> </h1>
         </div>    
       </div>
     </div>
@@ -141,9 +141,18 @@
         $('h1').hide();
       }
   });
-
 </script>
 <% } %>
+</script>
+<script>
+    $(document).ready(function() {
+    $("#link").click(function() {
+      $("<a>").prop({
+        target: "_blank",
+        href: "/coach/pbUpload2"
+      })[0].click();
+    });
+  });
 </script>
 <script type="text/javascript">
 $(document).ready(

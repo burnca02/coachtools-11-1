@@ -109,8 +109,7 @@
       <h1 class="text-center mb-3"><i class="fas fa-sign-in-alt"></i>Upload Playbook</h1>
       <div class="row mt-5">
         <div class="col-md-6 m-auto">
-            <div class='dropdown' style="text-align:center">
-              <div class=" text-center">
+            <div class=" text-center">
                       <form
                       action="/coach/uploadPlaybook"
                       method="POST"
@@ -118,24 +117,35 @@
                       >
                       <input type="file" class="file" id="fileInput" name="playbook" accept=".pdf">
                       <input type="submit" class="input-group-text" value="Upload Playbook" disabled />
-                    </div>
-                  </div>
-                </form>
-                  <!-- <div class="input-group mb-3">
-                    <div class="custom-file">
-                      <input type="file" class="custom-file-input" id="inputGroupFile02">
-                      <label class="custom-file-label" for="inputGroupFile02">Choose file</label>
-                    </div>
-                    <div class="input-group-append">
-                      <span class="input-group-text">Upload</span>
-                    </div>
-                  </div> -->
-        </div> 
+                    </form>
+            </div>
+            <h1><a href="/coach/pbUpload2" >View Playbook </a> </h1>
+        </div>    
       </div>
     </div>
   </div>
 </div>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script><script type="text/javascript">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<% if (inDirectory) { %> 
+  <script type="text/javascript">
+  var exist = JSON.parse('<%- JSON.stringify(inDirectory) %>');
+  console.log(exist);
+  $(document).ready(
+    function(){
+      if(exist === "true")
+      {
+        $('h1').show();
+      }
+      else
+      {
+        $('h1').hide();
+      }
+  });
+
+</script>
+<% } %>
+</script>
+<script type="text/javascript">
 $(document).ready(
     function(){
         $('input:file').change(
@@ -146,7 +156,8 @@ $(document).ready(
                     // $('input:submit').removeAttr('disabled'); 
                 } 
             }
-            );
+        );
+
     });
   </script>
 </script>

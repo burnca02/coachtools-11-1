@@ -61,8 +61,24 @@ router.get('/upload', ensureAuthenticated, (req, res) =>
     name: req.user.name //pass the name that was entered into the database to dashboard
 }));
 router.get('/playbookUpload', ensureAuthenticated, (req, res) => {
+  const path = 'public/uploads/' +req.session.school + ' Playbook.pdf';
+  var exists = "true";
+
+    try {
+      if (fs.existsSync(path)) {
+        //file exists
+        console.log("File exisits");
+      }
+      else{
+        exists = "false";
+        console.log("File does not exist");
+      }
+    } catch(err) {
+      console.error(err)
+    }
   res.render('playbookUpload', {
-    name: req.user.name
+    name: req.user.name,
+    'inDirectory': exists
   });
 }); 
 

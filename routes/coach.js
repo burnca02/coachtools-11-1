@@ -292,41 +292,49 @@ router.post('/practiceTrainingStats', ensureAuthenticated, (req, res) =>
 This method is the get for the practice stats page. The query below gets all intangibles from the database
 and sends them to the ejs page. The intangibles populate the dropdown menu on practiceStats.ejs
 */
-router.get('/practiceStats', ensureAuthenticated, (req, res) => 
-  Intangibles.find({school: req.user.school})
-  .then(intangibles => {
-  const positions = [];
-  for(var i = 0; i < intangibles.length; i++){
-    if(!(positions.includes(intangibles[i].pos))){ //adds only unique positions to array, no duplicates
-      positions.push(intangibles[i].pos);
-      console.log('added' + positions[i]);
-    }
-  }
-  console.log('positions' + positions);
-  res.render('practiceStats', { //need to send all stats data here too
-        'positions': positions,
-        'name': req.user.name
-      });
-  }).catch(err => console.log(err))
-);
+router.get('/practiceStats', ensureAuthenticated, (req, res) => {
+    Intangibles.find({school: req.user.school})
+    .then(intangibles => {
+      console.log("if check");
+      if(intangibles.length == 0){
+        res.redirect("/coach/submitIntangibles");
+      }
+      const positions = [];
+      for(var i = 0; i < intangibles.length; i++){
+        if(!(positions.includes(intangibles[i].pos))){ //adds only unique positions to array, no duplicates
+          positions.push(intangibles[i].pos);
+          console.log('added' + positions[i]);
+        }
+      }
+      console.log('positions' + positions);
+      res.render('practiceStats', { //need to send all stats data here too
+            'positions': positions,
+            'name': req.user.name
+          });
+    }).catch(err => console.log(err))
+});
 
 router.get('/gameGrade', ensureAuthenticated, (req, res) => 
   // console.log("in coach gameGrade")
   Intangibles.find({school: req.user.school})
   .then(intangibles => {
-  const positions = [];
-  for(var i = 0; i < intangibles.length; i++){
-    if(!(positions.includes(intangibles[i].pos))){ //adds only unique positions to array, no duplicates
-      positions.push(intangibles[i].pos);
-      console.log('added' + positions[i]);
+    console.log("if check");
+    if(intangibles.length == 0){
+      res.redirect("/coach/submitIntangibles");
     }
-  }
-  console.log('positions COACH.js ' + positions);
-  res.render('gameGrade', { //need to send all stats data here too
-        'positions': positions,
-        'name': req.user.name
-      });
-  }).catch(err => console.log(err))
+    const positions = [];
+    for(var i = 0; i < intangibles.length; i++){
+      if(!(positions.includes(intangibles[i].pos))){ //adds only unique positions to array, no duplicates
+        positions.push(intangibles[i].pos);
+        console.log('added' + positions[i]);
+      }
+    }
+    console.log('positions COACH.js ' + positions);
+    res.render('gameGrade', { //need to send all stats data here too
+          'positions': positions,
+          'name': req.user.name
+        });
+    }).catch(err => console.log(err))
 );
 /*
 This method is the get for the player comparison page. The query below sends the names of all players 

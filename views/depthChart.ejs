@@ -247,7 +247,7 @@
           <% for (var i = 0; i < players.length; i++) { %>
             <!-- <span class="posLabel"><%= players[i].FullName %></span> -->
             <input type="name" name="playerNames" value="<%= players[i].FullName %>" readonly>
-            <input type="number" name="rank" min='1' max='5' value="<%- players[i].Rank %>">
+            <input type="number" name="rank" min='1' max='<%- players.length %>' value="<%- players[i].Rank %>">
             <input class="hidden" name="type" value="<%- players[i].Pos %>" hidden>
             <br>
           <% } %>

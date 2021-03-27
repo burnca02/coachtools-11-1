@@ -862,7 +862,45 @@ router.get('/submitPlays', ensureAuthenticated, (req, res) =>
   res.render('submitPlays', {
     name: req.user.name //pass the name that was entered into the database to dashboard
 }));
+/*
+This method displays the updatePos page.
+*/
+router.get('/updatePos', ensureAuthenticated, (req, res) => {
+  var OLPos = ['LT','LG','C','RG','RT']
+  Roster.find({school: req.user.School, Pos: 'OL'})
+  .then(players => {
+    res.render('updatePos', {
+      name: req.user.name, //pass the name that was entered into the database to dashboard
+      'players': players,
+      'OLPos': OLPos
+    })
+  })
+});
 
+router.post('/changePos', ensureAuthenticated, async (req, res) => {
+  var {pos, name1} = req.body;
+  console.log(req.body);
+  console.log("pos: " + pos);
+  console.log("name1: " + name1);
+  console.log("user school " + req.session.school);
+  var OLPos = ['LT','LG','C','RG','RT']
+  Roster.findOneAndUpdate({School: req.session.school, FullName: name1})
+    .then(player => {
+      console.log("player " + player);
+      if(player.listPos != pos){
+        player.listPos.push(pos);
+      }
+      console.log("player after " + player);
+  })
+  Roster.find({School: req.user.School, Pos: 'OL'})
+  .then(players => {
+    res.render('updatePos', {
+      name: req.user.name, //pass the name that was entered into the database to dashboard
+      'players': players,
+      'OLPos': OLPos
+    })
+  })
+});
 
 /**
  * This post method deals with the sorting function available in the coach's side for sorting a roster by position, or school year. 

@@ -53,6 +53,7 @@ router.post('/upload', ensureAuthenticated, async(req, res) => {
     data['School'] = req.session.school; //Add the school name to the specific player.
     data['Active'] = false; //All players are inactive by default.
     data['Rank']   = 1;
+    data['listPos']= [data.Pos];
     //data['Attendance'] = [0, 0];
     //  data['Rank'] = 0;
     console.log(data);

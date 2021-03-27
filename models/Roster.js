@@ -13,20 +13,17 @@ const playerSchema = mongoose.Schema({
     },
     FullName:  String, // String is shorthand for {type: String}
     Pos:   String,
+    listPos: Array,
     GradYear: String,
     Hometown: String,
     School: String, //Their current school
     Active: Boolean, //Are they on the active line?
     Attendance: Array, // [questionnaires taken, questionnaires given]
-    Rank: {
-      Number,
-      default: 1
-    },
+    Rank: Array,
     Grade: {
       type: Number,
       default: -1
     },
-    Rank: Number
   },{ collection: 'Roster' }); //By addding this, it makes sure that the name of the collection in the MonngoDB schedule will be named 'Roster'
 
 var Roster = mongoose.model('Roster', playerSchema);

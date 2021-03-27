@@ -1,3 +1,9 @@
+/**
+ * Last Modified Date: Fall 2020 
+ * Authors: Ricardo Hernandez, Cameron Burns, and Kayl Murdough
+ * This file relates the practice grading that will be done by coaches. This will be used in player grade feedback homepage.
+ */
+
 const mongoose = require('mongoose');
 
  const PracticeStatSchema = new mongoose.Schema({
@@ -9,8 +15,8 @@ const mongoose = require('mongoose');
         type: String,
         required: true
     },
-     int1: {
-        type: Array, //int1[0]= intangible1 name, int1[1]= score
+    int1: {
+        type: Array, //int1[0]= score, int[1]= importanceLevel
         required: true
     },
     int2: {
@@ -23,6 +29,10 @@ const mongoose = require('mongoose');
     },
     int4: {
         type: Array,
+        required: true
+    },
+    grade: { //overall practice grade for that day
+        type: String,
         required: true
     },
     date: {

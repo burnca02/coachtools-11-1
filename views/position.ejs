@@ -144,7 +144,7 @@
           <input class="hidden" name="pos" value="<%- pos %>" hidden>
           <% for (var i = 0; i < posPlayers.length; i++) { %>
             <input type="name" name="playerNames" value="<%= posPlayers[i].FullName %>" readonly>
-            <input type="number" name="rank" min='1' max='<%- posPlayers.length %>' value="<%- posPlayers[i].Rank[0] %>">
+            <input type="number" name="rank" min='1' max='<%- posPlayers.length %>' value="<%- posPlayers[i].Rank %>">
             <br>
           <% } %>
           <% if (posPlayers.length != null && posPlayers.length > 0) { %>

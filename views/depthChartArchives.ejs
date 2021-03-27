@@ -1,0 +1,311 @@
+        <!-- Quarterback, Running Back, Wide Receiver, Offensive Lineman, Tight End -->
+        <% var offPlayers = ['QB','RB','WR','TE','OL', 'FB']; %>
+        <% var defPlayers = ['DB','DE','DT','DL','OLB','MLB','OLB','ILB','LB','CB', 'SS', 'FS']; %>
+        <% var spePlayers = ['K','P','K/P','P/K','LS']; %>
+        <% var offPlayerIndices = []; var defPlayerIndices = []; var spePlayerIndices = []; %>
+        <% var numWr = 0; %>
+        <% for(var i = 0; i < aPlayers.length; i++) {
+            if (offPlayers.includes(aPlayers[i].Pos.replace(/\s+/g, ''))) {
+              offPlayerIndices.push(i);
+              if (aPlayers[i].Pos == 'WR') {
+                numWr++
+              }
+            }
+            else if (defPlayers.includes(aPlayers[i].Pos.replace(/\s+/g, ''))) {
+              defPlayerIndices.push(i);
+            }
+            else if (spePlayers.includes(aPlayers[i].Pos.replace(/\s+/g, ''))) {
+              spePlayerIndices.push(i);
+            }
+        } %>
+
+        <ul id="offense">
+          <% var prevPos = aPlayers[offPlayerIndices[0]].Pos.replace(/\s+/g, ''); %>
+          <span class="posLabel"><%= aPlayers[offPlayerIndices[0]].Pos %></span> 
+          <% var counter = 0; %>
+          <% for(var i = 0; i < offPlayerIndices.length; i++) {
+            curPos = aPlayers[offPlayerIndices[i]].Pos.replace(/\s+/g, '');
+            if (curPos == 'WR') {counter++;}
+            if (counter >= numWr / 3 || prevPos != curPos)  {%>
+                <br>
+                <span class="posLabel"><%= aPlayers[offPlayerIndices[i]].Pos.replace(/\s+/g, '') %></span>    
+            <%  counter = 0 }%>
+              <!-- <span class="number"><%= aPlayers[offPlayerIndices[i]].Number %></span> -->
+              <span class="Dname"><%= aPlayers[offPlayerIndices[i]].FullName %></span>
+              <span class="Dname"> <%= aPlayers[offPlayerIndices[i]].Rank %></span>
+              <!-- <span class="num"><%= aPlayers[offPlayerIndices[i]].Pos %></span> -->
+            <% prevPos = curPos; %>
+          <% } %>
+        </ul>
+        
+        <span class="help">Defense</span>
+        <ul id="defense">
+          <% var prevPos = aPlayers[defPlayerIndices[0]].Pos %>
+          <span class="posLabel"><%= aPlayers[defPlayerIndices[0]].Pos %></span> 
+          <% for(var i = 0; i < defPlayerIndices.length; i++) {%>
+            <% curPos = aPlayers[defPlayerIndices[i]].Pos; %>
+            <% if (prevPos != curPos)  {%>
+                <br>
+                <span class="posLabel"><%= aPlayers[defPlayerIndices[i]].Pos %></span>    
+            <% }%>
+              <!-- <span class="number"><%= aPlayers[defPlayerIndices[i]].Number %></span> -->
+              <span class="Dname"><%= aPlayers[defPlayerIndices[i]].FullName %></span>
+              <span class="Dname"> <%= aPlayers[defPlayerIndices[i]].Rank %></span>
+              <!-- <span class="num"><%= aPlayers[defPlayerIndices[i]].Pos %></span> -->
+            <% prevPos = curPos; %>
+          <% } %>
+        </ul>
+        
+        <span class="help">Special Teams</span>
+        <ul id="special">
+          <% var prevPos = aPlayers[spePlayerIndices[0]].Pos.replace(/\s+/g, '') %>
+          <span class="posLabel"><%= aPlayers[spePlayerIndices[0]].Pos %></span> 
+          <% for(var i = 0; i < spePlayerIndices.length; i++) {%>
+            <% curPos = aPlayers[spePlayerIndices[i]].Pos.replace(/\s+/g, ''); %>
+            <% if (prevPos != curPos)  {%>
+                <br>
+                <span class="posLabel"><%= aPlayers[spePlayerIndices[i]].Pos.replace(/\s+/g, '') %></span>    
+            <% }%>
+              <!-- <span class="number"><%= aPlayers[spePlayerIndices[i]].Number %></span> -->
+              <span class="Dname"><%= aPlayers[spePlayerIndices[i]].FullName %></span>
+              <span class="Dname"> <%= aPlayers[spePlayerIndices[i]].Rank %></span>
+              <!-- <span class="num"><%= aPlayers[spePlayerIndices[i]].Pos %></span> -->
+            <% prevPos = curPos; %>
+          <% } %>
+        </ul>
+      </div>
+
+      <!-- Start of Modal Content for entering practice grades -->
+      <!-- The Modal PopUp Window-->
+      <div id="myModal" class="modal" style="overflow-y:auto;">
+        <!-- Modal content -->
+        <div class="modal-content">
+          <div class="form-group" role="group" aria-label="Button group with nested dropdown">
+          <form action="/coach/depthChart" method="POST">
+            <!-- <button type="button" class="btn btn-primary">Sort By</button> -->
+            <div class="dropdown" role="group" style="padding-top: 10px;">
+              <span class="close">&times;</span>
+              <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Sort By
+              </button>
+              <div class="dropdown-content" aria-labelledby="btnGroupDrop1">
+                <!-- 'SS','MLB','FS','K','P','CB', ,'LS'-->
+                <% var allPlayers = ['QB','RB','WR','TE','OL', 'FB', 'DB','DE','DT','DL','OLB','OLB','ILB','LB','K/P','P/K']; %>
+                <button class="dropdown-item" type="submit" name="type" value="full">ALL</button>
+                <% for (var i = 0; i < allPlayers.length; i++) { %>
+                  <button class="dropdown-item" type="submit" name="type" value="<%- allPlayers[i] %>">View <%= allPlayers[i] %>s</button>
+                <% } %>
+              </div>
+            </div>
+          </form>
+          </div>
+          <% if (offPlayers.includes(players[0].Pos)) { %>
+            <span class="help">Offense</span>
+          <% }
+          else if (defPlayers.includes(players[0].Pos)) { %>
+            <span class="help">Defense</span>
+          <% }
+          else if (spePlayers.includes(players[0].Pos)) { %>
+            <span class="help">Special Teams</span>
+          <% } %>
+          <br>
+          <span class="help"><%= players[0].Pos %></span>
+          <br>
+          <form action="/coach/submitRank" method="POST">
+          <% for (var i = 0; i < players.length; i++) { %>
+            <!-- <span class="posLabel"><%= players[i].FullName %></span> -->
+            <input type="name" name="playerNames" value="<%- players[i].FullName %>" readonly>
+            <input type="number" name="rank" value="<%- players[i].Rank %>">
+            <br>
+          <% } %>
+          <input type="submit" value="Submit">
+          </form>
+        </div>
+      </div>
+<!-- <div>
+        <div class="btn-group" style="padding: 10px">
+          <button
+            type="button"
+            class="btn btn-primary dropdown-toggle"
+            data-toggle="dropdown"
+          >
+            Team
+          </button>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" onclick="toggleActiveTeam('o')">Offense</a>
+            <a class="dropdown-item" onclick="toggleActiveTeam('d')">Defense</a>
+            <a class="dropdown-item" onclick="toggleActiveTeam('s')">Special Teams</a>
+          </div>
+        </div>
+      </div> -->
+      <!-- Offensive line -->
+      <!-- <div class="pitch oline" id="offenseLine">
+        <span class="help">Offense</span>
+        <ol id="offense" class="container2">
+          <% var offPlayers = ['WR','WR','OL','OL','OL','OL','OL','TE','WR','RB']; %>
+          <% for(var i = 0; i < players.length; i++) {%>
+            <% if (players[i].Active && offPlayers.includes(players[i].Pos)) { %>
+            <li onclick="showSubs('s<%- players[i].Pos %>')">
+              <span class="number"><%= players[i].Number %></span>
+              <span class="name">ACTIVE <%= players[i].FullName %></span>
+              <span class="num"><%= players[i].Pos %></span>
+            </li>
+              <% offPlayers.splice(offPlayers.indexOf(players[i].Pos), 1); %>
+            <% } %>
+          <% } %> -->
+          <!-- wide receiver, halfback, fullback, tight end, offensive linemen -->
+          <!-- <% for(var i = 0; offPlayers.length > 0 && i < players.length; i++) {%>
+            <% if (offPlayers.includes(players[i].Pos)) { %>
+            <li onclick="showSubs('s<%- players[i].Pos %>')">
+              <span class="number"><%= players[i].Number %></span>
+              <span class="name"><%= players[i].FullName %> </span>
+              <span class="num"><%= players[i].Pos %></span>
+            </li>
+              <% offPlayers.splice(offPlayers.indexOf(players[i].Pos), 1); %>
+              <% players[i].Active = true; %>
+            <% } %>
+          <% } %>
+        </ol>
+        <ul id="qb" class="container2"> -->
+          <!-- just quarterback - for bottom row-->
+          <!-- <% for(var i = 0; i < players.length; i++) {%>
+            <% if(players[i].Pos == 'QB') { %>
+              <li onclick="showSubs('sQB')">
+                <span class="number"><%= players[i].Number %></span>
+                <span class="name" id="QB" name="QB"><%= players[i].FullName %></span>
+                <span class="num"><%= players[i].Pos %></span>
+              </li>
+              <% players[i].Active = true; %>
+              <% break; %>
+            <% } %>
+          <% } %>
+        </ul>
+      </div> -->
+
+      <!-- Defensive line -->
+      <!-- <div class="pitch dline" id="defenseLine">
+        <span class="help">Defense</span>
+        <ol id="defense" class="container2"> -->
+          <!-- wide receiver, halfback, fullback, tight end, offensive tackle, offensive guard, center -->
+          <!-- list.splice (list.indexOf("kiwi"), 1); -->
+          <!-- Can modify defensive players list - need to make sure appreviations in excel file match up -->
+          <!-- <% var defPlayers = ['DE','DT','DT','DE','DL','OLB','MLB', 'OLB', 'CB', 'SS', 'FS']; %>
+          <% for(var i = 0; defPlayers.length > 0 && i < players.length; i++) {%>
+            <% if (defPlayers.includes(players[i].Pos)) { %>
+            <li onclick="showSubs('s<%- players[i].Pos %>')">
+              <span class="number"><%= players[i].Number %></span>
+              <span class="name"><%= players[i].FullName %> <%= players[i].Pos %></span>
+            </li>
+              <% defPlayers.splice(defPlayers.indexOf(players[i].Pos), 1); %>
+              <% players[i].Active = true; %>
+            <% } %>
+          <% } %>
+        </ol>
+      </div> -->
+
+      <!-- Special Teams line -->
+      <!-- <div class="pitch sline" id="specialLine">
+        <span class="help">Special Teams</span>
+        <ol id="special" class="container2"> -->
+          <!-- wide receiver, halfback, fullback, tight end, offensive tackle, offensive guard, center -->
+          <!-- list.splice (list.indexOf("kiwi"), 1); -->
+          <!-- <% var spePlayers = ['K','P','K/P','P/K','LS']; %>
+          <% for(var i = 0; spePlayers.length > 0 && i < players.length; i++) {%>
+            <% if (spePlayers.includes(players[i].Pos)) { %>
+            <li onclick="showSubs('sSPE')">
+              <span class="number"><%= players[i].Number %></span>
+              <span class="name"><%= players[i].FullName %> <%= players[i].Pos %></span>
+            </li>
+              <% spePlayers.splice(spePlayers.indexOf(players[i].Pos), 1); %>
+              <% players[i].Active = true; %>
+            <% } %>
+          <% } %>
+        </ol>
+      </div> -->
+
+      <!-- Offensive bench -->
+      <!-- Finds all players who have position belonging to offense and not on active line -->
+      <!-- Displays current position clicked -->
+      <!-- <% var offBench = ['QB','WR','OL','TE','RB']; %>
+      <% for(var i = 0; i < offBench.length; i++) {%>
+        <% var id = 's' + offBench[i]; %>
+        <% var id2 = offBench[i] + 'subs'; %>
+        <div id='<%- id %>' class="bench">
+          <span class="help"><%= offBench[i] %> Subs</span>
+          <ul id='<%- id2 %>' class="container2">
+          <% for(var j = 0; j < players.length; j++) {%>
+            <% if(players[j].Active != true && players[j].Pos == offBench[i]) { %>
+              <li>
+                <span class="number"><%= players[j].Number %></span>
+                <span class="name"><%= players[j].FullName %> <%= players[j].Pos %></span>
+              </li>
+            <% } %>
+          <% } %>
+          </ul>
+        </div>
+      <% } %> -->
+
+      <!-- Defensive bench -->
+      <!-- Finds all players who have position belonging to defense and not on active line -->
+      <!-- Displays current position clicked -->
+      <!-- <% var defBench = ['DE','DL','DT','CB','OLB','MLB','SS','FS']; %>
+      <% for(var i = 0; i < defBench.length; i++) {%>
+        <% var id = 's' + defBench[i]; %>
+        <% var id2 = defBench[i] + 'subs'; %>
+        <div id='<%- id %>' class="bench">
+          <span class="help"><%= defBench[i] %> Subs</span>
+          <ul id='<%- id2 %>' class="container2">
+          <% for(var j = 0; j < players.length; j++) {%>
+            <% if(players[j].Active != true && players[j].Pos == defBench[i]) { %>
+              <li>
+                <span class="number"><%= players[j].Number %></span>
+                <span class="name"><%= players[j].FullName %> <%= players[j].Pos %></span>
+              </li>
+            <% } %>
+          <% } %>
+          </ul>
+        </div>
+      <% } %> -->
+
+      <!-- Special Teams bench -->
+      <!-- Finds all players who have position belonging to special teams and not on active line -->
+      <!-- Displays current position clicked -->
+      <!-- <% var speBench = ['K','P','K/P','P/K','LS']; %>
+        <div id='sSPE' class="bench">
+          <span class="help">Special Teams Subs</span>
+          <ul id='SPsubs' class="container2">
+          <% for(var j = 0; j < players.length; j++) {%>
+            <% if(players[j].Active != true && speBench.includes(players[j].Pos)) { %>
+              <li>
+                <span class="number"><%= players[j].Number %></span>
+                <span class="name"><%= players[j].FullName %> <%= players[j].Pos %></span>
+              </li>
+            <% } %>
+          <% } %>
+          </ul>
+        </div>
+      <div>
+                
+      </div>-->
+
+
+
+
+<SCRIPT>
+      // if (target.id != source.id) {
+        //   var numStr = el.innerHTML.split(" ").join("").slice(21,23);
+        //   numStr = numStr.replace(/</gi, "");
+        //   var b = false;
+        //   '<% for(var i = 0; i < players.length; i++) {%>'
+        //     if ('<%= players[i].Number %>' == numStr) {
+        //       if (target.id.includes("subs")) {
+        //         '<%- players[i].Active = false %>';
+        //         b = true;
+        //       }
+        //       else if (source.id.includes("subs")) {
+        //         '<%- players[i].Active = true %>';
+        //         b = true;
+        //       }
+        //     }
+        //   '<% } %>'
+    </SCRIPT>

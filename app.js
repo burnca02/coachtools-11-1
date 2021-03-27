@@ -6,6 +6,9 @@ const session = require('express-session');
 const passport = require('passport');
 const fileUpload = require('express-fileupload');
 const csv = require('fast-csv');
+const multer = require('multer');
+
+
 
 const app = express();
 
@@ -16,7 +19,7 @@ require('./config/passport')(passport);
 const db = require('./config/keys').MongoURI;
 
 //Connect to Mongo
-mongoose.connect(db, { useNewUrlParser: true ,useUnifiedTopology: true})
+mongoose.connect(db, { useNewUrlParser: true ,useUnifiedTopology: true,useFindAndModify: false})
 .then(() => console.log('Mongo DB Connected...'))
 .catch(err => console.log(err));
 
@@ -59,19 +62,11 @@ app.use('/functions', require('./routes/functions'));
 app.use('/player', require('./routes/player'));
 app.use('/coach', require('./routes/coach'));
 app.use('/stats', require('./routes/stats'));
+app.use('/upload', require('./routes/upload'));
+
 
 app.use(express.static("public"));
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, console.log('Server started on port ${PORT}'));
-
-const http = require('http')
-const hostname = '127.0.0.1';
-const port = 5000;
-
-const server = http.createServer((req, res) => {
-  res.statusCode = 200;
-  res.setHeader('Content-Type', 'text/plain');
-  res.end('Hello World! NodeJS \n');
-});
+app.listen(PORT, console.log(`Server started on port ${PORT}`));

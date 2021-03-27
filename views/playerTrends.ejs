@@ -1,199 +1,352 @@
-<!-- <p>Today's Date: <span id="datetime"></span></p> -->
+<!-- Authors: Ricardo Hernandez, Cam Burns, and Kayl Murdough -->
+<style>
+  @media all and (min-width: 600px) {
+    .bodyContainer {
+      flex: 2 0px;
+    }
+    .sidenav {
+      order: 1;
+    }
+    .chBody {
+      order: 2;
+    }
+  }
+  table.redTable {
+    border: 2px solid #a40808;
+    background-color: #eee7db;
+    width: 90%;
+    text-align: center;
+    border-collapse: collapse;
+  }
+  table.redTable td,
+  table.redTable th,
+  table.redTable tr {
+    border: 1px solid #aaaaaa;
+    padding: 3px 2px;
+  }
+  table.redTable tbody td {
+    font-size: 13px;
+    text-align: center;
+  }
+  table.redTable tr:nth-child(even) {
+    background: #f5c8bf;
+  }
+  table.redTable thead {
+    background: #a40808;
+  }
+  table.redTable thead th {
+    font-size: 19px;
+    font-weight: bold;
+    color: #ffffff;
+    text-align: center;
+    border-left: 2px solid #a40808;
+  }
+  table.redTable thead th:first-child {
+    border-left: none;
+  }
+  .modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto; /* 15% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%; /* Could be more or less, depending on screen size */
+}
+
+/* The Close Button */
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+</style>
 <script>
-var dt = new Date();
-document.getElementById("datetime").innerHTML = (("0"+(dt.getMonth()+1)).slice(-2)) +"/"+ (("0"+dt.getDate()).slice(-2)) +"/"+ (dt.getFullYear());
-
+  var dt = new Date();
+  document.getElementById("datetime").innerHTML =
+    ("0" + (dt.getMonth() + 1)).slice(-2) +
+    "/" +
+    ("0" + dt.getDate()).slice(-2) +
+    "/" +
+    dt.getFullYear();
 </script>
-<div style="overflow: hidden;">
-    <!-- header -->
-<div class="topnav">
-      <img src="/images/coachToolsLogo.png" alt="CoachTools" style="display:inline; width: 75px;">
-      <div style="font-size: 25px; display: inline;">Max Trends</div>
-      <button class="top-dropdown-btn">Name</button>
-      <a href="/playerHome" class="btn btn-secondary">Player Home</a>
-      <a href="/player/playerGraph" class="btn btn-secondary">Graphs</a>
-</div>
+<!-- This script will be used for the responsive chart in Player Trends and Maxes. The graph is bootstrap created by Chart.js. -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+<div class="bigContainer">
+  <%- include("partials/topnav") %>
+  <div class="bodyContainer">
+    <%- include("partials/sidenavPlayer") %>
+    <div class="chBody">
+      <table class="redTable" style="width: 100%">
+        <thead>
+            <th></th>
+            <th>Strength</th>
+            <th></th>
+        </thead>
+        <tr>
+          <th>Current Max <%= exercises.exercises[0] %></th>
+          <th>Current Max <%= exercises.exercises[1] %></th>
+          <th>Current Max <%= exercises.exercises[2] %></th>
+        </tr>
+        <tr>
+          <td><%= e1 %> lbs.</td>
+          <td><%= e2 %> lbs.</td>
+          <td><%= e3 %> lbs.</td>
+        </tr>
+      </table>
 
+      <table class="redTable" style="width: 100%">
+        <thead>
+          <th>Agility</th>
+        </thead>
+        <tr>
+          <th>Current Max <%= exercises.exercises[3] %></th>
+        </tr>
+        <tr>
+          <td><%= e4 %></td>
+        </tr>
+      </table>
 
-<div class="main">
-  <div style="font-size: 25px; display: inline;">Strength</div>
-
-  <table style="width:100%">
-      <tr>
-        <th>Max Bench</th>
-        <th>Max Squat</th> 
-        <th>Max Dead</th>
-      </tr>
-      <tr>
-        <td>
-          <%= bench%>
-        </td>
-        <td>
-          <%= squat%>
-        </td> 
-        <td>
-          <%= dead%>
-        </td>
-      </tr>
-  </table>
-
-  <div style="font-size: 25px; display: inline;">Agility</div>
-
-  <table style="width:100%">
-      <tr>
-        <th>Mile Time</th>
-      </tr>
-      <tr>
-        <td>
-          <%= mile%>
-        </td>
-      </tr>
-  </table>
-
-  <div style="font-size: 25px; display: inline;">Height/Weight</div>
-
-  <table style="width:100%">
-      <tr>
-        <th>Height</th>
-        <th>Weight</th>
-        <th>BMI</th> 
-      </tr>
-      <tr>
-        <td>
-          <%= height%>
-        </td>
-        <td>
-          <%= weight%>
-        </td>
-        <td>
-        </td>
-      </tr>
-  </table>
-
-  <div class="row mt-5">
-    <div class="col-md-6 m-auto">
-      <div class="card card-body">
-        <h1 class="text-center mb-3"><i class="fas fa-sign-in-alt"></i>Update Stats</h1>
-        <%- include('./partials/messages'); %>
-        <form action="/player/updatestats" method="POST">
-            <div class="form-group">
-            <label for="bench">Current Max Bench Press</label>
-            <input
-              type="bench"
-              id="bench"
-              name="bench"
-              class="form-control"
-              placeholder="Enter Weight"
-            />
-          </div>
-          <div class="form-group">
-            <label for="squat">Current Max Squat</label>
-            <input
-              type="squat"
-              id="squat"
-              name="squat"
-              class="form-control"
-              placeholder="Enter Weight"
-            />
-          </div>
-          <div class="form-group">
-            <label for="dead">Current Max DeadLift</label>
-            <input
-              type="dead"
-              id="dead"
-              name="dead"
-              class="form-control"
-              placeholder="Enter Weight"
-            />
-          </div>
-          <div class="form-group">
-            <label for="mile">Current Mile Time</label>
-            <input
-              type="mile"
-              id="mile"
-              name="mile"
-              class="form-control"
-              placeholder="Enter Time"
-            />
-          </div>
-          <div class="form-group">
-            <label for="height">Current Height(in)</label>
-            <input
-              type="height"
-              id="height"
-              name="height"
-              class="form-control"
-              placeholder="Enter Height"
-            />
-          </div>
-          <div class="form-group">
-            <label for="weight">Current Weight(lbs)</label>
-            <input
-              type="weight"
-              id="weight"
-              name="weight"
-              class="form-control"
-              placeholder="Enter Weight"
-            />
-          </div>
-          <button type="submit" class="btn btn-primary btn-block">Submit</button>
-        </form>
-      </div>
-      <div style="padding: 500px o; text-align: center;"> 
-      <% if (graph) { %>
-        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+      <table class="redTable" style="width: 100%">
+        <thead>
+          <th colspan="2" width="100%">Height & Weight</th>
+        </thead>
+        <tr>
+          <th width="50%" text-align="center" valign="middle">Height</th>
+          <th width="50%" text-align="center" valign="middle">Weight</th>
+        </tr>
+        <tr>
+          <td width="50%" align="center" valign="middle"><%= height%> inches</td>
+          <td width="50%" align="center" valign="middle"><%= weight%> lbs.</td>
+        </tr>
+      </table>
+      <!-- The following section is code in relation to the chart.  -->
+      <div class="row mt-5">
+        <div class="col-md-6 m-auto">
+          <div class="card card-body text-center">
+            <canvas id="myChart" width="300" height="300"></canvas>
+      <!-- If there is information in the graph, we will create the chart. -->
+      <% if (graph && exercises) { %> 
         <script type="text/javascript">
         var graph = JSON.parse('<%- JSON.stringify(graph) %>');
-        google.charts.load('current', {'packages':['corechart']});
-        google.charts.setOnLoadCallback(drawChart);
+        var exercises = JSON.parse('<%- JSON.stringify(exercises) %>');
+        console.log("Hello world");
+        console.log('exercises ' + exercises);
 
-        console.log(graph);
-        
-        function drawChart() {
-        
-        var data=[];
-        //This will be used for going through the mongoose query
-        data.push(['Blah','Bench', 'Squat', 'Dead']);
-        for (var i = 0; i < graph.length; i++) {
-            var temp=[];
-            if(i == 0)
-            {
-              temp.push("Start");
-            }
-            else{
-              temp.push("Input " + i);
-            }
-            temp.push(parseInt(graph[i].bench));
-            temp.push(parseInt(graph[i].squat));
-            temp.push(parseInt(graph[i].dead));
-            data.push(temp);
-            console.log(temp);
-        }
+      // Our labels along the x-axis
+      var input = []; //Input will be the Max session that will be on the x axis.
+      // For drawing the lines      
+      var e1 = []; //The bench press maxes
+      var e2 = []; //The squat maxes
+      var e3 = []; //Deadlift maxes.
+      var e4 = [];
+      
 
-        var chartData = google.visualization.arrayToDataTable(data);
-
-        var options = {
-          title: 'Max Trends',
-          curveType: 'function',
-          legend: { position: 'bottom' },
-          axes: {
-            // Adds labels to each axis; they don't have to match the axis names.
-            y: {
-              Temps: {label: 'Temps (Celsius)'},
-              Daylight: {label: 'Daylight'}
-            }
-          }
-        };
-
-        var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
-
-        chart.draw(chartData, options);
+      //We will go through all the information pased by the graph variable and push it onto our arrays.
+      for (var i = 0; i < graph.length; i++) {
+          input.push("Max Session " + i);
+          e1.push(parseInt(graph[i].e1));
+          e2.push(parseInt(graph[i].e2));
+          e3.push(parseInt(graph[i].e3));
+          e4.push(parseInt(graph[i].e4));
+          console.log(input);
+          console.log('e1 ' + e1);
+          console.log(e2);
+          console.log(e3);
+          console.log(e4);
       }
-    </script>
-    <% } %>
+
+        var ctx = document.getElementById("myChart"); //Retrieving the elementID of the chart above in canvas.
+        console.log('before data');
+        var myChart = new Chart(ctx, { //Styling the graph. If you need more information on styling the graph please go to the Chart.js Documentation online.
+          type: 'line',
+          data: {
+            labels: input,
+            datasets: [
+            { 
+              data: e1,
+              label: exercises.exercises[0],
+              borderColor: "red",
+              fill: false,
+              pointRadius: 10
+
+            },
+            { 
+              data: e2,
+              label: exercises.exercises[1],
+              borderColor: "black",
+              fill: false,
+              pointRadius: 10
+
+            },
+            { 
+              data: e3,
+              label: exercises.exercises[2],
+              borderColor: "Blue",
+              fill: false,
+              pointRadius: 10,
+            },
+            { 
+              data: e4,
+              label: exercises.exercises[3],
+              borderColor: "Green",
+              fill: false,
+              pointRadius: 10,
+            },
+            ]
+          },
+          options: {
+                responsive: true
+            }
+        });
+        console.log('after data');
+        </script>
+      <% } %>
+      <div class="row mt-5">
+        <div class="col-md-6 m-auto">
+          <div class="card card-body text-center">
+            <button id="myBtn" width="75%" class="btn btn-primary btn-block mb-2">Update Stats</button>
+          </div>
+        </div>
+      <div>
+      <!-- The Modal PopUp Window-->
+      <div id="myModal" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content">
+          <span class="close" style="align-self: end;">&times;</span>
+          <div class="row mt-5">
+            <div class="col-md-6 m-auto">
+              <div class="card card-body">
+                <h1 class="text-center mb-3">
+                  <i class="fas fa-sign-in-alt"></i>Update Stats
+                </h1>
+                <%- include('./partials/messages'); %>
+                <form action="/player/updatestats" method="POST">
+                  <div class="form-group">
+                      <label for="email">Email</label>
+                      <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        class="form-control"
+                        value='<%- email %>'
+                        readonly
+                      />
+                  </div>
+                  <div class="form-group">
+                    <label for="e1">Current Max <%= exercises.exercises[0] %></label>
+                    <input
+                      type="e1"
+                      id="e1"
+                      name="e1"
+                      class="form-control"
+                      placeholder="Enter Weight"
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label for="e2">Current Max <%= exercises.exercises[1] %></label>
+                    <input
+                      type="e2"
+                      id="e2"
+                      name="e2"
+                      class="form-control"
+                      placeholder="Enter Weight"
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label for="e3">Current Max <%= exercises.exercises[2] %></label>
+                    <input
+                      type="e3"
+                      id="e3"
+                      name="e3"
+                      class="form-control"
+                      placeholder="Enter Weight"
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label for="e4">Current Max <%= exercises.exercises[3] %></label>
+                    <input
+                      type="e4"
+                      id="e4"
+                      name="e4"
+                      class="form-control"
+                      placeholder="Enter Time"
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label for="height">Current Height(in)</label>
+                    <input
+                      type="height"
+                      id="height"
+                      name="height"
+                      class="form-control"
+                      placeholder="Enter Height"
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label for="weight">Current Weight(lbs)</label>
+                    <input
+                      type="weight"
+                      id="weight"
+                      name="weight"
+                      class="form-control"
+                      placeholder="Enter Weight"
+                    />
+                  </div>
+                  <button type="submit" class="btn btn-primary btn-block">Submit</button>
+                </form>
+              </div>
+            <div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-  </div>
 </div>
-  <div id="curve_chart" style=" width: 900px; height: 500px"></div>
-</div>
+
+<script>
+  // Get the modal
+var modal = document.getElementById("myModal");
+// Get the button that opens the modal
+var btn = document.getElementById("myBtn");
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+// When the user clicks on the button, open the modal
+const delay = ms => new Promise(res => setTimeout(res, ms));
+
+const modalDisp = async() => {
+  modal.style.display = "block";
+}
+
+btn.onclick = modalDisp;
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+  modal.style.display = "none";
+}
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+</script>

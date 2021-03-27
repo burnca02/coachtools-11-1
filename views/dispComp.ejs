@@ -1,0 +1,340 @@
+<style>
+    @media all and (min-width: 600px) {
+      .bodyContainer {
+        flex: 2 0px;
+      }
+      .sidenav {
+        order: 1;
+      }
+      .rBody {
+        order: 2;
+      }
+    }
+    .container { 
+            display: flex; 
+    }
+    table.redTable {
+    border: 2px solid #a40808;
+    background-color: #eee7db;
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+  }
+  table.redTable td,
+  table.redTable th {
+    border: 1px solid #aaaaaa;
+    padding: 3px 2px;
+  }
+  table.redTable tbody td {
+    font-size: 40px;
+    text-align: center;
+  }
+  table.redTable tr:nth-child(even) {
+    background: #f5c8bf;
+  }
+  table.redTable thead {
+    background: #a40808;
+  }
+  table.redTable thead th {
+    font-size: 40px;
+    font-weight: bold;
+    color: #ffffff;
+    text-align: center;
+    border-left: 2px solid #a40808;
+  }
+  table.redTable thead th:first-child {
+    border-left: none;
+  }
+
+  table.redTable tfoot {
+    font-size: 40px;
+    font-weight: bold;
+    color: #ffffff;
+    background: #a40808;
+  }
+  table.redTable tfoot td {
+    font-size: 40px;
+    text-align: center;
+  }
+  table.redTable tfoot .links {
+    text-align: right;
+  }
+  table.redTable tfoot .links a {
+    display: inline-block;
+    background: #ffffff;
+    color: #a40808;
+    padding: 2px 8px;
+    border-radius: 5px;
+  }
+  .modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+/* Modal Content/Box */
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto; /* 15% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%; /* Could be more or less, depending on screen size */
+}
+/* The Close Button */
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+</style>
+<!-- This script will be used for the responsive chart in Player Trends and Maxes. The graph is bootstrap created by Chart.js. -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+<div class="bigContainer">
+    <%- include("partials/topnav") %>
+    <div class="bodyContainer">
+        <%- include("partials/sidenav") %>
+        <div class="rBody">
+          <div class="container" style="justify-content: center; padding-top: 40px;"> 
+            <div>
+              <table style="font-size:30px;margin-left:auto;margin-right:auto;" class="redTable" id="viewTable" border="1">
+                <tr>
+                  <th><%= name1 %>(<%= pos1 %>)</th>
+                  <th>Attribute</th>
+                  <th><%= name2 %>(<%= pos2 %>)</th>
+                </tr>
+                <tr>
+                  <td><%= game1 %></td>
+                  <td>Game Grade</td>
+                  <td><%= game2 %></td>
+                </tr>
+                <tr>
+                  <td><%= practice1 %></td>
+                  <td>Practice Grade</td>
+                  <td><%= practice2 %></td>
+                </tr>
+                <!-- <tr>
+                  <td>#</td>
+                  <td>Quiz Results</td>
+                  <td>#</td>
+                </tr> -->
+                <tr>
+                  <td><button id="myBtn" width="75%" class="btn btn-primary btn-block mb-2">See Graph</button></td>
+                  <td>Training Results</td>
+                  <td><button id="myBtn2" width="75%" class="btn btn-primary btn-block mb-2">See Graph</button></td>
+                </tr>
+              </table>
+            </div>
+          </div> 
+        </div>
+    </div>
+</div>
+
+<div id="myModal" class="modal">
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <div class="row mt-5">
+      <div class="col-md-6 m-auto">
+        <div class="card card-body text-center">
+          <canvas id="myChart" width="100" height="100"></canvas>
+    <% if (graph1) { %> 
+      <script type="text/javascript">
+      var graph = JSON.parse('<%- JSON.stringify(graph1) %>');
+
+    // Our labels along the x-axis
+    var input = []; //Input will be the Max session that will be on the x axis.
+    // For drawing the lines      
+    var bench = []; //The bench press maxes
+    var squat = []; //The squat maxes
+    var deadlift = []; //Deadlift maxes.
+    
+
+    //We will go through all the information pased by the graph variable and push it onto our arrays.
+    for (var i = 0; i < graph.length; i++) {
+        input.push("Max Session " + i);
+        bench.push(parseInt(graph[i].bench));
+        squat.push(parseInt(graph[i].squat));
+        deadlift.push(parseInt(graph[i].dead));
+    }
+
+      var ctx = document.getElementById("myChart"); //Retrieving the elementID of the chart above in canvas.
+      var myChart = new Chart(ctx, { //Styling the graph. If you need more information on styling the graph please go to the Chart.js Documentation online.
+        type: 'line',
+        data: {
+          labels: input,
+          datasets: [
+          { 
+            data: squat,
+            label: "Squat",
+            borderColor: "red",
+            fill: false,
+            pointRadius: 10
+
+          },
+          { 
+            data: bench,
+            label: "Bench",
+            borderColor: "black",
+            fill: false,
+            pointRadius: 10
+
+          },
+          { 
+            data: deadlift,
+            label: "Deadlift",
+            borderColor: "Blue",
+            fill: false,
+            pointRadius: 10,
+          },
+          ]
+        },
+        options: {
+              responsive: true
+          }
+      });
+
+      </script>
+    <% } %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="myModal2" class="modal">
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <div class="row mt-5">
+      <div class="col-md-6 m-auto">
+        <div class="card card-body text-center">
+          <canvas id="myChart2" width="100" height="100"></canvas>
+    <% if (graph2) { %> 
+      <script type="text/javascript">
+      var graph = JSON.parse('<%- JSON.stringify(graph2) %>');
+
+    // Our labels along the x-axis
+    var input = []; //Input will be the Max session that will be on the x axis.
+    // For drawing the lines      
+    var bench = []; //The bench press maxes
+    var squat = []; //The squat maxes
+    var deadlift = []; //Deadlift maxes.
+    
+
+    //We will go through all the information pased by the graph variable and push it onto our arrays.
+    for (var i = 0; i < graph.length; i++) {
+        input.push("Max Session " + i);
+        bench.push(parseInt(graph[i].bench));
+        squat.push(parseInt(graph[i].squat));
+        deadlift.push(parseInt(graph[i].dead));
+    }
+
+      var ctx = document.getElementById("myChart2"); //Retrieving the elementID of the chart above in canvas.
+      var myChart = new Chart(ctx, { //Styling the graph. If you need more information on styling the graph please go to the Chart.js Documentation online.
+        type: 'line',
+        data: {
+          labels: input,
+          datasets: [
+          { 
+            data: squat,
+            label: "Squat",
+            borderColor: "red",
+            fill: false,
+            pointRadius: 10
+
+          },
+          { 
+            data: bench,
+            label: "Bench",
+            borderColor: "black",
+            fill: false,
+            pointRadius: 10
+
+          },
+          { 
+            data: deadlift,
+            label: "Deadlift",
+            borderColor: "Blue",
+            fill: false,
+            pointRadius: 10,
+          },
+          ]
+        },
+        options: {
+              responsive: true
+          }
+      });
+
+      </script>
+    <% } %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// Get the modal
+var modal = document.getElementById("myModal");
+var modal2 = document.getElementById("myModal2");
+// Get the button that opens the modal
+var btn = document.getElementById("myBtn");
+var btn2 = document.getElementById("myBtn2");
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+var span2 = document.getElementsByClassName("close")[1];
+// When the user clicks on the button, open the modal
+btn.onclick = function() {
+  modal.style.display = "block";
+}
+btn2.onclick = function() {
+  modal2.style.display = "block";
+}
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+  modal.style.display = "none";
+}
+span2.onclick = function() {
+  modal2.style.display = "none";
+}
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+window.onclick = function(event) {
+  if (event.target == modal2) {
+    modal2.style.display = "none";
+  }
+}
+
+    var dropdown = document.getElementsByClassName("dropdown-btn");
+    var i;
+  
+    for (i = 0; i < dropdown.length; i++) {
+      dropdown[i].addEventListener("click", function () {
+        this.classList.toggle("active");
+        var dropdownContent = this.nextElementSibling;
+        if (dropdownContent.style.display === "block") {
+          dropdownContent.style.display = "none";
+        } else {
+          dropdownContent.style.display = "block";
+        }
+      });
+      }
+      
+</script>

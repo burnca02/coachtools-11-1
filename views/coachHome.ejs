@@ -1,264 +1,59 @@
+<!-- CoachHome - developed by Kayl Murdough -->
 <style>
   @media all and (min-width: 600px) {
     .bodyContainer {flex: 2 0px;}
     .sidenav {order: 1;}
     .chBody {order: 2;}
   }
+    .dropdown {
+    position: center;
+    display: inline-block;
+  }
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+  }
+  .dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    /* text-align: center; */
+  }
+  .dropdown-content a:hover {
+    background-color: #ddd;
+  }
+  .dropdown:hover .dropdown-content {
+    display: inline-block;
+    text-align: center;
+  }
+  .dDown:hover .dropdown-content {
+    display: inline-block;
+    text-align: center;
+  }
+  .dropdown:hover .dropbtn {
+    background-color: rgb(192, 26, 26);
+  }
 </style>
 <div class="bigContainer">
-  <nav class="topnav" id="myTopnav">
-    <a href="javascript:void(0);" class="icon threeLines" onclick="resizeDropdown2()">
-      <i class="fa fa-bars"></i>
-    </a>
-    <div class="topnavChild1" style="width: 100%;" id="logo">
-      <img src="images/coachToolsLogo.png" alt="CoachTools" style="width: 110px;"/>
-    </div>
-    <div class="topnavChild2">
-      <!-- <span class="dateDisp" id="datetime"></span> -->
-      <a style="color: #818181;" id="datetime"></a>
-      <a style="color: #818181;"><%= name %></a>  <!--style="padding-left: 75%;"-->
-      <a class="logout" onclick="window.location.href='/users/logout'">Logout</a>
-    </div>
-  </nav>
+  <!-- Includes topnav -->
+  <%- include("partials/topnav") %>
   <div class="bodyContainer">
-    <!-- Side navigation -->
-    <!-- <div id="nav-placeholder"></div> -->
-    <nav class="sidenav" style="max-width: 170px;">
-      <a href="/coachHome">Home</a>
-      <button class="dropdown-btn">
-        Roster<i class="fa fa-caret-down"></i>
-      </button>
-      <div class="dropdown-container">
-        <a href="/roster">Player Bio</a>
-        <a href="#">Depth Chart</a>
-      </div>
-      <button class="dropdown-btn">Game<i class="fa fa-caret-down"></i></button>
-      <div class="dropdown-container">
-        <a href="/coach/gameStats">Game Stats</a>
-        <a href="#">Game Grade</a>
-        <a href="#">Analysis</a>
-      </div>
-      <button class="dropdown-btn">
-        Practice<i class="fa fa-caret-down"></i>
-      </button>
-      <div class="dropdown-container">
-        <a href="/coach/practiceStats">In Season</a>
-        <a href="/coach/practiceTrainingStats">Training</a>
-      </div>
-      <a href="/coach/playerFeedback">Player Feedback</a>
-      <a href="#">Comparison</a>
-    </nav>
-
+    <!-- Includes Side navigation -->
+    <%- include("partials/sidenav") %>
     <div class="chBody">
       <div>
-        <div class="btn-group" style="padding: 10px">
-          <button
-            type="button"
-            class="btn btn-primary dropdown-toggle"
-            data-toggle="dropdown"
-          >
-            Team
-          </button>
-          <div class="dropdown-menu">
-            <a class="dropdown-item" onclick="offFunc()">Offense</a>
-            <a class="dropdown-item" onclick="defFunc()">Defense</a>
-            <a class="dropdown-item" onclick="specFunc()">Special Teams</a>
-          </div>
-        </div>
-      </div>
-      <div class="pitch">
-        <span class="help">Offense</span>
-        <ol id="offense" class="container">
-          <li onclick="showSubs('sWR')">
-            <span class="number">2</span>
-            <span class="name">Walker WR</span>
-          </li>
-          <li onclick="showSubs('sWR')">
-            <span class="number">5</span>
-            <span class="name">Cahill WR</span>
-          </li>
-          <li onclick="showSubs('sRB')">
-            <span class="number">6</span>
-            <span class="name">Stones RB</span>
-          </li>
-          <li>
-            <span class="number">3</span>
-            <span class="name">Rose LT</span>
-          </li>
-          <li>
-            <span class="number">8</span>
-            <span class="name">Henderson LG</span>
-          </li>
-          <li>
-            <span class="number">4</span>
-            <span class="name">Dier C</span>
-          </li>
-          <li>
-            <span class="number">10</span>
-            <span class="name">Rooney RG</span>
-          </li>
-          <li>
-            <span class="number">7</span>
-            <span class="name">Sterling RT</span>
-          </li>
-          <li>
-            <span class="number">9</span>
-            <span class="name">Kane TE</span>
-          </li>
-          <li onclick="showSubs('sWR')">
-            <span class="number">11</span>
-            <span class="name">Lallana WR</span>
-          </li>
-        </ol>
-        <ul id="qb" class="container">
-          <li onclick="showSubs('sQB')">
-            <span class="number">1</span>
-            <span class="name" id="QB" name="QB">Hart QB</span>
-          </li>
-        </ul>
-      </div>
-      <div id="sQB" class="bench">
-        <span class="help">QB Subs</span>
-        <ul id="Qsubs" class="container">
-          <li onclick="showSubs('sQB')">
-            <span class="number">12</span>
-            <span class="name">QB 1</span>
-          </li>
-          <li onclick="showSubs('sQB')">
-            <span class="number">13</span>
-            <span class="name">QB 2</span>
-          </li>
-          <li onclick="showSubs('sQB')">
-            <span class="number">14</span>
-            <span class="name">QB 3</span>
-          </li>
-          <li onclick="showSubs('sQB')">
-            <span class="number">15</span>
-            <span class="name">QB 4</span>
-          </li>
-        </ul>
-      </div>
-      <div id="sRB" class="bench">
-        <span class="help">RB Subs</span>
-        <ul id="RBsubs" class="container">
-          <li onclick="showSubs('sRB')">
-            <span class="number">12</span>
-            <span class="name">RB 1</span>
-          </li>
-          <li onclick="showSubs('sRB')">
-            <span class="number">13</span>
-            <span class="name">RB 2</span>
-          </li>
-          <li onclick="showSubs('sRB')">
-            <span class="number">14</span>
-            <span class="name">RB 3</span>
-          </li>
-          <li onclick="showSubs('sRB')">
-            <span class="number">15</span>
-            <span class="name">RB 4</span>
-          </li>
-          <li onclick="showSubs('sRB')">
-            <span class="number">16</span>
-            <span class="name">RB 5</span>
-          </li>
-        </ul>
-      </div>
-      <div id="sWR" class="bench">
-        <span class="help">WR Subs</span>
-        <ul id="subs" class="container">
-          <li onclick="showSubs('sWR')">
-            <span class="number">12</span>
-            <span class="name">WR 1</span>
-          </li>
-          <li onclick="showSubs('sWR')">
-            <span class="number">13</span>
-            <span class="name">WR 2</span>
-          </li>
-          <li onclick="showSubs('sWR')">
-            <span class="number">14</span>
-            <span class="name">WR 3</span>
-          </li>
-          <li onclick="showSubs('sWR')">
-            <span class="number">15</span>
-            <span class="name">WR 4</span>
-          </li>
-          <li onclick="showSubs('sWR')">
-            <span class="number">16</span>
-            <span class="name">WR 5</span>
-          </li>
-          <li onclick="showSubs('sWR')">
-            <span class="number">18</span>
-            <span class="name">WR 6</span>
-          </li>
-        </ul>
+        <img src="images/calendarBasic.jpg" alt="calendar">
       </div>
     </div>
   </div>
 </div>
-<!-- </body> -->
 <script>
-  var drake = dragula({
-    containers: [
-      document.querySelector("#qb"),
-      document.querySelector("#offense"),
-      document.querySelector("#defence"),
-      document.querySelector("#midfield"),
-      document.querySelector("#attack"),
-      document.querySelector("#subs"),
-      document.querySelector("#Qsubs"),
-      document.querySelector("#RBsubs"),
-    ],
-    revertOnSpill: true,
-    mirrorContainer: document.body,
-    ignoreInputTextSelection: true,
-  });
-
-  // validation
-  drake.on("drop", function (el, target, source, sibling) {
-    // max 11 players
-    if (
-      target.id !== "subs" &&
-      document.querySelectorAll(".pitch li").length > 11
-    ) {
-      drake.cancel();
-    }
-
-    // 1 goalkeeper
-    if (target.id === "qb" && target.children.length > 1) {
-      drake.cancel();
-    }
-
-    // 10 linemen
-    if (target.id === "offense" && target.children.length > 10) {
-      drake.cancel();
-    }
-  });
-
-  // $(function(){
-  //     $("#nav-placeholder").load("navBars/nav.html");
-  // });
-
-  document.addEventListener(
-    "DOMContentLoaded",
-    function () {
-      //alert("Ready!");
-      hideSubs();
-    },
-    false
-  );
-
-  var dropdown = document.getElementsByClassName("dropdown-btn");
-  var i;
-
-  for (i = 0; i < dropdown.length; i++) {
-    dropdown[i].addEventListener("click", function () {
-      this.classList.toggle("active");
-      var dropdownContent = this.nextElementSibling;
-      if (dropdownContent.style.display === "block") {
-        dropdownContent.style.display = "none";
-      } else {
-        dropdownContent.style.display = "block";
-      }
-    });
-  }
+  
 </script>
+
+ 

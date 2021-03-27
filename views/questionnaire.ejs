@@ -9,39 +9,70 @@
             <label for="email"><strong>Participants</strong></label>
               <div>
                 <div>
-                  <input type="radio" name="participants" id="all" value="all" required>
+                  <input type="radio" name="participants" id="all" value="all"onclick="javascript:yesnoCheck();" checked="checked">
                   <label for="all">All Players</label>
                 </div>
                 <div>
-                  <input type="radio" name="participants" id="bypos" value="bypos">
+                  <input type="radio" name="participants" id="bypos" value="bypos" onclick="javascript:yesnoCheck();">
                   <label for="bypos">By Position</label>
-                
-                  <div class="reveal-if-active">
+                  <div id="whichpos" style="display:none">
                     <label for="whichpos">Which Position?</label>
-                    <input type="text" id="whichpos" name="whichpos" class="require-if-active" data-require-pair="#bypos">
+                    <input list="positions" name="whichpos" id="whichpos">
+                    <datalist id="positions">
+                      <% for(var i = 0; i < positions.length; i++) { %>
+                      <option value="<%- positions[i] %>">
+                      <% } %>
+                    </datalist>
                   </div>
                 </div>
               </div>
-          <div class="form-group">
-            <label for="type"><strong>Choose Questionnaire Type</strong></label><br>
-            <input type="radio" id="meeting" name="type" value="meeting" autocomplete="off"><label for="gburg">Meeting</label><br>
-            <input type="radio" id="practice" name="type" value="practice" autocomplete="off"><label for="albright">Practice</label><br>
-            <input type="radio" id="training" name="type" value="training" autocomplete="off"><label for="albright">Training</label><br>
           </div>
           <div class="form-group">
-            <label for="q1"><strong>Question 1</strong></label>
+            <label for="type"><strong>Choose Questionnaire Type</strong></label><br>
+            <input type="radio" id="meeting" name="type" value="Meeting" autocomplete="off" checked="checked"><label for="gburg">Meeting</label><br>
+            <input type="radio" id="practice" name="type" value="Practice" autocomplete="off"><label for="albright">Practice</label><br>
+            <input type="radio" id="training" name="type" value="Training" autocomplete="off"><label for="albright">Lifting</label><br>
+            <h4>All Questionnaires will be graded on a Yes/No scale.</h4>
+          </div>
+          <!-- <div style="justify-content: center; padding-top: 40px;">
+            <h4>All Questionnaires will be graded on a Yes/No scale.</h4>
+          </div> -->
+          <div class="form-group">
+            <label for="q1" style="text-align: center;"><strong>Question 1</strong></label>
+            <br>
             <textarea id="q1" name="q1" rows="4" cols="50"></textarea>           
           </div>
           <div class="form-group">
             <label for="q2"><strong>Question 2</strong></label>
+            <br>
             <textarea id="q2" name="q2" rows="4" cols="50"></textarea>
           </div>
           <div class="form-group">
             <label for="q3"><strong>Question 3</strong></label>
+            <br>
             <textarea id="q3" name="q3" rows="4" cols="50"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="date"><strong>Expiration Date</strong></label>
+            <input type="radio" name="timeout" id="24" value="24" required>
+            <label for="24">24 Hours</label>
+            <input type="radio" name="timeout" id="48" value="48" required>
+            <label for="48">48 Hours</label>
           </div>
           <button type="submit" class="btn btn-primary btn-block">Submit Questionnaire</button>
         </form>
       </div>
     </div>
   </div>
+
+  <script type="text/javascript">
+    function yesnoCheck(){
+      console.log("inside check function");
+      if (document.getElementById('bypos').checked) {
+          document.getElementById('whichpos').style.display = 'block';
+      }
+      else {
+        document.getElementById('whichpos').style.display = 'none';
+      }
+    }
+  </script>

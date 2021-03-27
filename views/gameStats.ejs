@@ -1,88 +1,275 @@
-<!-- <link rel="stylesheet" type="text/css" href="css/style.css"/> -->
-<div class="topnav">
-  <img
-    src="images/coachToolsLogo.png"
-    alt="CoachTools"
-    style="display: inline; width: 120px; padding-left: 30px"
-  />
-  <div class="end">
-    <button class="top-dropdown-btn">
-      <!-- padding-left: 69%;  -->
-    </button>
+<style>
+  @media all and (min-width: 600px) {
+    .bodyContainer {
+      flex: 2 0px;
+    }
+    .sidenav {
+      order: 1;
+    }
+    .rBody {
+      order: 2;
+    }
+  }
+</style>
+<div class="bigContainer">
+  <%- include("partials/topnav") %>
+  <div class="bodyContainer">
+    <!-- Side navigation -->
+    <!-- <div id="nav-placeholder"></div> -->
+    <%- include("partials/sidenav") %>
+    <div class="rBody">
+      <div class="rosterRow">
+        <div
+          class="form-group"
+          role="group"
+          aria-label="Button group with nested dropdown"
+        >
+          <form action="" method="POST">
+            <button type="button" class="btn btn-primary" style="background: red;">View Position</button>
+            <div class="dropdown" role="group">
+              <button
+                id="btnGroupDrop1"
+                type="button"
+                class="btn btn-primary dropdown-toggle"
+                data-toggle="dropdown"
+                style="background: red;"
+                aria-haspopup="true"
+                aria-expanded="false"
+              ></button>
+              <div 
+                class="dropdown-content" 
+                aria-labelledby="btnGroupDrop1" 
+                style="max-height: 200px; overflow: scroll">
+                <button class="dropdown-item" type="submit" href="#">
+                  Quarterbacks
+                </button>
+                <button class="dropdown-item" type="submit" href="#">
+                  Running Backs
+                </button>
+                <button class="dropdown-item" type="submit" href="#">
+                  Full Backs
+                </button>
+                <button class="dropdown-item" type="submit" href="#">
+                  Wide Receivers
+                </button>
+                <button class="dropdown-item" type="submit" href="#">
+                  Tight Ends
+                </button>
+                <button class="dropdown-item" type="submit" href="#">
+                  Outside Linebackers
+                </button>
+                <button class="dropdown-item" type="submit" href="#">
+                  Linebackers
+                </button>
+                <button class="dropdown-item" type="submit" href="#">
+                  Inside Linebackers
+                </button>
+                <button class="dropdown-item" type="submit" href="#">
+                  Defensive Tackles
+                </button>
+                <button class="dropdown-item" type="submit" href="#">
+                  Defensive Ends
+                </button>
+                <button class="dropdown-item" type="submit" href="#">
+                  Defensive Linemen
+                </button>
+                <button class="dropdown-item" type="submit" href="#">
+                  Offensive Linemen
+                </button>
+                <button class="dropdown-item" type="submit" href="#">
+                  Punters
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
 
-    <button
-      class="top-dropdown-btn"
-      onclick="window.location.href='/users/login'"
-    >
-      Logout
-    </button>
-  </div>
-</div>
-<!-- Side navigation -->
-<!-- <div id="nav-placeholder"></div> -->
-<div class="sidenav">
-  <a href="/coachHome">Home</a>
-  <button class="dropdown-btn">Roster<i class="fa fa-caret-down"></i></button>
-  <div class="dropdown-container">
-    <a href="/roster">Player Bio</a>
-    <a href="#">Depth Chart</a>
-  </div>
-  <button class="dropdown-btn">Game<i class="fa fa-caret-down"></i></button>
-  <div class="dropdown-container">
-    <a href="#">Game Stats</a>
-    <a href="#">Game Grade</a>
-    <a href="#">Analysis</a>
-  </div>
-  <button class="dropdown-btn">Practice<i class="fa fa-caret-down"></i></button>
-  <div class="dropdown-container">
-    <a href="/coach/practiceStats">In Season</a>
-    <a href="/coach/practiceTrainingStats">Training</a>
-  </div>
-  <a href="/coach/playerFeedback">Player Feedback</a>
-  <a href="#">Comparison</a>
-</div>
-
-<div class="main">
-  <div class="row" style="padding-top: 15px; padding-left: 10px">
-      <div class="form-group" role="group" aria-label="Button group with nested dropdown">
-        <form action = "/coach/table" method = "POST">
-          <button type="button" class="btn btn-primary">Sort By</button>
-          <div class="btn-group" role="group">
-            <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
-            <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-              <button class="dropdown-item" type="submit" name= "type" value = "full">View Whole Roster</button>
-              <button class="dropdown-item" type="submit" name= "type" value = "qb">View Quartberbacks</button>
-              <button class="dropdown-item" type="submit" name= "type" value = "wr">View Wide Receivers</button>
-              <button class="dropdown-item" type="submit" name= "type" value = "k">View Kickers</button>
-              <button class="dropdown-item" type="submit" name= "type" value = "lb">View Linebackers</button>
-              <button class="dropdown-item" type="submit" name= "type" value = "gy">Sort By Graduation Year (Ascending)</button>
-              <button class="dropdown-item" type="submit" name= "type" value = "gyd">Sort By Graduation Year (Descending)</button>
+        <div
+        class="form-group"
+        role="group"
+        aria-label="Button group with nested dropdown"
+      >
+        <form action="" method="POST">
+          <button type="button" class="btn btn-primary" style="background: red;">Season Average</button>
+          <div class="dropdown" role="group">
+            <button
+              id="btnGroupDrop1"
+              type="button"
+              class="btn btn-primary dropdown-toggle"
+              data-toggle="dropdown"
+              style="background: red;"
+              aria-haspopup="true"
+              aria-expanded="false"
+            ></button>
+            <div 
+              class="dropdown-content" 
+              aria-labelledby="btnGroupDrop1" 
+              style="max-height: 200px; overflow: scroll">
+              <button class="dropdown-item"  href="#">
+                Game 1
+              </button>
+              <button class="dropdown-item"  href="#">
+                Game 2
+              </button>
+              <button class="dropdown-item"  href="#">
+                Game 3
+              </button>
+              <button class="dropdown-item"  href="#">
+                Game 4
+              </button>
+              <button class="dropdown-item"  href="#">
+                Game 5
+              </button>
+              <button class="dropdown-item"  href="#">
+                Game 6
+              </button>
+              <button class="dropdown-item"  href="#">
+                Game 7
+              </button>
+              <button class="dropdown-item"  href="#">
+                Game 8
+              </button>
+              <button class="dropdown-item"  href="#">
+                Game 9
+              </button>
             </div>
           </div>
         </form>
       </div>
-      
 
-    <!-- This is the upload excel roster button. -->
-    <!-- <p>Use the form below to upload a list of authors. -->
-    <div style="margin-left: 5%">
-      <form action="/coach/upload" method="POST" encType="multipart/form-data">
-        <input type="file" name="file" accept=".csv" />
-        <input
-          type="submit"
-          class="btn btn-primary dropdown-toggle"
-          value="Upload Roster"
-        />
-      </form>
-      <p>Click <a href="/coach/template">here</a> for an example template.</p>
+        <!-- This is the upload excel roster button. -->
+        <!-- <p>Use the form below to upload a list of authors. -->
+        <div class="uploadRosterClass">
+          <form
+            action="/coach/upload"
+            method="POST"
+            encType="multipart/form-data"
+          >
+            <input type="file" name="file" accept=".csv" />
+          </form>
+          <p>
+            Click <a href="/coach/template">here</a> for an example template.
+          </p>
+          <form action="/coach/upload" method="POST">
+            <button type="button" class="btn btn-primary" style="background: red">
+              What stats do you want to upload?
+            </button>
+            <div class="btn-group" role="group">
+              <button
+                id="btnGroupDrop1"
+                type="button"
+                style="background: red"
+                class="btn btn-primary dropdown-toggle"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              ></button>
+              <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                <button
+                  class="dropdown-item"
+                  type="submit"
+                  name="type"
+                  value="pass"
+                >
+                  Upload Passing Stats
+                </button>
+                <button
+                  class="dropdown-item"
+                  type="submit"
+                  name="type"
+                  value="rush"
+                >
+                  Upload Rushing Stats
+                </button>
+                <button
+                  class="dropdown-item"
+                  type="submit"
+                  name="type"
+                  value="wr"
+                >
+                  Upload Wide Receiver/Tight End Stats
+                </button>
+                <button
+                  class="dropdown-item"
+                  type="submit"
+                  name="type"
+                  value="tack"
+                >
+                  Upload Tackle Stats
+                </button>
+                <button
+                  class="dropdown-item"
+                  type="submit"
+                  name="type"
+                  value="sack"
+                >
+                  Upload Sack Stats
+                </button>
+                <button
+                  class="dropdown-item"
+                  type="submit"
+                  name="type"
+                  value="pd"
+                >
+                  Upload Pass Defense Stats
+                </button>
+                <button
+                  class="dropdown-item"
+                  type="submit"
+                  name="type"
+                  value="fum"
+                >
+                  Upload Fumbles Stats
+                </button>
+                <button
+                  class="dropdown-item"
+                  type="submit"
+                  name="type"
+                  value="bk"
+                >
+                  Upload Blocked Kick Stats
+                </button>
+              </div>
+        </div>
+      </div>
+
+      <table class="table table-hover" style="padding: 500px">
+        <thead>
+          <tr class="table-dark">
+            <th scope="col">Name</th>
+            <th scope="col">Position</th>
+            <!-- <th scope="col">Graduation Year</th> -->
+            <th scope="col">Active</th>
+            <th scope="col">Number</th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
     </div>
   </div>
 </div>
+
 <script>
   // $(function(){
   //     $("#nav-placeholder").load("navBars/nav.html");
   // });
   var dropdown = document.getElementsByClassName("dropdown-btn");
+  var i;
+
+  for (i = 0; i < dropdown.length; i++) {
+    dropdown[i].addEventListener("click", function () {
+      this.classList.toggle("active");
+      var dropdownContent = this.nextElementSibling;
+      if (dropdownContent.style.display === "block") {
+        dropdownContent.style.display = "none";
+      } else {
+        dropdownContent.style.display = "block";
+      }
+    });
+  }
+
+  var dropdown = document.getElementsByClassName("dropdown-toggle");
   var i;
 
   for (i = 0; i < dropdown.length; i++) {

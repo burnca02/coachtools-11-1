@@ -2,78 +2,49 @@
   @media all and (min-width: 600px) {
   .bodyContainer {flex: 2 0px;}
   .sidenav {order: 1;}
-  .cardsK {order: 2;}
+  /* .cardsK {order: 2;} */
+  .chBody {order: 2;}
 }
 </style>
-<link
-  rel="stylesheet"
-  href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/cyborg/bootstrap.min.css"
-/>
+<!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/cyborg/bootstrap.min.css"/> -->
 <div class="bigContainer">
-  <!-- header -->
-  <nav class="topnav" id="myTopnav">
-    <a href="javascript:void(0);" class="icon threeLines" onclick="resizeDropdown2()">
-      <i class="fa fa-bars"></i>
-    </a>
-    <div class="topnavChild1" style="width: 100%;" id="logo">
-      <img src="images/coachToolsLogo.png" alt="CoachTools" style="width: 110px;"/>
-    </div>
-    <div class="topnavChild2">
-      <!-- <span class="dateDisp" id="datetime"></span> -->
-      <a id="datetime"></a>
-      <a ><%= name %></a>  <!--style="padding-left: 75%;"-->
-      <a class="logout" onclick="window.location.href='/users/logout'">Logout</a>
-    </div>
-  </nav>
+  <%- include("partials/topnav") %>
   <div class="bodyContainer">
-    <!-- Side navigation  resizeDropdown2()--> 
-    <nav class="sidenav" id="mySidenav">
-      <a href="./playerHome">Home</a>
-      <a href="/player/playerGrades">My Grades</a>
-      <a href="/player/playerTrends">Max Trends</a>
-    </nav>
-
-    <ul class="cardsK">
-      <li class="cards__itemK">
-        <div class="cardK">
-          <div class="card__image card__image--fence"></div>
-          <div class="card__content">
-            <div class="card__title">Meeting</div>
-            <!-- <p class="card__text"></p> -->
-            <a class="btn2 btn--block card__btn" href="/viewQuestionnaire">View Meeting Questionnaire</a>
+    <%- include("partials/sidenavPlayer") %>
+    <div class="chBody">
+      <ul class="cardsK">
+        <li class="cards__itemK">
+          <div class="cardK">
+            <div class="card__image card__image--fence"></div>
+            <div class="card__content">
+              <div class="card__title">Meeting</div>
+              <!-- <p class="card__text"></p> -->
+              <a class="btn2 btn--block card__btn" href="/viewMQuestionnaire">View Meeting Questionnaire</a>
+            </div>
           </div>
-        </div>
-      </li>
-      <li class="cards__itemK">
-        <div class="cardK">
-          <div class="card__image card__image--river"></div>
-          <div class="card__content">
-            <div class="card__title">Training</div>
-            <!-- <p class="card__text">This defines the ability for a flex item to grow if necessary. It accepts a unitless value that serves as a proportion. It dictates what amount of the available space inside the flex container the item should take up.</p> -->
-            <a class="btn2 btn--block card__btn" href="/viewQuestionnaire">View Training Questionnaire</a>
+        </li>
+        <li class="cards__itemK">
+          <div class="cardK">
+            <div class="card__image card__image--river"></div>
+            <div class="card__content">
+              <div class="card__title">Training</div>
+              <!-- <p class="card__text">This defines the ability for a flex item to grow if necessary. It accepts a unitless value that serves as a proportion. It dictates what amount of the available space inside the flex container the item should take up.</p> -->
+              <a class="btn2 btn--block card__btn" href="/viewTQuestionnaire">View Training Questionnaire</a>
+            </div>
           </div>
-        </div>
-      </li>
-      <li class="cards__itemK">
-        <div class="cardK">
-          <div class="card__image card__image--record"></div>
-          <div class="card__content">
-            <div class="card__title">Practice</div>
-            <!-- <p class="card__text">This defines the ability for a flex item to shrink if necessary. Negative numbers are invalid.</p> -->
-            <a class="btn2 btn--block card__btn" href="/viewQuestionnaire">View Practice Questionnaire</a>
+        </li>
+        <li class="cards__itemK">
+          <div class="cardK">
+            <div class="card__image card__image--record"></div>
+            <div class="card__content">
+              <div class="card__title">Practice</div>
+              <!-- <p class="card__text">This defines the ability for a flex item to shrink if necessary. Negative numbers are invalid.</p> -->
+              <a class="btn2 btn--block card__btn" href="/viewPQuestionnaire">View Practice Questionnaire</a>
+            </div>
           </div>
-        </div>
-      </li>
-    </ul>
-
-    <!-- <div class="middleText">
-      Hello World
+        </li>
+      </ul>
     </div>
-
-    <div class="rightText">
-      Hello World 2
-    </div> -->
-
   </div>
 </div>
 <script>
@@ -96,67 +67,67 @@
   //   $("#qtest").load("viewQuestionnaire.ejs");
   // });
 
-  var util = {
-  mobileMenu() {
-    $("#nav").toggleClass("nav-visible");
-  },
-  windowResize() {
-    if ($(window).width() > 800) {
-      $("#nav").removeClass("nav-visible");
-    }
-  },
-  scrollEvent() {
-    var scrollPosition = $(document).scrollTop();
+//   var util = {
+//   mobileMenu() {
+//     $("#nav").toggleClass("nav-visible");
+//   },
+//   windowResize() {
+//     if ($(window).width() > 800) {
+//       $("#nav").removeClass("nav-visible");
+//     }
+//   },
+//   scrollEvent() {
+//     var scrollPosition = $(document).scrollTop();
     
-    $.each(util.scrollMenuIds, function(i) {
-      var link = util.scrollMenuIds[i],
-          container = $(link).attr("href"),
-          containerOffset = $(container).offset().top,
-          containerHeight = $(container).outerHeight(),
-          containerBottom = containerOffset + containerHeight;
+//     $.each(util.scrollMenuIds, function(i) {
+//       var link = util.scrollMenuIds[i],
+//           container = $(link).attr("href"),
+//           containerOffset = $(container).offset().top,
+//           containerHeight = $(container).outerHeight(),
+//           containerBottom = containerOffset + containerHeight;
 
-      if (scrollPosition < containerBottom - 20 && scrollPosition >= containerOffset - 20) {
-        $(link).addClass("active");
-      } else {
-        $(link).removeClass("active");
-      }
-    });
-  }
-};
+//       if (scrollPosition < containerBottom - 20 && scrollPosition >= containerOffset - 20) {
+//         $(link).addClass("active");
+//       } else {
+//         $(link).removeClass("active");
+//       }
+//     });
+//   }
+// };
 
-$(document).ready(function() {
+// $(document).ready(function() {
   
-  util.scrollMenuIds = $("a.nav-link[href]");
-  $("#menu").click(util.mobileMenu);
-  $(window).resize(util.windowResize);
-  $(document).scroll(util.scrollEvent);
+//   util.scrollMenuIds = $("a.nav-link[href]");
+//   $("#menu").click(util.mobileMenu);
+//   $(window).resize(util.windowResize);
+//   $(document).scroll(util.scrollEvent);
   
-});
+// });
 
-function resizeDropdown() {
-  var x = document.getElementById("myTopnav");
-  if (x.className === "topnav") {
-    x.className += " responsive";
-  } else {
-    x.className = "topnav";
-  }
-}
+// function resizeDropdown() {
+//   var x = document.getElementById("myTopnav");
+//   if (x.className === "topnav") {
+//     x.className += " responsive";
+//   } else {
+//     x.className = "topnav";
+//   }
+// }
 
-function resizeDropdown2() {
-  var x = document.getElementById("mySidenav");
-  if (x.className === "sidenav") {
-    x.className += " responsive";
-  } else {
-    x.className = "sidenav";
-  }
-}
-  var dt = new Date();
-  document.getElementById("datetime").innerHTML =
-    ("0" + (dt.getMonth() + 1)).slice(-2) +
-    "/" +
-    ("0" + dt.getDate()).slice(-2) +
-    "/" +
-    dt.getFullYear();
+// function resizeDropdown2() {
+//   var x = document.getElementById("mySidenav");
+//   if (x.className === "sidenav") {
+//     x.className += " responsive";
+//   } else {
+//     x.className = "sidenav";
+//   }
+// }
+  // var dt = new Date();
+  // document.getElementById("datetime").innerHTML =
+  //   ("0" + (dt.getMonth() + 1)).slice(-2) +
+  //   "/" +
+  //   ("0" + dt.getDate()).slice(-2) +
+  //   "/" +
+  //   dt.getFullYear();
 </script>
 
 

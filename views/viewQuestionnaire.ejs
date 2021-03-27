@@ -107,40 +107,29 @@
         <table>
           <tr>
             <th class="first-col"></th>
-            <th>5</th>
-            <th>4</th>
-            <th>3</th>
-            <th>2</th>
-            <th>1</th>
+            <th>Yes</th>
+            <th>No</th>
           </tr>
           <tr>
             <td class="first-col"><%= q1 %></td>
-            <td><input type="radio" value="5" name="q1" /></td>
-            <td><input type="radio" value="4" name="q1" /></td>
-            <td><input type="radio" value="3" name="q1" /></td>
-            <td><input type="radio" value="2" name="q1" /></td>
-            <td><input type="radio" value="1" name="q1" /></td>
+            <td><input type="radio" value="yes" name="q1" checked="checked"/></td>
+            <td><input type="radio" value="no" name="q1" /></td>
           </tr>
           <tr>
             <td class="first-col"><%= q2 %></td>
-            <td><input type="radio" value="5" name="q2" /></td>
-            <td><input type="radio" value="4" name="q2" /></td>
-            <td><input type="radio" value="3" name="q2" /></td>
-            <td><input type="radio" value="2" name="q2" /></td>
-            <td><input type="radio" value="1" name="q2" /></td>
+            <td><input type="radio" value="yes" name="q2" checked="checked"/></td>
+            <td><input type="radio" value="no" name="q2" /></td>
           </tr>
           <tr>
             <td class="first-col"><%= q3 %></td>
-            <td><input type="radio" value="5" name="q3" /></td>
-            <td><input type="radio" value="4" name="q3" /></td>
-            <td><input type="radio" value="3" name="q3" /></td>
-            <td><input type="radio" value="2" name="q3" /></td>
-            <td><input type="radio" value="1" name="q3" /></td>
+            <td><input type="radio" value="yes" name="q3" checked="checked"/></td>
+            <td><input type="radio" value="no" name="q3" /></td>
           </tr>
         </table>
         <h4>Any additional comments?</h4>
         <textarea rows="5" name="comment"></textarea>
-        <input type="qtype" id="qtype" name="qtype" value="<%= type %>"/>
+        <input type="hidden" id="qtype" name="qtype" value="<%= type %>" readonly/>
+        <input type="hidden" id="qid" name="qid" value="<%= _id %>" readonly/>
         <div class="btn-block">
           <button type="submit" href="/">Send Feedback</button>
         </div>

@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
  const GradeSchema = new mongoose.Schema({
      email: {
          type: String,
-         required: true
+         required: true,
      },
      grade: {
         type: String,

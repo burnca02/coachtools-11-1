@@ -1,10 +1,23 @@
 <style>
-  table,
-  th,
-  td {
-    padding: 10px;
-    border: 1px solid black;
+  table.redTable {
+    border: 2px solid #a40808;
+    background-color: #eee7db;
+    width: 90%;
+    text-align: center;
     border-collapse: collapse;
+  }
+  table.redTable td,
+  table.redTable th,
+  table.redTable tr {
+    border: 1px solid #aaaaaa;
+    padding: 3px 2px;
+  }
+  table.redTable tbody td {
+    font-size: 13px;
+    text-align: center;
+  }
+  table.redTable tr:nth-child(even) {
+    background: #f5c8bf;
   }
   @media all and (min-width: 600px) {
     .bodyContainer {
@@ -13,141 +26,149 @@
     .sidenav {
       order: 1;
     }
-    .gradeTable {
+    /* .gradeTable {
+      order: 2;
+    } */
+    .chBody {
       order: 2;
     }
   }
 </style>
 <div class="bigContainer">
   <!-- header -->
-  <nav class="topnav" id="myTopnav">
-    <a href="javascript:void(0);" class="icon threeLines" onclick="resizeDropdown2()">
-      <i class="fa fa-bars"></i>
-    </a>
-    <div class="topnavChild1" style="width: 100%" id="logo">
-      <img
-        src="images/coachToolsLogo.png"
-        alt="CoachTools"
-        style="width: 110px"
-      />
-    </div>
-    <div class="topnavChild2">
-      <!-- <span class="dateDisp" id="datetime"></span> -->
-      <a id="datetime" style="color: #818181;"></a>
-      <a style="color: #818181;"><%= name %></a>
-      <!--style="padding-left: 75%;"-->
-      <a class="logout" onclick="window.location.href='/users/logout'"
-        >Logout</a
-      >
-    </div>
-  </nav>
+  <%- include("partials/topnav") %>
   <div class="bodyContainer">
     <!-- Side navigation -->
-    <nav class="sidenav" id="mySidenav">
-      <a href="/playerHome">Home</a>
-      <a href="/player/playerGrades">My Grades</a>
-      <a href="/player/playerTrends">Max Trends</a>
-    </nav>
-    <div class="gradeTable">
-      <h1 class="mt-4">Grades Homepage <%= email%></h1>
-      <table style="width: 100%">
-        <tr>
-          <th>Today's Grade</th>
-          <th>Weekly Trend</th>
-          <th>Seasonal Trend</th>
-        </tr>
-        <tr>
-          <td>90</td>
-          <td>
-            <div id="curve_chart1" style="width: 300px; height: 150px"></div>
-          </td>
-          <td>
-            <div id="curve_chart2" style="width: 300px; height: 150px"></div>
-          </td>
-        </tr>
-      </table>
+    <%- include("partials/sidenavPlayer") %>
+    <div class="chBody">
+        <div class="gradeTable" style="width: 100%">
+          <h1 class="text-center mb-3"><i class="fas fa-sign-in-alt"></i>Player Grades</h1>
+          <table class="redTable" style="width: 100%">
+            <th>Last Grade</th>
+            <tr>
+                <%try{ %>
+                <td style="font-size:40px;"><%= stats[0].grade %></td>
+              <% } catch(err){ %>
+                  <% console.log(err); %>
+              <% } %>
+            </tr>
+            <th>Weekly Trend</th>
+            <tr>
+              <td>
+                <canvas id="weeklyChart" style="width: 300px; height: 150px"></canvas>
+              </td>
+            </tr>
+            <th>Seasonal Trend</th>
+            <tr>
+              <td>
+                <canvas id="seasonalChart" style="width: 300px; height: 150px"></canvas>
+              </td>
+            </tr>
+          </table>
+        </div>
     </div>
   </div>
 </div>
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-<script>
-  var dt = new Date();
-  document.getElementById("datetime").innerHTML =
-    ("0" + (dt.getMonth() + 1)).slice(-2) +
-    "/" +
-    ("0" + dt.getDate()).slice(-2) +
-    "/" +
-    dt.getFullYear();
-</script>
+<!-- <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+<!-- If there are stats available, then it will go forward in creating the weekly graph. -->
+<% if (stats) { %> 
 <script type="text/javascript">
-  google.charts.load("current", { packages: ["corechart"] });
-  google.charts.setOnLoadCallback(drawChart1);
+  var stats = JSON.parse('<%- JSON.stringify(stats) %>');
 
-  function drawChart1() {
-    var data = google.visualization.arrayToDataTable([
-      ["Blah", "Grade"],
-      ["Start", 0],
-      ["8/31", 90],
-      ["9/2", 70],
-      ["9/4", 80],
-    ]);
+//myChart deals with the weekly trend stats for practice stats.
+  console.log(stats[0].date);
+  console.log((stats[0].date).split('T'));
+    // Our labels along the x-axis
+  var dates = [];
+  // For drawing the lines
+  var grades = [];
 
-    var options = {
-      title: "Weekly Grade Trend",
-      curveType: "function",
-      legend: { position: "bottom" },
-      axes: {
-        // Adds labels to each axis; they don't have to match the axis names.
-        y: {
-          Temps: { label: "Temps (Celsius)" },
-          Daylight: { label: "Daylight" },
-        },
-      },
-    };
-    var chart = new google.visualization.LineChart(
-      document.getElementById("curve_chart1")
-    );
-    chart.draw(data, options);
+  for(var i = 0; i < stats.length; i++)
+  {
+    if(i >= 7)
+        break;
+    var dateArr = (stats[i].date).split('T');
+    var date = dateArr[0];
+    var grade = stats[i].grade;
+
+    grades.push(parseInt(grade));
+
+    console.log(typeof date);
+
+    dates.push(date);
   }
+
+
+    dates = dates.reverse();
+    grades = grades.reverse();
+
+    var ctx = document.getElementById("weeklyChart"); //Retrieving the elementID of the chart above in canvas.
+    var myChart = new Chart(ctx, { //Styling the graph. If you need more information on styling the graph please go to the Chart.js Documentation online.
+      type: 'line',
+      data: {
+        labels: dates,
+        datasets: [
+               { 
+                  data: grades,
+                  label: "Previous Week Grades",
+                  borderColor: "red",
+                  fill: false
+                }         
+        ]
+      }
+  });
+
+  </script>
+  <% } %>
+
+
+  <!-- If there are stats from the render then the code will proceed to display the seasonal chart. -->
+  <% if (stats) { %> 
+  <script type="text/javascript">
+  var stats = JSON.parse('<%- JSON.stringify(stats) %>');
+
+    // Our labels along the x-axis
+    var dates = []; //The dates in which a grade was made for the player.
+    // For drawing the lines
+    var grades = []; //The grade given to student by their coach.
+
+    // 'stats' returns a json array that is why we are able to go into a for loop. 'stats' contains player grade information sorted 
+    for(var i = 0; i < stats.length; i++)
+    {
+
+      var dateArr = (stats[i].date).split('T');
+      var date = dateArr[0];
+      var grade = stats[i].grade;
+
+      grades.push(parseInt(grade));
+
+      console.log(typeof date);
+
+      dates.push(date);
+    }
+
+
+    dates = dates.reverse();
+    grades = grades.reverse();
+
+      var ctx = document.getElementById("seasonalChart"); //Retrieving the elementID of the chart above in canvas.
+      var myChart = new Chart(ctx, { //Styling the graph. If you need more information on styling the graph please go to the Chart.js Documentation online.
+        type: 'line',
+        data: {
+          labels: dates,
+          datasets: [
+                { 
+                    data: grades,
+                    label: "Season Grades",
+                    borderColor: "red",
+                    fill: false
+                  }         
+          ]
+        }
+    });
 </script>
-<script type="text/javascript">
-  // const Stat = require("../models/Stat");
-
-  google.charts.load("current", { packages: ["corechart"] });
-  google.charts.setOnLoadCallback(drawChart2);
-
-  Stat.find();
-
-  function drawChart2() {
-    var data = google.visualization.arrayToDataTable([
-      ["Blah", "Grade"],
-      ["Start", 0],
-      ["8/31", 90],
-      ["9/2", 70],
-      ["9/18", 50],
-      ["10/10", 50],
-      ["11/29", 70],
-      ["1/30", 80],
-    ]);
-
-    var options = {
-      title: "Seasonal Grade Trend",
-      curveType: "function",
-      legend: { position: "bottom" },
-      axes: {
-        // Adds labels to each axis; they don't have to match the axis names.
-        y: {
-          Temps: { label: "Temps (Celsius)" },
-          Daylight: { label: "Daylight" },
-        },
-      },
-    };
-    var chart = new google.visualization.LineChart(
-      document.getElementById("curve_chart2")
-    );
-    chart.draw(data, options);
-  }
-</script>
+<% } %>
 <!-- <div class="topNavBody">
     <header id="nav-wrapper">
       <nav id="nav">

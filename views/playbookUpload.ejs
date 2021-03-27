@@ -1,0 +1,172 @@
+<style>
+    @media all and (min-width: 600px) {
+      .bodyContainer {
+        flex: 2 0px;
+      }
+      .sidenav {
+        order: 1;
+      }
+      .rBody {
+        order: 2;
+      }
+    }
+    .container { 
+            display: flex; 
+    }
+    table.redTable {
+    border: 2px solid #a40808;
+    background-color: #eee7db;
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+  }
+  table.redTable td,
+  table.redTable th {
+    border: 1px solid #aaaaaa;
+    padding: 3px 2px;
+  }
+  table.redTable tbody td {
+    font-size: 40px;
+    text-align: center;
+  }
+  table.redTable tr:nth-child(even) {
+    background: #f5c8bf;
+  }
+  table.redTable thead {
+    background: #a40808;
+  }
+  table.redTable thead th {
+    font-size: 40px;
+    font-weight: bold;
+    color: #ffffff;
+    text-align: center;
+    border-left: 2px solid #a40808;
+  }
+  table.redTable thead th:first-child {
+    border-left: none;
+  }
+
+  table.redTable tfoot {
+    font-size: 40px;
+    font-weight: bold;
+    color: #ffffff;
+    background: #a40808;
+  }
+  table.redTable tfoot td {
+    font-size: 40px;
+    text-align: center;
+  }
+  table.redTable tfoot .links {
+    text-align: right;
+  }
+  table.redTable tfoot .links a {
+    display: inline-block;
+    background: #ffffff;
+    color: #a40808;
+    padding: 2px 8px;
+    border-radius: 5px;
+  }
+  .modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+/* Modal Content/Box */
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto; /* 15% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%; /* Could be more or less, depending on screen size */
+}
+/* The Close Button */
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+</style>
+
+<div class="bigContainer">
+  <%- include("partials/topnav") %>
+  <div class="bodyContainer">
+    <%- include("partials/sidenav") %>
+    <div class="rBody">
+      <h1 class="text-center mb-3"><i class="fas fa-sign-in-alt"></i>Upload Playbook</h1>
+      <div class="row mt-5">
+        <div class="col-md-6 m-auto">
+            <div class=" text-center">
+                      <form
+                      action="/coach/uploadPlaybook"
+                      method="POST"
+                      encType="multipart/form-data"
+                      >
+                      <input type="file" class="file" id="fileInput" name="playbook" accept=".pdf">
+                      <input type="submit" class="input-group-text" value="Upload Playbook" disabled />
+                    </form>
+            </div>
+            <h1 id = "link"><a href="#">View Playbook </a> </h1>
+        </div>    
+      </div>
+    </div>
+  </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<% if (inDirectory) { %> 
+  <script type="text/javascript">
+  var exist = JSON.parse('<%- JSON.stringify(inDirectory) %>');
+  console.log(exist);
+  $(document).ready(
+    function(){
+      if(exist === "true")
+      {
+        $('h1').show();
+      }
+      else
+      {
+        $('h1').hide();
+      }
+  });
+</script>
+<% } %>
+</script>
+<script>
+    $(document).ready(function() {
+    $("#link").click(function() {
+      $("<a>").prop({
+        target: "_blank",
+        href: "/coach/pbUpload2"
+      })[0].click();
+    });
+  });
+</script>
+<script type="text/javascript">
+$(document).ready(
+    function(){
+        $('input:file').change(
+            function(){
+                if ($(this).val()) {
+                    $('input:submit').attr('disabled',false);
+                    // or, as has been pointed out elsewhere:
+                    // $('input:submit').removeAttr('disabled'); 
+                } 
+            }
+        );
+
+    });
+  </script>
+</script>

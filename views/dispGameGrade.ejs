@@ -1,0 +1,454 @@
+<style>
+    @media all and (min-width: 600px) {
+      .bodyContainer {flex: 2 0px;}
+      .sidenav {order: 1;}
+      .rBody {order: 2;}
+    }
+    .dropbtn {
+      background-color: red;
+      color: white;
+      padding: 16px;
+      font-size: 16px;
+      border: none;
+    }
+  
+    .dropdown {
+      position: center;
+      display: inline-block;
+      border: red;
+    }
+  
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: red;
+      min-width: 160px;
+      box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+      z-index: 1;
+    }
+  
+    .dropdown-content a {
+      color: black;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+    }
+  
+    .dropdown-content a:hover {
+      background-color: #ddd;
+    }
+  
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+  
+    .dropdown:hover .dropbtn {
+      background-color: #e71111;
+    }
+    table.redTable {
+      border: 2px solid #a40808;
+      background-color: #eee7db;
+      width: 100%;
+      text-align: center;
+      border-collapse: collapse;
+    }
+    table.redTable td,
+    table.redTable th {
+      border: 1px solid #aaaaaa;
+      padding: 3px 2px;
+    }
+    table.redTable tbody td {
+      font-size: 13px;
+      text-align: center;
+    }
+    table.redTable tr:nth-child(even) {
+      background: #f5c8bf;
+    }
+    table.redTable thead {
+      background: #a40808;
+    }
+    table.redTable thead th {
+      font-size: 19px;
+      font-weight: bold;
+      color: #ffffff;
+      text-align: center;
+      border-left: 2px solid #a40808;
+    }
+    table.redTable thead th:first-child {
+      border-left: none;
+    }
+  
+    table.redTable tfoot {
+      font-size: 13px;
+      font-weight: bold;
+      color: #ffffff;
+      background: #a40808;
+    }
+    table.redTable tfoot td {
+      font-size: 13px;
+      text-align: center;
+    }
+    table.redTable tfoot .links {
+      text-align: right;
+    }
+    table.redTable tfoot .links a {
+      display: inline-block;
+      background: #ffffff;
+      color: #a40808;
+      padding: 2px 8px;
+      border-radius: 5px;
+    }
+    table.redTable2 {
+      border: 2px solid #a40808;
+      background-color: #eee7db;
+      width: 100%;
+      text-align: center;
+      border-collapse: collapse;
+    }
+    table.redTable2 td,
+    table.redTable2 th {
+      border: 1px solid #aaaaaa;
+      padding: 8px 8px;
+    }
+    table.table1,
+    table.table2 {
+      display: none;
+      text-align: center;
+    }
+    td {
+      text-align: center;
+    }
+    @media all and (min-width: 600px) {
+      .bodyContainer {
+        flex: 2 0px;
+      }
+      .sidenav {
+        order: 1;
+      }
+      .rBody {
+        order: 2;
+      }
+    }
+  </style>
+  <div class="bigContainer">
+    <%- include("partials/topnav") %>
+    <div class="bodyContainer">
+      <%- include("partials/sidenav") %>
+      <div class="rBody">
+          <!-- Change Position Div -->
+          <h1 class="text-center mb-3"><i class="fas fa-sign-in-alt"></i> Season Game Grades</h1>
+          <div class="row mt-5">
+            <div class="col-md-6 m-auto">
+              <div class="card card-body">
+                <div class='dropdown' style="text-align:center">
+                  <form action="/stats/dispGameGrade" method="POST">
+                      <h3>Change Position Group:</h3>
+                      <select name="pos" id="pos" class="btn btn-primary dropdown-toggle mt-3">
+                        <% for(var i = 0; i < positions.length; i++) { %>
+                        <option value="<%- positions[i] %>"><%= positions[i] %></option>
+                        <% } %>
+                      </select>
+                      <br><br>
+                      <button type="submit" class="btn btn-primary btn-block">Submit</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        <!-- Start of Table -->
+        <div style="width: 100%;">
+          <div>    
+            <table class="redTable">
+              <thead>
+                <tr>
+                  <th id="gameNum">Game #</th>
+                </tr>
+              </thead>
+              <table id="viewTable">
+                <button id="myBtn" class="btn btn-primary btn-block">Add Today's Grades</button>
+                <table class="redTable" id="viewTable" border="1">
+                  <tfoot>
+                    <tr>
+                      <td colspan="8">
+                        <div class="links">
+                          <!-- <a id="prev" class="active" onclick="prevGame();">Previous Game</a>
+                          <a id="next" class="active" onclick="nextGame();">Next Game</a> -->
+                        </div>
+                      </td>
+                    </tr>
+                  </tfoot>
+                  <tbody>
+                    <tr>
+                      <td></td>
+                      <td>Current Game Grade</td>
+                      <td>Season Average(Overall)</td>
+                      <td>Notes</td>
+                      <td>Season Average(<%=ints[0] %>)</td>
+                      <td>Season Average(<%=ints[1] %>)</td>
+                      <td>Season Average(<%=ints[2] %>)</td>
+                      <td>Season Average(<%=ints[3] %>)</td>
+                    </tr>
+                    <% for(var i = 0; i < players.length; i++) { %>
+                      <% for(var j = 0; j < stats.length; j++) { %>
+                          <% if(players[i].Email == stats[j].email) {%>
+                            <tr>
+                              <td><%=players[i].FullName %></td>
+                              <td><%=stats[j].Current %></td>
+                              <td><%=stats[j].Overall %></td>
+                              <td>*</td>
+                              <td><%=stats[j].Intagible1Average %></td>
+                              <td><%=stats[j].Intagible2Average %></td>
+                              <td><%=stats[j].Intagible3Average %></td>
+                              <td><%=stats[j].Intagible4Average %></td>
+                            </tr>
+                            <% break; %>
+                          <% } %>
+                      <% } %>
+                    <% } %>
+                  </tbody>
+                </table>
+              </table>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- Start of Modal Content for entering game grades -->
+<!-- The Modal PopUp Window-->
+<div id="myModal" class="modal" style="overflow-y:auto;">
+  <!-- Modal content -->
+  <div class="modal-content">
+    <div class="rBody">
+      <h1 class="text-center mb-3"><i class="fas fa-sign-in-alt"></i> Season Game Grades</h1>
+      <div class="row mt-5">
+        <div class="col-md-6 m-auto">
+          <div class="card card-body">
+            <span class="close">&times;</span>
+            <table class="redTable" id="editTable" border="1">
+              <thead>
+                <th colspan="2">Enter Game Grades</th>
+              </thead>
+              <tbody>
+                <form id="form" action="/stats/addGameGrade" method="POST">
+                  <tr>
+                    <td colspan="2">
+                      <label for="playType">Play Type</label>
+                      <select name="playType" id="playType" class="btn btn-primary dropdown-toggle mt-3">
+                        <% for(var i = 0; i < plays.length; i++) { %>
+                        <option value="<%- plays[i] %>"><%= plays[i] %></option>
+                        <% } %>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colspan="2">
+                      <label for="date">Today's Date</label>
+                      <input id="date" name="date" readonly />
+                      <script type="text/javascript">
+                        document.getElementById(
+                          "date"
+                        ).value = Date();
+                      </script>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colspan="2">
+                      <label for="numPlayers">Number of Players</label>
+                      <input id="numPlayers" name="numPlayers" value =" <%- players.length %>" readonly />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colspan="2">
+                      <label for="pos">Position</label>
+                      <input id="pos" name="pos" value =" <%- players[0].Pos %>" readonly />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colspan="2">
+                      <label for="scale">Grading Scale</label>
+                      <input type="text" name="scale" id="scale" value="<%- scale %>" readonly/>
+                    </td>
+                  </tr>
+                  <% for(var i = 0; i < players.length; i++) { %>
+                      <tr name="p<%- i %>">
+                        <td colspan="2">
+                          <label for="playerName">Player Name</label>                        
+                          <!-- <input list="players" name="playerName" id="playerName"> -->
+                          <select name="playerName" id="playerName">
+                            <% for(var j = 0; j < players.length; j++) { %>
+                              <option value="<%- players[j].FullName %>"><%= players[j].FullName %></option>
+                            <% } %>
+                          </select>
+                        </td>
+                      </tr>
+                      <tr name="p<%- i %>">
+                        <td>
+                          <label for="grade1"><%= ints[0] %></label>
+                          <input type="number" name="grade1" id="grade1-<%- i %>" max="10" placeholder="Enter Grade"/>
+                        </td>
+                        <td>
+                          <label for="grade2"><%= ints[1] %></label>
+                          <input type="number" name="grade2" id="grade2-<%- i %>" max="10" placeholder="Enter Grade"/>
+                        </td>
+                      </tr>
+                      <tr name="p<%- i %>">
+                        <td>
+                          <label for="grade3"><%= ints[2] %></label>
+                          <input type="number" name="grade3" id="grade3-<%- i %>" max="10" placeholder="Enter Grade"/>
+                        </td>
+                        <td>
+                          <label for="grade4"><%= ints[3] %></label>
+                          <input type="number" name="grade4" id="grade4-<%- i %>" max="10" placeholder="Enter Grade"/>
+                        </td>
+                      </tr>
+                  <% } %>
+                  <tfoot>
+                    <tr>
+                      <td colspan="2" class="links">
+                        <a id="prev" class="active" onclick="previousPlayer()"style="cursor:pointer">Previous Player</a>
+                        <a id="next" class="active" onclick="nextPlayer()"style="cursor:pointer">Next Player</a>
+                        <button type="submit" id="submit" class="active" style="background-color: white; color: #a40808; border-radius: 5px; padding:2px 8px; font-weight:bold; font-size:13px;">Submit Grades</button>
+                      </td>
+                    </tr>
+                  </tfoot>
+                </form>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+<script>
+  // Cycle players
+  function initGameGrade() {
+    var firstPlayer = document.getElementById("p0");
+    var numPlayers = document.getElementById("numPlayers");
+    window.currPlayer = 0;
+    for (j = 1; j < numPlayers.value; j++) {
+      var elementID = "p"+j;
+      // var p = document.getElementById(elementID);
+      var p = document.getElementsByName(elementID);
+      // var p = document.querySelector(elementID);
+      for (k = 0; k < p.length; k++) {
+        p[k].style.display = "none";
+      }
+      // p.style.display = none;
+    }
+  }
+  
+  function getCurr() {
+    // alert("currPlayer = " + window.currPlayer);
+    return window.currPlayer;
+  }
+
+  function previousPlayer() {
+    //this function needs to load the previous form with the previous player's name
+    if (getCurr() > 0) {
+      var elementID = "p"+window.currPlayer;
+      var curP = document.getElementsByName(elementID);
+      for (k = 0; k < curP.length; k++) {
+          curP[k].style.display = "none";
+      }
+      window.currPlayer -= 1;
+      var elementID = "p"+window.currPlayer;
+      var curP = document.getElementsByName(elementID);
+      for (k = 0; k < curP.length; k++) {
+          curP[k].style.display = "table-row";
+      }
+    }
+  }
+
+  function nextPlayer() {
+    var numPlayers = document.getElementById("numPlayers");
+    //this function needs to load another form with the next player's name
+    if(window.currPlayer < numPlayers.value-1) {
+      var elementID = "p"+window.currPlayer;
+      var curP = document.getElementsByName(elementID);
+      for (k = 0; k < curP.length; k++) {
+          curP[k].style.display = "none";
+      }
+      window.currPlayer += 1;
+      var elementID = "p"+window.currPlayer;
+      var curP = document.getElementsByName(elementID);
+      for (k = 0; k < curP.length; k++) {
+          curP[k].style.display = "table-row";
+      }
+      getCurr();
+    }
+  }
+</script>
+
+<script>
+  function prevGame() {
+  // this function pulls the previous games data from mongodb and reloads the viewTable
+
+  }
+  function nextGame() {
+  // this function pulls the next games data from mongodb and reloads the viewTable
+
+  }
+</script>
+  
+<script>
+    //called on line 155
+    function changePlayer(i) {
+      console.log('Inside changePlayer');
+      const id = '#playerButton' + i;
+      const playerName = document.querySelector(id);
+      const name = document.querySelector('#playerName');
+      const prev = document.querySelector('#prev');
+      const next = document.querySelector('#next');
+      //name.value = playerName.textContent.replace('/[\n\r]'+'|[\s]{2,}/g', ' ').trim();
+      prev.value = i;
+      next.value = i;
+    }
+  
+    var dropdown = document.getElementsByClassName("dropdown-btn");
+    var i;
+  
+    for (i = 0; i < dropdown.length; i++) {
+      dropdown[i].addEventListener("click", function () {
+        this.classList.toggle("active");
+        var dropdownContent = this.nextElementSibling;
+        if (dropdownContent.style.display === "block") {
+          dropdownContent.style.display = "none";
+        } else {
+          dropdownContent.style.display = "block";
+        }
+      });
+    }
+</script>
+
+<script>
+// Get the modal
+var modal = document.getElementById("myModal");
+// Get the button that opens the modal
+var btn = document.getElementById("myBtn");
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+// When the user clicks on the button, open the modal
+const delay = ms => new Promise(res => setTimeout(res, ms));
+
+const modalDisp = async() => {
+  modal.style.display = "block";
+  await delay(500);
+  initGameGrade();
+}
+
+btn.onclick = modalDisp;
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+  modal.style.display = "none";
+}
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+</script>

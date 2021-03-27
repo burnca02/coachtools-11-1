@@ -1,0 +1,132 @@
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+  @media all and (min-width: 600px) {
+    .bodyContainer {flex: 2 0px;}
+    .sidenav {order: 1;}
+    .chBody {order: 2;}
+  }
+    table.redTable {
+    border: 2px solid #a40808;
+    background-color: #eee7db;
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+  }
+  table.redTable td,
+  table.redTable th {
+    border: 1px solid #aaaaaa;
+    padding: 3px 2px;
+  }
+  table.redTable tbody td {
+    font-size: 13px;
+    text-align: center;
+  }
+  table.redTable tr:nth-child(even) {
+    background: #f5c8bf;
+  }
+  table.redTable thead {
+    background: #a40808;
+  }
+  table.redTable thead th {
+    font-size: 19px;
+    font-weight: bold;
+    color: #ffffff;
+    text-align: center;
+    border-left: 2px solid #a40808;
+  }
+  table.redTable thead th:first-child {
+    border-left: none;
+  }
+
+  table.redTable tfoot {
+    font-size: 13px;
+    font-weight: bold;
+    color: #ffffff;
+    background: #a40808;
+  }
+  table.redTable tfoot td {
+    font-size: 13px;
+    text-align: center;
+  }
+  table.redTable tfoot .links {
+    text-align: right;
+  }
+  table.redTable tfoot .links a {
+    display: inline-block;
+    background: #ffffff;
+    color: #a40808;
+    padding: 2px 8px;
+    border-radius: 5px;
+  }
+</style>
+<div class="bigContainer">
+  <%- include("partials/topnav") %>
+  <div class="bodyContainer">
+    <!-- Side navigation -->
+    <%- include("partials/sidenav") %>
+    <div class="chBody">
+      <!-- <div class='dropdown' style="text-align:center">
+        <form action="/coach/practiceTrainingStats" method="POST">
+            <h3>Select Position Group:</h3>
+            <select name="pos" id="pos" class="btn btn-primary dropdown-toggle mt-3">
+              <% for(var i = 0; i < positions.length; i++) { %>
+              <option value="<%- positions[i] %>"><%= positions[i] %></option>
+              <% } %>
+            </select>
+            <br><br>
+            <button type="submit" class="btn btn-primary btn-block">Submit</button>
+        </form>
+      </div> -->
+      
+      <div class="row" style="justify-content:center; margin-left: 0; margin-right: 0; padding: 20px;">
+        <table class="redTable" id="viewTable" border="1" style="padding: 10px;">
+            <thead>
+                <tr>
+                    <th>Team Training Statistics</th>
+                    <th></th><th></th><th></th><th></th><th></th><th></th>
+                </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td></td>
+                <td>Season Average(<%= exercises.exercises[0] %>)</td>
+                <td>Season Average(<%= exercises.exercises[1] %>)</td>
+                <td>Season Average(<%= exercises.exercises[2] %>)</td>
+                <td>Season Average(<%= exercises.exercises[3] %>)</td>
+                <td>Height</td>
+                <td>Weight</td>
+            </tr>
+            <% for(var i = 0; i < stats.length; i++) { %>
+            <tr>
+                <td><%=stats[i].name%> %></td>
+                <td><%=stats[i].e1%> %></td>
+                <td><%=stats[i].e2%> %></td>
+                <td><%=stats[i].e3%> %></td>
+                <td><%=stats[i].e4%> %></td>
+                <td><%=stats[i].height%> %></td>
+                <td><%=stats[i].weight%> %></td>
+            </tr>
+            <% } %>
+            </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  var dropdown = document.getElementsByClassName("dropdown-btn");
+  var i;
+
+  for (i = 0; i < dropdown.length; i++) {
+    dropdown[i].addEventListener("click", function () {
+      this.classList.toggle("active");
+      var dropdownContent = this.nextElementSibling;
+      if (dropdownContent.style.display === "block") {
+        dropdownContent.style.display = "none";
+      } else {
+        dropdownContent.style.display = "block";
+      }
+    });
+  }
+</script>

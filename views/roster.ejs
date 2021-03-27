@@ -1,3 +1,5 @@
+<!-- Displays current roster of players -->
+<!-- Table includes: Name, Position, Graduation Year, Number - can be easily modified -->
 <style>
   @media all and (min-width: 600px) {
     .bodyContainer {
@@ -10,66 +12,27 @@
       order: 2;
     }
   }
+  .table-btn {
+    background: none;
+    color: inherit;
+    border: none;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
+  }
 </style>
-<!-- <link rel="stylesheet" type="text/css" href="css/style.css"/> -->
+<link rel="stylesheet" type="text/css" href="css/style.css"/>
 <div class="bigContainer">
-  <nav class="topnav" id="myTopnav">
-    <a
-      href="javascript:void(0);"
-      class="icon threeLines"
-      onclick="resizeDropdown2()"
-    >
-      <i class="fa fa-bars"></i>
-    </a>
-    <div class="topnavChild1" style="width: 100%" id="logo">
-      <img
-        src="images/coachToolsLogo.png"
-        alt="CoachTools"
-        style="width: 110px"
-      />
-    </div>
-    <div class="topnavChild2">
-      <!-- <span class="dateDisp" id="datetime"></span> -->
-      <a style="color: #818181" id="datetime"></a>
-      <a style="color: #818181"><%= name %></a>
-      <!--style="padding-left: 75%;"-->
-      <a class="logout" onclick="window.location.href='/users/logout'"
-        >Logout</a
-      >
-    </div>
-  </nav>
+  <%- include("partials/topnav") %>
   <!-- Side navigation -->
-  <!-- <div id="nav-placeholder"></div> -->
   <div class="bodyContainer">
-    <div class="sidenav" style="max-width: 170px">
-      <a href="/coachHome">Home</a>
-      <button class="dropdown-btn">
-        Roster<i class="fa fa-caret-down"></i>
-      </button>
-      <div class="dropdown-container">
-        <a href="/roster">Player Bio</a>
-        <a href="#">Depth Chart</a>
-      </div>
-      <button class="dropdown-btn">Game<i class="fa fa-caret-down"></i></button>
-      <div class="dropdown-container">
-        <a href="/coach/gameStats">Game Stats</a>
-        <a href="#">Game Grade</a>
-        <a href="#">Analysis</a>
-      </div>
-      <button class="dropdown-btn">
-        Practice<i class="fa fa-caret-down"></i>
-      </button>
-      <div class="dropdown-container">
-        <a href="/coach/practiceStats">In Season</a>
-        <a href="/coach/practiceTrainingStats">Training</a>
-      </div>
-      <a href="/coach/playerFeedback">Player Feedback</a>
-      <a href="#">Comparison</a>
-    </div>
+    <%- include("partials/sidenav") %>
 
     <div class="rBody">
+      <span class="help"><%= school %> Roster</span>
       <div class="rosterRow">
-        <div class="btn-group" style="padding: 10px">
+        <!-- <div class="btn-group" style="padding: 10px">
           <button
             class="btn btn-primary dropdown-toggle"
             data-toggle="dropdown"
@@ -81,77 +44,23 @@
             <a class="dropdown-item"><%= school %> 2019</a>
             <a class="dropdown-item"><%= school %> 2020</a>
           </div>
-        </div>
-        <div
-          class="form-group" role="group" aria-label="Button group with nested dropdown">
+        </div> -->
+        <div class="form-group" role="group" aria-label="Button group with nested dropdown">
           <form action="/coach/table" method="POST">
-            <button type="button" class="btn btn-primary">Sort By</button>
-            <div class="dropdown" role="group">
-              <button
-                id="btnGroupDrop1"
-                type="button"
-                class="btn btn-primary dropdown-toggle"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
-              ></button>
+            <!-- <button type="button" class="btn btn-primary">Sort By</button> -->
+            <div class="dropdown" role="group" style="padding: 10px;">
+              <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Filter</button>
               <div class="dropdown-content" aria-labelledby="btnGroupDrop1">
+                <% var allPlayers = ['QB','RB','FB','WR','TE','LT','LG','C','RG','RT','CB','DB','DE','DL','DT','FS','ILB','LB','MLB','OLB','SS','K/P','LS']; %>
                 <button
                   class="dropdown-item"
                   type="submit"
                   name="type"
                   value="full"
                 >
-                  View Whole Roster
-                </button>
-                <button
-                  class="dropdown-item"
-                  type="submit"
-                  name="type"
-                  value="qb"
-                >
-                  View Quartberbacks
-                </button>
-                <button
-                  class="dropdown-item"
-                  type="submit"
-                  name="type"
-                  value="wr"
-                >
-                  View Wide Receivers
-                </button>
-                <button
-                  class="dropdown-item"
-                  type="submit"
-                  name="type"
-                  value="k"
-                >
-                  View Kickers
-                </button>
-                <button
-                  class="dropdown-item"
-                  type="submit"
-                  name="type"
-                  value="lb"
-                >
-                  View Linebackers
-                </button>
-                <button
-                  class="dropdown-item"
-                  type="submit"
-                  name="type"
-                  value="gy"
-                >
-                  Sort By Graduation Year (Ascending)
-                </button>
-                <button
-                  class="dropdown-item"
-                  type="submit"
-                  name="type"
-                  value="gyd"
-                >
-                  Sort By Graduation Year (Descending)
-                </button>
+                <% for (var i = 0; i < allPlayers.length; i++) { %>
+                  <button class="dropdown-item" type="submit" name="type" value="<%- allPlayers[i] %>">View <%= allPlayers[i] %>s</button>
+                <% } %>
               </div>
             </div>
           </form>
@@ -159,10 +68,10 @@
 
         <!-- This is the upload excel roster button. -->
         <!-- <p>Use the form below to upload a list of authors. -->
-        <div class="uploadRosterClass">
-          <form action="/coach/upload" method="POST" encType="multipart/form-data">
+        <div class="uploadRosterClass" style="padding-top: 10px;">
+          <form action="/upload/upload" method="POST" encType="multipart/form-data">
             <input type="file" name="file" accept=".csv" />
-            <input type="submit" class="btn btn-primary dropdown-toggle" value="Upload Roster"/>
+            <input type="submit" class="btn btn-primary dropdown-toggle" value="Upload Roster" disabled/>
           </form>
           <p>
             Click <a href="/coach/template">here</a> for an example template.
@@ -173,10 +82,13 @@
       <table class="table table-hover" style="padding: 500px">
         <thead>
           <tr class="table-dark">
-            <th scope="col">Name</th>
-            <th scope="col">Position</th>
-            <th scope="col">Graduation Year</th>
-            <th scope="col">Number</th>
+            <form action="/coach/table" method="POST">
+              <th scope="col"><button type="submit" name="type" value="name" class="table-btn">Name</button></th>
+              <th scope="col"><button type="submit" name="type" value="pos" class="table-btn">Position</button></th>
+              <th scope="col"><button type="submit" name="type" value="gy" class="table-btn">Graduation Year</button></th>
+              <th scope="col"><button type="submit" name="type" value="rank" class="table-btn">Rank</button></th>
+              <th scope="col"><button type="submit" name="type" value="num" class="table-btn">Number</button></th>
+            </form>
           </tr>
         </thead>
         <tbody>
@@ -186,6 +98,7 @@
               <td><%= players[i].FullName %></td>
               <td><%= players[i].Pos %></td>
               <td><%= players[i].GradYear %></td>
+              <td><%= players[i].Rank %></td>
               <td><%= players[i].Number %></td>
             </tr>
             <% } %>
@@ -196,9 +109,7 @@
   </div>
 </div>
 <script>
-  // $(function(){
-  //     $("#nav-placeholder").load("navBars/nav.html");
-  // });
+  // Makes sidebar work
   var dropdown = document.getElementsByClassName("dropdown-btn");
   var i;
 
@@ -213,7 +124,7 @@
       }
     });
   }
-
+  // Makes buttons work
   var dropdown = document.getElementsByClassName("dropdown-toggle");
   var i;
 
@@ -229,3 +140,19 @@
     });
   }
 </script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script><script type="text/javascript">
+  $(document).ready(
+      function(){
+          $('input:file').change(
+              function(){
+                  if ($(this).val()) {
+                      $('input:submit').attr('disabled',false);
+                      // or, as has been pointed out elsewhere:
+                      // $('input:submit').removeAttr('disabled'); 
+                  } 
+              }
+              );
+      });
+    </script>
+  </script>
+  

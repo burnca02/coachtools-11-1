@@ -1,0 +1,45 @@
+<!-- Top navigation bar saved in its own partial so it can be used everywhere and maintains consistency -->
+<!-- <nav class="topnav" id="myTopnav">
+    <a href="javascript:void(0);" class="icon threeLines" onclick="resizeDropdown2()">
+      <i class="fa fa-bars"></i>
+    </a>
+    <div class="topnavChild1" id="logo">
+      <img src="images/coachtoolsLogoBlack.png" alt="CoachTools" style="width: 110px;"/>
+    </div>
+    <div class="topnavChild2">
+      <a style="color: #818181;" id="datetime"></a>
+      <a style="color: #818181;"><%= name %></a>
+      <a class="logout" onclick="window.location.href='/users/logout'">Logout</a>
+    </div>
+ </nav> -->
+
+ <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top mb-3">
+  <div class="container-fluid" style="padding-right: 5px; padding-left: 5px; flex-wrap: nowrap;">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#sidenavAccordion" aria-controls="sidenavAccordion" aria-expanded="false" aria-label="Toggle sidenav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <a class="navbar-brand" style="padding-top:0; padding-bottom:0" href="#"><img src="images/coachtoolsLogoBlack.png" alt="CoachTools" style="width: 110px; cursor: default;"/></a>
+    <!-- <div style="font-family: Verdana, Geneva, Tahoma, sans-serif; font-weight:500" id="navbarResponsive">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item dropdown no-arrow">
+          <a class="nav-link dropdown-toggle logOut" style="color: white" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="false" aria-expanded="false">
+            <%= name %>
+          </a>
+          <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+          <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown"></div>
+            <a class="dropdown-item" href="/users/logout"><i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+              Logout</a>
+          </div>
+        </li>
+      </ul>
+    </div> -->
+    <div class="dropdown">
+      <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="background-color: black; border-color: white;">
+        <%= name %>
+      </button>
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <a class="dropdown-item" href="/users/logout">Logout</a>
+      </div>
+    </div>
+  </div>
+</nav>

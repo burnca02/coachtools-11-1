@@ -1,0 +1,383 @@
+<!-- CoachHome - developed by Kayl Murdough -->
+<!-- This page shows active lineups for offense, defense, special teams -->
+<!-- Need to figure out exact player positions wanted and put in excel file -->
+<!-- Maybe make it customizable by coach? -->
+<style>
+  @media all and (min-width: 600px) {
+    .bodyContainer {flex: 2 0px;}
+    .sidenav {order: 1;}
+    .chBody {order: 2;}
+  }
+  @media all and (min-width: 600px) {
+    .bodyContainer {
+      flex: 2 0px;
+    }
+    .sidenav {
+      order: 1;
+    }
+    .rBody {
+      order: 2;
+    }
+    .modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+  background-color: #fefefe;
+  margin: 5% auto; /* 15% from the top and centered */
+  padding: 25px;
+  border: 1px solid #888;
+  width: 50%; /* Could be more or less, depending on screen size */
+  align-self: center;
+}
+
+/* The Close Button */
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+  }
+  table.redTable {
+    border: 2px solid #a40808;
+    background-color: #eee7db;
+    width: 90%;
+    text-align: center;
+    border-collapse: collapse;
+    margin-left: 40px;
+  }
+  table.redTable td,
+  table.redTable th {
+    border: 1px solid #aaaaaa;
+    padding: 3px 2px;
+  }
+  table.redTable tbody td {
+    font-size: 13px;
+    text-align: center;
+  }
+  /* table.redTable tr:nth-child(even) {
+    background: #f5c8bf;
+  } */
+  table.redTable thead {
+    background: #a40808;
+  }
+  table.redTable thead th {
+    font-size: 19px;
+    font-weight: bold;
+    color: #ffffff;
+    text-align: center;
+    border-left: 2px solid #a40808;
+  }
+  table.redTable thead th:first-child {
+    border-left: none;
+  }
+
+  table.redTable tfoot {
+    font-size: 13px;
+    font-weight: bold;
+    color: #ffffff;
+    background: #a40808;
+  }
+  table.redTable tfoot td {
+    font-size: 13px;
+    text-align: center;
+  }
+  table.redTable tfoot .links {
+    text-align: right;
+  }
+  table.redTable tfoot .links a {
+    display: inline-block;
+    background: #ffffff;
+    color: #a40808;
+    padding: 2px 8px;
+    border-radius: 5px;
+  }
+</style>
+<div class="bigContainer">
+  <!-- Includes topnav -->
+  <%- include("partials/topnav") %>
+  <div class="bodyContainer">
+    <!-- Includes Side navigation -->
+    <%- include("partials/sidenav") %>
+    <div class="chBody" style="text-align: center;">
+      <div id="offenseLine">
+        <div class="row" style="margin-right: 0; margin-left: 0;">
+          <span class="help col-sm-5" style="text-align: left;">Depth Chart</span>
+          <button class="btn btn-primary" id="myBtn">Update Rankings</button>
+        </div>
+        <br>
+        <br>
+        <span class="help">Offense</span>
+        <table class="redTable" id="viewTable" style="width: 95%;" border="1">
+          <tr>
+            <th></th>
+            <th>First String</th>
+            <th>Second String</th> 
+            <th>Third String</th>
+            <th>Fourth String</th>
+            <th>Other</th>
+          </tr>
+          <form action="/coach/position" method="POST">
+          <% var k = 0;
+          for(var i = 0; i < offPlayersPos.length; i++) { %>
+          <tr>
+            <td><button class="btn btn-primary" type="submit" name="pos" value="<%- offPlayersPos[i] %>" style="font-size: 13px;"><%= offPlayersPos[i] %></button></td>
+            <%
+            var playerIndex = -1;
+            var c = 0;
+            while (c < offPlayers.length && offPlayers[c].Pos != offPlayersPos[i]) {
+              c++;
+            }
+            if (c < offPlayers.length && offPlayers[c].Pos == offPlayersPos[i]) {
+              playerIndex = c;
+            }
+            k = 0;
+            while (playerIndex >= 0 && playerIndex < offPlayers.length && offPlayers[playerIndex].Pos == offPlayersPos[i]) { %>
+              <% if (k < 5) { %>
+              <td><%= offPlayers[playerIndex].FullName %></td>
+              <% } %>
+              <% k++; playerIndex++;%>
+            <% } %>
+          </tr>
+          <% } %>
+        </form>
+        </table>
+        <br><br>
+        <span class="help">Defense</span>
+        <table class="redTable" id="viewTable" style="width: 95%;" border="1">
+          <tr>
+            <th></th>
+            <th>First String</th>
+            <th>Second String</th> 
+            <th>Third String</th>
+            <th>Fourth String</th>
+            <th>Other</th>
+          </tr>
+          <form action="/coach/position" method="POST">
+          <% j = 0; k = 0;
+          for(var i = 0; i < defPlayersPos.length; i++) { %>
+          <tr>
+            <td><button class="btn btn-primary" type="submit" name="pos" value="<%- defPlayersPos[i] %>" style="font-size: 13px;"><%= defPlayersPos[i] %></button></td>
+            <% k = 0;
+            while (j < defPlayers.length && defPlayers[j].Pos == defPlayersPos[i]) { %>
+              <% if (k < 5) { %>
+              <td><%= defPlayers[j].FullName %></td>
+              <% } %>
+              <% j++; k++;%>
+            <% } %>
+          </tr>
+          <% } %>
+        </form>
+        </table>
+        <br><br>
+        <span class="help">Special Teams</span>
+        <table class="redTable" id="viewTable" style="width: 95%; margin-bottom: 40px;" border="1">
+          <tr>
+            <th></th>
+            <th>First String</th>
+            <th>Second String</th> 
+            <th>Third String</th>
+            <th>Fourth String</th>
+            <th>Other</th>
+          </tr>
+          <form action="/coach/position" method="POST">
+          <% j = 0; k = 0;
+          for(var i = 0; i < spePlayersPos.length; i++) { %>
+          <tr>
+            <td><button class="btn btn-primary" type="submit" name="pos" value="<%- spePlayersPos[i] %>" style="font-size: 13px;"><%= spePlayersPos[i] %></button></td>
+            <% k = 0;
+            while (j < spePlayers.length && spePlayers[j].Pos == spePlayersPos[i]) { %>
+              <% if (k < 5) { %>
+              <td name="pos"><%= spePlayers[j].FullName %></td>
+              <% } %>
+              <% j++; k++;%>
+            <% } %>
+          </tr>
+          <% } %>
+          </form>
+        </table>
+
+      <!-- Start of Modal Content for entering practice grades -->
+      <!-- The Modal PopUp Window-->
+      <div id="myModal" class="modal" style="overflow-y:auto;">
+        <!-- Modal content -->
+        <div class="modal-content">
+          <div class="form-group" role="group" aria-label="Button group with nested dropdown">
+          <form id="modalForm" action="/coach/depthChart" method="POST">
+            <!-- <button type="button" class="btn btn-primary">Sort By</button> -->
+            <div class="dropdown" role="group" style="padding-top: 10px; text-align: center;">
+              <span class="close">&times;</span>
+              <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Choose Position
+              </button>
+              <div class="dropdown-content" aria-labelledby="btnGroupDrop1">
+                <!-- 'SS','MLB','FS','K','P','CB', ,'LS'-->
+                <% var allPlayers = ['QB','RB','FB','WR','TE','LT','LG','C','RG','RT','CB','DB','DE','DL','DT','FS','ILB','LB','MLB','OLB','SS','K/P','LS']; %>
+                <button class="dropdown-item" type="submit" name="type" value="full" >ALL</button>
+                <% for (var i = 0; i < allPlayers.length; i++) { %>
+                  <button class="dropdown-item" type="submit" name="type" value="<%- allPlayers[i] %>">View <%= allPlayers[i] %>s</button>
+                <% } %>
+              </div>
+            </div>
+            </form>
+          </div>
+          <br>
+          <% if (players.length > 0) { %>
+          <span class="help"><%= players[0].Pos %></span>
+          <br>
+          <form action="/coach/submitRank" method="POST">
+          <% for (var i = 0; i < players.length; i++) { %>
+            <!-- <span class="posLabel"><%= players[i].FullName %></span> -->
+            <input type="name" name="playerNames" value="<%= players[i].FullName %>" readonly>
+            <input type="number" name="rank" min='1' max='<%- players.length %>' value="<%- players[i].Rank[0] %>">
+            <input class="hidden" name="type" value="<%- players[i].Pos %>" hidden>
+            <br>
+          <% } %>
+          <div style="padding-top: 15px;">
+            <input type="submit" class="btn btn-primary dropdown-toggle" value="Submit">
+          </div>
+          
+          </form>
+          <% } %>
+        </div>
+      </div>
+      
+
+      
+    </div>
+  </div>
+</div> 
+<script>
+// Get the modal
+var modal = document.getElementById("myModal");
+// Get the button that opens the modal
+var btn = document.getElementById("myBtn");
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+// When the user clicks on the button, open the modal
+const delay = ms => new Promise(res => setTimeout(res, ms));
+
+const modalDisp = async() => {
+  modal.style.display = "block";
+}
+
+btn.onclick = modalDisp;
+
+// async function modalDisp2() {
+//   await delay(2000);
+//   modal.style.display = "block";
+//   $('.myModal').show()
+// }
+
+// $("form").on('submit', function async() {
+//     modalDisp2();
+// });
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+  modal.style.display = "none";
+}
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+// Makes buttons work
+var dropdown = document.getElementsByClassName("dropdown-toggle");
+  var i;
+  // modal.style.display = "block";
+
+  for (i = 0; i < dropdown.length; i++) {
+    dropdown[i].addEventListener("click", function () {
+      this.classList.toggle("active");
+      var dropdownContent = this.nextElementSibling;
+      if (dropdownContent.style.display === "inline-block") {
+        dropdownContent.style.display = "none";
+      } else {
+        dropdownContent.style.display = "inline-block";
+      }
+    });
+  }
+
+  function modalOpen() {
+    alert("GOT HERE");
+    modal.style.display = "block";
+  }
+  // Drag and drop code
+  // var drake = dragula({
+  //   containers: [
+  //     document.querySelector("#qb"),
+  //     document.querySelector("#offense"),
+  //     document.querySelector("#defense"),
+  //     document.querySelector("#special"),
+  //     document.querySelector("#subs"),
+  //     document.querySelector("#QBsubs"),
+  //     document.querySelector("#RBsubs"),
+  //     document.querySelector("#WRsubs"),
+  //     document.querySelector("#TEsubs"),
+  //     document.querySelector("#DEsubs"),
+  //     document.querySelector("#OLsubs"),
+  //     document.querySelector("#SPsubs"),
+  //     document.querySelector('#DLsubs'),
+  //   ],
+  //   revertOnSpill: true,
+  //   mirrorContainer: document.body,
+  //   ignoreInputTextSelection: true,
+  // });
+
+  // validation
+  // drake.on("drop", function (el, target, source, sibling) {
+    // max 11 players
+    // if ((target.id != source.id) && !target.id.includes("subs") && (document.querySelectorAll(".oline li").length > 11
+    // || document.querySelectorAll(".dline li").length > 11 || document.querySelectorAll(".sline li").length > 11)) {
+    //   alert('Can only have 11 players. Remove a player before adding a new one.');
+    //   drake.cancel();
+    // }
+
+    
+    //   if (!b) {
+        // alert("Player number " + numStr + " not found");
+      // }
+    // }
+
+    // 1 qb
+    // if (target.id === "qb" && target.children.length > 1) {
+    //   alert('Can only have 1 quarterback.');
+    //   drake.cancel();
+    // }
+
+    // 10 linemen
+    // if (target.id === "offense" && target.children.length > 10) {
+    //   alert('Can only have 10 linemen on offense.');
+    //   drake.cancel();
+    // }
+  // });
+  // Shows offensive line when you first get to coachHome
+  // document.addEventListener(
+  //   "DOMContentLoaded",
+  //   function () {
+  //     //alert("Ready!");
+  //     toggleActiveTeam('o');
+  //   },
+  //   false
+  // );
+</script>

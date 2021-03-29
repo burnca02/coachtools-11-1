@@ -884,14 +884,24 @@ router.post('/changePos', ensureAuthenticated, async (req, res) => {
   console.log("name1: " + name1);
   console.log("user school " + req.session.school);
   var OLPos = ['LT','LG','C','RG','RT']
-  Roster.findOneAndUpdate({School: req.session.school, FullName: name1})
-    .then(player => {
-      console.log("player " + player);
-      if(player.listPos != pos){
-        player.listPos.push(pos);
-      }
-      console.log("player after " + player);
-  })
+  const player = await Roster.findOne({FullName: name1, School: req.session.school});
+  let playerPositions = pos;
+  console.log("player: " + player)
+  console.log("player.listPos: " + player.listPos)
+  console.log("player.Email: " + player.Email)
+  if (player.listPos != undefined) {
+    player.listPos.push(pos);
+    playerPositions = player.listPos;
+  }
+  let doc = await Roster.findOneAndUpdate({FullName: name1, School: req.session.school}, {listPos : playerPositions}, {new:true, upsert: true});
+  doc.save();
+  //   .then(player => {
+  //     console.log("player " + player);
+  //     if(player.listPos != pos){
+  //       player.listPos.push(pos);
+  //     }
+  //     console.log("player after " + player);
+  // })
   Roster.find({School: req.user.School, Pos: 'OL'})
   .then(players => {
     res.render('updatePos', {

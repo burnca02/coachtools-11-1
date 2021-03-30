@@ -54,6 +54,10 @@
                   <option value="School Not Listed" >School Not Listed</option>
                 </select>
           </div>
+          <input type="radio" id="player" name="userType" value="player" autocomplete="off"><label for="player">Player</label><br>
+          <!-- <label class="btn btn-info"> -->
+          <input type="radio" id="coach" name="userType" value="coach" autocomplete="off"><label for="coach">Coach</label><br>
+          <!-- <label class="btn btn-info"> -->
           <div class="form-group">
             <label for="email">Email</label>
             <input
@@ -87,10 +91,8 @@
               value="<%= typeof password2 != 'undefined' ? password2 : '' %>"
             />
           </div>
-          <input type="radio" id="player" name="userType" value="player" autocomplete="off"><label for="player">Player</label><br>
-            <!-- <label class="btn btn-info"> -->
-            <input type="radio" id="coach" name="userType" value="coach" autocomplete="off"><label for="coach">Coach</label><br>
-            <!-- <label class="btn btn-info"> -->
+          <input type="checkbox" id="terms" name="terms" value="terms" autocomplete="off"><label for="coach">    I have read and agree to the <a href="/users/terms" target="_blank">Terms and Conditions</a> 
+            and the <a href="/users/cookies" target="_blank"> Cookies Policy.</a></label><br>
           <button type="submit" class="btn btn-primary btn-block">
             Register
           </button>

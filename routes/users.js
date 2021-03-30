@@ -13,6 +13,13 @@ const e = require('express');
 router.get('/login', (req, res) => {
     res.render('login')
 });
+//terms and conditions
+router.get('/terms', (req, res) => {
+    res.render('terms')
+});
+router.get('/cookies', (req, res) => {
+    res.render('cookies')
+});
 
 //photos
 // router.get('/coachtoolsLogoBlack.png', (req, res) => {
@@ -44,7 +51,7 @@ router.get('/teamRegister', (req, res) =>
 
 //Register Handle
 router.post('/register', (req, res) => {
-    const { name, email, password, password2, school, userType } = req.body;
+    const { name, email, password, password2, school, userType, terms} = req.body;
 
     console.log(req.body);
     let errors = [];
@@ -64,6 +71,9 @@ router.post('/register', (req, res) => {
     //Check passwords match
     if(password !== password2) {
         errors.push({ msg: 'Passwords do not match'});
+    }
+    if(!terms) {
+        errors.push({ msg: 'Please agree to the terms and conditions.'});
     }
     //Check password Length
     if(password.length < 6) {

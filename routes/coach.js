@@ -466,6 +466,57 @@ router.get('/roster', ensureAuthenticated, (req, res) =>
   .catch(error => console.error(error))
 );
 
+//PSEUDO CODE
+// for(player : players)
+// for(pos : positions)
+// if(player.listPos.contains(pos))
+// posArray.push(player)
+// mainArray.push(posArray)
+
+
+router.get('/depthChart', ensureAuthenticated, (req, res) => {
+  console.log("in new depth chart")
+  const offPlayersPos = ['QB','RB','FB','WR','TE','LT','LG','C','RG','RT','OL']
+  const defPlayersPos = ['CB','DB','DE','DL','DT','ILB','LB','MLB','OLB','FS','SS']
+  const spePlayersPos = ['K/P','LS','P','K','H','KR']
+  Roster.find({School: req.user.school})
+  .then(players => {
+    const positions = [];
+    for(var i = 0; i < players.length; i++){
+      if(!(positions.includes(players[i].Pos))){ //adds only unique positions to array, no duplicates
+          positions.push(players[i].Pos);
+      }
+    }
+    positions.push("LT","LG","C","RG","RT")
+    //create main array to hold all position arrays
+    var sortedPlayers = [];
+    //created an array for every position
+    for(var a = 0; a < positions.length; a++){
+      sortedPlayers[a] = [positions[a]];
+    }
+    //sort through players and add them to specific position arrays
+    for(var i = 0; i < players.length; i++){
+      for(var j = 0; j < positions.length; j++){
+        if(players[i].listPos.includes(positions[j])){
+          sortedPlayers[j].push(players[i]);
+        }
+      }
+    }
+    res.render('depthChart', {
+      'sortedPlayers': sortedPlayers,
+      'players': players,
+      'positions': positions,
+      'offPlayersPos' : offPlayersPos,
+      'defPlayersPos' : defPlayersPos,
+      'spePlayersPos' : spePlayersPos,
+      name: req.session.name,
+      school: req.session.school
+    });
+  }).catch(error => console.error(error));
+});
+
+
+
 router.get('/depthChart', ensureAuthenticated, async(req, res) => {
   const offPlayersPos1= ['QB','RB','FB','WR','TE','LT','LG','C','RG','RT']
   const defPlayersPos = ['CB','DB','DE','DL','DT','FS','ILB','LB','MLB','OLB','SS']
@@ -657,7 +708,7 @@ router.get('/posSubmitRank', ensureAuthenticated, async(req, res) => {
 
 router.post('/position', ensureAuthenticated, async(req, res) => {
   const pos = req.body.pos
-  await Roster.find({ "Pos": { "$exists": true}, "School" :req.session.school, "Pos": pos}).sort({'Pos': 1, 'Rank' : 1})
+  await Roster.find({ "Pos": { "$exists": true}, "School" :req.session.school, "listPos": pos})
             .then(posPlayers => {
               var emails = [];
               for (var i = 0; i < posPlayers.length; i++) {
@@ -769,16 +820,31 @@ router.post('/submitRank', ensureAuthenticated, async (req, res) => {
 
 router.post('/posSubmitRank', ensureAuthenticated, async (req, res) => {
   const pos = req.body.pos
-  // console.log("pos in posSubmit: " + pos)
+  const posIndex = req.body.posIndex
+  console.log("posIndex in posSubmit: " + posIndex)
+  const rankings = req.body.rankings
+  console.log("rankings in posSubmit: " + rankings)
   const rank = req.body.rank
-  // console.log("ranks in posSubmit: " + rank)
+  console.log("ranks in posSubmit: " + rank)
   const pNames = req.body.playerNames
   // console.log("pNames in posSubmit: " + pNames)
   for (var i = 0; i < rank.length; i++) {
-    let doc = await Roster.findOneAndUpdate({FullName : pNames[i], School : req.session.school}, {Rank : rank[i]}, {new:true, upsert: true});
+    var newRank = []
+    for (var j = 0; j < rankings[i].length; j++) {
+      if (rankings[i][j] != ',') {
+        newRank.push(rankings[i][j])
+      }
+    }
+    console.log("player: " + pNames[i])
+    console.log("original rank: " + newRank)
+    console.log("new rank to add: " + rank[i])
+    console.log("adding rank to index: " + posIndex[i])
+    newRank[posIndex[i]] = rank[i]
+    console.log("new rank: " + newRank)
+    let doc = await Roster.findOneAndUpdate({FullName : pNames[i], School : req.session.school}, {Rank : newRank}, {new:true, upsert: true});
     doc.save();
   }
-  await Roster.find({ "Pos": { "$exists": true}, "School" :req.session.school, "Pos": pos}).sort({'Pos': 1, 'Rank' : 1})
+  await Roster.find({ "Pos": { "$exists": true}, "School" :req.session.school, "Pos": pos})
             .then(posPlayers => {
               var emails = [];
               for (var i = 0; i < posPlayers.length; i++) {
@@ -862,7 +928,64 @@ router.get('/submitPlays', ensureAuthenticated, (req, res) =>
   res.render('submitPlays', {
     name: req.user.name //pass the name that was entered into the database to dashboard
 }));
+/*
+This method displays the updatePos page.
+*/
+router.get('/updatePos', ensureAuthenticated, (req, res) => {
+  var OLPos = ['LT','LG','C','RG','RT']
+  Roster.find({school: req.user.School, Pos: 'OL'})
+  .then(players => {
+    res.render('updatePos', {
+      name: req.user.name, //pass the name that was entered into the database to dashboard
+      'players': players,
+      'OLPos': OLPos
+    })
+  })
+});
 
+router.post('/changePos', ensureAuthenticated, async (req, res) => {
+  var {pos, name1} = req.body;
+  console.log(req.body);
+  console.log("pos: " + pos);
+  console.log("name1: " + name1);
+  console.log("user school " + req.session.school);
+  var OLPos = ['LT','LG','C','RG','RT']
+  const player = await Roster.findOne({FullName: name1, School: req.session.school});
+  let playerPositions = pos;
+  let playerRank = "1";
+  //if there is something already in their list position or rank then leave it there
+  if (player.listPos != undefined && player.Rank != undefined) {
+    playerPositions = player.listPos
+    playerRank = player.Rank
+  }
+  console.log("player: " + player)
+  console.log("player.listPos: " + player.listPos)
+  console.log("player.Email: " + player.Email)
+  //don't add a position they already have
+  if (player.listPos != undefined && (player.listPos.includes(pos) == false)) {
+    player.listPos.push(pos);
+    playerPositions = player.listPos;
+    player.Rank.push("1");
+    playerRank = player.Rank;
+  }
+  let doc = await Roster.findOneAndUpdate({FullName: name1, School: req.session.school}, {listPos : playerPositions, Rank : playerRank}, {new:true, upsert: true});
+  doc.save();
+  //   .then(player => {
+  //     console.log("player " + player);
+  //     if(player.listPos != pos){
+  //       player.listPos.push(pos);
+  //     }
+  //     console.log("player after " + player);
+  // })
+  Roster.find({School: req.user.School, Pos: 'OL'})
+  .then(players => {
+    res.render('updatePos', {
+      name: req.user.name, //pass the name that was entered into the database to dashboard
+      'players': players,
+      'OLPos': OLPos
+    })
+  })
+});
 
 /**
  * This post method deals with the sorting function available in the coach's side for sorting a roster by position, or school year. 

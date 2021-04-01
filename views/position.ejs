@@ -119,16 +119,35 @@
                 <!-- <th>Quiz Grade</th> -->
                 <th>Notes</th>
             </tr>
-            <% for (var i = 0; i < posPlayers.length; i++) { %>
-            <tr>
-                <td><%= posPlayers[i].Rank %></td>
-                <td><%= posPlayers[i].FullName %></td>
-                <td><%= gameGrades[i] %></td>
-                <td><%= practiceStats[i] %></td>
-                <!-- <td><%= posPlayers[i].Grade %></td> -->
-                <td>Note</td>
-            </tr>
-            <% } %>
+              <% var c = 0;
+              var index = 0;
+              var lowestRank = 1;
+              var posIndex = 0;
+              while (c < posPlayers.length && lowestRank < 30) {
+                for (var j = 0; j < posPlayers[index].listPos.length; j++) {
+                  if (posPlayers[index].listPos[j] == pos) {
+                    posIndex = j;
+                    break;
+                  }
+                }
+                if (posPlayers[index].Rank[posIndex] == lowestRank) { %>
+                  <tr>
+                    <td><%= posPlayers[index].Rank[posIndex] %></td>
+                    <td><%= posPlayers[index].FullName %></td>
+                    <td><%= gameGrades[index] %></td>
+                    <td><%= practiceStats[index] %></td>
+                    <!-- <td><%= posPlayers[index].Grade %></td> -->
+                    <td>Note</td>
+                </tr>
+                  <% c++;
+                }
+                if (index + 1 >= posPlayers.length) {
+                  lowestRank++;
+                  index = 0;
+                } else {
+                  index++;
+                }
+              } %>
         </table>
     </div>
 
@@ -142,11 +161,32 @@
           <br>
           <form action="/coach/posSubmitRank" method="POST">
           <input class="hidden" name="pos" value="<%- pos %>" hidden>
-          <% for (var i = 0; i < posPlayers.length; i++) { %>
-            <input type="name" name="playerNames" value="<%= posPlayers[i].FullName %>" readonly>
-            <input type="number" name="rank" min='1' max='<%- posPlayers.length %>' value="<%- posPlayers[i].Rank %>">
-            <br>
-          <% } %>
+          <% var c = 0;
+              var index = 0;
+              var lowestRank = 1;
+              var posIndex = 0;
+              while (c < posPlayers.length && lowestRank < 30) {
+                for (var j = 0; j < posPlayers[index].listPos.length; j++) {
+                  if (posPlayers[index].listPos[j] == pos) {
+                    posIndex = j;
+                    break;
+                  }
+                }
+                if (posPlayers[index].Rank[posIndex] == lowestRank) { %>
+                  <input class="hidden" name="posIndex" value="<%- posIndex %>" hidden>
+                  <input class="hidden" name="rankings" value="<%= posPlayers[index].Rank %>" hidden>
+                  <input type="name" name="playerNames" value="<%= posPlayers[index].FullName %>" readonly>
+                  <input type="number" name="rank" min='1' max='<%- posPlayers.length %>' value="<%- posPlayers[index].Rank[posIndex] %>">
+                  <br>
+                  <% c++;
+                }
+                if (index + 1 >= posPlayers.length) {
+                  lowestRank++;
+                  index = 0;
+                } else {
+                  index++;
+                }
+              } %>
           <% if (posPlayers.length != null && posPlayers.length > 0) { %>
             <div style="padding-top: 15px;">
               <input type="submit" class="btn btn-primary dropdown-toggle" value="Submit">

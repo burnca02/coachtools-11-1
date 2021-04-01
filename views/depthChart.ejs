@@ -136,84 +136,38 @@
             <th>Other</th>
           </tr>
           <form action="/coach/position" method="POST">
-          <% var k = 0;
-          for(var i = 0; i < offPlayersPos.length; i++) { %>
-          <tr>
-            <td><button class="btn btn-primary" type="submit" name="pos" value="<%- offPlayersPos[i] %>" style="font-size: 13px;"><%= offPlayersPos[i] %></button></td>
-            <%
-            var playerIndex = -1;
-            var c = 0;
-            while (c < offPlayers.length && offPlayers[c].Pos != offPlayersPos[i]) {
-              c++;
-            }
-            if (c < offPlayers.length && offPlayers[c].Pos == offPlayersPos[i]) {
-              playerIndex = c;
-            }
-            k = 0;
-            while (playerIndex >= 0 && playerIndex < offPlayers.length && offPlayers[playerIndex].Pos == offPlayersPos[i]) { %>
-              <% if (k < 5) { %>
-              <td><%= offPlayers[playerIndex].FullName %></td>
-              <% } %>
-              <% k++; playerIndex++;%>
-            <% } %>
-          </tr>
-          <% } %>
-        </form>
-        </table>
-        <br><br>
-        <span class="help">Defense</span>
-        <table class="redTable" id="viewTable" style="width: 95%;" border="1">
-          <tr>
-            <th></th>
-            <th>First String</th>
-            <th>Second String</th> 
-            <th>Third String</th>
-            <th>Fourth String</th>
-            <th>Other</th>
-          </tr>
-          <form action="/coach/position" method="POST">
-          <% j = 0; k = 0;
-          for(var i = 0; i < defPlayersPos.length; i++) { %>
-          <tr>
-            <td><button class="btn btn-primary" type="submit" name="pos" value="<%- defPlayersPos[i] %>" style="font-size: 13px;"><%= defPlayersPos[i] %></button></td>
-            <% k = 0;
-            while (j < defPlayers.length && defPlayers[j].Pos == defPlayersPos[i]) { %>
-              <% if (k < 5) { %>
-              <td><%= defPlayers[j].FullName %></td>
-              <% } %>
-              <% j++; k++;%>
-            <% } %>
-          </tr>
-          <% } %>
-        </form>
-        </table>
-        <br><br>
-        <span class="help">Special Teams</span>
-        <table class="redTable" id="viewTable" style="width: 95%; margin-bottom: 40px;" border="1">
-          <tr>
-            <th></th>
-            <th>First String</th>
-            <th>Second String</th> 
-            <th>Third String</th>
-            <th>Fourth String</th>
-            <th>Other</th>
-          </tr>
-          <form action="/coach/position" method="POST">
-          <% j = 0; k = 0;
-          for(var i = 0; i < spePlayersPos.length; i++) { %>
-          <tr>
-            <td><button class="btn btn-primary" type="submit" name="pos" value="<%- spePlayersPos[i] %>" style="font-size: 13px;"><%= spePlayersPos[i] %></button></td>
-            <% k = 0;
-            while (j < spePlayers.length && spePlayers[j].Pos == spePlayersPos[i]) { %>
-              <% if (k < 5) { %>
-              <td name="pos"><%= spePlayers[j].FullName %></td>
-              <% } %>
-              <% j++; k++;%>
-            <% } %>
-          </tr>
-          <% } %>
+            <% for (var i = 0; i < sortedPlayers.length; i++) { %>
+              <tr>
+              <td><button class="btn btn-primary" type="submit" name="pos" value="<%- sortedPlayers[i][0] %>" style="font-size: 13px;"><%= sortedPlayers[i][0] %></button></td>
+              <% sortedPosGroup = sortedPlayers[i];
+                 sortedPosGroup.shift();
+                 var c = 0;
+                 var index = 0;
+                 var lowestRank = 1;
+                 var posIndex = 0;
+              while (c < sortedPosGroup.length && c < 5 && lowestRank < 30) {
+                for (var j = 0; j < sortedPosGroup[index].listPos.length; j++) {
+                  if (sortedPosGroup[index].listPos[j] == sortedPlayers[i][0]) {
+                    posIndex = j;
+                    break;
+                  }
+                }
+                if (sortedPosGroup[index].Rank[posIndex] == lowestRank) { %>
+                  <td><%= sortedPosGroup[index].FullName %></td>
+                  <% c++;
+                }
+                if (index + 1 >= sortedPosGroup.length) {
+                  lowestRank++;
+                  index = 0;
+                } else {
+                  index++;
+                }
+              }
+            } %>
           </form>
         </table>
+        <br><br>
+        
 
       <!-- Start of Modal Content for entering practice grades -->
       <!-- The Modal PopUp Window-->
@@ -232,6 +186,7 @@
                 <!-- 'SS','MLB','FS','K','P','CB', ,'LS'-->
                 <% var allPlayers = ['QB','RB','FB','WR','TE','LT','LG','C','RG','RT','CB','DB','DE','DL','DT','FS','ILB','LB','MLB','OLB','SS','K/P','LS']; %>
                 <button class="dropdown-item" type="submit" name="type" value="full" >ALL</button>
+                <!-- Make this for loop using positions from db query -->
                 <% for (var i = 0; i < allPlayers.length; i++) { %>
                   <button class="dropdown-item" type="submit" name="type" value="<%- allPlayers[i] %>">View <%= allPlayers[i] %>s</button>
                 <% } %>

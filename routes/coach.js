@@ -476,16 +476,14 @@ router.get('/roster', ensureAuthenticated, (req, res) =>
 
 router.get('/depthChart', ensureAuthenticated, (req, res) => {
   console.log("in new depth chart")
-  const offPlayersPos1= ['QB','RB','FB','WR','TE','LT','LG','C','RG','RT']
-  const defPlayersPos = ['CB','DB','DE','DL','DT','FS','ILB','LB','MLB','OLB','SS']
-  const spePlayersPos = ['K/P','LS']
+  const offPlayersPos = ['QB','RB','FB','WR','TE','LT','LG','C','RG','RT','OL']
+  const defPlayersPos = ['CB','DB','DE','DL','DT','ILB','LB','MLB','OLB','FS','SS']
+  const spePlayersPos = ['K/P','LS','P','K','H','KR']
   Roster.find({School: req.user.school})
   .then(players => {
-    console.log(players[0].Pos);
     const positions = [];
     for(var i = 0; i < players.length; i++){
       if(!(positions.includes(players[i].Pos))){ //adds only unique positions to array, no duplicates
-        //if(typeof(players[i].Pos) !== 'undefined'){
           positions.push(players[i].Pos);
       }
     }
@@ -508,14 +506,13 @@ router.get('/depthChart', ensureAuthenticated, (req, res) => {
       'sortedPlayers': sortedPlayers,
       'players': players,
       'positions': positions,
-      'offPlayersPos' : offPlayersPos1,
+      'offPlayersPos' : offPlayersPos,
       'defPlayersPos' : defPlayersPos,
       'spePlayersPos' : spePlayersPos,
       name: req.session.name,
       school: req.session.school
     });
   }).catch(error => console.error(error));
-  console.log("finished coach get")
 });
 
 
@@ -711,7 +708,7 @@ router.get('/posSubmitRank', ensureAuthenticated, async(req, res) => {
 
 router.post('/position', ensureAuthenticated, async(req, res) => {
   const pos = req.body.pos
-  await Roster.find({ "Pos": { "$exists": true}, "School" :req.session.school, "Pos": pos}).sort({'Pos': 1, 'Rank' : 1})
+  await Roster.find({ "Pos": { "$exists": true}, "School" :req.session.school, "listPos": pos})
             .then(posPlayers => {
               var emails = [];
               for (var i = 0; i < posPlayers.length; i++) {
@@ -823,16 +820,31 @@ router.post('/submitRank', ensureAuthenticated, async (req, res) => {
 
 router.post('/posSubmitRank', ensureAuthenticated, async (req, res) => {
   const pos = req.body.pos
-  // console.log("pos in posSubmit: " + pos)
+  const posIndex = req.body.posIndex
+  console.log("posIndex in posSubmit: " + posIndex)
+  const rankings = req.body.rankings
+  console.log("rankings in posSubmit: " + rankings)
   const rank = req.body.rank
-  // console.log("ranks in posSubmit: " + rank)
+  console.log("ranks in posSubmit: " + rank)
   const pNames = req.body.playerNames
   // console.log("pNames in posSubmit: " + pNames)
   for (var i = 0; i < rank.length; i++) {
-    let doc = await Roster.findOneAndUpdate({FullName : pNames[i], School : req.session.school}, {Rank : rank[i]}, {new:true, upsert: true});
+    var newRank = []
+    for (var j = 0; j < rankings[i].length; j++) {
+      if (rankings[i][j] != ',') {
+        newRank.push(rankings[i][j])
+      }
+    }
+    console.log("player: " + pNames[i])
+    console.log("original rank: " + newRank)
+    console.log("new rank to add: " + rank[i])
+    console.log("adding rank to index: " + posIndex[i])
+    newRank[posIndex[i]] = rank[i]
+    console.log("new rank: " + newRank)
+    let doc = await Roster.findOneAndUpdate({FullName : pNames[i], School : req.session.school}, {Rank : newRank}, {new:true, upsert: true});
     doc.save();
   }
-  await Roster.find({ "Pos": { "$exists": true}, "School" :req.session.school, "Pos": pos}).sort({'Pos': 1, 'Rank' : 1})
+  await Roster.find({ "Pos": { "$exists": true}, "School" :req.session.school, "Pos": pos})
             .then(posPlayers => {
               var emails = [];
               for (var i = 0; i < posPlayers.length; i++) {

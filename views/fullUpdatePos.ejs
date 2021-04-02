@@ -5,11 +5,11 @@
         <h1 class="text-center mb-3"><i class="fas fa-sign-in-alt"></i> Offensive Line Assignment</h1>
         <%- include('./partials/messages'); %>
         <h3>Choose Players for</h3>
-        <form action="/coach/updatePos" method="POST">
+        <form action="/coach/fullUpdatePos" method="POST">
 
             <select name="pos" id="pos" class="btn btn-primary dropdown-toggle mt-4 mb-5">
-              <% for(var i = 0; i < OLPos.length; i++) { %>
-              <option value="<%- OLPos[i] %>"><%= OLPos[i] %></option>
+              <% for(var i = 0; i < positions.length; i++) { %>
+              <option value="<%- positions[i] %>"><%= positions[i] %></option>
               <% } %>
             </select>
 
@@ -32,20 +32,3 @@
       </div>
     </div>
   </div>
-  <script>
-    function addPlayer(event) {
-        event.preventDefault();
-        let playerList = document.getElementById("playerList");
-        let selectedName = document.getElementById("name1");
-        alert("before " + playerList.value);
-        alert("selected name: " + selectedName.value);
-        if (playerList.value != undefined) {
-            playerList.value = playerList.value + selectedName.value;
-            playerList.textContent = playerList.value + selectedName.value;
-        } else {
-            playerList.value = selectedName.value;
-            playerList.textContent = selectedName.value;
-        }
-        alert("after " + playerList.value);
-    }
-  </script>

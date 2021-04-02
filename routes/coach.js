@@ -653,6 +653,29 @@ router.get('/position', ensureAuthenticated, async(req, res) => {
             }).catch(error => console.error(error))
 })
 
+router.get('/viewPlayer', ensureAuthenticated, (req, res) => {
+  console.log("in view player getter")
+  const playerName = 'Bryan Boczon';
+  Roster.findOne({School:req.session.school, FullName:playerName})
+            .then(player => {
+              console.log("player data: " + player)
+              res.render('viewPlayer', {
+                player: player,
+                name: req.session.name,
+                school: req.session.school})
+            }).catch(error => console.error(error))
+})
+
+router.post('/viewPlayer', ensureAuthenticated, (req, res) => {
+  const playerName = req.body.playerName;
+  Roster.find({School:req.session.school, FullName:playerName})
+            .then(player => {
+              res.render('viewPlayer', {
+                player: player,
+                name: req.session.name,
+                school: req.session.school})
+            }).catch(error => console.error(error))
+})
 //Error with reloading here - the get function cant get the current position
 //Can we store a session variable or something?
 router.get('/posSubmitRank', ensureAuthenticated, async(req, res) => {
@@ -943,7 +966,76 @@ router.get('/updatePos', ensureAuthenticated, (req, res) => {
   })
 });
 
-router.post('/changePos', ensureAuthenticated, async (req, res) => {
+router.get('/fullUpdatePos', ensureAuthenticated, (req, res) => {
+  Roster.find({School: req.user.school})
+  .then(players => {
+    const positions = [];
+    for(var i = 0; i < players.length; i++){
+      if(!(positions.includes(players[i].Pos))){ //adds only unique positions to array, no duplicates
+          positions.push(players[i].Pos);
+      }
+    }
+    positions.push("LT","LG","C","RG","RT")
+    res.render('fullUpdatePos', {
+      'players': players,
+      'positions': positions,
+      name: req.session.name,
+      school: req.session.school
+    });
+  }).catch(error => console.error(error));
+});
+
+router.post('/fullUpdatePos', ensureAuthenticated, async (req, res) => {
+  var {pos, name1} = req.body;
+  console.log(req.body);
+  console.log("pos: " + pos);
+  console.log("name1: " + name1);
+  console.log("user school " + req.session.school);
+  const player = await Roster.findOne({FullName: name1, School: req.session.school});
+  let playerPositions = pos;
+  let playerRank = "1";
+  //if there is something already in their list position or rank then leave it there
+  if (player.listPos != undefined && player.Rank != undefined) {
+    playerPositions = player.listPos
+    playerRank = player.Rank
+  }
+  console.log("player: " + player)
+  console.log("player.listPos: " + player.listPos)
+  console.log("player.Email: " + player.Email)
+  //don't add a position they already have
+  if (player.listPos != undefined && (player.listPos.includes(pos) == false)) {
+    player.listPos.push(pos);
+    playerPositions = player.listPos;
+    player.Rank.push("1");
+    playerRank = player.Rank;
+  }
+  let doc = await Roster.findOneAndUpdate({FullName: name1, School: req.session.school}, {listPos : playerPositions, Rank : playerRank}, {new:true, upsert: true});
+  doc.save();
+  //   .then(player => {
+  //     console.log("player " + player);
+  //     if(player.listPos != pos){
+  //       player.listPos.push(pos);
+  //     }
+  //     console.log("player after " + player);
+  // })
+  Roster.find({School: req.user.School})
+  .then(players => {
+    const positions = [];
+    for(var i = 0; i < players.length; i++){
+      if(!(positions.includes(players[i].Pos))){ //adds only unique positions to array, no duplicates
+          positions.push(players[i].Pos);
+      }
+    }
+    positions.push("LT","LG","C","RG","RT")
+    res.render('fullUpdatePos', {
+      name: req.user.name, //pass the name that was entered into the database to dashboard
+      'players': players,
+      'positions': positions
+    })
+  })
+});
+
+router.post('/updatePos', ensureAuthenticated, async (req, res) => {
   var {pos, name1} = req.body;
   console.log(req.body);
   console.log("pos: " + pos);

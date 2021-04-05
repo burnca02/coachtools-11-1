@@ -30,6 +30,7 @@
     <%- include("partials/sidenav") %>
 
     <div class="rBody">
+      <span class="help"><%= school %> Roster</span>
       <div class="rosterRow">
         <!-- <div class="btn-group" style="padding: 10px">
           <button
@@ -44,22 +45,11 @@
             <a class="dropdown-item"><%= school %> 2020</a>
           </div>
         </div> -->
-        <div
-          class="form-group"
-          role="group"
-          aria-label="Button group with nested dropdown"
-        >
+        <div class="form-group" role="group" aria-label="Button group with nested dropdown">
           <form action="/coach/table" method="POST">
             <!-- <button type="button" class="btn btn-primary">Sort By</button> -->
             <div class="dropdown" role="group" style="padding: 10px;">
-              <button
-                id="btnGroupDrop1"
-                type="button"
-                class="btn btn-primary dropdown-toggle"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
-              >Filter</button>
+              <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Filter</button>
               <div class="dropdown-content" aria-labelledby="btnGroupDrop1">
                 <% var allPlayers = ['QB','RB','FB','WR','TE','LT','LG','C','RG','RT','CB','DB','DE','DL','DT','FS','ILB','LB','MLB','OLB','SS','K/P','LS']; %>
                 <button
@@ -79,18 +69,9 @@
         <!-- This is the upload excel roster button. -->
         <!-- <p>Use the form below to upload a list of authors. -->
         <div class="uploadRosterClass" style="padding-top: 10px;">
-          <form
-            action="/coach/upload"
-            method="POST"
-            encType="multipart/form-data"
-          >
+          <form action="/upload/upload" method="POST" encType="multipart/form-data">
             <input type="file" name="file" accept=".csv" />
-            <input
-              type="submit"
-              class="btn btn-primary dropdown-toggle"
-              value="Upload Roster"
-              disabled
-            />
+            <input type="submit" class="btn btn-primary dropdown-toggle" value="Upload Roster" disabled/>
           </form>
           <p>
             Click <a href="/coach/template">here</a> for an example template.

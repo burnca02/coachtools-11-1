@@ -62,6 +62,8 @@ app.use('/functions', require('./routes/functions'));
 app.use('/player', require('./routes/player'));
 app.use('/coach', require('./routes/coach'));
 app.use('/stats', require('./routes/stats'));
+app.use('/upload', require('./routes/upload'));
+
 
 app.use(express.static("public"));
 

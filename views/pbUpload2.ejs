@@ -176,10 +176,7 @@
 <% if (school) { %> 
   <script type="text/javascript">
   var school = JSON.parse('<%- JSON.stringify(school) %>');
-  console.log("Hello world");
-  console.log('exercises ' + school);
   var path = "../uploads/" + school +" Playbook.pdf";
-  console.log(path);
   initPDFViewer(path);
 </script>
 <% } %>

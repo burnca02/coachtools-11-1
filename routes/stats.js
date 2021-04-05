@@ -65,6 +65,9 @@ router.post('/dispPracticeStats', async(req, res) => {
         .then(stats => {
           Play.find({school: req.user.school})
           .then(plays => {
+          if(plays.length == 0){
+            res.redirect("/coach/submitPlays");
+          }
           res.render('dispPracticeStats', {
                 'players': players,
                 'ints': intangibles[0].ints,
@@ -519,6 +522,9 @@ router.post('/dispGameGrade', async(req, res) => {
           //console.log("gamegrade stats " + stats);
           Play.find({school: req.user.school})
           .then(plays => {
+            if(plays.length == 0){
+              res.redirect("/coach/submitPlays");
+            }
             // for(var i = 0; i < players.length; i++) {
             //   for(var j = 0; j < stats.length; j++) {
             //     console.log('email match 1 ' + players[i].Email  + ' = ' + stats[j].email);

@@ -16,8 +16,53 @@
 
   <!-- Custom styles for this template -->
   <!-- <link href="css/business-frontpage.css" rel="stylesheet"> -->
-
+<style>
+  /* The flip box container - set the width and height to whatever you want. We have added the border property to demonstrate that the flip itself goes out of the box on hover (remove perspective if you don't want the 3D effect */
+  .flip-box {
+    background-color: transparent;
+    width: 300px;
+    height: 200px;
+    border: 1px solid #f1f1f1;
+    /* perspective: 1000px; Remove this if you don't want the 3D effect */
+  }
   
+  /* This container is needed to position the front and back side */
+  .flip-box-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.8s;
+    transform-style: preserve-3d;
+  }
+  
+  /* Do an horizontal flip when you move the mouse over the flip box container */
+  .flip-box:hover .flip-box-inner {
+    transform: rotateY(180deg);
+  }
+  
+  /* Position the front and back side */
+  .flip-box-front, .flip-box-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden; /* Safari */
+    backface-visibility: hidden;
+  }
+  
+  /* Style the front side (fallback if image is missing) */
+  .flip-box-front {
+    background-color: #bbb;
+    color: black;
+  }
+  
+  /* Style the back side */
+  .flip-box-back {
+    background-color: white;
+    color: white;
+    transform: rotateY(180deg);
+  } 
+</style>
 
 <!-- </head> -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -151,24 +196,21 @@
         </div>
       </div>
       <!-- /.row -->
-      <div style="display:flex;">
-        <div class="bod-flip-box">
-          <div class="flip-inner">
-            <div class="flip-front">
-              <img class="flip-front-image" src="/public/images/comparisons.png" alt="">
-              <div class="flip-front-content fbg-overlay">
-                Front Content As An Overlay
-             </div>
-            </div>
-            <div class="flip-back">
-              <div class="flip-back-content">
-                Back Content
+
+      <div class="row">
+        <div class="col-sm-4 mb-3">
+          <div class="flip-box">
+            <div class="flip-box-inner">
+              <div class="flip-box-front">
+                <img class="d-block w-100" src="images/organizeData.png" alt="Organize Data">
+              </div>
+              <div class="flip-box-back">
+                <h2>Paris</h2>
+                <p>What an amazing city</p>
               </div>
             </div>
-          </div>
+          </div> 
         </div>
-        </div>
-      <div class="row">
 
         <!-- <div class="col-sm-4 mb-3">
             <img class="d-block w-100" src="images/organizeData.png">

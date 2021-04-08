@@ -483,7 +483,7 @@ router.get('/depthChart', ensureAuthenticated, (req, res) => {
   .then(players => {
     const positions = ["LT","LG","C","RG","RT"];
     for(var i = 0; i < players.length; i++){
-      if(!(positions.includes(players[i].Pos.trim()))){ //adds only unique positions to array, no duplicates
+      if(players[i].Pos != undefined && (!(positions.includes(players[i].Pos.trim())))){ //adds only unique positions to array, no duplicates
           positions.push(players[i].Pos.trim());
       }
     }

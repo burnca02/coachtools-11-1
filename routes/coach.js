@@ -1064,26 +1064,22 @@ router.post('/fullUpdatePos', ensureAuthenticated, async (req, res) => {
   if (player.listPos != undefined && (player.listPos.includes(pos) == false)) {
     player.listPos.push(pos);
     playerPositions = player.listPos;
-    player.Rank.push("1");
+    player.Rank.push(1);
     playerRank = player.Rank;
   }
   let doc = await Roster.findOneAndUpdate({FullName: name1, School: req.session.school}, {listPos : playerPositions, Rank : playerRank}, {new:true, upsert: true});
   doc.save();
-  //   .then(player => {
-  //     console.log("player " + player);
-  //     if(player.listPos != pos){
-  //       player.listPos.push(pos);
-  //     }
-  //     console.log("player after " + player);
-  // })
-  Roster.find({School: req.user.School})
+
+  await Roster.find({School: req.user.School})
   .then(players => {
     const positions = [];
+    console.log('players: '+ players)
     for(var i = 0; i < players.length; i++){
       if(!(positions.includes(players[i].Pos))){ //adds only unique positions to array, no duplicates
           positions.push(players[i].Pos);
       }
     }
+    console.log('positions: '+ positions)
     positions.push("LT","LG","C","RG","RT")
     res.render('fullUpdatePos', {
       name: req.user.name, //pass the name that was entered into the database to dashboard

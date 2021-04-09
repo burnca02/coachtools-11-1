@@ -1038,6 +1038,10 @@ router.get('/fullUpdatePos', ensureAuthenticated, (req, res) => {
     });
   }).catch(error => console.error(error));
 });
+router.get('/submitPeriod', ensureAuthenticated, (req, res) => 
+  res.render('submitPeriod', {
+    name: req.user.name //pass the name that was entered into the database to dashboard
+}));
 
 router.post('/fullUpdatePos', ensureAuthenticated, async (req, res) => {
   var {pos, name1} = req.body;

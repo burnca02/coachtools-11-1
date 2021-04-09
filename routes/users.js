@@ -73,7 +73,7 @@ router.post('/register', (req, res) => {
         errors.push({ msg: 'Passwords do not match'});
     }
     if(!terms) {
-        errors.push({ msg: 'Please agree to the terms and conditions.'});
+        errors.push({ msg: 'Please agree to the terms and conditions and the cookie policy.'});
     }
     //Check password Length
     if(password.length < 6) {

@@ -11,6 +11,7 @@ const SeasonalGameGrade = require('../models/SeasonalGameGrades');
 const Intangibles = require('../models/Intangibles');
 const Exercise = require('../models/Exercise');
 const Play = require('../models/Play');
+const Period = require('../models/Period');
 const GameGrade = require('../models/GameGrade');
 
 router.use(express.static("public"));
@@ -68,15 +69,25 @@ router.post('/dispPracticeStats', async(req, res) => {
           if(plays.length == 0){
             res.redirect("/coach/submitPlays");
           }
-          res.render('dispPracticeStats', {
-                'players': players,
-                'ints': intangibles[0].ints,
-                'scale': intangibles[0].scale,
-                'positions': positions,
-                'stats': stats,
-                'plays': plays[0].plays,
-                'name': req.user.name,
-              });
+          PracticeStat.find({school: req.user.school}) //for the practice stats by date, NEED position sorter
+          .then(pStats => {
+            const dates = [];
+            for(var i = 0; i < pStats.length; i++){
+              if(!(dates.includes(pStats[i].date))){ //adds only unique dates to array, no duplicates
+                  dates.push(pStats[i].date);
+              }
+            }
+            res.render('dispPracticeStats', {
+                  'players': players,
+                  'ints': intangibles[0].ints,
+                  'scale': intangibles[0].scale,
+                  'positions': positions,
+                  'stats': stats,
+                  'plays': plays[0].plays,
+                  'dates': dates,
+                  'name': req.user.name,
+                });
+            })
           })
         })
       }
@@ -378,6 +389,21 @@ router.post('/addGameGrade', async (req, res) => {
     }
     res.redirect('dispGameGrade');
 });
+router.post('statsByDate', (req,res) => {
+  const {playerName} = req.body;
+  var email;
+  Roster.findOne({School: req.user.school, FullName: playerName})
+  .then(player => {
+    email = player.Email;
+  });
+  GameGrade.find({School: req.user.school, email: email}).sort({date:-1})
+  .then(grades => {
+    res.render('dispGameGrade', {
+      'grades': grades,
+
+    })
+  })
+});
 /*
 This function is called when a coach adds an intangible on submitIntangibles.ejs. The intangble is
 then saved to the Intangibles database. 
@@ -467,6 +493,36 @@ router.post('/addPlays', (req, res) => {
           return console.log(err);
         else
           console.log("plays saved");
+          res.redirect('/coach/gameGrade');
+        console.log(doc);
+      });
+  }
+});
+/*
+This function is called when a coach adds practice periods on submitPeriod.ejs
+*/
+router.post('/addPeriods', (req, res) => {
+  const {p1, p2, p3, p4} = req.body;
+  let errors =[];
+  if(p1 == '' || p2 == '' || p3 == '' || p4 == ''){
+    errors.push({msg: "Please Enter 4 Periods"});
+    res.render('submitPeriod', {
+      errors,
+      name: req.user.name //pass the name that was entered into the database to dashboard
+    })
+  }
+  else{
+    Period.findOneAndUpdate({school: req.session.school},
+      {
+        school : req.user.school, //The most recent game grade.
+        periods: [p1,p2,p3,p4]
+      }, {new:true, upsert: true} 
+      ,function(err,doc)
+      {
+        if(err)
+          return console.log(err);
+        else
+          console.log("periods saved");
           res.redirect('/coach/gameGrade');
         console.log(doc);
       });

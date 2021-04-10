@@ -497,8 +497,11 @@ router.get('/depthChart', ensureAuthenticated, (req, res) => {
     //sort through players and add them to specific position arrays
     for(var i = 0; i < players.length; i++){
       for(var j = 0; j < positions.length; j++){
-        if(players[i].listPos.includes(positions[j])){
+        if(players[i].Pos == positions[j] || players[i].listPos.includes(positions[j])){
           sortedPlayers[j].push(players[i]);
+          if(positions[j]=='WR') {
+            console.log("added a WR")
+          }
         }
       }
     }
@@ -1037,7 +1040,7 @@ router.get('/fullUpdatePos', ensureAuthenticated, async(req, res) => {
   .then(players => {
     const positions = ['QB','RB','WR','TE','LT','LG','C','RG','RT','DE','DT','OLB','MLB','CB','SS','FS']
     for(var i = 0; i < players.length; i++){
-      if(!(positions.includes(players[i].Pos.trim()))){ //adds only unique positions to array, no duplicates
+      if(players[i].Pos != undefined && !(positions.includes(players[i].Pos.trim()))){ //adds only unique positions to array, no duplicates
           positions.push(players[i].Pos.trim());
       }
     }
@@ -1086,7 +1089,7 @@ router.post('/fullUpdatePos', ensureAuthenticated, async(req, res) => {
   .then(players => {
     const positions = ['QB','RB','WR','TE','LT','LG','C','RG','RT','DE','DT','OLB','MLB','CB','SS','FS']
     for(var i = 0; i < players.length; i++){
-      if(!(positions.includes(players[i].Pos.trim()))){ //adds only unique positions to array, no duplicates
+      if(players[i].Pos != undefined && !(positions.includes(players[i].Pos.trim()))){ //adds only unique positions to array, no duplicates
           positions.push(players[i].Pos.trim());
       }
     }

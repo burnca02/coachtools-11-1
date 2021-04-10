@@ -151,10 +151,14 @@
                 sortedPosGroup = sortedPlayers[i];
                 sortedPosGroup.shift();
                 var wrIndices = [];
+                for (var m = 0; m < sortedPosGroup.length; m++) {
+                  wrIndices.push(0)
+                }
                 for (var k = 0; k < sortedPosGroup.length; k++) {
                   for (var j = 0; j < sortedPosGroup[k].listPos.length; j++) {
                     if (sortedPosGroup[k].listPos[j] == 'WR') {
-                      wrIndices.push(j);
+                      <!-- wrIndices.push(j); -->
+                      wrIndices[k] = j
                       break;
                     }
                   }
@@ -163,8 +167,8 @@
                 var c = 0;
                 var lowestRank = 1;
                 var index = 0;
-                while (c < 15 && lowestRank < 40) {
-                  if (sortedPosGroup[index].Rank[wrIndices[index]] == lowestRank) {
+                while (c < 15 && c < sortedPosGroup.length && lowestRank < 40) {
+                  if (sortedPosGroup[index] != undefined && sortedPosGroup[index].Rank[wrIndices[index]] == lowestRank) {
                     if (c % 3 == 0) {
                       wrPlayers.push([sortedPosGroup[index].FullName])
                     } else {
@@ -183,7 +187,7 @@
                   <tr>
                   <td><button class="btn btn-primary" type="submit" name="pos" value="WR" style="font-size: 13px;">WR</button></td>
                   <% for (var k = 0; k < 5; k++) {
-                    if (wrPlayers[k][j] != null) {%>
+                    if (wrPlayers[k] != undefined && wrPlayers[k][j] != null) {%>
                       <td><%= wrPlayers[k][j] %></td>
                     <%}
                   }

@@ -255,12 +255,13 @@
               <div class="card card-body">
                 <div class='dropdown' style="text-align:center">
                   <form action="/stats/statsByDate" method="POST">
-                    <h3>Select Player Name:</h3>
+                    <h3>Select Date:</h3>
                     <select name="pos" id="pos" class="btn btn-primary dropdown-toggle mt-3">
                     <% for(var i = 0; i < dates.length; i++) { %>
                     <option value="<%- dates[i] %>"><%= dates[i] %></option>
                     <% } %>
                     </select>
+                    <input id="pos" name="pos" value =" <%- players[0].Pos %>" type="hidden" readonly />
                     <br><br>
                     <button type="submit" class="btn btn-primary btn-block">Submit</button>
                   </form>

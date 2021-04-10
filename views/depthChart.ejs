@@ -145,12 +145,55 @@
             <th>Fifth String</th>
           </tr>
           <form action="/coach/position" method="POST">
-            <% for (var i = 0; i < sortedPlayers.length; i++) { 
-              if (offPlayersPos.includes(sortedPlayers[i][0])) {%>
-
+            <% var offenseOrder = ['QB','RB','WR','WR','WR','TE','OL','LT','LG','C','RG','RT']
+            for (var i = 0; i < sortedPlayers.length; i++) {
+              if (sortedPlayers[i][0] == 'WR') {
+                sortedPosGroup = sortedPlayers[i];
+                sortedPosGroup.shift();
+                var wrIndices = [];
+                for (var k = 0; k < sortedPosGroup.length; k++) {
+                  for (var j = 0; j < sortedPosGroup[k].listPos.length; j++) {
+                    if (sortedPosGroup[k].listPos[j] == 'WR') {
+                      wrIndices.push(j);
+                      break;
+                    }
+                  }
+                }
+                var wrPlayers = [];
+                var c = 0;
+                var lowestRank = 1;
+                var index = 0;
+                while (c < 15 && lowestRank < 40) {
+                  if (sortedPosGroup[index].Rank[wrIndices[index]] == lowestRank) {
+                    if (c % 3 == 0) {
+                      wrPlayers.push([sortedPosGroup[index].FullName])
+                    } else {
+                      wrPlayers[Math.floor(c/3)].push(sortedPosGroup[index].FullName)
+                    }
+                    c++;
+                  }
+                  if (index+1 >= sortedPosGroup.length) {
+                    lowestRank++;
+                    index = 0;
+                  } else {
+                    index++;
+                  }
+                }
+                for (var j = 0; j < 3; j++) { %>
+                  <tr>
+                  <td><button class="btn btn-primary" type="submit" name="pos" value="WR" style="font-size: 13px;">WR</button></td>
+                  <% for (var k = 0; k < 5; k++) {
+                    if (wrPlayers[k][j] != null) {%>
+                      <td><%= wrPlayers[k][j] %></td>
+                    <%}
+                  }
+                }
+              } 
+              else if (sortedPlayers[i][0] != 'WR' && offPlayersPos.includes(sortedPlayers[i][0])) {%>
               <tr>
               <td><button class="btn btn-primary" type="submit" name="pos" value="<%- sortedPlayers[i][0] %>" style="font-size: 13px;"><%= sortedPlayers[i][0] %></button></td>
               <% sortedPosGroup = sortedPlayers[i];
+                 var curPos = sortedPlayers[i][0];
                  sortedPosGroup.shift();
                  var c = 0;
                  var index = 0;
@@ -158,7 +201,7 @@
                  var posIndex = 0;
               while (c < sortedPosGroup.length && c < 5 && lowestRank < 30) {
                 for (var j = 0; j < sortedPosGroup[index].listPos.length; j++) {
-                  if (sortedPosGroup[index].listPos[j] == sortedPlayers[i][0]) {
+                  if (sortedPosGroup[index].listPos[j] == curPos) {
                     posIndex = j;
                     break;
                   }
@@ -276,24 +319,19 @@
         <br>
         
 
-      <!-- Start of Modal Content for entering practice grades -->
-      <!-- The Modal PopUp Window-->
-      <div id="myModal" class="modal" style="overflow-y:auto;">
-        <!-- Modal content -->
+      <!-- The Modal PopUp Window NO LONGER USING ON DEPTH CHART - only in position for now...-->
+      <!-- <div id="myModal" class="modal" style="overflow-y:auto;">
         <div class="modal-content">
           <div class="form-group" role="group" aria-label="Button group with nested dropdown">
           <form id="modalForm" action="/coach/depthChart" method="POST">
-            <!-- <button type="button" class="btn btn-primary">Sort By</button> -->
             <div class="dropdown" role="group" style="padding-top: 10px; text-align: center;">
               <span class="close">&times;</span>
               <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Choose Position
               </button>
               <div class="dropdown-content" aria-labelledby="btnGroupDrop1">
-                <!-- 'SS','MLB','FS','K','P','CB', ,'LS'-->
                 <% var allPlayers = ['QB','RB','FB','WR','TE','LT','LG','C','RG','RT','CB','DB','DE','DL','DT','FS','ILB','LB','MLB','OLB','SS','K/P','LS']; %>
                 <button class="dropdown-item" type="submit" name="type" value="full" >ALL</button>
-                <!-- Make this for loop using positions from db query -->
                 <% for (var i = 0; i < positions.length; i++) { %>
                   <button class="dropdown-item" type="submit" name="type" value="<%- positions[i] %>">View <%= positions[i] %>s</button>
                 <% } %>
@@ -319,7 +357,7 @@
           </form>
           <% } %>
         </div>
-      </div>
+      </div> -->
       
 
       
@@ -382,11 +420,6 @@ var dropdown = document.getElementsByClassName("dropdown-toggle");
         dropdownContent.style.display = "inline-block";
       }
     });
-  }
-
-  function modalOpen() {
-    alert("GOT HERE");
-    modal.style.display = "block";
   }
 
   function viewLine(l) {

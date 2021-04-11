@@ -729,16 +729,18 @@ router.post('/viewPlayer', ensureAuthenticated, async(req, res) => {
   const playerName = req.body.playerName;
   await Roster.findOne({School:req.session.school, FullName:playerName})
       .then(player => {
-        PracticeStat.findOne({'email': player.Email}).sort({$natural: -1})
+        PracticeStat.find({'email': player.Email}).sort({createdAt: 1})
         .then(stat => {
           var practice1 = '';
+          console.log(stat);
           if(stat == null){
             practice1 = 'No Grade'
           } else {
-            practice1 = stat.grade;
+            practice1 = stat[stat.length - 1].grade; //This will retrieve the last statistic because of the order that query is being processed. 
           }
               res.render('viewPlayer', {
                 practice1 : practice1,
+                allGrades : stat,
                 player: player,
                 name: req.session.name,
                 school: req.session.school})

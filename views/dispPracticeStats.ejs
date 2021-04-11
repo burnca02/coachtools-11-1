@@ -256,9 +256,9 @@
                 <div class='dropdown' style="text-align:center">
                   <form action="/stats/statsByDate" method="POST">
                     <h3>Select Date:</h3>
-                    <select name="pos" id="pos" class="btn btn-primary dropdown-toggle mt-3">
+                    <select name="date" id="date" class="btn btn-primary dropdown-toggle mt-3">
                     <% for(var i = 0; i < dates.length; i++) { %>
-                    <option value="<%- dates[i] %>"><%= dates[i] %></option>
+                    <option value="<%- dates[i] %>" onclick="loadTable()"><%= dates[i] %></option>
                     <% } %>
                     </select>
                     <input id="pos" name="pos" value =" <%- players[0].Pos %>" type="hidden" readonly />
@@ -271,7 +271,7 @@
           </div>
           <br>
           <div>
-            <table class="redTable" id="viewTable" border="1">
+            <table class="redTable" id="gradesTable" border="1">
               <thead>
                 <th colspan="6">Date</th>
               </thead>
@@ -284,14 +284,16 @@
                   <td><%=ints[2] %></td>
                   <td><%=ints[3] %></td>
                 </tr>
-                    <tr>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                    </tr>
+                <% for(var i = 0; i < players.length; i++){ %> 
+                <tr>
+                  <td><%- players[i].FullName %></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <% } %>
               </tbody>
             </table>
           </div>

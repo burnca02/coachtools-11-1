@@ -247,11 +247,13 @@
             <th>Fourth String</th>
             <th>Fifth String</th>
           </tr>
-          <form action="/coach/position" method="POST">
+          
             <% for (var i = 0; i < sortedPlayers.length; i++) { 
               if (defPlayersPos.includes(sortedPlayers[i][0])) {%>
               <tr>
-              <td><button class="btn btn-primary" type="submit" name="pos" value="<%- sortedPlayers[i][0] %>" style="font-size: 13px;"><%= sortedPlayers[i][0] %></button></td>
+              <form action="/coach/position" method="POST">
+                <td><button class="btn btn-primary" type="submit" name="pos" value="<%- sortedPlayers[i][0] %>" style="font-size: 13px;"><%= sortedPlayers[i][0] %></button></td>
+              </form>
               <% sortedPosGroup = sortedPlayers[i];
                  sortedPosGroup.shift();
                  var c = 0;
@@ -296,11 +298,13 @@
             <th>Fourth String</th>
             <th>Fifth String</th>
           </tr>
-          <form action="/coach/position" method="POST">
+          
             <% for (var i = 0; i < sortedPlayers.length; i++) { 
               if (spePlayersPos.includes(sortedPlayers[i][0])) {%>
               <tr>
-              <td><button class="btn btn-primary" type="submit" name="pos" value="<%- sortedPlayers[i][0] %>" style="font-size: 13px;"><%= sortedPlayers[i][0] %></button></td>
+              <form action="/coach/position" method="POST">
+                <td><button class="btn btn-primary" type="submit" name="pos" value="<%- sortedPlayers[i][0] %>" style="font-size: 13px;"><%= sortedPlayers[i][0] %></button></td>
+              </form>
               <% sortedPosGroup = sortedPlayers[i];
                  sortedPosGroup.shift();
                  var c = 0;
@@ -329,7 +333,6 @@
               }
              }
             } %>
-          </form>
         </table>
         <br>
       </div>

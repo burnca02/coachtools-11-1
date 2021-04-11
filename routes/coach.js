@@ -733,9 +733,10 @@ router.post('/viewPlayer', ensureAuthenticated, async(req, res) => {
         .then(stat => {
           var practice1 = '';
           console.log(stat);
-          if(stat == null){
+          if(stat.length == 0){
             practice1 = 'No Grade'
           } else {
+            console.log(stat.length);
             practice1 = stat[stat.length - 1].grade; //This will retrieve the last statistic because of the order that query is being processed. 
           }
               res.render('viewPlayer', {

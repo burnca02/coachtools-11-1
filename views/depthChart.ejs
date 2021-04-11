@@ -110,6 +110,14 @@
     padding: 2px 8px;
     border-radius: 5px;
   }
+  .noButton {
+  border:none; 
+  background:none;
+}
+
+.noButton:hover {
+  color: #a40808;
+}
 </style>
 <div class="bigContainer">
   <!-- Includes topnav -->
@@ -144,7 +152,7 @@
             <th>Fourth String</th>
             <th>Fifth String</th>
           </tr>
-          <form action="/coach/position" method="POST">
+          
             <% var offenseOrder = ['QB','RB','WR','WR','WR','TE','OL','LT','LG','C','RG','RT']
             for (var i = 0; i < sortedPlayers.length; i++) {
               if (sortedPlayers[i][0] == 'WR') {
@@ -185,17 +193,23 @@
                 }
                 for (var j = 0; j < 3; j++) { %>
                   <tr>
+                <form action="/coach/position" method="POST">
                   <td><button class="btn btn-primary" type="submit" name="pos" value="WR" style="font-size: 13px;">WR</button></td>
+                </form>
                   <% for (var k = 0; k < 5; k++) {
                     if (wrPlayers[k] != undefined && wrPlayers[k][j] != null) {%>
-                      <td><%= wrPlayers[k][j] %></td>
+                      <form action="/coach/viewPlayer" method="POST">
+                        <td><button class="noButton" type="submit" name="playerName" value="<%= wrPlayers[k][j] %>"><%= wrPlayers[k][j] %></button></td>
+                      </form>
                     <%}
                   }
                 }
               } 
               else if (sortedPlayers[i][0] != 'WR' && offPlayersPos.includes(sortedPlayers[i][0])) {%>
               <tr>
+            <form action="/coach/position" method="POST">
               <td><button class="btn btn-primary" type="submit" name="pos" value="<%- sortedPlayers[i][0] %>" style="font-size: 13px;"><%= sortedPlayers[i][0] %></button></td>
+            </form>
               <% sortedPosGroup = sortedPlayers[i];
                  var curPos = sortedPlayers[i][0];
                  sortedPosGroup.shift();
@@ -211,7 +225,10 @@
                   }
                 }
                 if (sortedPosGroup[index].Rank[posIndex] == lowestRank) { %>
-                  <td><%= sortedPosGroup[index].FullName %></td>
+                  <form action="/coach/viewPlayer" method="POST">
+                    <td><button class="noButton" type="submit" name="playerName" value="<%= sortedPosGroup[index].FullName %>"><%= sortedPosGroup[index].FullName %></button></td>
+                  </form>
+
                   <% c++;
                 }
                 if (index + 1 >= sortedPosGroup.length) {
@@ -238,11 +255,13 @@
             <th>Fourth String</th>
             <th>Fifth String</th>
           </tr>
-          <form action="/coach/position" method="POST">
+          
             <% for (var i = 0; i < sortedPlayers.length; i++) { 
               if (defPlayersPos.includes(sortedPlayers[i][0])) {%>
               <tr>
-              <td><button class="btn btn-primary" type="submit" name="pos" value="<%- sortedPlayers[i][0] %>" style="font-size: 13px;"><%= sortedPlayers[i][0] %></button></td>
+              <form action="/coach/position" method="POST">
+                <td><button class="btn btn-primary" type="submit" name="pos" value="<%- sortedPlayers[i][0] %>" style="font-size: 13px;"><%= sortedPlayers[i][0] %></button></td>
+              </form>
               <% sortedPosGroup = sortedPlayers[i];
                  sortedPosGroup.shift();
                  var c = 0;
@@ -257,7 +276,9 @@
                   }
                 }
                 if (sortedPosGroup[index].Rank[posIndex] == lowestRank) { %>
-                  <td><%= sortedPosGroup[index].FullName %></td>
+                  <form action="/coach/viewPlayer" method="POST">
+                    <td><button class="noButton" type="submit" name="playerName" value="<%= sortedPosGroup[index].FullName %>"><%= sortedPosGroup[index].FullName %></button></td>
+                  </form>
                   <% c++;
                 }
                 if (index + 1 >= sortedPosGroup.length) {
@@ -285,11 +306,13 @@
             <th>Fourth String</th>
             <th>Fifth String</th>
           </tr>
-          <form action="/coach/position" method="POST">
+          
             <% for (var i = 0; i < sortedPlayers.length; i++) { 
               if (spePlayersPos.includes(sortedPlayers[i][0])) {%>
               <tr>
-              <td><button class="btn btn-primary" type="submit" name="pos" value="<%- sortedPlayers[i][0] %>" style="font-size: 13px;"><%= sortedPlayers[i][0] %></button></td>
+              <form action="/coach/position" method="POST">
+                <td><button class="btn btn-primary" type="submit" name="pos" value="<%- sortedPlayers[i][0] %>" style="font-size: 13px;"><%= sortedPlayers[i][0] %></button></td>
+              </form>
               <% sortedPosGroup = sortedPlayers[i];
                  sortedPosGroup.shift();
                  var c = 0;
@@ -304,7 +327,9 @@
                   }
                 }
                 if (sortedPosGroup[index].Rank[posIndex] == lowestRank) { %>
-                  <td><%= sortedPosGroup[index].FullName %></td>
+                  <form action="/coach/viewPlayer" method="POST">
+                    <td><button class="noButton" type="submit" name="playerName" value="<%= sortedPosGroup[index].FullName %>"><%= sortedPosGroup[index].FullName %></button></td>
+                  </form>
                   <% c++;
                 }
                 if (index + 1 >= sortedPosGroup.length) {
@@ -316,7 +341,6 @@
               }
              }
             } %>
-          </form>
         </table>
         <br>
       </div>

@@ -97,6 +97,8 @@
   cursor: pointer;
 }
 </style>
+<!-- This script will be used for the responsive chart in Player Trends and Maxes. The graph is bootstrap created by Chart.js. -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
 <div class="bigContainer">
   <!-- Includes topnav -->
   <%- include("partials/topnav") %>
@@ -123,7 +125,142 @@
                 <td>Graduation Year</td>
                 <td><%= player.GradYear %></td>
             </tr>
+            <tr>
+              <td>Practice Stat</td>
+              <td><%= practice1 %></td>
+          </tr>
         </table>
+        <!-- The following section is code in relation to the chart.  -->
+      <div class="row mt-5">
+        <div class="col-md-6 m-auto">
+          <div class="card card-body text-center">
+            <canvas id="myChart" width="300" height="300"></canvas>
+      <!-- If there is information in the graph, we will create the chart. -->
+      <% if (allGrades) { %> 
+        <script type="text/javascript">
+        var grades = JSON.parse('<%- JSON.stringify(allGrades) %>');
+        console.log('exercises ' + grades);
+        console.log(grades.length);
+
+      // Our labels along the x-axis
+      // For drawing the lines    
+      var dates = [];  
+      var e1 = []; //The first intagible 
+      var e2 = []; //The second intagible 
+      var e3 = []; //The third intagible 
+      var e4 = []; //The fourth intagible 
+      var overall = [];
+      
+
+      //We will go through all the information pased by the graph variable and push it onto our arrays.
+      for (var i = 0; i < grades.length; i++) {
+          var date = grades[i].date;
+          var dateSplit = date.split('T');
+          dates.push(dateSplit[0]);
+          overall.push(parseInt(grades[i].grade));
+      }
+
+        var ctx = document.getElementById("myChart"); //Retrieving the elementID of the chart above in canvas.
+        var myChart = new Chart(ctx, { //Styling the graph. If you need more information on styling the graph please go to the Chart.js Documentation online.
+          type: 'line',
+          data: {
+            labels: dates,
+            datasets: [
+            { 
+              data: overall,
+              label: "Overall Practice Grade",
+              borderColor: "red",
+              fill: false,
+              pointRadius: 10,
+            },
+            ]
+          },
+          options: {
+                responsive: true
+            }
+        });
+        </script>
+      <% } %>
+          </div>
+        </div>
+      </div>
+      
+      <div class="row mt-5">
+        <div class="col-md-6 m-auto">
+          <div class="card card-body text-center">
+            <canvas id="myChart2" width="300" height="300"></canvas>
+      <!-- If there is information in the graph, we will create the chart. -->
+      <% if (allGrades) { %> 
+        <script type="text/javascript">
+        var grades = JSON.parse('<%- JSON.stringify(allGrades) %>');
+
+      // Our labels along the x-axis
+      // For drawing the lines    
+      var dates = [];  
+      var e1 = []; //The first intagible 
+      var e2 = []; //The second intagible 
+      var e3 = []; //The third intagible 
+      var e4 = []; //The fourth intagible 
+      
+
+      //We will go through all the information pased by the graph variable and push it onto our arrays.
+      for (var i = 0; i < grades.length; i++) {
+          var date = grades[i].date;
+          var dateSplit = date.split('T');
+          dates.push(dateSplit[0]);
+          e1.push(parseInt(grades[i].int1));
+          e2.push(parseInt(grades[i].int2));
+          e3.push(parseInt(grades[i].int3));
+          e4.push(parseInt(grades[i].int4));
+      }
+
+        var ctx = document.getElementById("myChart2"); //Retrieving the elementID of the chart above in canvas.
+        var myChart = new Chart(ctx, { //Styling the graph. If you need more information on styling the graph please go to the Chart.js Documentation online.
+          type: 'line',
+          data: {
+            labels: dates,
+            datasets: [
+            { 
+              data: e1,
+              label: "Intagible 1",
+              borderColor: "red",
+              fill: false,
+              pointRadius: 10
+
+            },
+            { 
+              data: e2,
+              label: "Intagible 2",
+              borderColor: "black",
+              fill: false,
+              pointRadius: 10
+
+            },
+            { 
+              data: e3,
+              label: "Intagible 3",
+              borderColor: "blue",
+              fill: false,
+              pointRadius: 10,
+            },
+            { 
+              data: e4,
+              label: "Intagible 4",
+              borderColor: "orange",
+              fill: false,
+              pointRadius: 10,
+            },
+            ]
+          },
+          options: {
+                responsive: true
+            }
+        });
+        </script>
+      <% } %>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

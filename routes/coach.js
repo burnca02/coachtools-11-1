@@ -499,9 +499,6 @@ router.get('/depthChart', ensureAuthenticated, (req, res) => {
       for(var j = 0; j < positions.length; j++){
         if(players[i].Pos == positions[j] || players[i].listPos.includes(positions[j])){
           sortedPlayers[j].push(players[i]);
-          if(positions[j]=='WR') {
-            console.log("added a WR")
-          }
         }
       }
     }
@@ -657,11 +654,14 @@ router.post('/depthChart', ensureAuthenticated, (req, res) => {
 //       }).catch(error => console.error(error))
 //   }).catch(error => console.error(error))
 // });
+
 //Error with reloading here - the get function cant get the current position
 //Can we store a session variable or something?
 router.get('/position', ensureAuthenticated, async(req, res) => {
   // console.log("in coach call of position")
-  await Roster.find({ "Pos": { "$exists": true}, "School" :req.session.school, "Pos": 'QB'}).sort({'Pos': 1, 'Rank' : 1})
+  await Roster.find({School: req.user.school})
+  .then(players => {
+    Roster.find({ "Pos": { "$exists": true}, "School" :req.session.school, "Pos": 'QB'}).sort({'Pos': 1, 'Rank' : 1})
             .then(posPlayers => {
               var emails = [];
               for (var i = 0; i < posPlayers.length; i++) {
@@ -699,6 +699,7 @@ router.get('/position', ensureAuthenticated, async(req, res) => {
                     }
                   }
                 res.render('position', {
+                    players: players,
                     pos : 'QB',
                     posPlayers : posPlayers,
                     gameGrades : grades,
@@ -708,6 +709,7 @@ router.get('/position', ensureAuthenticated, async(req, res) => {
                   }).catch(error => console.error(error))
                 }).catch(error => console.error(error))
             }).catch(error => console.error(error))
+          }).catch(error => console.error(error))
 })
 
 router.get('/viewPlayer', ensureAuthenticated, (req, res) => {
@@ -723,21 +725,33 @@ router.get('/viewPlayer', ensureAuthenticated, (req, res) => {
             }).catch(error => console.error(error))
 })
 
-router.post('/viewPlayer', ensureAuthenticated, (req, res) => {
+router.post('/viewPlayer', ensureAuthenticated, async(req, res) => {
   const playerName = req.body.playerName;
-  Roster.find({School:req.session.school, FullName:playerName})
-            .then(player => {
+  await Roster.findOne({School:req.session.school, FullName:playerName})
+      .then(player => {
+        PracticeStat.findOne({'email': player.Email}).sort({$natural: -1})
+        .then(stat => {
+          var practice1 = '';
+          if(stat == null){
+            practice1 = 'No Grade'
+          } else {
+            practice1 = stat.grade;
+          }
               res.render('viewPlayer', {
+                practice1 : practice1,
                 player: player,
                 name: req.session.name,
                 school: req.session.school})
             }).catch(error => console.error(error))
+          }).catch(error => console.error(error))
 })
 //Error with reloading here - the get function cant get the current position - just setting to QB...
 //Can we store a session variable or something?
 router.get('/posSubmitRank', ensureAuthenticated, async(req, res) => {
   // console.log("in coach call of position")
-  await Roster.find({ "Pos": { "$exists": true}, "School" :req.session.school, "listPos": 'QB'})
+  await Roster.find({School: req.user.school})
+  .then(players => {
+    Roster.find({ "Pos": { "$exists": true}, "School" :req.session.school, "listPos": 'QB'})
             .then(posPlayers => {
               var emails = [];
               for (var i = 0; i < posPlayers.length; i++) {
@@ -775,6 +789,7 @@ router.get('/posSubmitRank', ensureAuthenticated, async(req, res) => {
                     }
                   }
                 res.render('position', {
+                    players:players,
                     pos : 'QB',
                     posPlayers : posPlayers,
                     gameGrades : grades,
@@ -784,11 +799,14 @@ router.get('/posSubmitRank', ensureAuthenticated, async(req, res) => {
                   }).catch(error => console.error(error))
                 }).catch(error => console.error(error))
             }).catch(error => console.error(error))
+          }).catch(error => console.error(error))
 })
 
 router.post('/position', ensureAuthenticated, async(req, res) => {
   const pos = req.body.pos
-  await Roster.find({ "Pos": { "$exists": true}, "School" :req.session.school, "listPos": pos})
+  await Roster.find({School: req.user.school})
+  .then(players => {
+    Roster.find({ "Pos": { "$exists": true}, "School" :req.session.school, "listPos": pos})
             .then(posPlayers => {
               var emails = [];
               for (var i = 0; i < posPlayers.length; i++) {
@@ -826,6 +844,7 @@ router.post('/position', ensureAuthenticated, async(req, res) => {
                     }
                   }
                 res.render('position', {
+                    players:players,
                     pos : pos,
                     posPlayers : posPlayers,
                     gameGrades : grades,
@@ -835,7 +854,8 @@ router.post('/position', ensureAuthenticated, async(req, res) => {
                   }).catch(error => console.error(error))
                 }).catch(error => console.error(error))
             }).catch(error => console.error(error))
-});
+          }).catch(error => console.error(error))
+})
 
 /* This function allows coaches to update a player's rank within the positional depth chart.
    This function takes data already stored on the website to find the correct rank indice for each player.
@@ -873,7 +893,9 @@ router.post('/posSubmitRank', ensureAuthenticated, async(req, res) => {
       console.log(pNames[i] + "'s rank has been updated.")
     }
   }
-  await Roster.find({ "Pos": { "$exists": true}, "School" :req.session.school, "listPos": pos})
+  await Roster.find({School: req.user.school})
+  .then(players => {
+      Roster.find({ "Pos": { "$exists": true}, "School" :req.session.school, "listPos": pos})
             .then(posPlayers => {
               var emails = [];
               for (var i = 0; i < posPlayers.length; i++) {
@@ -913,6 +935,7 @@ router.post('/posSubmitRank', ensureAuthenticated, async(req, res) => {
                       }
                     }
                 res.render('position', {
+                    players:players,
                     pos : pos,
                     posPlayers : posPlayers,
                     gameGrades : grades,
@@ -922,6 +945,7 @@ router.post('/posSubmitRank', ensureAuthenticated, async(req, res) => {
                   }).catch(error => console.error(error))
                 }).catch(error => console.error(error))
             }).catch(error => console.error(error))
+          }).catch(error => console.error(error))
 });
 
 router.post('/submitRank', ensureAuthenticated, async (req, res) => {
@@ -1058,6 +1082,79 @@ router.get('/submitPeriod', ensureAuthenticated, (req, res) =>
     name: req.user.name //pass the name that was entered into the database to dashboard
 }));
 
+router.post('/addPos', ensureAuthenticated, async(req, res) => {
+  var {pos, name} = req.body;
+  const player = await Roster.findOne({FullName: name, School: req.session.school});
+  let playerPositions = pos;
+  let playerRank = '1';
+  //if there is something already in their list position or rank then leave it there
+  if (player.listPos != undefined && player.Rank != undefined) {
+    playerPositions = player.listPos
+    playerRank = player.Rank
+  }
+  //don't add a position they already have
+  if (player.listPos != undefined && (player.listPos.includes(pos) == false)) {
+    player.listPos.push(pos);
+    playerPositions = player.listPos;
+    player.Rank.push('1');
+    playerRank = player.Rank;
+    let doc = await Roster.findOneAndUpdate({FullName: name, School: req.session.school}, {listPos : playerPositions, Rank : playerRank}, {new:true, upsert: true});
+    doc.save();
+  }
+
+  await Roster.find({School: req.user.school})
+  .then(players => {
+    Roster.find({ "Pos": { "$exists": true}, "School" :req.session.school, "listPos": pos})
+            .then(posPlayers => {
+              var emails = [];
+              for (var i = 0; i < posPlayers.length; i++) {
+                emails.push(posPlayers[i].Email)
+              }
+                GameGrade.find({'email': {"$exists":true}, 'email': emails}).sort({$natural:-1})
+                .then(grade => {
+                  var grades = [];
+                  for (var i = 0; i < posPlayers.length; i++) {
+                    var f = false
+                    for (var j = 0; j < grade.length; j++) {
+                      if (posPlayers[i].Email == grade[j].email) {
+                        grades.push(grade[j].grade)
+                        f = true
+                      }
+                    }
+                    if (f == false) {
+                      grades.push('N/A')
+                    }
+                  }
+                  PracticeStat.find({'email': {"$exists":true}, 'email': emails}).sort({$natural:-1})
+                .then(stat => {
+                  var stats = [];
+                  for (var i = 0; i < posPlayers.length; i++) {
+                    var f = false
+                    for (var j = 0; j < stat.length; j++) {
+                      if (posPlayers[i].Email == stat[j].email) {
+                        stats.push(stat[j].grade)
+                        f = true
+                        break;
+                      }
+                    }
+                    if (f == false) {
+                      stats.push('N/A')
+                    }
+                  }
+                res.render('position', {
+                    players: players,
+                    pos : pos,
+                    posPlayers : posPlayers,
+                    gameGrades : grades,
+                    practiceStats : stats,
+                    name: req.session.name,
+                    school: req.session.school})
+                  }).catch(error => console.error(error))
+                }).catch(error => console.error(error))
+            }).catch(error => console.error(error))
+  }).catch(error => console.error(error))
+})
+
 router.post('/fullUpdatePos', ensureAuthenticated, async(req, res) => {
   var {pos, name1} = req.body;
   // console.log(req.body);
@@ -1066,7 +1163,7 @@ router.post('/fullUpdatePos', ensureAuthenticated, async(req, res) => {
   // console.log("user school " + req.session.school);
   const player = await Roster.findOne({FullName: name1, School: req.session.school});
   let playerPositions = pos;
-  let playerRank = "1";
+  let playerRank = '1';
   //if there is something already in their list position or rank then leave it there
   if (player.listPos != undefined && player.Rank != undefined) {
     playerPositions = player.listPos
@@ -1079,7 +1176,7 @@ router.post('/fullUpdatePos', ensureAuthenticated, async(req, res) => {
   if (player.listPos != undefined && (player.listPos.includes(pos) == false)) {
     player.listPos.push(pos);
     playerPositions = player.listPos;
-    player.Rank.push("1");
+    player.Rank.push('1');
     playerRank = player.Rank;
   }
   let doc = await Roster.findOneAndUpdate({FullName: name1, School: req.session.school}, {listPos : playerPositions, Rank : playerRank}, {new:true, upsert: true});

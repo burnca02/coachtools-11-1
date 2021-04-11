@@ -1,0 +1,46 @@
+<div class="bigContainer">
+    <%- include("partials/topnav") %>
+    <div class="bodyContainer">
+      <!-- Side navigation -->
+      <%- include("partials/sidenav") %>
+        <div class='dropdown' style="text-align:center">
+            <form action="/stats/dispGameGrade" method="POST">
+                <h3>Select Position Group:</h3>
+                <select name="pos" id="pos" class="btn btn-primary dropdown-toggle mt-3">
+                <% for(var i = 0; i < positions.length; i++) { %>
+                <option value="<%- positions[i] %>"><%= positions[i] %></option>
+                <% } %>
+                </select>
+                <br><br>
+                <button type="submit" class="btn btn-primary btn-block">Submit</button>
+            </form>
+        </div>
+    </div>
+    <div>
+        <table class="redTable" id="viewTable" border="1">
+          <thead>
+            <th colspan="6">
+              Date
+            </th>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Player Name</td>
+              <td>Daily Grade</td>
+              <td><%=ints[0] %></td>
+              <td><%=ints[1] %></td>
+              <td><%=ints[2] %></td>
+              <td><%=ints[3] %></td>
+            </tr>
+            <tr>
+              <td>Joe</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+</div>

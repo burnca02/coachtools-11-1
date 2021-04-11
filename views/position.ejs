@@ -107,9 +107,16 @@
         <div class="row" style="margin-left:0;margin-right:0; justify-content:left">
             <a class="help" href="depthChart" style="margin-left: 40px;">Back</a>
         </div>
-        <span class="help" style="padding-bottom: 20px;">Positional Depth Chart</span>
-        <button class="btn btn-primary" id="myBtn" style="align-self: center;">Update <%= pos %> Rankings</button>
-        <span class="help" name="pos" value="<%- pos %>" style="align-self: center; padding-bottom: 15px; padding-top: 20px;"><%= pos %></span>
+        <span class="help" style="padding-bottom: 20px;"><%= pos %> Depth Chart</span>
+        <div class="row" style="padding-left: 45px; padding-right: 50px; padding-bottom: 10px;">
+          <div class="col-sm-6" style="text-align: left;">
+            <button class="btn btn-primary" id="myBtn">Update <%= pos %> Rankings</button>
+          </div>
+          <div class="col-sm-6" style="text-align: right;">
+            <!-- <a href="/coach/fullUpdatePos"><button class="btn btn-primary" id="myBtn2">Add Player</button></a> -->
+            <button class="btn btn-primary" id="myBtn2">Add Player</button>
+          </div>
+        </div>
         <table class="redTable" id="viewTable" style="width: 95%;" border="1">
             <tr>
                 <th>Rank</th>
@@ -123,7 +130,7 @@
               var index = 0;
               var lowestRank = 1;
               var posIndex = 0;
-              while (c < posPlayers.length && lowestRank < 30) {
+              while (c < posPlayers.length && lowestRank < 40) {
                 for (var j = 0; j < posPlayers[index].listPos.length; j++) {
                   if (posPlayers[index].listPos[j] == pos) {
                     posIndex = j;
@@ -151,12 +158,11 @@
         </table>
     </div>
 
-    <!-- Start of Modal Content for entering practice grades -->
       <!-- The Modal PopUp Window-->
       <div id="myModal" class="modal" style="overflow-y:auto;">
         <!-- Modal content -->
         <div class="modal-content" style="text-align: center;">
-          <span class="close" style="align-self: flex-start;">&times;</span>
+          <span class="close" style="align-self: flex-end;">&times;</span>
           <span class="help" name="pos" value="<%- pos %>"><%= pos %></span>
           <br>
           <form action="/coach/posSubmitRank" method="POST">
@@ -195,35 +201,74 @@
           </form>
         </div>
       </div>
+
+      <!-- The Modal PopUp Window-->
+      <div id="myModal2" class="modal" style="overflow-y:auto;">
+        <!-- Modal content -->
+        <div class="modal-content" style="text-align: center;">
+          <span class="close" id="close2" style="align-self: flex-end;">&times;</span>
+          <span class="help" name="pos" value="<%- pos %>" style="padding-bottom: 10px;">Add <%= pos %></span>
+          <br>
+          <form action="/coach/addPos" method="POST">
+            <input class="hidden" name="pos" value="<%- pos %>" hidden>
+            <label for="name1">Choose a Player:</label>
+            <input list="players" name="name" id="name">
+            <datalist id="players">
+              <% for(var i = 0; i < players.length; i++) { %>
+              <option value="<%- players[i].FullName %>">
+              <% } %>
+            </datalist>
+            <br>
+            <div style="padding-top: 10px;">
+              <button type="submit" class="btn btn-primary">Submit Position Assignment</button>       
+            </div>
+          </form>
+        </div>
+      </div>
   </div>
 </div>
 
 <script>
 // Get the modal
 var modal = document.getElementById("myModal");
+var modal2 = document.getElementById("myModal2");
 // Get the button that opens the modal
 var btn = document.getElementById("myBtn");
+var btn2 = document.getElementById("myBtn2");
 // Get the <span> element that closes the modal
 var span = document.getElementsByClassName("close")[0];
+// var span2 = document.getElementById("close2");
+var span2 = document.getElementsByClassName("close")[1];
 // When the user clicks on the button, open the modal
 const delay = ms => new Promise(res => setTimeout(res, ms));
 
 const modalDisp = async() => {
   modal.style.display = "block";
 }
+const modalDisp2 = async() => {
+  modal2.style.display = "block";
+}
 
 btn.onclick = modalDisp;
+btn2.onclick = modalDisp2;
 
 // When the user clicks on <span> (x), close the modal
-  span.onclick = function() {
+span.onclick = function() {
   modal.style.display = "none";
 }
+
+span2.onclick = function() {
+  modal2.style.display = "none";
+}
+
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function(event) {
-  if (event.target == modal) {
+  if (event.target == modal || event.target == modal2) {
     modal.style.display = "none";
+    modal2.style.display = "none";
   }
 }
+
 
 // Makes buttons work
 var dropdown = document.getElementsByClassName("dropdown-toggle");

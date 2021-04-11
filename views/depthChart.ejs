@@ -59,10 +59,10 @@
   table.redTable {
     border: 2px solid #a40808;
     background-color: #eee7db;
-    width: 90%;
+    width: 98%;
     text-align: center;
     border-collapse: collapse;
-    margin-left: 40px;
+    margin-left: 15px;
   }
   table.redTable td,
   table.redTable th {
@@ -118,30 +118,92 @@
     <!-- Includes Side navigation -->
     <%- include("partials/sidenav") %>
     <div class="chBody" style="text-align: center;">
-      <div id="offenseLine">
-        <div class="row" style="margin-right: 0; margin-left: 0;">
-          <span class="help col-sm-5" style="text-align: left;">Depth Chart</span>
-          <button class="btn btn-primary" id="myBtn">Update Rankings</button>
+      <div class="row" style="margin-right: 0; margin-left: 0;">
+        <span class="help col-sm-5" style="text-align: left; margin-left: 0px;">Depth Chart</span>
+      </div>
+      <div class="row" style="margin-right: 0; margin-left: 0px;">
+        <div class="col-sm-7" style="text-align: left;">
+          <button class="btn btn-primary" onclick="viewLine('o')">Offense</button>
+          <button class="btn btn-primary" onclick="viewLine('d')">Defense</button>
+          <button class="btn btn-primary" onclick="viewLine('s')">Special</button>
         </div>
-        <br>
-        <br>
-        <span class="help">Offense</span>
-        <table class="redTable" id="viewTable" style="width: 95%;" border="1">
+        <div class="col-sm-5" style="text-align: right;">
+          <!-- <button class="btn btn-primary" id="myBtn" style="margin-right: 5px;">Update Rankings</button> -->
+          <a href="/coach/fullUpdatePos"><button class="btn btn-primary">Add Position</button></a>
+        </div>
+      </div>
+      <br>
+      <div id="offenseLine" style="padding-top: 10px;">
+        <!-- <span class="help">Offense</span> -->
+        <table class="redTable" id="viewTable" border="1">
           <tr>
             <th></th>
             <th>First String</th>
             <th>Second String</th> 
             <th>Third String</th>
             <th>Fourth String</th>
-            <th>Other</th>
+            <th>Fifth String</th>
           </tr>
-          <form action="/coach/position" method="POST">
-            <% for (var i = 0; i < sortedPlayers.length; i++) { 
-              if (offPlayersPos.includes(sortedPlayers[i][0])) {%>
-
+          
+            <% var offenseOrder = ['QB','RB','WR','WR','WR','TE','OL','LT','LG','C','RG','RT']
+            for (var i = 0; i < sortedPlayers.length; i++) {
+              if (sortedPlayers[i][0] == 'WR') {
+                sortedPosGroup = sortedPlayers[i];
+                sortedPosGroup.shift();
+                var wrIndices = [];
+                for (var m = 0; m < sortedPosGroup.length; m++) {
+                  wrIndices.push(0)
+                }
+                for (var k = 0; k < sortedPosGroup.length; k++) {
+                  for (var j = 0; j < sortedPosGroup[k].listPos.length; j++) {
+                    if (sortedPosGroup[k].listPos[j] == 'WR') {
+                      <!-- wrIndices.push(j); -->
+                      wrIndices[k] = j
+                      break;
+                    }
+                  }
+                }
+                var wrPlayers = [];
+                var c = 0;
+                var lowestRank = 1;
+                var index = 0;
+                while (c < 15 && c < sortedPosGroup.length && lowestRank < 40) {
+                  if (sortedPosGroup[index] != undefined && sortedPosGroup[index].Rank[wrIndices[index]] == lowestRank) {
+                    if (c % 3 == 0) {
+                      wrPlayers.push([sortedPosGroup[index].FullName])
+                    } else {
+                      wrPlayers[Math.floor(c/3)].push(sortedPosGroup[index].FullName)
+                    }
+                    c++;
+                  }
+                  if (index+1 >= sortedPosGroup.length) {
+                    lowestRank++;
+                    index = 0;
+                  } else {
+                    index++;
+                  }
+                }
+                for (var j = 0; j < 3; j++) { %>
+                  <tr>
+                <form action="/coach/position" method="POST">
+                  <td><button class="btn btn-primary" type="submit" name="pos" value="WR" style="font-size: 13px;">WR</button></td>
+                </form>
+                  <% for (var k = 0; k < 5; k++) {
+                    if (wrPlayers[k] != undefined && wrPlayers[k][j] != null) {%>
+                      <form action="/coach/viewPlayer" method="POST">
+                        <td><button type="submit" name="playerName" value="<%= wrPlayers[k][j] %>"><%= wrPlayers[k][j] %></button></td>
+                      </form>
+                    <%}
+                  }
+                }
+              } 
+              else if (sortedPlayers[i][0] != 'WR' && offPlayersPos.includes(sortedPlayers[i][0])) {%>
               <tr>
+            <form action="/coach/position" method="POST">
               <td><button class="btn btn-primary" type="submit" name="pos" value="<%- sortedPlayers[i][0] %>" style="font-size: 13px;"><%= sortedPlayers[i][0] %></button></td>
+            </form>
               <% sortedPosGroup = sortedPlayers[i];
+                 var curPos = sortedPlayers[i][0];
                  sortedPosGroup.shift();
                  var c = 0;
                  var index = 0;
@@ -149,13 +211,16 @@
                  var posIndex = 0;
               while (c < sortedPosGroup.length && c < 5 && lowestRank < 30) {
                 for (var j = 0; j < sortedPosGroup[index].listPos.length; j++) {
-                  if (sortedPosGroup[index].listPos[j] == sortedPlayers[i][0]) {
+                  if (sortedPosGroup[index].listPos[j] == curPos) {
                     posIndex = j;
                     break;
                   }
                 }
                 if (sortedPosGroup[index].Rank[posIndex] == lowestRank) { %>
-                  <td><%= sortedPosGroup[index].FullName %></td>
+                  <form action="/coach/viewPlayer" method="POST">
+                    <td><button type="submit" name="playerName" value="<%= sortedPosGroup[index].FullName %>"><%= sortedPosGroup[index].FullName %></button></td>
+                  </form>
+
                   <% c++;
                 }
                 if (index + 1 >= sortedPosGroup.length) {
@@ -169,22 +234,26 @@
             } %>
           </form>
         </table>
-        <br><br>
-        <span class="help">Defense</span>
-        <table class="redTable" id="viewTable" style="width: 95%;" border="1">
+      </div>
+      <br>
+      <div id="defenseLine" style="padding-top: 10px;">
+        <!-- <span class="help">Defense</span> -->
+        <table class="redTable" id="viewTable" border="1">
           <tr>
             <th></th>
             <th>First String</th>
             <th>Second String</th> 
             <th>Third String</th>
             <th>Fourth String</th>
-            <th>Other</th>
+            <th>Fifth String</th>
           </tr>
-          <form action="/coach/position" method="POST">
+          
             <% for (var i = 0; i < sortedPlayers.length; i++) { 
               if (defPlayersPos.includes(sortedPlayers[i][0])) {%>
               <tr>
-              <td><button class="btn btn-primary" type="submit" name="pos" value="<%- sortedPlayers[i][0] %>" style="font-size: 13px;"><%= sortedPlayers[i][0] %></button></td>
+              <form action="/coach/position" method="POST">
+                <td><button class="btn btn-primary" type="submit" name="pos" value="<%- sortedPlayers[i][0] %>" style="font-size: 13px;"><%= sortedPlayers[i][0] %></button></td>
+              </form>
               <% sortedPosGroup = sortedPlayers[i];
                  sortedPosGroup.shift();
                  var c = 0;
@@ -199,7 +268,9 @@
                   }
                 }
                 if (sortedPosGroup[index].Rank[posIndex] == lowestRank) { %>
-                  <td><%= sortedPosGroup[index].FullName %></td>
+                  <form action="/coach/viewPlayer" method="POST">
+                    <td><button type="submit" name="playerName" value="<%= sortedPosGroup[index].FullName %>"><%= sortedPosGroup[index].FullName %></button></td>
+                  </form>
                   <% c++;
                 }
                 if (index + 1 >= sortedPosGroup.length) {
@@ -213,22 +284,27 @@
             } %>
           </form>
         </table>
-        <br><br>
-        <span class="help">Special Teams</span>
-        <table class="redTable" id="viewTable" style="width: 95%;" border="1">
+
+        <br>
+      </div>
+      <div id="specialLine" style="padding-top: 10px;">
+        <!-- <span class="help">Special Teams</span> -->
+        <table class="redTable" id="viewTable" border="1">
           <tr>
             <th></th>
             <th>First String</th>
             <th>Second String</th> 
             <th>Third String</th>
             <th>Fourth String</th>
-            <th>Other</th>
+            <th>Fifth String</th>
           </tr>
-          <form action="/coach/position" method="POST">
+          
             <% for (var i = 0; i < sortedPlayers.length; i++) { 
               if (spePlayersPos.includes(sortedPlayers[i][0])) {%>
               <tr>
-              <td><button class="btn btn-primary" type="submit" name="pos" value="<%- sortedPlayers[i][0] %>" style="font-size: 13px;"><%= sortedPlayers[i][0] %></button></td>
+              <form action="/coach/position" method="POST">
+                <td><button class="btn btn-primary" type="submit" name="pos" value="<%- sortedPlayers[i][0] %>" style="font-size: 13px;"><%= sortedPlayers[i][0] %></button></td>
+              </form>
               <% sortedPosGroup = sortedPlayers[i];
                  sortedPosGroup.shift();
                  var c = 0;
@@ -243,7 +319,9 @@
                   }
                 }
                 if (sortedPosGroup[index].Rank[posIndex] == lowestRank) { %>
-                  <td><%= sortedPosGroup[index].FullName %></td>
+                  <form action="/coach/viewPlayer" method="POST">
+                    <td><button type="submit" name="playerName" value="<%= sortedPosGroup[index].FullName %>"><%= sortedPosGroup[index].FullName %></button></td>
+                  </form>
                   <% c++;
                 }
                 if (index + 1 >= sortedPosGroup.length) {
@@ -255,46 +333,41 @@
               }
              }
             } %>
-          </form>
         </table>
-        <br><br>
+        <br>
+      </div>
+        <br>
         
 
-      <!-- Start of Modal Content for entering practice grades -->
-      <!-- The Modal PopUp Window-->
-      <div id="myModal" class="modal" style="overflow-y:auto;">
-        <!-- Modal content -->
+      <!-- The Modal PopUp Window NO LONGER USING ON DEPTH CHART - only in position for now...-->
+      <!-- <div id="myModal" class="modal" style="overflow-y:auto;">
         <div class="modal-content">
           <div class="form-group" role="group" aria-label="Button group with nested dropdown">
           <form id="modalForm" action="/coach/depthChart" method="POST">
-            <!-- <button type="button" class="btn btn-primary">Sort By</button> -->
             <div class="dropdown" role="group" style="padding-top: 10px; text-align: center;">
               <span class="close">&times;</span>
               <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Choose Position
               </button>
               <div class="dropdown-content" aria-labelledby="btnGroupDrop1">
-                <!-- 'SS','MLB','FS','K','P','CB', ,'LS'-->
                 <% var allPlayers = ['QB','RB','FB','WR','TE','LT','LG','C','RG','RT','CB','DB','DE','DL','DT','FS','ILB','LB','MLB','OLB','SS','K/P','LS']; %>
                 <button class="dropdown-item" type="submit" name="type" value="full" >ALL</button>
-                <!-- Make this for loop using positions from db query -->
-                <% for (var i = 0; i < allPlayers.length; i++) { %>
-                  <button class="dropdown-item" type="submit" name="type" value="<%- allPlayers[i] %>">View <%= allPlayers[i] %>s</button>
+                <% for (var i = 0; i < positions.length; i++) { %>
+                  <button class="dropdown-item" type="submit" name="type" value="<%- positions[i] %>">View <%= positions[i] %>s</button>
                 <% } %>
               </div>
             </div>
             </form>
           </div>
           <br>
-          <% if (players.length > 0) { %>
-          <span class="help"><%= players[0].Pos %></span>
+          <% if (posPlayers.length > 0) { %>
+          <span class="help"><%= posPlayers[0].Pos %></span>
           <br>
           <form action="/coach/submitRank" method="POST">
-          <% for (var i = 0; i < players.length; i++) { %>
-            <!-- <span class="posLabel"><%= players[i].FullName %></span> -->
-            <input type="name" name="playerNames" value="<%= players[i].FullName %>" readonly>
-            <input type="number" name="rank" min='1' max='<%- players.length %>' value="<%- players[i].Rank %>">
-            <input class="hidden" name="type" value="<%- players[i].Pos %>" hidden>
+          <% for (var i = 0; i < posPlayers.length; i++) { %>
+            <input type="name" name="playerNames" value="<%= posPlayers[i].FullName %>" readonly>
+            <input type="number" name="rank" min='1' max='<%- posPlayers.length %>' value="<%- posPlayers[i].Rank %>">
+            <input class="hidden" name="type" value="<%- posPlayers[i].Pos %>" hidden>
             <br>
           <% } %>
           <div style="padding-top: 15px;">
@@ -304,7 +377,7 @@
           </form>
           <% } %>
         </div>
-      </div>
+      </div> -->
       
 
       
@@ -312,6 +385,11 @@
   </div>
 </div> 
 <script>
+var offDiv = document.getElementById('offenseLine')
+var defDiv = document.getElementById('defenseLine')
+var speDiv = document.getElementById('specialLine')
+defDiv.style.display = "none";
+speDiv.style.display = "none";
 // Get the modal
 var modal = document.getElementById("myModal");
 // Get the button that opens the modal
@@ -364,9 +442,25 @@ var dropdown = document.getElementsByClassName("dropdown-toggle");
     });
   }
 
-  function modalOpen() {
-    alert("GOT HERE");
-    modal.style.display = "block";
+  function viewLine(l) {
+    var offDiv = document.getElementById('offenseLine')
+    var defDiv = document.getElementById('defenseLine')
+    var speDiv = document.getElementById('specialLine')
+    if (l == 'o') {
+      defDiv.style.display = "none";
+      speDiv.style.display = "none";
+      offDiv.style.display = "block";
+    }
+    else if (l == 'd') {
+      defDiv.style.display = "block";
+      speDiv.style.display = "none";
+      offDiv.style.display = "none";
+    }
+    else {
+      defDiv.style.display = "none";
+      speDiv.style.display = "block";
+      offDiv.style.display = "none";
+    }
   }
   // Drag and drop code
   // var drake = dragula({

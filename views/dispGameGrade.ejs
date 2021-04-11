@@ -155,6 +155,7 @@
               </div>
             </div>
           </div>
+          <br>
         <!-- Start of Table -->
         <div style="width: 100%;">
           <div>    
@@ -182,7 +183,7 @@
                       <td></td>
                       <td>Current Game Grade</td>
                       <td>Season Average(Overall)</td>
-                      <td>Notes</td>
+                      <!-- <td>Notes</td> -->
                       <td>Season Average(<%=ints[0] %>)</td>
                       <td>Season Average(<%=ints[1] %>)</td>
                       <td>Season Average(<%=ints[2] %>)</td>
@@ -195,7 +196,7 @@
                               <td><%=players[i].FullName %></td>
                               <td><%=stats[j].Current %></td>
                               <td><%=stats[j].Overall %></td>
-                              <td>*</td>
+                              <!-- <td>*</td> -->
                               <td><%=stats[j].Intagible1Average %></td>
                               <td><%=stats[j].Intagible2Average %></td>
                               <td><%=stats[j].Intagible3Average %></td>
@@ -210,6 +211,53 @@
               </table>
             </table>
           </div>
+          <br><br><br>
+          <h1 class="text-center mb-3"><i class="fas fa-sign-in-alt"></i> Player Grades by Date</h1>
+          <div class="row mt-5">
+            <div class="col-md-6 m-auto">
+              <div class="card card-body">
+                <div class='dropdown' style="text-align:center">
+                  <form action="/stats/statsByDate" method="POST">
+                    <h3>Select Player Name:</h3>
+                    <select name="pos" id="pos" class="btn btn-primary dropdown-toggle mt-3">
+                    <% for(var i = 0; i < players.length; i++) { %>
+                    <option value="<%- players[i].FullName %>"><%= players[i].FullName %></option>
+                    <% } %>
+                    </select>
+                    <br><br>
+                    <button type="submit" class="btn btn-primary btn-block">Submit</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+          <br>
+          <div>
+            <table class="redTable" id="viewTable" border="1">
+              <thead>
+                <th colspan="6">Date</th>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Player Name</td>
+                  <td>Daily Grade</td>
+                  <td><%=ints[0] %></td>
+                  <td><%=ints[1] %></td>
+                  <td><%=ints[2] %></td>
+                  <td><%=ints[3] %></td>
+                </tr>
+                    <tr>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+              </tbody>
+            </table>
+          </div>
+          <br><br><br>
         </div>
       </div>
     </div>
@@ -227,7 +275,13 @@
             <span class="close">&times;</span>
             <table class="redTable" id="editTable" border="1">
               <thead>
-                <th colspan="2">Enter Game Grades</th>
+                <th colspan="1">Enter <%- players[0].Pos %> Game Grades</th>
+                <th>
+                  <input id="date" name="date" readonly />
+                  <script type="text/javascript">
+                    document.getElementById("date").value = Date();
+                  </script> 
+                </th>
               </thead>
               <tbody>
                 <form id="form" action="/stats/addGameGrade" method="POST">
@@ -239,29 +293,12 @@
                         <option value="<%- plays[i] %>"><%= plays[i] %></option>
                         <% } %>
                       </select>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td colspan="2">
-                      <label for="date">Today's Date</label>
-                      <input id="date" name="date" readonly />
+                      <input id="date" name="date" type="hidden" readonly />
                       <script type="text/javascript">
-                        document.getElementById(
-                          "date"
-                        ).value = Date();
+                        document.getElementById("date").value = Date();
                       </script>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td colspan="2">
-                      <label for="numPlayers">Number of Players</label>
-                      <input id="numPlayers" name="numPlayers" value =" <%- players.length %>" readonly />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td colspan="2">
-                      <label for="pos">Position</label>
-                      <input id="pos" name="pos" value =" <%- players[0].Pos %>" readonly />
+                      <input id="numPlayers" name="numPlayers" value =" <%- players.length %>" type="hidden" readonly/>
+                      <input id="pos" name="pos" value =" <%- players[0].Pos %>" type="hidden" readonly/>
                     </td>
                   </tr>
                   <tr>

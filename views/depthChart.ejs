@@ -191,7 +191,7 @@
                   <% for (var k = 0; k < 5; k++) {
                     if (wrPlayers[k] != undefined && wrPlayers[k][j] != null) {%>
                       <form action="/coach/viewPlayer" method="POST">
-                        <td><button type="submit" name="playerName" value="<%- wrPlayers[k][j] %>"><%= wrPlayers[k][j] %></button></td>
+                        <td><button type="submit" name="playerName" value="<%= wrPlayers[k][j] %>"><%= wrPlayers[k][j] %></button></td>
                       </form>
                     <%}
                   }
@@ -218,7 +218,7 @@
                 }
                 if (sortedPosGroup[index].Rank[posIndex] == lowestRank) { %>
                   <form action="/coach/viewPlayer" method="POST">
-                    <td><button type="submit" name="playerName" value="<%- sortedPosGroup[index].FullName %>"><%= sortedPosGroup[index].FullName %></button></td>
+                    <td><button type="submit" name="playerName" value="<%= sortedPosGroup[index].FullName %>"><%= sortedPosGroup[index].FullName %></button></td>
                   </form>
 
                   <% c++;
@@ -269,7 +269,7 @@
                 }
                 if (sortedPosGroup[index].Rank[posIndex] == lowestRank) { %>
                   <form action="/coach/viewPlayer" method="POST">
-                    <td><button type="submit" name="playerName" value="<%- sortedPosGroup[index].FullName %>"><%= sortedPosGroup[index].FullName %></button></td>
+                    <td><button type="submit" name="playerName" value="<%= sortedPosGroup[index].FullName %>"><%= sortedPosGroup[index].FullName %></button></td>
                   </form>
                   <% c++;
                 }
@@ -320,7 +320,7 @@
                 }
                 if (sortedPosGroup[index].Rank[posIndex] == lowestRank) { %>
                   <form action="/coach/viewPlayer" method="POST">
-                    <td><button type="submit" name="playerName" value="<%- sortedPosGroup[index].FullName %>"><%= sortedPosGroup[index].FullName %></button></td>
+                    <td><button type="submit" name="playerName" value="<%= sortedPosGroup[index].FullName %>"><%= sortedPosGroup[index].FullName %></button></td>
                   </form>
                   <% c++;
                 }

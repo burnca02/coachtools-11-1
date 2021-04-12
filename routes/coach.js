@@ -661,7 +661,7 @@ router.get('/position', ensureAuthenticated, async(req, res) => {
   // console.log("in coach call of position")
   await Roster.find({School: req.user.school})
   .then(players => {
-    Roster.find({ "Pos": { "$exists": true}, "School" :req.session.school, "Pos": 'QB'}).sort({'Pos': 1, 'Rank' : 1})
+    Roster.find({ "Pos": { "$exists": true}, "School" :req.session.school, "listPos": 'QB'})
             .then(posPlayers => {
               var emails = [];
               for (var i = 0; i < posPlayers.length; i++) {
@@ -871,6 +871,129 @@ router.post('/position', ensureAuthenticated, async(req, res) => {
           }).catch(error => console.error(error))
 })
 
+router.get('/deletePlayer', ensureAuthenticated, async(req, res) => {
+  // console.log("in coach call of position")
+  await Roster.find({School: req.user.school})
+  .then(players => {
+    Roster.find({ "Pos": { "$exists": true}, "School" :req.session.school, "listPos": 'QB'})
+            .then(posPlayers => {
+              var emails = [];
+              for (var i = 0; i < posPlayers.length; i++) {
+                emails.push(posPlayers[i].Email)
+              }
+                GameGrade.find({'email': {"$exists":true}, 'email': emails}).sort({$natural:-1})
+                .then(grade => {
+                  var grades = [];
+                  for (var i = 0; i < posPlayers.length; i++) {
+                    var f = false
+                    for (var j = 0; j < grade.length; j++) {
+                      if (posPlayers[i].Email == grade[j].email) {
+                        grades.push(grade[j].grade)
+                        f = true
+                      }
+                    }
+                    if (f == false) {
+                      grades.push('N/A')
+                    }
+                  }
+                  PracticeStat.find({'email': {"$exists":true}, 'email': emails}).sort({$natural:-1})
+                .then(stat => {
+                  var stats = [];
+                  for (var i = 0; i < posPlayers.length; i++) {
+                    var f = false
+                    for (var j = 0; j < stat.length; j++) {
+                      if (posPlayers[i].Email == stat[j].email) {
+                        stats.push(stat[j].grade)
+                        f = true
+                        break;
+                      }
+                    }
+                    if (f == false) {
+                      stats.push('N/A')
+                    }
+                  }
+                res.render('position', {
+                    players: players,
+                    pos : 'QB',
+                    posPlayers : posPlayers,
+                    gameGrades : grades,
+                    practiceStats : stats,
+                    name: req.session.name,
+                    school: req.session.school})
+                  }).catch(error => console.error(error))
+                }).catch(error => console.error(error))
+            }).catch(error => console.error(error))
+          }).catch(error => console.error(error))
+})
+
+router.post('/deletePlayer', ensureAuthenticated, async(req, res) => {
+  var {pos, playerName} = req.body;
+  const player = await Roster.findOne({FullName: playerName, School: req.session.school});
+  var newListPos = player.listPos
+  var newRanks = player.Rank
+  var i = newListPos.indexOf(pos)
+  if (i == -1) {
+    console.log("ERROR: Player doesn't have position saved in database.")
+  } else {
+    newListPos.splice(i,1)
+    newRanks.splice(i,1)  
+    let doc = await Roster.findOneAndUpdate({FullName: playerName, School: req.session.school}, {listPos : newListPos, Rank : newRanks}, {new:true, upsert: true});
+    doc.save();
+  }
+
+  await Roster.find({School: req.user.school})
+  .then(players => {
+    Roster.find({ "Pos": { "$exists": true}, "School" :req.session.school, "listPos": pos})
+            .then(posPlayers => {
+              var emails = [];
+              for (var i = 0; i < posPlayers.length; i++) {
+                emails.push(posPlayers[i].Email)
+              }
+                GameGrade.find({'email': {"$exists":true}, 'email': emails}).sort({$natural:-1})
+                .then(grade => {
+                  var grades = [];
+                  for (var i = 0; i < posPlayers.length; i++) {
+                    var f = false
+                    for (var j = 0; j < grade.length; j++) {
+                      if (posPlayers[i].Email == grade[j].email) {
+                        grades.push(grade[j].grade)
+                        f = true
+                      }
+                    }
+                    if (f == false) {
+                      grades.push('N/A')
+                    }
+                  }
+                  PracticeStat.find({'email': {"$exists":true}, 'email': emails}).sort({$natural:-1})
+                .then(stat => {
+                  var stats = [];
+                  for (var i = 0; i < posPlayers.length; i++) {
+                    var f = false
+                    for (var j = 0; j < stat.length; j++) {
+                      if (posPlayers[i].Email == stat[j].email) {
+                        stats.push(stat[j].grade)
+                        f = true
+                        break;
+                      }
+                    }
+                    if (f == false) {
+                      stats.push('N/A')
+                    }
+                  }
+                res.render('position', {
+                    players:players,
+                    pos : pos,
+                    posPlayers : posPlayers,
+                    gameGrades : grades,
+                    practiceStats : stats,
+                    name: req.session.name,
+                    school: req.session.school})
+                  }).catch(error => console.error(error))
+                }).catch(error => console.error(error))
+            }).catch(error => console.error(error))
+          }).catch(error => console.error(error))
+})
+
 /* This function allows coaches to update a player's rank within the positional depth chart.
    This function takes data already stored on the website to find the correct rank indice for each player.
    Then if the rank is different than before it updates it in the database.
@@ -900,9 +1023,14 @@ router.post('/posSubmitRank', ensureAuthenticated, async(req, res) => {
     // console.log("adding rank to index: " + posIndex[i])
     var origRank = newRank[posIndex[i]]
     newRank[posIndex[i]] = rank[i]
+
+    var playerName = pNames[i];
+    if (pNames[i].length == 1) {
+      playerName = pNames
+    }
     // console.log("new rank: " + newRank)
     if (origRank != rank[i]) {
-      let doc = await Roster.findOneAndUpdate({FullName : pNames[i], School : req.session.school}, {Rank : newRank}, {new:true, upsert: true});
+      let doc = await Roster.findOneAndUpdate({FullName : playerName, School : req.session.school}, {Rank : newRank}, {new:true, upsert: true});
       doc.save();
       console.log(pNames[i] + "'s rank has been updated.")
     }

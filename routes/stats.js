@@ -72,11 +72,28 @@ router.post('/dispPracticeStats', async(req, res) => {
           PracticeStat.find({school: req.user.school}) //for the practice stats by date, NEED position sorter
           .then(pStats => {
             const dates = [];
+            const originalDates = [];
             for(var i = 0; i < pStats.length; i++){
-              if(!(dates.includes(pStats[i].date))){ //adds only unique dates to array, no duplicates
-                  dates.push(pStats[i].date);
+              var delimiter = " ";
+              var count = 3;
+              var date = pStats[i].date;
+              // Repeativly search for the delimiter
+              var lastIndex = -1;
+              for (var j = 0; j < count; j++) {
+                  // Begin to search from the position after the last matching index
+                  lastIndex = date.toString().indexOf(delimiter, lastIndex + 1);
+                  // Could not be found
+                  if (lastIndex == -1) {
+                      break;
+                  }
+              }
+              var before = date.toString().substring(0, lastIndex);
+              if(!(dates.includes(before))){ //adds only unique dates to array, no duplicates
+                  dates.push(before);
+                  originalDates.push(pStats[i].date);
               }
             }
+            console.log(dates);
             res.render('dispPracticeStats', {
                   'players': players,
                   'ints': intangibles[0].ints,
@@ -102,7 +119,7 @@ practiceStats database.
 */
 router.post('/addPracticeGrade', async (req, res) => {
   const {playerName, date, scale, grade1, grade2, grade3, grade4} = req.body;
-
+  console.log("Add Practice Grade");
   console.log(req.body);
 
   var email;
@@ -389,18 +406,15 @@ router.post('/addGameGrade', async (req, res) => {
     }
     res.redirect('dispGameGrade');
 });
-router.post('statsByDate', (req,res) => {
-  const {playerName} = req.body;
-  var email;
-  Roster.findOne({School: req.user.school, FullName: playerName})
-  .then(player => {
-    email = player.Email;
-  });
-  GameGrade.find({School: req.user.school, email: email}).sort({date:-1})
+router.post('/statsByDate', (req,res) => {
+  const {date} = req.body;
+  console.log(req.body);
+  
+  GameGrade.find({School: req.user.school, date: date}).sort({date:-1})
   .then(grades => {
     res.render('dispGameGrade', {
       'grades': grades,
-
+      'name': 'test'
     })
   })
 });

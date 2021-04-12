@@ -737,25 +737,38 @@ router.post('/viewPlayer', ensureAuthenticated, async(req, res) => {
           } else {
             practice1 = stat[stat.length - 1].grade; //This will retrieve the last statistic because of the order that query is being processed. 
           }
-          Intangibles.findOne({school: req.session.school, pos: player.Pos})
-          .then(intangibles =>{
-            var intagiblesArray = "";
-              if(intangibles == null)
-              {
-                intagiblesArray = ["N/A","N/A","N/A","N/A"];
-              }
-              else 
-              {
-                var intagiblesArray = intangibles.ints;
-              }
-              res.render('viewPlayer', {
-                intangibles: intagiblesArray,
-                practice1 : practice1,
-                allGrades : stat,
-                player: player,
-                name: req.session.name,
-                school: req.session.school})
-            })
+          GameGrade.findOne({school: req.session.school, email: player.Email}).sort({date: 1})
+          .then(gameGrade => {
+            var gameGrade1 = '';
+            console.log(gameGrade);
+            if(gameGrade == null)
+            {
+              gameGrade1 = 'No Grade';
+            }
+            else{
+              gameGrade1 = gameGrade.grade;
+            }
+            Intangibles.findOne({school: req.session.school, pos: player.Pos})
+            .then(intangibles =>{
+              var intagiblesArray = "";
+                if(intangibles == null)
+                {
+                  intagiblesArray = ["N/A","N/A","N/A","N/A"];
+                }
+                else 
+                {
+                  var intagiblesArray = intangibles.ints;
+                }
+                res.render('viewPlayer', {
+                  gameGrade: gameGrade1,
+                  intangibles: intagiblesArray,
+                  practice1 : practice1,
+                  allGrades : stat,
+                  player: player,
+                  name: req.session.name,
+                  school: req.session.school})
+              })
+              })
             }).catch(error => console.error(error))
           }).catch(error => console.error(error))
 })

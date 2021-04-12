@@ -190,9 +190,12 @@
           <div class="card card-body text-center">
             <canvas id="myChart2" width="300" height="300"></canvas>
       <!-- If there is information in the graph, we will create the chart. -->
-      <% if (allGrades) { %> 
+      <% if (allGrades && intangibles) { %> 
         <script type="text/javascript">
         var grades = JSON.parse('<%- JSON.stringify(allGrades) %>');
+        var intangibles = JSON.parse('<%- JSON.stringify(intangibles) %>');
+        console.log(intangibles);
+
 
       // Our labels along the x-axis
       // For drawing the lines    
@@ -222,7 +225,7 @@
             datasets: [
             { 
               data: e1,
-              label: "Intagible 1",
+              label: intangibles[0],
               borderColor: "red",
               fill: false,
               pointRadius: 10
@@ -230,7 +233,7 @@
             },
             { 
               data: e2,
-              label: "Intagible 2",
+              label: intangibles[1],
               borderColor: "black",
               fill: false,
               pointRadius: 10
@@ -238,14 +241,14 @@
             },
             { 
               data: e3,
-              label: "Intagible 3",
+              label: intangibles[2],
               borderColor: "blue",
               fill: false,
               pointRadius: 10,
             },
             { 
               data: e4,
-              label: "Intagible 4",
+              label: intangibles[3],
               borderColor: "orange",
               fill: false,
               pointRadius: 10,

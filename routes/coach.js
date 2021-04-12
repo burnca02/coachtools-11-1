@@ -732,19 +732,30 @@ router.post('/viewPlayer', ensureAuthenticated, async(req, res) => {
         PracticeStat.find({'email': player.Email}).sort({createdAt: 1})
         .then(stat => {
           var practice1 = '';
-          console.log(stat);
           if(stat.length == 0){
             practice1 = 'No Grade'
           } else {
-            console.log(stat.length);
             practice1 = stat[stat.length - 1].grade; //This will retrieve the last statistic because of the order that query is being processed. 
           }
+          Intangibles.findOne({school: req.session.school, pos: player.Pos})
+          .then(intangibles =>{
+            var intagiblesArray = "";
+              if(intangibles == null)
+              {
+                intagiblesArray = ["N/A","N/A","N/A","N/A"];
+              }
+              else 
+              {
+                var intagiblesArray = intangibles.ints;
+              }
               res.render('viewPlayer', {
+                intangibles: intagiblesArray,
                 practice1 : practice1,
                 allGrades : stat,
                 player: player,
                 name: req.session.name,
                 school: req.session.school})
+            })
             }).catch(error => console.error(error))
           }).catch(error => console.error(error))
 })

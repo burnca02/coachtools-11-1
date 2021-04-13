@@ -212,51 +212,7 @@
             </table>
           </div>
           <br><br><br>
-          <h1 class="text-center mb-3"><i class="fas fa-sign-in-alt"></i> Player Grades by Date</h1>
-          <div class="row mt-5">
-            <div class="col-md-6 m-auto">
-              <div class="card card-body">
-                <div class='dropdown' style="text-align:center">
-                  <form action="/stats/statsByDate" method="POST">
-                    <h3>Select Player Name:</h3>
-                    <select name="pos" id="pos" class="btn btn-primary dropdown-toggle mt-3">
-                    <% for(var i = 0; i < players.length; i++) { %>
-                    <option value="<%- players[i].FullName %>"><%= players[i].FullName %></option>
-                    <% } %>
-                    </select>
-                    <br><br>
-                    <button type="submit" class="btn btn-primary btn-block">Submit</button>
-                  </form>
-                </div>
-              </div>
-            </div>
-          </div>
-          <br>
-          <div>
-            <table class="redTable" id="viewTable" border="1">
-              <thead>
-                <th colspan="6">Date</th>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Player Name</td>
-                  <td>Daily Grade</td>
-                  <td><%=ints[0] %></td>
-                  <td><%=ints[1] %></td>
-                  <td><%=ints[2] %></td>
-                  <td><%=ints[3] %></td>
-                </tr>
-                    <tr>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                    </tr>
-              </tbody>
-            </table>
-          </div>
+          <!-- Add Second Table Code Here -->
           <br><br><br>
         </div>
       </div>
@@ -277,7 +233,7 @@
               <thead>
                 <th colspan="1">Enter <%- players[0].Pos %> Game Grades</th>
                 <th>
-                  <input id="date" name="date" readonly />
+                  <input id="date" name="date" readonly/>
                   <script type="text/javascript">
                     document.getElementById("date").value = Date();
                   </script> 
@@ -322,21 +278,21 @@
                       <tr name="p<%- i %>">
                         <td>
                           <label for="grade1"><%= ints[0] %></label>
-                          <input type="number" name="grade1" id="grade1-<%- i %>" max="10" placeholder="Enter Grade"/>
+                          <input type="number" name="grade1" id="grade1-<%- i %>" min="1" max="10" placeholder="Enter Grade"/>
                         </td>
                         <td>
                           <label for="grade2"><%= ints[1] %></label>
-                          <input type="number" name="grade2" id="grade2-<%- i %>" max="10" placeholder="Enter Grade"/>
+                          <input type="number" name="grade2" id="grade2-<%- i %>" min="1" max="10" placeholder="Enter Grade"/>
                         </td>
                       </tr>
                       <tr name="p<%- i %>">
                         <td>
                           <label for="grade3"><%= ints[2] %></label>
-                          <input type="number" name="grade3" id="grade3-<%- i %>" max="10" placeholder="Enter Grade"/>
+                          <input type="number" name="grade3" id="grade3-<%- i %>" min="1" max="10" placeholder="Enter Grade"/>
                         </td>
                         <td>
                           <label for="grade4"><%= ints[3] %></label>
-                          <input type="number" name="grade4" id="grade4-<%- i %>" max="10" placeholder="Enter Grade"/>
+                          <input type="number" name="grade4" id="grade4-<%- i %>" min="1" max="10" placeholder="Enter Grade"/>
                         </td>
                       </tr>
                   <% } %>

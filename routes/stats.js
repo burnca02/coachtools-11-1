@@ -48,7 +48,7 @@ their intangibles and respective grades
 router.post('/dispPracticeStats', async(req, res) => {
     const {pos} = req.body;
     const ints = [];
-    Roster.find({Pos: pos, School: req.session.school}) 
+    await Roster.find({Pos: pos, School: req.session.school}) 
     .then(players => {
       Intangibles.find({school: req.session.school, pos: pos})
       .then(intangibles => {
@@ -71,6 +71,7 @@ router.post('/dispPracticeStats', async(req, res) => {
           }
           PracticeStat.find({school: req.user.school}) //for the practice stats by date, NEED position sorter
           .then(pStats => {
+            console.log("pStats.length " + pStats.length);
             const dates = [];
             const originalDates = [];
             for(var i = 0; i < pStats.length; i++){
@@ -93,17 +94,34 @@ router.post('/dispPracticeStats', async(req, res) => {
                   originalDates.push(pStats[i].date);
               }
             }
-            console.log(dates);
-            res.render('dispPracticeStats', {
-                  'players': players,
-                  'ints': intangibles[0].ints,
-                  'scale': intangibles[0].scale,
-                  'positions': positions,
-                  'stats': stats,
-                  'plays': plays[0].plays,
-                  'dates': dates,
-                  'name': req.user.name,
-                });
+            var playerEmails = []
+            for (var m = 0; m < players.length; m++) {
+              playerEmails.push(players[m].Email)
+            }
+            console.log("playerEmails: " + playerEmails)
+            PracticeStat.find({school: req.user.school, "email": { "$in" : playerEmails}}).sort({date:-1}) //, "email": { "$in" : playerEmails}
+            .then(grades => {
+              console.log("grades.length " + grades.length);
+              // var grades2 = []
+              // for (var k = 0; k < grades.length; k++) {
+              //   if (playerEmails.includes(grades[k].email)) {
+              //     grades2.push(grades[k])
+              //   }
+              // }
+              // console.log("grades2 length " + grades2.length);
+              res.render('dispPracticeStats', {
+                    'players': players,
+                    'ints': intangibles[0].ints,
+                    'scale': intangibles[0].scale,
+                    'positions': positions,
+                    'stats': stats,
+                    'grades': grades,
+                    'plays': plays[0].plays,
+                    'dates': dates,
+                    'originalDates': originalDates,
+                    'name': req.user.name,
+                  });
+              })
             })
           })
         })
@@ -253,7 +271,7 @@ router.post('/addPracticeGrade', async (req, res) => {
         grade,
         date
       });
-      console.log(newPracticeStat);
+      console.log("new Practice Stat " + newPracticeStat);
       newPracticeStat.save();
     }
   }
@@ -406,18 +424,192 @@ router.post('/addGameGrade', async (req, res) => {
     }
     res.redirect('dispGameGrade');
 });
-router.post('/statsByDate', (req,res) => {
-  const {date} = req.body;
+router.get('/statsByDate', ensureAuthenticated, (req, res) => 
+  Intangibles.find({school: req.user.school})
+  .then(intangibles => {
+  const positions = [];
+  for(var i = 0; i < intangibles.length; i++){
+    if(!(positions.includes(intangibles[i].pos))){
+      positions.push(intangibles[i].pos);
+    }
+  }
+  res.render('statsByDate', { //need to send all stats data here too
+        'positions': positions,
+        'name': req.user.name
+      });
+  }).catch(err => console.log(err))
+);
+router.post('/statsByDate', async(req,res) => {
+  const {pos} = req.body;
   console.log(req.body);
-  
-  GameGrade.find({School: req.user.school, date: date}).sort({date:-1})
-  .then(grades => {
-    res.render('dispGameGrade', {
-      'grades': grades,
-      'name': 'test'
+    await Roster.find({Pos: pos, School: req.session.school}) 
+    .then(players => {
+      Intangibles.find({school: req.session.school, pos: pos})
+      .then(intangibles => {
+      const positions = [];
+      for(var i = 0; i < intangibles.length; i++){
+        if(!(positions.includes(intangibles[i].pos))){ //adds only unique positions to array, no duplicates
+          positions.push(intangibles[i].pos);
+        }
+        console.log(intangibles[0].scale);
+      }
+      console.log("players.length " + players.length);
+      // if(players.length == 0){
+      //   res.render('practiceStats');
+      // } else {
+      //   SeasonalPracticeStat.find({school: req.session.school}).sort({date:-1})
+      //   .then(stats => {
+      //     Play.find({school: req.user.school})
+      //     .then(plays => {
+      //     if(plays.length == 0){
+      //       res.redirect("/coach/submitPlays");
+      //     }
+          var playerEmails = []
+            for (var m = 0; m < players.length; m++) {
+              playerEmails.push(players[m].Email)
+            }
+            console.log("playerEmails: " + playerEmails)
+          PracticeStat.find({school: req.user.school, email: { "$in" : playerEmails}}) //for the practice stats by date, NEED position sorter
+          .then(pStats => {
+            const dates = [];
+            const originalDates = [];
+            for(var i = 0; i < pStats.length; i++){
+              var delimiter = " ";
+              var count = 3;
+              var date2 = pStats[i].date;
+              // Repeativly search for the delimiter
+              var lastIndex = -1;
+              for (var j = 0; j < count; j++) {
+                  // Begin to search from the position after the last matching index
+                  lastIndex = date2.toString().indexOf(delimiter, lastIndex + 1);
+                  // Could not be found
+                  if (lastIndex == -1) {
+                      break;
+                  }
+              }
+              var before = date2.toString().substring(0, lastIndex);
+              if(!(dates.includes(before))){ //adds only unique dates to array, no duplicates
+                  console.log("date being pushed " + before);
+                  dates.push(before);
+                  originalDates.push(pStats[i].date);
+              }
+            }
+            // PracticeStat.find({School: req.user.school, date: date, email: { "$in" : playerEmails}}).sort({date:-1})
+            // .then(grades => {
+            //   console.log("grades.length " + grades.length);
+              // var grades2 = []
+              // for (var k = 0; k < grades.length; k++) {
+              //   if (playerEmails.includes(grades[k].email)) {
+              //     grades2.push(grades[k])
+              //   }
+              // }
+              // console.log("grades2 length " + grades2.length);
+              //console.log(dates);
+              console.log("ORIGINAL DATES " + originalDates);
+              var grades = [];
+                res.render('dispStatsByDate', {
+                    'players': players,
+                    'ints': intangibles[0].ints,
+                    'scale': intangibles[0].scale,
+                    'positions': positions,
+                    'pos': pos, //position submitted from first form
+                    'grades': grades,
+                    'dates': dates,
+                    'originalDates': originalDates,
+                    'name': req.user.name
+                });
+              })
+            // })
+      // }
+    }).catch(err => console.log(err));
+    }).catch(err => console.log(err));
+});
+router.post('/date', async(req,res) => {
+  const {pos, date} = req.body;
+  console.log(req.body);
+  await Roster.find({Pos: pos, School: req.session.school}) 
+    .then(players => {
+      Intangibles.find({school: req.session.school, pos: pos})
+      .then(intangibles => {
+      const positions = [];
+      for(var i = 0; i < intangibles.length; i++){
+        if(!(positions.includes(intangibles[i].pos))){ //adds only unique positions to array, no duplicates
+          positions.push(intangibles[i].pos);
+        }
+        console.log(intangibles[0].scale);
+      }
+      console.log("players.length " + players.length);
+      var playerEmails = [];
+      for (var m = 0; m < players.length; m++) {
+        playerEmails.push(players[m].Email);
+      }
+      console.log("playerEmails: " + playerEmails);
+      PracticeStat.find({school: req.user.school, email: { "$in" : playerEmails}}) //for the practice stats by date, NEED position sorter
+      .then(pStats => {
+        const dates = [];
+        const originalDates = [];
+        for(var i = 0; i < pStats.length; i++){
+          var delimiter = " ";
+          var count = 3;
+          var date2 = pStats[i].date;
+          // Repeativly search for the delimiter
+          var lastIndex = -1;
+          for (var j = 0; j < count; j++) {
+              // Begin to search from the position after the last matching index
+              lastIndex = date2.toString().indexOf(delimiter, lastIndex + 1);
+              // Could not be found
+              if (lastIndex == -1) {
+                  break;
+              }
+          }
+          var before = date2.toString().substring(0, lastIndex);
+          if(!(dates.includes(before))){ //adds only unique dates to array, no duplicates
+              dates.push(before);
+              originalDates.push(pStats[i].date);
+          }
+        }
+        console.log("DATE " + date);
+        var splitDate = date.split(' ');
+        var hour = splitDate[4].split(':');
+        console.log('hour ' + hour);
+        if(parseInt(hour[0]) > 20) { //21 for example
+          hour[0] = parseInt(hour[0] - 20); //1
+          const str = '0';
+          hour[0] = str.concat(hour[0]); //01
+          splitDate[2] = parseInt(splitDate[2]) + 1; //Temporary Fix - Going to get tricky with changes in months/years
+        }
+        else {
+          hour[0] = parseInt(hour[0]) + 4; 
+        }
+        console.log('hour[0] ' + hour[0]);
+        var hourString = hour.join();
+        var finalHourString = hourString.replace(',',':');
+        finalHourString = finalHourString.replace(',',':');
+        console.log(finalHourString);
+        var numRep = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
+        var letterRep = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        var month = letterRep.indexOf(splitDate[1]);
+        console.log('myDate ' + splitDate[3] + '-' + numRep[month] + '-' + splitDate[2] + 'T' + finalHourString + '.000Z');
+        var myDate = new Date(splitDate[3] + '-' + numRep[month] + '-' + splitDate[2] + 'T' + finalHourString + '.000Z'); //"2016-05-18T16:00:00Z"
+        PracticeStat.find({school: req.user.school, date: myDate, email: { "$in" : playerEmails}})
+        .then(grades => {
+          console.log("grades.length " + grades.length); //coming up as 0
+          res.render('dispStatsByDate', {
+            'players': players,
+            'ints': intangibles[0].ints,
+            'scale': intangibles[0].scale,
+            'positions': positions,
+            'grades': grades,
+            'pos': pos,
+            'dates': dates,
+            'originalDates': originalDates,
+            'name': req.user.name
+          });
+        })
+      })
     })
   })
-});
+})
 /*
 This function is called when a coach adds an intangible on submitIntangibles.ejs. The intangble is
 then saved to the Intangibles database. 
@@ -583,7 +775,7 @@ router.post('/dispGameGrade', async(req, res) => {
           positions.push(intangibles[i].pos);
         }
       }
-      console.log("positions in post " + positions);
+      console.log("positions in gameGradePost " + positions);
       if(players.length == 0){
         res.render('gameGrade');
       } else {

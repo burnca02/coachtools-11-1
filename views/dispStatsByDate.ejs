@@ -1,0 +1,234 @@
+<style>
+    @media all and (min-width: 600px) {
+      .bodyContainer {flex: 2 0px;}
+      .sidenav {order: 1;}
+      .rBody {order: 2;}
+    }
+    .dropbtn {
+      background-color: red;
+      color: white;
+      padding: 16px;
+      font-size: 16px;
+      border: none;
+    }
+  
+    .dropdown {
+      position: center;
+      display: inline-block;
+      border: red;
+    }
+  
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: red;
+      min-width: 160px;
+      box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+      z-index: 1;
+    }
+  
+    .dropdown-content a {
+      color: black;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+    }
+  
+    .dropdown-content a:hover {
+      background-color: #ddd;
+    }
+  
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+  
+    .dropdown:hover .dropbtn {
+      background-color: #e71111;
+    }
+    table.redTable {
+      border: 2px solid #a40808;
+      background-color: #eee7db;
+      width: 100%;
+      text-align: center;
+      border-collapse: collapse;
+    }
+    table.redTable td,
+    table.redTable th {
+      border: 1px solid #aaaaaa;
+      padding: 3px 2px;
+    }
+    table.redTable tbody td {
+      font-size: 13px;
+      text-align: center;
+    }
+    table.redTable tr:nth-child(even) {
+      background: #f5c8bf;
+    }
+    table.redTable thead {
+      background: #a40808;
+    }
+    table.redTable thead th {
+      font-size: 19px;
+      font-weight: bold;
+      color: #ffffff;
+      text-align: center;
+      border-left: 2px solid #a40808;
+    }
+    table.redTable thead th:first-child {
+      border-left: none;
+    }
+  
+    table.redTable tfoot {
+      font-size: 13px;
+      font-weight: bold;
+      color: #ffffff;
+      background: #a40808;
+    }
+    table.redTable tfoot td {
+      font-size: 13px;
+      text-align: center;
+    }
+    table.redTable tfoot .links {
+      text-align: right;
+    }
+    table.redTable tfoot .links a {
+      display: inline-block;
+      background: #ffffff;
+      color: #a40808;
+      padding: 2px 8px;
+      border-radius: 5px;
+    }
+    table.redTable2 {
+      border: 2px solid #a40808;
+      background-color: #eee7db;
+      width: 100%;
+      text-align: center;
+      border-collapse: collapse;
+    }
+    table.redTable2 td,
+    table.redTable2 th {
+      border: 1px solid #aaaaaa;
+      padding: 8px 8px;
+    }
+    table.table1,
+    table.table2 {
+      display: none;
+      text-align: center;
+    }
+    td {
+      text-align: center;
+    }
+    @media all and (min-width: 600px) {
+      .bodyContainer {
+        flex: 2 0px;
+      }
+      .sidenav {
+        order: 1;
+      }
+      .rBody {
+        order: 2;
+      }
+      .modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  }
+  
+  /* Modal Content/Box */
+  .modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+  }
+  
+  /* The Close Button */
+  .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+  
+  .close:hover,
+  .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+  }
+    }
+  </style>
+  <div class="bigContainer">
+      <%- include("partials/topnav") %>
+      <div class="bodyContainer">
+        <!-- Side navigation -->
+        <%- include("partials/sidenav") %>
+        <div class="rBody">
+          <div class="row mt-5">
+            <div class="col-md-6 m-auto">
+            <h3><a href="statsByDate">Back</a></h3>
+              <div class="card card-body">
+                <div class='dropdown' style="text-align:center">
+                    <form id="dateForm" action="/stats/date" method="POST">
+                        <h3>Select Date:</h3>
+                        <input id="pos" name="pos" type="hidden" value="<%- pos %>" readonly/>
+                        <select name="date" id="date" onchange="$('#dateForm').submit();" class="btn btn-primary dropdown-toggle mt-3">
+                            <option id="buttonOption2" value="null">Select a Date</option>
+                          <% for(var i = 0; i < dates.length; i++) { %>
+                            <option id="buttonOption2" value="<%= originalDates[i] %>"><%= dates[i] %></option>
+                          <% } %>
+                        </select>
+                        <br><br>
+                    </form>
+                  </div>
+                </div>
+              </div>
+          </div>
+        <div>
+          <table class="redTable" id="viewTable" border="1">
+            <thead>
+              <th colspan="6">
+                Date
+              </th>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Player Name</td>
+                <td>Daily Grade</td>
+                <td><%=ints[0] %></td>
+                <td><%=ints[1] %></td>
+                <td><%=ints[2] %></td>
+                <td><%=ints[3] %></td>
+              </tr>
+              <% if(players.length != 0) { %>
+                <% for(var i = 0; i < players.length; i++) { %>
+                <tr>
+                  <td><%= players[i].FullName %></td>
+                  <% if(grades.length != 0) { %>
+                    <% for(var j = 0; j < grades.length; j++) { 
+                        if(players[i].Email == grades[j].email) { %>
+                        <td><%= grades[j].grade %></td>
+                        <td><%= grades[j].int1[0] * 10 %></td>
+                        <td><%= grades[j].int2[0] * 10 %></td>
+                        <td><%= grades[j].int3[0] * 10 %></td>
+                        <td><%= grades[j].int4[0] * 10 %></td>
+                    </tr>
+                    <% }
+                    }
+                  }
+                }
+              } %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      </div>
+  </div>

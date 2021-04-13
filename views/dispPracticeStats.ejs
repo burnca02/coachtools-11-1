@@ -220,7 +220,7 @@
                         <td></td>
                         <td>Current Practice Grade</td>
                         <td>Season Average(Overall)</td>
-                        <td>Notes</td>
+                        <!-- <td>Notes</td> -->
                         <td>Season Average(<%=ints[0] %>)</td>
                         <td>Season Average(<%=ints[1] %>)</td>
                         <td>Season Average(<%=ints[2] %>)</td>
@@ -233,7 +233,7 @@
                               <td><%=players[i].FullName %></td>
                               <td><%=stats[j].Current %></td>
                               <td><%=stats[j].Overall %></td>
-                              <td>*</td>
+                              <!-- <td>*</td> -->
                               <td><%=stats[j].Intagible1Average %></td>
                               <td><%=stats[j].Intagible2Average %></td>
                               <td><%=stats[j].Intagible3Average %></td>
@@ -248,56 +248,6 @@
                 </table>
               </table>
             </div>
-            <br><br><br>
-            <h1 class="text-center mb-3"><i class="fas fa-sign-in-alt"></i> Player Grades by Date</h1>
-          <div class="row mt-5">
-            <div class="col-md-6 m-auto">
-              <div class="card card-body">
-                <div class='dropdown' style="text-align:center">
-                  <form action="/stats/statsByDate" method="POST">
-                    <h3>Select Date:</h3>
-                    <select name="date" id="date" class="btn btn-primary dropdown-toggle mt-3">
-                    <% for(var i = 0; i < dates.length; i++) { %>
-                    <option value="<%- dates[i] %>" onclick="loadTable()"><%= dates[i] %></option>
-                    <% } %>
-                    </select>
-                    <input id="pos" name="pos" value =" <%- players[0].Pos %>" type="hidden" readonly />
-                    <br><br>
-                    <button type="submit" class="btn btn-primary btn-block">Submit</button>
-                  </form>
-                </div>
-              </div>
-            </div>
-          </div>
-          <br>
-          <div>
-            <table class="redTable" id="gradesTable" border="1">
-              <thead>
-                <th colspan="6">Date</th>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Player Name</td>
-                  <td>Daily Grade</td>
-                  <td><%=ints[0] %></td>
-                  <td><%=ints[1] %></td>
-                  <td><%=ints[2] %></td>
-                  <td><%=ints[3] %></td>
-                </tr>
-                <% for(var i = 0; i < players.length; i++){ %> 
-                <tr>
-                  <td><%- players[i].FullName %></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                <% } %>
-              </tbody>
-            </table>
-          </div>
-          <br><br><br>
           </div>
         </div>
       </div>
@@ -315,7 +265,13 @@
             <span class="close">&times;</span>
             <table class="redTable" id="editTable" border="1">
               <thead>
-                <th colspan="2">Enter Practice Grades</th>
+                <th colspan="1">Enter <%- players[0].Pos %> Practice Grades</th>
+                <th>
+                  <input id="date2" name="date" value="<%= Date('<YYYY-mm-ddTHH:MM:ss>') %>"readonly/>
+                  <script type="text/javascript">
+                    document.getElementById("date2").value = Date();
+                  </script> 
+                </th>
               </thead>
               <tbody>
                 <form id="form" action="/stats/addPracticeGrade" method="POST">
@@ -327,29 +283,12 @@
                         <option value="<%- plays[i] %>"><%= plays[i] %></option>
                         <% } %>
                       </select>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td colspan="2">
-                      <label for="date">Today's Date</label>
-                      <input id="date" name="date" readonly />
+                      <input id="date2" name="date" type="hidden" value="<%= Date('<YYYY-mm-ddTHH:MM:ss>') %>" readonly />
                       <script type="text/javascript">
-                        document.getElementById(
-                          "date"
-                        ).value = Date();
+                        document.getElementById("date2").value = Date();
                       </script>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td colspan="2">
-                      <label for="numPlayers">Number of Players</label>
-                      <input id="numPlayers" name="numPlayers" value =" <%- players.length %>" readonly />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td colspan="2">
-                      <label for="pos">Position</label>
-                      <input id="pos" name="pos" value =" <%- players[0].Pos %>" readonly />
+                      <input id="numPlayers" name="numPlayers" value =" <%- players.length %>" type="hidden" readonly/>
+                      <input id="pos" name="pos" value =" <%- players[0].Pos %>" type="hidden" readonly/>
                     </td>
                   </tr>
                   <tr>
@@ -374,7 +313,7 @@
                       <tr name="p<%- i %>">
                         <td>
                           <label for="grade1"><%= ints[0] %></label>
-                          <input type="number" name="grade1" id="grade1-<%- i %>" max="10" placeholder="Enter Grade"/>
+                          <input type="number" name="grade1" id="grade1-<%- i %>" min="1" max="10" placeholder="Enter Grade"/>
                         </td>
                         <td>
                           <label for="grade2"><%= ints[1] %></label>
@@ -411,7 +350,7 @@
   </div>
 </div>
   
-<script>
+<!-- <script>
   // Cycle players
   function initGameGrade() {
     var firstPlayer = document.getElementById("p0");
@@ -469,7 +408,7 @@
       getCurr();
     }
   }
-</script>
+</script> -->
 
 <script>
   //called on line 155

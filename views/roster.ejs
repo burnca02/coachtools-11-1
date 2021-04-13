@@ -21,6 +21,14 @@
     cursor: pointer;
     outline: inherit;
   }
+  .noButton {
+    border:none; 
+    background:none;
+  }
+
+  .noButton:hover {
+    color: #a40808;
+  }
 </style>
 <link rel="stylesheet" type="text/css" href="css/style.css"/>
 <div class="bigContainer">
@@ -95,7 +103,10 @@
           <ul class="players">
             <% for(var i = 0; i < players.length; i++) {%>
             <tr class="table-default">
-              <td><%= players[i].FullName %></td>
+              <form action="/coach/viewPlayer" method="POST">
+                <td><button class="noButton" type="submit" name="playerName" value="<%= players[i].FullName %>"><%= players[i].FullName %></button></td>
+              </form>
+              <!-- <td><%= players[i].FullName %></td> -->
               <td><%= players[i].Pos %></td>
               <td><%= players[i].GradYear %></td>
               <td><%= players[i].Rank %></td>

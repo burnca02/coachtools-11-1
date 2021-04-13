@@ -572,7 +572,7 @@ router.post('/date', async(req,res) => {
         var splitDate = date.split(' ');
         var hour = splitDate[4].split(':');
         console.log('hour ' + hour);
-        if(parseInt(hour[0]) > 20) { //21 for example
+        if(parseInt(hour[0]) >= 20) { //21 for example
           hour[0] = parseInt(hour[0] - 20); //1
           const str = '0';
           hour[0] = str.concat(hour[0]); //01

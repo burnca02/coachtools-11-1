@@ -572,15 +572,15 @@ router.post('/date', async(req,res) => {
         var splitDate = date.split(' ');
         var hour = splitDate[4].split(':');
         console.log('hour ' + hour);
-        if(parseInt(hour[0]) >= 20) { //21 for example
-          hour[0] = parseInt(hour[0] - 20); //1
-          const str = '0';
-          hour[0] = str.concat(hour[0]); //01
-          splitDate[2] = parseInt(splitDate[2]) + 1; //Temporary Fix - Going to get tricky with changes in months/years
-        }
-        else {
-          hour[0] = parseInt(hour[0]) + 4; 
-        }
+        // if(parseInt(hour[0]) >= 20) { //21 for example
+        //   hour[0] = parseInt(hour[0] - 20); //1
+        //   const str = '0';
+        //   hour[0] = str.concat(hour[0]); //01
+        //   splitDate[2] = parseInt(splitDate[2]) + 1; //Temporary Fix - Going to get tricky with changes in months/years
+        // }
+        // else {
+        //   hour[0] = parseInt(hour[0]) + 4; 
+        // }
         console.log('hour[0] ' + hour[0]);
         var hourString = hour.join();
         var finalHourString = hourString.replace(',',':');

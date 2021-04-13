@@ -317,17 +317,17 @@
                         </td>
                         <td>
                           <label for="grade2"><%= ints[1] %></label>
-                          <input type="number" name="grade2" id="grade2-<%- i %>" max="10" placeholder="Enter Grade"/>
+                          <input type="number" name="grade2" id="grade2-<%- i %>" min="1" max="10" placeholder="Enter Grade"/>
                         </td>
                       </tr>
                       <tr name="p<%- i %>">
                         <td>
                           <label for="grade3"><%= ints[2] %></label>
-                          <input type="number" name="grade3" id="grade3-<%- i %>" max="10" placeholder="Enter Grade"/>
+                          <input type="number" name="grade3" id="grade3-<%- i %>" min="1" max="10" placeholder="Enter Grade"/>
                         </td>
                         <td>
                           <label for="grade4"><%= ints[3] %></label>
-                          <input type="number" name="grade4" id="grade4-<%- i %>" max="10" placeholder="Enter Grade"/>
+                          <input type="number" name="grade4" id="grade4-<%- i %>" min="1" max="10" placeholder="Enter Grade"/>
                         </td>
                       </tr>
                   <% } %>

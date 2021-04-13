@@ -109,10 +109,66 @@
         <div class="row" style="margin-left:0;margin-right:0; justify-content:left">
             <a class="help" href="depthChart" style="margin-left: 40px;">Back</a>
         </div>
-        <span class="help" style="padding-bottom: 20px;"><%= player.FullName %></span>
-        <span class="help" style="padding-bottom: 20px;"><%= school %></span>
-        <span class="help" style="padding-bottom: 20px;">#<%= player.Number %></span>
-        <table class="redTable" id="viewTable" style="width: 95%;" border="1">
+        <% var fullName = player.FullName
+        var splitName = fullName.split(" ") 
+        for (var i = 2; i < splitName.length; i++) {
+          splitName[1] = splitName[1]+" "+splitName[i]
+        }
+        console.log("splitName:" + splitName)
+        console.log("splitName[1]:" + splitName[1])%>
+        <div class="row" style="margin-right: 0; margin-left: 0;">
+          <div class="col-md-3">
+
+          </div>
+          <div class="col-md-3">
+            <div style="display:flex; flex-flow: column; text-align: left;">
+              <span class="help" style="padding: 5px;"><%= splitName[0] %></span>
+              <span class="help" style="padding: 5px;"><%= splitName[1] %></span>
+              <span style="padding: 5px; margin-left: 10px;"><%= school %> #<%= player.Number %></span>
+              <!-- <span class="help" style="padding: 5px;">#<%= player.Number %></span> -->
+            </div>
+          </div>
+          <div class="col-md-6">
+            <ul style="display:table; text-align: left;">
+              <li style="display: table-row;">
+                <div style="color: gray; display: table-cell; padding-right: 10px;">Positions</div>
+                <div style="display: table-cell;"><%= player.listPos %></div>
+              </li>
+              <li style="display: table-row;">
+                <div style="color: gray; display: table-cell; padding-right: 10px;">Email</div>
+                <div style="display: table-cell;"><%= player.Email %></div>
+              </li>
+              <li style="display: table-row;">
+                <div style="color: gray; display: table-cell; padding-right: 10px;">Class</div>
+                <div style="display: table-cell;"><%= player.GradYear %></div>
+              </li>
+              <!-- <li style="display: table-row;">
+                <div style="color: gray; display: table-cell; padding-right: 10px;">Most Recent Game Stat</div>
+                <div style="display: table-cell;"><%= gameGrade %></div>
+              </li> -->
+              <!-- <li style="display: table-cell;">Email <%= player.Email %></li>
+              <li style="display: table-cell;">Graduation Year <%= player.GradYear %></li>
+              <li style="display: table-cell;">Most Recent Practice Stat <%= practice1 %></li>
+              <li style="display: table-cell;">Most Recent Game Stat <%= gameGrade %></li> -->
+            </ul>
+          </div>
+        </div>
+
+        <div class="row" style="margin-right: 0; margin-left: 0; padding-top: 35px; justify-content: center;">
+          <ul style="display: table; text-align: left;">
+            <li style="display: table-row;">
+              <div style="color: gray; display: table-cell; padding-right: 10px;">Most Recent Practice Stat</div>
+              <div style="display: table-cell;"><%= practice1 %></div>
+            </li>
+            <li style="display: table-row;">
+              <div style="color: gray; display: table-cell; padding-right: 10px;">Most Recent Game Stat</div>
+              <div style="display: table-cell;"><%= gameGrade %></div>
+            </li>
+          </ul>
+
+        </div>
+        
+        <!-- <table class="redTable" id="viewTable" style="width: 95%;" border="1">
             <tr>
                 <td>Positions</td>
                 <td><%= player.listPos %></td>
@@ -133,7 +189,7 @@
               <td>Most Recent Game Stat</td>
               <td><%= gameGrade %></td>
           </tr>
-        </table>
+        </table> -->
         <!-- The following section is code in relation to the chart.  -->
       <div class="row mt-5">
         <div class="col-md-6 m-auto">

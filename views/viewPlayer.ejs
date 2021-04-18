@@ -1,4 +1,5 @@
 <!-- CoachHome - developed by Kayl Murdough -->
+<!-- This webpage will be used to view player information as well as two charts that display overall grade and individual intagible grades. -->
 <style>
     @media all and (min-width: 600px) {
       .bodyContainer {flex: 2 0px;}
@@ -97,6 +98,9 @@
   cursor: pointer;
 }
 </style>
+<!-- Chart.js is available under the MIT license
+      Documentation is copyright © 2014-2021 Chart.js contributors.
+      Website: https://www.chartjs.org/ -->
 <!-- This script will be used for the responsive chart in Player Trends and Maxes. The graph is bootstrap created by Chart.js. -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
 <div class="bigContainer">
@@ -109,6 +113,7 @@
         <div class="row" style="margin-left:0;margin-right:0; justify-content:left">
             <a class="help" href="depthChart" style="margin-left: 40px;">Back</a>
         </div>
+        <!--  -->
         <% var fullName = player.FullName
         var splitName = fullName.split(" ") 
         for (var i = 2; i < splitName.length; i++) {
@@ -190,7 +195,7 @@
               <td><%= gameGrade %></td>
           </tr>
         </table> -->
-        <!-- The following section is code in relation to the chart.  -->
+      <!-- The following section is code in relation to the chart.  -->
       <div class="row mt-5">
         <div class="col-md-6 m-auto">
           <div class="card card-body text-center">
@@ -205,10 +210,6 @@
       // Our labels along the x-axis
       // For drawing the lines    
       var dates = [];  
-      var e1 = []; //The first intagible 
-      var e2 = []; //The second intagible 
-      var e3 = []; //The third intagible 
-      var e4 = []; //The fourth intagible 
       var overall = [];
       
 
@@ -220,6 +221,9 @@
           overall.push(parseInt(grades[i].grade));
       }
 
+        /*
+          Creating the first graph that deals with the overall grade of the practice grades.
+        */
         var ctx = document.getElementById("myChart"); //Retrieving the elementID of the chart above in canvas.
         var myChart = new Chart(ctx, { //Styling the graph. If you need more information on styling the graph please go to the Chart.js Documentation online.
           type: 'line',
@@ -258,8 +262,7 @@
 
 
       // Our labels along the x-axis
-      // For drawing the lines    
-      var dates = [];  
+      var dates = [];  //Will display grades by date.
       var e1 = []; //The first intagible 
       var e2 = []; //The second intagible 
       var e3 = []; //The third intagible 
@@ -269,7 +272,12 @@
       //We will go through all the information pased by the graph variable and push it onto our arrays.
       for (var i = 0; i < grades.length; i++) {
           var date = grades[i].date;
-          var dateSplit = date.split('T');
+          /*
+            Date is split on 'T' because we do not care for the specific time that the 
+            grade was submitted. The split will cause the date to be returned as 
+            "Year-Month-Day"          
+          */
+          var dateSplit = date.split('T'); 
           dates.push(dateSplit[0]);
           e1.push(parseInt(grades[i].int1));
           e2.push(parseInt(grades[i].int2));
@@ -277,6 +285,9 @@
           e4.push(parseInt(grades[i].int4));
       }
 
+        /*
+          Creating the second graph that deals with the individual grades of each intagible for practice grades.
+        */
         var ctx = document.getElementById("myChart2"); //Retrieving the elementID of the chart above in canvas.
         var myChart = new Chart(ctx, { //Styling the graph. If you need more information on styling the graph please go to the Chart.js Documentation online.
           type: 'line',

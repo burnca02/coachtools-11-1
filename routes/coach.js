@@ -1491,7 +1491,12 @@ router.post('/table', ensureAuthenticated, (req,res) =>
 
 })
 
-//Upload playbook
+/**
+ * This function will read the information from the pdf file uploaded and store the file in our local storage.
+ * Once the file is stored locally, it can be viewed with the viewPlaybook function.
+ * req- the pdf uploaded from the playbookUpload.ejs POST function coach/uploadPlaybook.
+ * res- pdf file saved to public/uploads folder and redirects back to same page.
+ */
 router.post('/uploadPlaybook', function(req,res)
 {
   // console.log(req);
@@ -1499,20 +1504,27 @@ router.post('/uploadPlaybook', function(req,res)
   {
     return res.status(400).send('No files were uploaded.');
   }
+  /**
+   * Getting the temporary file path. 
+   */
   var tmp_path = req.files.playbook.tempFilePath;
-  console.log(tmp_path);
 
-  /** The original name of the uploaded file
-      stored in the variable "originalname". **/
-  console.log(req.session.school);
+  /** 
+   * Storing the tmp_path and then pushing it to target_path which is our local storage public/uploads folder
+   * We will also rename the file to follow the naming convention "School Name - Playbook". 
+   * This will be problem if a school has the same name and will overrite the existing file. 
+    */
+
   var target_path = 'public/uploads/' +req.session.school + ' Playbook.pdf';
-  console.log(target_path);
 
   /** A better way to copy the uploaded file. **/
-
   var src = fs.createReadStream(tmp_path);
   var dest = fs.createWriteStream(target_path);
   src.pipe(dest);
+  /**
+   * Regardless of error, we do redirect to the same page where we uploaded a file. 
+   * This is a problem because there is no error message that shows that the file uploaded produced an error.
+   */
   src.on('end', function() { res.redirect('/coach/playbookUpload'); });
   src.on('error', function(err) { res.render('playbookUpload', {
     name: req.user.name

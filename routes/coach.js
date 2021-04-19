@@ -58,15 +58,29 @@ router.get('/pbUpload2', ensureAuthenticated, (req, res) => {
     school: req.session.school
   });
 }); 
-//upload function
+
+/**
+ * This route will open the view for uploading roster which is the coach homepage.
+ */
 router.get('/upload', ensureAuthenticated, (req, res) => 
   res.render('coachHome', {
     name: req.user.name //pass the name that was entered into the database to dashboard
 }));
-router.get('/playbookUpload', ensureAuthenticated, (req, res) => {
-  const path = 'public/uploads/' +req.session.school + ' Playbook.pdf';
-  var exists = "true";
 
+/**
+ * This route will open the view for uploading a playbook pdf, as well as the hyperlink to view a playbook.
+ * req- the information from clicking the playbook hyperlink on sidenav
+ * res- render the upload playbook and the hyperlink to view a playbook which will open up on a new window.
+ */
+router.get('/playbookUpload', ensureAuthenticated, (req, res) => {
+  /** The path will be where our pdf should be stored locally depending on the school. */
+  const path = 'public/uploads/' +req.session.school + ' Playbook.pdf';
+  /** This variable serves to us as a way to check if the path above, exists within the local storage
+   *  As in, if the playbook from that school was saved and uploaded. 
+   */
+  var exists = "true"
+
+  /** Checking to see if the path exists. */
     try {
       if (fs.existsSync(path)) {
         //file exists
@@ -79,9 +93,10 @@ router.get('/playbookUpload', ensureAuthenticated, (req, res) => {
     } catch(err) {
       console.error(err)
     }
+
   res.render('playbookUpload', {
     name: req.user.name,
-    'inDirectory': exists
+    'inDirectory': exists //If exists == true, then the playbook hyperlink will be active. Otherwise, the hyperlink will not be active.
   });
 }); 
 

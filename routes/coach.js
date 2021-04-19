@@ -4,7 +4,6 @@ const { ensureAuthenticated } = require('../config/auth');
 var fileUpload = require('express-fileupload');
 var template = require('../template');
 const csv = require('fast-csv');
-// const upload = require('../upload');
 const mongoose = require('mongoose');
 const multer = require('multer')
 const fs = require("fs");
@@ -36,17 +35,30 @@ router.get('/coachToolsLogo.png', (req, res) => {
 
 // router.use(fileUpload());
 
+
+/**
+ * This router for storing the files locally which is important for saving playbook PDF.
+ * This is needed to prevent a bug between pdf upload and excel file upload for roster. 
+ * This could change if we switched to AWS Cloud Storage. 
+ */
 router.use(fileUpload({
   useTempFiles : true,
   tempFileDir : '/tmp/',
   debug : true
 }));
-//Connect DB again??
+
+
+//Connect Database
 const db = 'mongodb+srv://hernri01:Capstone2020@cluster0.3ln2m.mongodb.net/test?authSource=admin&replicaSet=atlas-9q0n4l-shard-0&readPreference=primary&appname=MongoDB%20Compass&ssl=true&useUnifiedTopology=true&useNewUrlParser=true';
 mongoose.connect(db, { useNewUrlParser: true ,useUnifiedTopology: true, useFindAndModify: false})
 .then(() => console.log('Mongo DB Connected...'))
 .catch(err => console.log(err));
 
+
+/**
+ * This will give us a template for the roster file upload. 
+ * Currently, the csv file has to be specific or else the data entries will not be accepted.
+ */
 router.get('/template', template.get);
 // router.post('/upload', upload.post);
 

@@ -50,6 +50,9 @@ mongoose.connect(db, { useNewUrlParser: true ,useUnifiedTopology: true, useFindA
 router.get('/template', template.get);
 // router.post('/upload', upload.post);
 
+/**
+ * This route will open the view for viewing a pdf. 
+ */
 router.get('/pbUpload2', ensureAuthenticated, (req, res) => {
   res.render('pbUpload2', {
     school: req.session.school

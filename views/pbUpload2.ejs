@@ -70,6 +70,14 @@
     </div>
     <div id="viewport-container"><div role="main" id="viewport"></div></div>
 </div>
+<!-- The following pdf.min.js (PDF.js) is community-driven and supported by Mozilla. "Our goal is to create a general-purpose, web standards-based platform for parsing and rendering PDFs". -->
+<!-- This is an open source project that can be found on https://github.com/mozilla/pdf.js -->
+<!-- The following code was copied from the following with slight modifications. The biggest change was that 
+     we took the index.js file and just copied and paste the code into this ejs page as a script.
+
+     Author: giuseppeg
+     Website: https://codesandbox.io/s/pmy914l2kq
+ -->
 <script src="https://unpkg.com/pdfjs-dist@2.0.489/build/pdf.min.js"></script>
 <script>
     let currentPageIndex = 0;
@@ -173,6 +181,7 @@
     }
 </script>
 
+<!-- Render the user's school playbook as a coach. -->
 <% if (school) { %> 
   <script type="text/javascript">
   var school = JSON.parse('<%- JSON.stringify(school) %>');

@@ -151,7 +151,8 @@ router.get('/questionnaire', ensureAuthenticated, (req, res) => {
           'name': req.user.name
     });
   }).catch(err => console.log(err))
-});
+});0
+
 /*
 This method is called when a coach submits a questionnaire. It takes all fields on the questionnaire 
 as input. The query then searches the Roster database to find the appropriate emails for the 
@@ -221,6 +222,7 @@ router.post('/submitquest', async(req,res) => {
     .catch(err => console.log(err));
   // }
 });
+
 /*
 This method is called when the coach hits 'View Responses' on the player feedback screen. The
 method takes the questionnaire type as input. The queries below find all completed questionnaires for the users school and the FullNames associated with each

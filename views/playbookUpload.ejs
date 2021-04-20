@@ -126,6 +126,9 @@
   </div>
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<!-- The following script deals with displaying the h1 tag if the playbook exists within the file directory.
+     It will either show or hide depending on the value that is rendered by the router.get('/playbookUpload') function in coach.js.
+     The value will either be true or false. -->
 <% if (inDirectory) { %> 
   <script type="text/javascript">
   var exist = JSON.parse('<%- JSON.stringify(inDirectory) %>');
@@ -145,6 +148,7 @@
 <% } %>
 </script>
 <script>
+  // This script deals with opening the link for viewing the playbook PDF to a new window.
     $(document).ready(function() {
     $("#link").click(function() {
       $("<a>").prop({
@@ -155,6 +159,9 @@
   });
 </script>
 <script type="text/javascript">
+// This script deals with the file upload button.
+// The file button will only be enabled once the user has uploaded a file
+// This is done to prevent the user uploading nothing to the database and causing an error. 
 $(document).ready(
     function(){
         $('input:file').change(
@@ -162,11 +169,9 @@ $(document).ready(
                 if ($(this).val()) {
                     $('input:submit').attr('disabled',false);
                     // or, as has been pointed out elsewhere:
-                    // $('input:submit').removeAttr('disabled'); 
                 } 
             }
         );
-
     });
   </script>
 </script>

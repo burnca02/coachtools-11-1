@@ -21,18 +21,14 @@ router.get('/cookies', (req, res) => {
     res.render('cookies')
 });
 
-//photos
-// router.get('/coachtoolsLogoBlack.png', (req, res) => {
-//     res.sendFile('coachtoolsLogoBlack.png', { root: '.' })
-//   });
-
-// router.get('/coachToolsLogo.png', (req, res) => {
-//     res.sendFile('coachToolsLogo.png', { root: '.' })
-// });
-
-//Register Page
+/**
+ * This will display and render the registration page.
+ */
 router.get('/register', (req, res) => 
 {
+    /**Search the User Database and find an array of all the distinct School names.
+     * This is used to populate the dropdown of the school names whenever you are doing registration. 
+     */
     User.distinct("school", function(error, results){
         console.log(results);
         res.render('register',
@@ -43,6 +39,9 @@ router.get('/register', (req, res) =>
 }
 );
 
+/**
+ * The display page for whenever a user clicks on the coach option on the /register page.
+ */
 router.get('/teamRegister', (req, res) => 
 {
     res.render('teamRegister');

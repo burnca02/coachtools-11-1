@@ -505,7 +505,9 @@ router.get('/roster', ensureAuthenticated, (req, res) =>
 // posArray.push(player)
 // mainArray.push(posArray)
 
-
+/**
+ * This method will just take you to the depth chart page and send a 2 dimensional array of player data based on position.
+ */
 router.get('/depthChart', ensureAuthenticated, (req, res) => {
   const pos = 'QB';
   const offPlayersPos = ['QB','RB','FB','WR','TE','LT','LG','C','RG','RT','OL']
@@ -519,7 +521,6 @@ router.get('/depthChart', ensureAuthenticated, (req, res) => {
           positions.push(players[i].Pos.trim());
       }
     }
-    // positions.sort()
     //create main array to hold all position arrays
     var sortedPlayers = [];
     //created an array for every position
@@ -550,6 +551,7 @@ router.get('/depthChart', ensureAuthenticated, (req, res) => {
     }).catch(error => console.error(error));
   }).catch(error => console.error(error));
 });
+
 // not really in use anymore....
 router.post('/depthChart', ensureAuthenticated, (req, res) => {
   var pos = 'QB'

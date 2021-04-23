@@ -633,7 +633,6 @@ router.post('/depthChart', ensureAuthenticated, (req, res) => {
 //   }).catch(error => console.error(error))
 // });
 
-//BUG WITH RELOADING!!!!NOT SURE HOW TO FIX!!!DATA ISN'T STORED
 // router.post('/depthChart', ensureAuthenticated, async(req, res) => {
 //   const type = req.body.type;
 //   const offPlayersPos1 = ['QB','RB','FB','WR','TE','LT','LG','C','RG','RT']
@@ -691,6 +690,11 @@ router.post('/depthChart', ensureAuthenticated, (req, res) => {
 
 //Error with reloading here - the get function cant get the current position
 //Can we store a session variable or something?
+/**
+ * This method is really just a safety incase coaches refresh the position page. The post function for position will
+ * mostly be used for when coaches click on a certain position in the depth chart.
+ * This gathers all game grades, and practice stats for a certain position group (default QB).
+ */
 router.get('/position', ensureAuthenticated, async(req, res) => {
   // console.log("in coach call of position")
   await Roster.find({School: req.user.school})
@@ -746,6 +750,10 @@ router.get('/position', ensureAuthenticated, async(req, res) => {
           }).catch(error => console.error(error))
 })
 
+/**
+ * This method is a safety in case user refreshes on the viewPlayer page. It defaults
+ * to Bryan Boczon who isn't on everyone's team. This needs to be fixed.
+ */
 router.get('/viewPlayer', ensureAuthenticated, (req, res) => {
   console.log("in view player getter")
   const playerName = 'Bryan Boczon';
@@ -759,6 +767,11 @@ router.get('/viewPlayer', ensureAuthenticated, (req, res) => {
             }).catch(error => console.error(error))
 })
 
+/**
+ * This post method is called when the user clicks on a player's name in the depth charts
+ * or in the roster. It takes the player full name value and finds the player in the database
+ * then gets their game grades and practice grades and sends it server side.
+ */
 router.post('/viewPlayer', ensureAuthenticated, async(req, res) => {
   const playerName = req.body.playerName;
   await Roster.findOne({School:req.session.school, FullName:playerName})
@@ -806,6 +819,7 @@ router.post('/viewPlayer', ensureAuthenticated, async(req, res) => {
             }).catch(error => console.error(error))
           }).catch(error => console.error(error))
 })
+
 //Error with reloading here - the get function cant get the current position - just setting to QB...
 //Can we store a session variable or something?
 router.get('/posSubmitRank', ensureAuthenticated, async(req, res) => {

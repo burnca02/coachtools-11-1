@@ -48,12 +48,15 @@ router.get('/teamRegister', (req, res) =>
 }
 );
 
-//Register Handle
+/**
+ * This is the function that will register a player in accordance to information entered in register.ejs form.
+ * req - the information entered by the user on the registration form. 
+ * res - it will be redirected to the login page or a benchmarks page in case you are a player. 
+ *      if there is an error, it will redirect back to the registration page and give error messages.
+ */
 router.post('/register', (req, res) => {
     const { name, email, password, password2, school, userType, terms} = req.body;
-
-    console.log(req.body);
-    let errors = [];
+    let errors = []; //This array will display the errors if user enters incorrect information.
     if(school === 'School Not Listed' && userType === 'player') //If the school is not listed then you either sign up your team through the coach portal, or you cannot access it as a player.
     {
         errors.push({msg:"Your school does not have access to Coach Tools"});
@@ -71,14 +74,19 @@ router.post('/register', (req, res) => {
     if(password !== password2) {
         errors.push({ msg: 'Passwords do not match'});
     }
-    if(!terms) {
+    //Checking to see if user clicked the terms and conditions as well as the cookie policy.
+    if(!terms) { 
         errors.push({ msg: 'Please agree to the terms and conditions and the cookie policy.'});
     }
     //Check password Length
     if(password.length < 6) {
         errors.push({ msg: 'Password must be at least characters'});
     }
+    //Having more than error will return the user back to the registration page. 
     if(errors.length > 0) {
+
+        //A query is called since we do not want to erase all the information entered by the user in case it was only one error.
+        //As of now, the query is needed, otherwise no schools will show up in the dropdown menu.
         User.distinct("school", function(error, results){
             console.log(results);
             res.render('register', 
@@ -99,8 +107,10 @@ router.post('/register', (req, res) => {
         User.findOne({ email: email })
         .then(user => {
             if(user) {
-                //User exists
+                //The user already exists in our User database. Throw an error message and render the registration page again.
                 errors.push({ msg: 'Email is already in use.'});
+
+                //Same process as earlier, query is needed as of now, otherwise no schools will show up.
                 User.distinct("school", function(error, results){
                     console.log(results);
                     res.render('register', 
@@ -117,7 +127,7 @@ router.post('/register', (req, res) => {
                 });
             }
             else if(userType == 'player'){
-                //We want to check their email addresss matches the information in the roster.
+                //Check that their email addresss matches the information in the roster.
                 Roster.findOne({ FullName: name, School : school})
                 .then(player => {
                     console.log("player.Email" + player.Email);
